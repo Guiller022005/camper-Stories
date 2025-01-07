@@ -145,6 +145,7 @@ const CamperProfileEdit = () => {
                     ciudadOrigen={camper.ciudadOrigen}
                     edad={camper.edad}
                     mainImage={camper.mainImage}
+                    initialMerits={camper.skills}
                 />
                 <section className={styles.about} id="sobre-mi-profile">
                     <div className={styles.aboutContent}>
