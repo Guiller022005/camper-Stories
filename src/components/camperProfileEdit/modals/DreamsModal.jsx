@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus } from "lucide-react";
+import AddItemButton from '../ui/AddItemButton';
 
 const DreamsModal = ({ onAddDream }) => {
   const [formData, setFormData] = useState({
@@ -62,14 +62,10 @@ const DreamsModal = ({ onAddDream }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-full h-full bg-transparent flex flex-col items-center justify-center gap-2"
-          aria-label="Añadir nuevo sueño"
-        >
-          <Plus className="h-8 w-8" />
-          <span>Añadir Nuevo Sueño</span>
-        </Button>
+        <AddItemButton 
+          type="dream"
+          className="rounded-2xl bg-transparent backdrop-blur-none"
+        />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -71,7 +71,7 @@ const ProyectsEdit = () => {
       </h2>
       
       <div className={styles.projects} id="projects-profile">
-        <div className={styles.addCardContainer}>
+        <div className={styles.projectCard}>
           <div>
             <ProyectsModal
               onAddProject={isEditing ? handleUpdateProject : handleAddProject}

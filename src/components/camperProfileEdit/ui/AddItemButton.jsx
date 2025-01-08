@@ -1,79 +1,80 @@
-import React from 'react';
-import { PlusCircle } from 'lucide-react';
+import { Plus } from 'lucide-react'
 
-const AddItemButton = ({ 
-  type = 'default',
-  onClick,
-  className = '',
-  containerStyles = {} 
-}) => {
-  // Configuraciones predefinidas para diferentes tipos de tarjetas
-  const typeStyles = {
-    tiktok: {
-        width: '325px',
-        height: '605px',
-        minWidth: '325px',
-        borderRadius: '15px',
-        '@media (max-width: 768px)': {
-            width: '100%',
-            minWidth: '280px',
-            maxWidth: '325px'
+const AddItemButton = ({ type, className }) => {
+  const getCardContent = () => {
+    switch (type) {
+      case 'project':
+        return {
+          title: 'Añadir Nuevo Proyecto',
+          containerClass: 'h-[475px] bg-indigo-950 border-2 border-dashed border-gray-600/40 hover:bg-indigo-900',
+          iconClass: 'text-white border-white',
+          textClass: 'text-white'
         }
-    },
-    project: {
-      width: '100%',
-      height: '450px',
-      minWidth: '300px',
-      borderRadius: '12px',
-    },
-    dream: {
-      width: '100%',
-      aspectRatio: '1/1',
-      minWidth: '250px',
-      borderRadius: '8px',
-    },
-    default: {
-      width: '100%',
-      height: '400px',
-      minWidth: '300px',
-      borderRadius: '12px',
+      case 'dream':
+        return {
+          title: 'Añadir Nuevo Sueño',
+          containerClass: 'w-full h-full bg-indigo-950 border-2 border-dashed border-gray-600/40 hover:border-gray-400/60',
+          iconClass: 'text-gray-400/80 border-gray-600/40',
+          textClass: 'text-gray-400/80'
+        }
+      case 'tiktok':
+        return {
+          title: 'Añadir Nuevo TikTok',
+          containerClass: 'h-[600px] bg-black/5 backdrop-blur-sm border border-gray-700 hover:bg-black/10',
+          iconClass: 'text-gray-300 border-gray-300',
+          textClass: 'text-gray-300'
+        }
+      default:
+        return {
+          title: 'Añadir Nuevo Item',
+          containerClass: 'h-[300px] bg-gray-100',
+          iconClass: 'text-gray-600',
+          textClass: 'text-gray-600'
+        }
     }
-  };
-  
-  // Estilos base que se aplicarán a todos los botones
-  const baseStyles = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#030337',
-    border: '2px dashed rgba(255, 255, 255, 0.2)',
-    transition: 'all 0.3s ease',
-    cursor: 'pointer',
-    ...typeStyles[type],
-    ...containerStyles
-  };
+  }
 
-  // Clases base para el contenedor
-  const baseClasses = `
-    hover:border-blue-500/50 
-    hover:bg-opacity-80 
-    group 
-    ${className}
-  `;
+  const content = getCardContent()
 
   return (
-    <div
-      className={baseClasses}
-      style={baseStyles}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
+    <button
+      className={`
+        group
+        relative 
+        flex 
+        flex-col 
+        items-center 
+        justify-center 
+        w-full 
+        h-full
+        rounded-xl 
+        transition-all 
+        duration-300
+        ${content.containerClass}
+        ${className}
+      `}
     >
-      <PlusCircle 
-        className="w-16 h-16 text-gray-400 group-hover:text-blue-500 transition-colors duration-300" 
-      />
-    </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 transform transition-transform group-hover:scale-105">
+        {content.iconClass !== 'hidden' && (
+          <div className={`
+            p-4 
+            rounded-full 
+            border-2
+            ${content.iconClass}
+          `}>
+            <Plus className="w-8 h-8" />
+          </div>
+        )}
+        <p className={`
+          text-sm 
+          font-medium
+          ${content.textClass}
+        `}>
+          {content.title}
+        </p>
+      </div>
+    </button>
   );
-};
+}
 
 export default AddItemButton;
