@@ -11,7 +11,7 @@ import styles from './styles/CamperProfileEdit.module.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import NavbarProfile from '../../components/navbar/NavbarProfile';
-import DreamsGrid from '../../components/camperProfile/DreamsGrid';
+import DreamsGridEdit from '../../components/camperProfileEdit/DreamsGridEdit';
 import { ProyectsModal } from '@/components/camperProfileEdit/ProyectsModal';
 import { ProyectsEditModal } from '@/components/camperProfileEdit/ProyectsEditModal';
 import { Dialog } from '@/components/ui/dialog';
@@ -167,7 +167,7 @@ const CamperProfileEdit = () => {
                         <span className={styles.highlight}>&lt;/</span> Mis Sueños
                     </h2>
                     <div className={styles.dreamsGridContainer}>
-                        <DreamsGrid />
+                        <DreamsGridEdit />
                     </div>
                 </section>
  
