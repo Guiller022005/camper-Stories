@@ -1,5 +1,4 @@
 // Archivo para almacenar los perfiles
-
 import camperImage from "../assets/camper.png"; // Importar la imagen
 
 const profiles = [

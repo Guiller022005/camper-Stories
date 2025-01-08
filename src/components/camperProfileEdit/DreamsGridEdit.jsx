@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { dreamsData } from '../../data/data';
 import styles from './styles/DreamsGridEdit.module.css';
-import DreamsModal from './DreamsModal';
+import DreamsModal from './modals/DreamsModal';
 
 const DreamsGridEdit = () => {
   const [dreams, setDreams] = useState(dreamsData.dreams);

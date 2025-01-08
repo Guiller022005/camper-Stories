@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import campersData from "../../services/camperSucess";
+import campersData from "../../data/camperSucess";
 import "./styles/CampersGrid.css";
 
 const DotPagination = ({ current, total, pageSize, onChange }) => {
