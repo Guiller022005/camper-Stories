@@ -1,0 +1,16 @@
+.addButton{
+    background-color: transparent !important;
+    border: none;
+    transition: all ease-in-out 0.2s;
+}
+
+.addButton:hover{
+    background-color: transparent;
+    transform: scale(1.2);
+}
+
+.addButton:focus{
+    border: none !important;
+    outline: none;
+}
+

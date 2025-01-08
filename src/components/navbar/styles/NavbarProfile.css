@@ -1,0 +1,182 @@
+.navbar-profile {
+    background-color: transparent;
+    color: white;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+  }
+  
+  /* Desktop Navigation */
+  .desktop-nav-profile {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .nav-links-profile {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .nav-logo-profile img {
+    height: 70px;
+    width: auto;
+    margin: 0 20px;
+  }
+  
+  .nav-links-profile a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links-profile a:hover {
+    color: #60a5fa;
+  }
+  
+  /* Mobile Navigation */
+  .mobile-nav-profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 0 10px;
+  }
+  
+  .mobile-logo-profile {
+    width: 180px;
+    height: auto;
+    position: relative;
+    z-index: 1001;
+  }
+  
+  .hamburger-menu-profile {
+    display: block;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 1000;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    outline: none;
+    transform: translateY(-5px);
+  }
+  
+  .hamburger-menu-profile:focus {
+    outline: none;
+  }
+  
+  .hamburger-icon-profile {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  .hamburger-icon-profile::before,
+  .hamburger-icon-profile::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transition: transform 0.3s ease;
+  }
+  
+  .hamburger-icon-profile::before {
+    top: -6px;
+  }
+  
+  .hamburger-icon-profile::after {
+    bottom: -6px;
+  }
+  
+  .hamburger-menu-profile.is-active .hamburger-icon-profile {
+    background-color: transparent;
+  }
+  
+  .hamburger-menu-profile.is-active .hamburger-icon-profile::before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+  
+  .hamburger-menu-profile.is-active .hamburger-icon-profile::after {
+    transform: rotate(-45deg);
+    bottom: 0;
+  }
+  
+  /* Mobile Menu */
+  .mobile-menu-profile {
+    background-color: rgba(0, 0, 102, 0.6);
+    color: white;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  .mobile-links-profile {
+    padding: 0;
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+    width: 90%;
+    max-width: 300px;
+  }
+  
+  .navbar-profile.menu-open {
+    transform: none !important;
+    position: fixed;
+    width: 100%;
+}
+
+  .mobile-links-profile a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.2rem;
+    padding: 12px 0;
+    width: 100%;
+    transition: color 0.3s ease;
+  }
+  
+  .mobile-links-profile a:hover {
+    color: #60a5fa;
+  }
+  
+  /* Responsive */
+  .mobile-only-profile {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .desktop-only-profile {
+      display: none;
+    }
+    .mobile-only-profile {
+      display: block;
+    }
+  }

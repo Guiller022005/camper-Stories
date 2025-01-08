@@ -1,0 +1,229 @@
+/* CamperProfile.module.css */
+.camperProfileView {
+    width: 100%;  
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #070727;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .profileMainContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;  
+    padding: 0 clamp(1rem, 10vw, 10rem) 2rem;
+    background: linear-gradient(180deg, #070727 0%, #090955 70%, #0C0C74 100%);
+  }
+  
+  .profileSubtitle,
+  .aboutSubtitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #FFFFFF;
+    display: inline-flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .profileSubtitle {
+    font-size: clamp(1.5rem, 3vw, 3rem);
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .projectSubtitle,
+  .aboutSubtitle {
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+  }
+  
+  .aboutSubtitle {
+    padding-bottom: 1.5rem;
+  }
+  
+  .highlight {
+    color: #FACC15;
+    font-weight: bold;
+  }
+  
+  .about {
+    display: flex;
+    flex-direction: column;  
+    align-items: flex-start;
+    min-height: 60vh;
+  }
+  
+  .aboutContent {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(20px, 3vw, 40px);
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .colInfo {
+    display: flex;
+    flex-direction: column;
+    max-width: 40%;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .colInfo p {
+    color: white;
+    line-height: 20px;
+  }
+  
+  .colVideo {
+    flex: 1 300px;
+    max-width: 100%; 
+    display: flex;
+    align-items: center;
+  }
+  
+  .process {
+    width: 100%;
+    position: relative;
+  }
+  
+  .dreams {
+    margin-bottom: 2rem;
+  }
+  
+  .videos {
+    display: flex;  
+    justify-content: center;
+    max-width: 89vw;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+    margin-top: 2rem;
+  }
+  
+  .profileSwiper {
+    width: 100%;
+    height: fit-content;
+  }
+  
+  .mobileSwiper {
+    width: 100%;
+  }
+  
+  .swiperSlide {
+    width: 325px !important;
+  }
+  
+  .videoItem {
+    width: 325px !important;
+  }
+  
+  .tecInfo {
+    position: relative;
+  }
+  
+  .projects {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(20px, 2vw, 20px);
+    width: 100%;
+    margin-top: 2rem;
+  }
+  
+  .sponsorCallToAction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 2rem;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .ctaText {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .btnPatrocinar,
+  .btnSponsor {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f7b500;
+    color: #000000;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    padding: clamp(8px, 2vw, 15px) clamp(16px, 3vw, 40px);
+  }
+  
+  .btnPatrocinar {
+    margin-top: 2rem;
+    border: none;
+  }
+  
+  .btnPatrocinar:hover {
+    background-color: #f0a500;
+    cursor: pointer;
+  }
+  
+  .btnSponsor:hover {
+    background-color: #cc7a00;
+  }
+  
+  .btnPatrocinar:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  /*ADD CARD*/
+
+  .add-card--container{
+    background: transparent;
+    display: flex;
+    align-items: center;
+    border-radius: 15px;
+    justify-content: center;
+    border: 1px solid #FFFFFF;
+  }
+  
+
+  
+  @media (max-width: 768px) {
+    .profileMainContent {
+      padding: 0 1.5rem 1rem;
+    }
+  
+    .about {
+      min-height: auto;
+    }
+    
+    .projects {
+      grid-template-columns: repeat(auto-fit);
+    }
+  
+    .aboutContent {
+      flex-direction: column;
+    }
+    
+    .colInfo,
+    .colVideo {
+      max-width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .videos,
+    .projects {
+      grid-template-columns: 1fr;
+    }
+  }

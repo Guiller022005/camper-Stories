@@ -1,0 +1,76 @@
+.donation-form-card {
+  width: 100%;
+  background-color: #1f243b;
+  padding: 1.5rem;
+  box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+}
+
+.donation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.donation-form-row {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.donation-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.donation-form-label {
+  color: #e2e8f0;
+  font-size: 0.875rem;
+}
+
+.donation-form-input,
+.donation-form-textarea {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: rgba(30, 41, 59, 0.5);
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  border-radius: 12px;
+}
+
+.donation-form-input::placeholder,
+.donation-form-textarea::placeholder {
+  color: #94a3b8;
+}
+
+.donation-form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.donation-submit-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #6C3AFF;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.donation-submit-button:hover {
+  background-color: #7e22ce;
+}
+
+.donation-required {
+  color: #ef4444;
+}
+
+@media (min-width: 768px) {
+  .donation-form-row {
+      grid-template-columns: repeat(2, 1fr);
+  }
+}

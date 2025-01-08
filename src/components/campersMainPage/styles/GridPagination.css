@@ -1,0 +1,38 @@
+.campers-pagination{
+  gap: 10px;
+  z-index: 1;
+}
+
+.campers-pagination li:hover{
+  background-color: #F4B422;
+
+}
+
+.ant-pagination .ant-pagination-item-active a{
+  color: black;
+}
+
+.ant-pagination .ant-pagination-item-active a:hover{
+  color: black;
+}
+
+.ant-pagination .ant-pagination-item-active{
+  border-color: #F4B422;
+  background-color: #F4B422;
+}
+
+.ant-pagination .ant-pagination-item-active:hover{
+  border-color: #F4B422;
+  background-color: #F4B422;
+  color: black;
+}
+
+.ant-pagination .ant-pagination-item a:hover{
+  background-color: #F4B422;
+  border-radius: 6px;
+}
+
+.campers-pagination .ant-pagination-prev,
+.campers-pagination .ant-pagination-next {
+    display: none;
+}

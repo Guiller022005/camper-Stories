@@ -1,5 +1,8 @@
 import React from 'react';
 import AppRouter from './router/AppRouter'; 
+import './styles/variables.css';
+import './styles/base.css';
+
 
 function App() {
   return (

@@ -1,0 +1,467 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@500;600;700&display=swap');
+
+/* Base Layout */
+
+.campersgrid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 4rem 1rem;
+  background-image: linear-gradient(rgba(1, 1, 48, 0.7), rgba(1, 1, 48, 0.7)),
+    url('src/assets/campuswall.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0px -10px 200px #17172b;
+  position: relative;
+  overflow: visible;
+}
+
+/* Grid Layout */
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding-top: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.badge-filters {
+  display: flex;
+  width: 76%;
+  margin-bottom: 1rem;
+  background-color: #26235886;
+  border-radius: 20px;
+}
+
+/* Developer Card */
+.developer-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: fit-content;
+  max-width: 600px;
+  height: fit-content;
+  margin-bottom: 20px;
+  background-color: #2D2B54;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.dev-card-content {
+  display: flex;
+  flex-direction: row;
+  width: 440px;
+  height: auto;
+  padding: 20px 20px 20px 30px;
+  gap: 4px;
+}
+
+/* Camper Information */
+.camper-maininfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 70%;
+}
+
+.camper-maininfo h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.camper-image {
+  display: flex;
+  align-items: center;
+  width: 155px;
+  height: 230px;
+  
+}
+
+.camper-image img {
+  width: 150px;
+  height: 113px;
+  object-fit: cover;
+  border: 2px solid #D9D9D9;
+  border-radius: 50%;
+}
+
+.camper-title {
+  font-family: 'Roboto Mono', monospace;
+  font-size: clamp(12px, 1.5vw, 15px);
+  line-height: 1.2;
+  text-align: start;
+}
+
+/* Technologies Section */
+.technologies {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.tech-label {
+  color: #F4B422;
+  font-size: clamp(13px, 1.5vw, 15px);
+  font-weight: 500;
+}
+
+.technologies p {
+  color: #e0e0e0;
+  font-size: clamp(12px, 1.5vw, 15px);
+  line-height: 1.5;
+}
+
+/* Skills Filter */
+
+.skill-filters {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  gap: 5px;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.expand-filters-button {
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  color: #ffffff;
+  font-size: 20px;
+  border: none;
+  background-color: #FFA500;
+  cursor: pointer;
+  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Skills Display */
+.skills-container {
+  display: flex;
+  gap: 7px;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 300px !important;
+  max-height: 40px;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  /* más rápida */
+}
+
+.skills-container.expanded {
+  max-height: 400px;
+}
+
+.skill-item {
+  padding: 5px 10px;
+  background-color: #636386;
+  font-size: 12px;
+  width: fit-content;
+  height: fit-content;
+  white-space: nowrap;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.skill-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Skils Buttons */
+.skill-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  margin: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  border: 1px solid transparent;
+}
+
+.skill-button.outline {
+  background-color: white;
+  color: #2d2b54;
+  border: 1px solid #4a4a75;
+}
+
+.skill-button.selected {
+  background-color: #6060d5;
+  color: white;
+  border-color: #f4b422;
+}
+
+.skill-button:hover {
+  background-color: #2d2b54;
+  color: #f4b422;
+}
+
+
+/* Buttons */
+button {
+  padding: 0.6em 1.2em;
+  background-color: #1a1a1a;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+
+}
+
+.buttons {
+  display: flex;
+  gap: 1em;
+  margin-top: 0.5em;
+}
+
+
+
+.buttons button {
+  padding: 8px 24px;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+}
+
+.info-button,
+.sponsor-button {
+  background-color: #F4B422;
+  color: #0d0d12;
+}
+
+.info-button:hover,
+.sponsor-button:hover {
+  background-color: #FDC347;
+}
+
+.expand-skills-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 25px 0 8px;
+  margin-top: -30px;
+  border: none;
+  position: relative;
+  bottom: -20px;
+}
+
+.expand-skills-button:focus {
+  outline: 0;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .developer-card {
+    width: 90%;
+    min-height: 159px;
+    height: auto;
+    margin: 0.5rem 0;
+  }
+
+  .dev-card-content {
+    justify-content: center;
+  }
+
+  .technologies {
+    margin: 0;
+    text-align: start;
+  }
+
+  .buttons {
+    padding: 3px 0 5px 0;
+  }
+
+
+  .expand-filters-button {
+    display: none;
+  }
+
+  .campers-pagination {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 0 2rem 0 3.3rem;
+  }
+
+  .camper-name {
+    font-size: 16px;
+  }
+
+  .camper-title,
+  .technologies p {
+    font-size: 14px;
+  }
+}
+
+.buttons button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 45px;
+  padding: 15px;
+  margin: 5px;
+  font-size: 14px;
+}
+
+.skills-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.badge-filters {
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  align-items: center;
+  flex-direction: column;
+}
+
+.badge-filters h3 {
+  display: flex;
+  flex-direction: column;
+  color: #FFA500;
+  font-size: 65px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+@media (max-width: 480px) {
+  .campersgrid {
+    padding: 2.2rem 0.5rem;
+  }
+
+  .grid-container {
+    width: 85%;
+  }
+
+  .developer-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 340px;
+    padding: 8px 0 0 0;
+    border-radius: 20px;
+  }
+
+  .dev-card-content,
+  .technologies,
+  .camper-maininfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .camper-maininfo {
+    padding: 20px 0 0 0;
+  }
+
+  .technologies {
+    margin: 20px 0;
+  }
+
+  .tech-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .camper-image,
+  .camper-image img {
+    width: 128px;
+    height: 128px;
+  }
+
+  .badge-filters {
+    display: flex;
+    justify-content: center;
+    width: 380px;
+    background-color: transparent;
+    align-items: center;
+    flex-direction: column;
+    margin: 0px;
+  }
+
+
+  /* Skills Display */
+
+  .filter-buttons {
+    display: flex;
+    gap: 0.5px;
+    flex-direction: row;
+    justify-content: center;
+    width: 380px;
+    min-height: 105px;
+    max-height: 105px;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .filter-buttons.expanded {
+    max-height: 510px;
+  }
+
+  .expand-filters-button {
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    color: #ffffff;
+    font-size: 20px;
+    border: none;
+    background-color: #FFA500;
+    cursor: pointer;
+  }
+
+  .grid-container {
+    padding: 0px;
+  }
+
+  .badge-filters h3 {
+    display: flex;
+    text-align: center;
+    width: 290px;
+    flex-direction: column;
+    line-height: 50px;
+    font-size: 45px;
+    padding-left: 5px;
+  }
+
+}
