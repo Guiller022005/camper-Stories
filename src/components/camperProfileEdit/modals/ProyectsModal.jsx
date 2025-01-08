@@ -18,9 +18,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import 'boxicons'
-import "./styles/Proyects.Modal.css"
+import styles from "./styles/ProyectsModal.module.css";
 import { useState } from "react"
 import { time } from "framer-motion"
+import AddItemButton from "../ui/AddItemButton";
 
 // async function saveToDatabase(data) {
 //     const response = await fetch("/api/saveProject", {
@@ -90,13 +91,15 @@ export function ProyectsModal({ onAddProject, technologuies }) {
 
   }
 
-
-
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="addButton">
-          <box-icon name='plus-circle' color='#fdfcfc' size="80px"></box-icon></Button>
+        <div className="w-full h-full ">
+            <AddItemButton 
+              type="project"
+              className="w-full h-full bg-indigo-950/30 border-none"
+            />
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>

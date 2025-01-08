@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './styles/CamperProfileEdit.module.css';
 import NavbarProfile from '../../components/navbar/NavbarProfile';
-import { Dialog } from '@/components/ui/dialog';
 import camper from '../../data/camperProfilePage';
 import ProfileHeaderEdit from "../../components/camperProfileEdit/ProfileHeaderEdit";
 import AboutMeEdit from "../../components/camperProfileEdit/AboutMeEdit";
