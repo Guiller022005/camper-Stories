@@ -1,0 +1,121 @@
+/* ProjectCard.module.css */
+.projects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .projectCard {
+    flex: 1 1 calc(33.33% - 24px);
+    box-sizing: border-box;
+  }
+  
+  .projectCardImg {
+    object-fit: cover;
+    width: 100%;
+    height: 180px;
+    background-color: #cccccc;
+  }
+  
+  .projectCardMeta {
+    padding: 16px;
+  }
+  
+  .projectCardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .projectCardDescription {
+    font-size: 0.875rem;
+    color: #9ca3af;
+  }
+  
+  .projectCardTechs {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .projectCardBadge {
+    background-color: #211e8b;
+    color: #fff;
+    padding: 3px 10px;
+    font-size: 0.875rem;
+    border-radius: 20px;
+  }
+  
+  .projectCardButton {
+    margin-top: 16px;
+  }
+  
+  .editButton {
+    margin-top: 8px;
+    width: 100%;
+    padding: 8px;
+    background-color: #211e8b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Media queries para tablets */
+  @media (max-width: 1024px) {
+    .projects {
+      grid-template-columns: repeat(2, 1fr);
+    }
+   
+    .projectCard {
+      flex: 1 1 calc(50% - 24px);
+    }
+  }
+   
+  /* Media queries para móviles */
+  @media (max-width: 768px) {
+    .projects {
+      grid-template-columns: 1fr;
+      padding: 0 1rem;
+    }
+   
+    .projectCard {
+      flex: 1 1 100%;
+    }
+   
+    .projectCardImg {
+      height: 160px;
+    }
+   
+    .projectCardMeta {
+      padding: 12px;
+    }
+   
+    .projectCardTechs {
+      margin-top: 12px;
+      gap: 6px;
+    }
+   
+    .projectCardBadge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+    }
+  }
+   
+  /* Media query para móviles pequeños */
+  @media (max-width: 480px) {
+    .projectCardImg {
+      height: 140px;
+    }
+   
+    .projectCardTitle {
+      font-size: 1.1rem;
+    }
+   
+    .projectCardDescription {
+      font-size: 0.8rem;
+    }
+  }
