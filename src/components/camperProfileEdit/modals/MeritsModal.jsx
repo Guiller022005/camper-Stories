@@ -7,7 +7,7 @@ import {
   DialogTrigger,
   DialogDescription,
   DialogFooter
-} from '../../components/ui/dialog';
+} from '../../ui/dialog';
 import {
   Select,
   SelectContent,
@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Button } from '../../components/ui/button';
+import { Button } from '../../ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit } from 'lucide-react';
 

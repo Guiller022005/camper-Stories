@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
 import './styles/ProfileHeader.css';
-import ProfileHeaderModal from '../camperProfileEdit/ProfileHeaderModal';
-import MeritsModal from '../camperProfileEdit/MeritsModal';
+import ProfileHeaderModal from '../camperProfileEdit/modals/ProfileHeaderModal';
+import MeritsModal from '../camperProfileEdit/modals/MeritsModal';
 
 const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);

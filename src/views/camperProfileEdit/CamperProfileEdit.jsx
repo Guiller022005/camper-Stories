@@ -12,10 +12,10 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import NavbarProfile from '../../components/navbar/NavbarProfile';
 import DreamsGrid from '../../components/camperProfile/DreamsGrid';
-import { ProyectsModal } from '@/components/camperProfileEdit/ProyectsModal';
-import { ProyectsEditModal } from '@/components/camperProfileEdit/ProyectsEditModal';
+import { ProyectsModal } from '@/components/camperProfileEdit/modals/ProyectsModal';
+import { ProyectsEditModal } from '@/components/camperProfileEdit/modals/ProyectsEditModal';
 import { Dialog } from '@/components/ui/dialog';
-import AboutMeModal from '../../components/camperProfileEdit/AboutMeModal';
+import AboutMeModal from '../../components/camperProfileEdit/modals/AboutMeModal';
 
 const CamperProfileEdit = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
