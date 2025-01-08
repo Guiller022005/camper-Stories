@@ -5,16 +5,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../../components/ui/dialog';
+} from '../../ui/dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../components/ui/select"
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
+} from "../../ui/select"
+import { Button } from '../../ui/button';
+import { Input } from '../../ui/input';
 import { Edit } from 'lucide-react';
 
 const ProfileHeaderModal = ({ initialData }) => {

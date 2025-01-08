@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
 import './styles/ProfileHeader.css';
-import ProfileHeaderModal from '../camperProfileEdit/ProfileHeaderModal';
+import ProfileHeaderModal from '../camperProfileEdit/modals/ProfileHeaderModal';
+import MeritsModal from '../camperProfileEdit/modals/MeritsModal';
 
-const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage }) => {
+const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
@@ -72,7 +73,11 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage }) => {
           animate={{ height: 'auto' }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-          <div className="badges-title"><Trophy /><p>Méritos</p></div>
+          <div className="badges-title">
+            <Trophy />
+            <p>Méritos</p>
+            <MeritsModal initialMerits={initialMerits}/>
+          </div>
           <div className="badges-container">
             {skills && skills.slice(0, showAllBadges ? skills.length : maxVisibleBadges).map((skill, index) => (
               <div key={index} className="skill-item">

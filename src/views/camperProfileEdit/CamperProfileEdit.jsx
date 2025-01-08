@@ -11,11 +11,11 @@ import styles from './styles/CamperProfileEdit.module.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import NavbarProfile from '../../components/navbar/NavbarProfile';
-import DreamsGridEdit from '../../components/camperProfileEdit/DreamsGridEdit';
-import { ProyectsModal } from '@/components/camperProfileEdit/ProyectsModal';
-import { ProyectsEditModal } from '@/components/camperProfileEdit/ProyectsEditModal';
+import DreamsGrid from '../../components/camperProfile/DreamsGrid';
+import { ProyectsModal } from '@/components/camperProfileEdit/modals/ProyectsModal';
+import { ProyectsEditModal } from '@/components/camperProfileEdit/modals/ProyectsEditModal';
 import { Dialog } from '@/components/ui/dialog';
-import AboutMeModal from '../../components/camperProfileEdit/AboutMeModal';
+import AboutMeModal from '../../components/camperProfileEdit/modals/AboutMeModal';
 
 const CamperProfileEdit = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -145,6 +145,7 @@ const CamperProfileEdit = () => {
                     ciudadOrigen={camper.ciudadOrigen}
                     edad={camper.edad}
                     mainImage={camper.mainImage}
+                    initialMerits={camper.skills}
                 />
                 <section className={styles.about} id="sobre-mi-profile">
                     <div className={styles.aboutContent}>
@@ -167,7 +168,7 @@ const CamperProfileEdit = () => {
                         <span className={styles.highlight}>&lt;/</span> Mis Sueños
                     </h2>
                     <div className={styles.dreamsGridContainer}>
-                        <DreamsGridEdit />
+                        <DreamsGrid />
                     </div>
                 </section>
  

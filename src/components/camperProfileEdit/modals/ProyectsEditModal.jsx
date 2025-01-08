@@ -1,4 +1,11 @@
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription 
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -6,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-  
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -64,92 +70,114 @@ export function ProyectsEditModal({ project, technologuies, onUpdateProject, onC
 
   return (
     <Dialog open onClose={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
-          <DialogTitle>Editar Proyecto</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-gray-900">
+            Editar Proyecto
+          </DialogTitle>
+          <DialogDescription className="text-gray-600">
+            Modifica los detalles de tu proyecto aquí.
+          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="title" className="text-right">
+            <Label htmlFor="title" className="text-right text-gray-900">
               Título
             </Label>
-            <Input 
-              id="title" 
-              value={formData.title} 
-              onChange={handleChange} 
-              className="col-span-3" 
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={handleChange}
+              className="col-span-3 text-gray-900 border-gray-300"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
+            <Label htmlFor="description" className="text-right text-gray-900">
               Descripción
             </Label>
-            <Input 
-              id="description" 
-              value={formData.description} 
-              onChange={handleChange} 
-              className="col-span-3" 
+            <Input
+              id="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="col-span-3 text-gray-900 border-gray-300"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="image" className="text-right">
+            <Label htmlFor="image" className="text-right text-gray-900">
               URL Imagen
             </Label>
-            <Input 
-              id="image" 
-              value={formData.image} 
-              onChange={handleChange} 
-              className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="codeUrl" className="text-right">
-              Link del Proyecto
-            </Label>
-            <Input 
-              id="codeUrl" 
-              value={formData.codeUrl} 
-              onChange={handleChange} 
-              className="col-span-3" 
+            <Input
+              id="image"
+              value={formData.image}
+              onChange={handleChange}
+              className="col-span-3 text-gray-900 border-gray-300"
             />
           </div>
-          <div>
-            <label>Tecnologías</label>
-            <Select
-              onValueChange={(value) => handleSelectTechnology(value)} // Manejar selección
-            >
-              <SelectTrigger className="w-full">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="codeUrl" className="text-right text-gray-900">
+              Link del Proyecto
+            </Label>
+            <Input
+              id="codeUrl"
+              value={formData.codeUrl}
+              onChange={handleChange}
+              className="col-span-3 text-gray-900 border-gray-300"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-900">
+              Tecnologías
+            </label>
+            <Select onValueChange={handleSelectTechnology}>
+              <SelectTrigger className="w-full text-gray-900 border-gray-300">
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 {technologuies.map((tech) => (
-                  <SelectItem key={tech.name} value={tech.name}>
+                  <SelectItem
+                    key={tech.name}
+                    value={tech.name}
+                    className="text-gray-900"
+                  >
                     {tech.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <ul className="mt-2">
+            <ul className="mt-2 space-y-1">
               {formData.technologies.map((tech) => (
-                <li key={tech} className="flex justify-between items-center text-sm text-gray-600">
-                  {tech}
+                <li
+                  key={tech}
+                  className="flex justify-between items-center px-3 py-1 bg-gray-100 rounded-md"
+                >
+                  <span className="text-sm text-gray-900">{tech}</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveTechnology(tech)}
-                    className="text-red-500 hover:text-red-700 ml-2"
+                    className="text-red-500 hover:text-red-700 ml-2 font-medium"
                   >
-                    &times;
+                    ×
                   </button>
                 </li>
               ))}
             </ul>
           </div>
         </div>
-        <DialogFooter>
-          <Button type="button" onClick={handleSubmit}>
-            Guardar Cambios
-          </Button>
-          <Button type="button" variant="secondary" onClick={onClose}>
+        <DialogFooter className="border-t pt-4 space-x-2">
+          <Button
+            type="button"
+            onClick={onClose}
+            variant="outline"
+            className="text-gray-700 hover:text-gray-900 border-gray-300"
+          >
             Cancelar
+          </Button>
+          <Button
+            type="button"
+            onClick={handleSubmit}
+            className="bg-blue-600 text-white hover:bg-blue-700"
+          >
+            Guardar Cambios
           </Button>
         </DialogFooter>
       </DialogContent>

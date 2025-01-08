@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, Button, Tag } from 'antd';
 import { Code } from 'lucide-react';
 import './styles/ProjectCard.css';
-import { Edit, Pencil } from 'lucide-react';
 
 function ProjectCard({ title, description, image, technologies, codeUrl, onEdit }) {
   
