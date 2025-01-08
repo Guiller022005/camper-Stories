@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
 import './styles/ProfileHeader.css';
-import ProfileHeaderModal from '../camperProfileEdit/modals/ProfileHeaderModal';
-import MeritsModal from '../camperProfileEdit/modals/MeritsModal';
 
 const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
@@ -29,22 +27,6 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMer
           <div className="profile-details">
             <h1 className="profile-name">
               {name}
-              <ProfileHeaderModal 
-                initialData={{ 
-                  nombre: name, 
-                  city: ciudadOrigen, 
-                  age: edad, 
-                  mainImage: mainImage
-                }}
-                onSave={(newData) => {
-                  onUpdateInfo({
-                    name: newData.nombre,
-                    ciudadOrigen: newData.city,
-                    edad: newData.age,
-                    mainImage: newData.mainImage
-                  });
-                }}
-              />
             </h1>
             <div className='camper-details'>
               <div className='profile-city'>
@@ -76,7 +58,6 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMer
           <div className="badges-title">
             <Trophy />
             <p>Méritos</p>
-            <MeritsModal initialMerits={initialMerits}/>
           </div>
           <div className="badges-container">
             {skills && skills.slice(0, showAllBadges ? skills.length : maxVisibleBadges).map((skill, index) => (

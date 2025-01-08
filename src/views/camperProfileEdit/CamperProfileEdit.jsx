@@ -1,21 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Button, Tag } from 'antd';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
-import ProfileHeader from "../../components/camperProfile/ProfileHeader";
-import VideoPlayer from "../../components/camperProfile/VIdeoPlayer";
 import ProjectCard from "../../components/camperProfile/ProjectCard";
-import TikTokEmbed from "../../components/camperProfile/TiktokEmbed";
 import Footer from "../../components/footer/Footer";
 import styles from './styles/CamperProfileEdit.module.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import NavbarProfile from '../../components/navbar/NavbarProfile';
-import DreamsGrid from '../../components/camperProfile/DreamsGrid';
 import { ProyectsModal } from '@/components/camperProfileEdit/modals/ProyectsModal';
 import { ProyectsEditModal } from '@/components/camperProfileEdit/modals/ProyectsEditModal';
 import { Dialog } from '@/components/ui/dialog';
-import AboutMeModal from '../../components/camperProfileEdit/modals/AboutMeModal';
+import camper from '../../data/camperProfilePage';
+import ProfileHeaderEdit from "../../components/camperProfileEdit/ProfileHeaderEdit";
+import AboutMeEdit from "../../components/camperProfileEdit/AboutMeEdit";
+import DreamsEdit from '../../components/camperProfileEdit/DreamsEdit';
+import TrainingProcessEdit from '../../components/camperProfileEdit/TrainingProcessEdit';
 
 const CamperProfileEdit = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -109,37 +106,11 @@ const CamperProfileEdit = () => {
         setSelectedProject(null);
     };
 
-    const camper = {
-        name: "Cristopher Buitrago",
-        ciudadOrigen: "Bucaramanga, Santander",
-        edad: "17",
-        mainImage: "/src/assets/Christopher.svg",
-        mainVideo: "https://www.youtube.com/embed/example",
-        about:
-            "Aprovechando la tecnología para crear soluciones impactantes, cuento con más de 2 años de experiencia en tecnología y administración, especializándome en desarrollo FullStack. Mi enfoque es aplicar tecnología a problemas del día a día",
-        processTikToks: [
-            {
-                title: "TikTok1",
-                url: "https://www.tiktok.com/@campuslands/video/7441695191163063559",
-            },
-            {
-                title: "TikTok2",
-                url: "https://www.tiktok.com/@campuslands/video/7441695191657975048",
-            }
-        ],
-        skills: [
-            { name: "Espiritu Guerrero ⚔️" },
-            { name: "Nuevos horizontes🌅" },
-            { name: "Trota mundos 🌎"},
-            { name: "Primer programador 💻"}
-        ],
-    };
-
     return (
         <div className={styles.camperProfileView}>
             <NavbarProfile />
             <div className={styles.profileMainContent}>
-                <ProfileHeader
+                <ProfileHeaderEdit
                     skills={camper.skills}
                     name={camper.name}
                     ciudadOrigen={camper.ciudadOrigen}
@@ -147,75 +118,16 @@ const CamperProfileEdit = () => {
                     mainImage={camper.mainImage}
                     initialMerits={camper.skills}
                 />
-                <section className={styles.about} id="sobre-mi-profile">
-                    <div className={styles.aboutContent}>
-                        <div className={styles.colVideo}>
-                            <VideoPlayer videoUrl={camper.mainVideo} title="Historia Camper" />
-                        </div>
-                        <div className={styles.colInfo}>
-                            <h2 className={styles.aboutSubtitle}>
-                                Acerca de
-                                <AboutMeModal initialData={camper}/>
-                            </h2>
-                            <p>{camper.about}</p>
-                            <button className={styles.btnPatrocinar}>Patrocinar</button>
-                        </div>
-                    </div>
-                </section>
- 
-                <section className={styles.dreams} id="sueños-grid">
-                    <h2 className={styles.profileSubtitle}>
-                        <span className={styles.highlight}>&lt;/</span> Mis Sueños
-                    </h2>
-                    <div className={styles.dreamsGridContainer}>
-                        <DreamsGrid />
-                    </div>
-                </section>
- 
-                <section className={styles.process} id='proceso-formacion-profile'>
-                    <h2 className={styles.profileSubtitle}>
-                        <span className={styles.highlight}>&lt;/</span> Mi proceso de Formación
-                    </h2>
-                    <div className={styles.videos}>
-                        {isMobile ? (
-                            <Swiper
-                                ref={swiperRef}
-                                modules={[Pagination]}
-                                spaceBetween={30}
-                                slidesPerView={1}
-                                pagination={{
-                                    clickable: true,
-                                    dynamicBullets: true,
-                                }}
-                                onSlideChange={handleSlideChange}
-                                className={`${styles.profileSwiper} ${styles.mobileSwiper}`}
-                            >
-                                {camper.processTikToks.map((video, index) => (
-                                    <SwiperSlide key={index} className={styles.swiperSlide}>
-                                        <TikTokEmbed videoUrl={video.url} title={video.title} />
-                                    </SwiperSlide>
-                                ))}
-                            </Swiper>
-                        ) : (
-                            <Swiper
-                                slidesPerView={3}
-                                spaceBetween={30}
-                                pagination={{
-                                    clickable: true,
-                                }}
-                                modules={[Pagination]}
-                                className={styles.profileSwiper}
-                            >
-                                {camper.processTikToks.map((video, index) => (
-                                    <SwiperSlide key={index} className={styles.videoItem}>
-                                        <TikTokEmbed videoUrl={video.url} title={video.title} />
-                                    </SwiperSlide>
-                                ))}
-                            </Swiper>
-                        )}
-                    </div>
-                </section>
- 
+                <AboutMeEdit
+                    videoUrl={camper.mainVideo}
+                    about={camper.about}
+                    camperInfoInitialData={camper}
+                />
+                <DreamsEdit />
+                <TrainingProcessEdit
+                    videos={camper.processTikToks} 
+                />
+                
                 <section className={styles.tecInfo}>
                     <h2 className={styles.profileSubtitle}>
                         <span className={styles.highlight}>&lt;/</span> Mis Proyectos
