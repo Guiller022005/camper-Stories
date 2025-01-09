@@ -1,28 +1,52 @@
 import { Plus } from 'lucide-react'
 
-const AddItemButton = ({ type, className }) => {
+const AddItemButton = ({ type, className, onClick }) => {
   const getCardContent = () => {
     switch (type) {
       case 'project':
         return {
           title: 'Añadir Nuevo Proyecto',
-          containerClass: 'h-[475px] bg-indigo-950 border-2 border-dashed border-gray-600/40 hover:bg-indigo-900',
-          iconClass: 'text-white border-white',
-          textClass: 'text-white'
+          containerClass: `
+            h-[460px] w-full
+            bg-gradient-to-b from-gray-800/40 to-gray-900/40 
+            backdrop-blur-sm 
+            border border-gray-700/50 
+            hover:border-gray-500 
+            hover:from-gray-800/50 hover:to-gray-900/50
+            group-hover:border-gray-400/60
+          `,
+          iconClass: 'text-gray-300 border-gray-500/50 group-hover:border-gray-300/80',
+          textClass: 'text-gray-300 group-hover:text-white'
         }
       case 'dream':
         return {
           title: 'Añadir Nuevo Sueño',
-          containerClass: 'w-full h-full bg-indigo-950 border-2 border-dashed border-gray-600/40 hover:border-gray-400/60',
-          iconClass: 'text-gray-400/80 border-gray-600/40',
-          textClass: 'text-gray-400/80'
+          containerClass: `
+            aspect-[3/4] w-full
+            bg-gradient-to-b from-gray-800/40 to-gray-900/40 
+            backdrop-blur-sm 
+            border border-gray-700/50 
+            hover:border-gray-500 
+            hover:from-gray-800/50 hover:to-gray-900/50
+            group-hover:border-gray-400/60
+          `,
+          iconClass: 'text-gray-300 border-gray-500/50 group-hover:border-gray-300/80',
+          textClass: 'text-gray-300 group-hover:text-white'
         }
       case 'tiktok':
         return {
           title: 'Añadir Nuevo TikTok',
-          containerClass: 'h-[600px] bg-black/5 backdrop-blur-sm border border-gray-700 hover:bg-black/10',
-          iconClass: 'text-gray-300 border-gray-300',
-          textClass: 'text-gray-300'
+          containerClass: `
+            w-[325px] h-[770px]
+            bg-gradient-to-b from-gray-800/40 to-gray-900/40 
+            backdrop-blur-sm 
+            border border-gray-700/50 
+            hover:border-gray-500 
+            hover:from-gray-800/50 hover:to-gray-900/50
+            group-hover:border-gray-400/60
+          `,
+          iconClass: 'text-gray-300 border-gray-500/50 group-hover:border-gray-300/80',
+          textClass: 'text-gray-300 group-hover:text-white'
         }
       default:
         return {
@@ -38,6 +62,7 @@ const AddItemButton = ({ type, className }) => {
 
   return (
     <button
+      onClick={onClick}
       className={`
         group
         relative 
@@ -45,29 +70,38 @@ const AddItemButton = ({ type, className }) => {
         flex-col 
         items-center 
         justify-center 
-        w-full 
-        h-full
-        rounded-xl 
+        rounded-2xl
+        overflow-hidden
         transition-all 
-        duration-300
+        duration-300 
+        ease-in-out
         ${content.containerClass}
         ${className}
       `}
     >
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 transform transition-transform group-hover:scale-105">
-        {content.iconClass !== 'hidden' && (
-          <div className={`
-            p-4 
-            rounded-full 
-            border-2
-            ${content.iconClass}
-          `}>
-            <Plus className="w-8 h-8" />
-          </div>
-        )}
+      {/* Efecto de overlay gradiente */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+      <div className="relative flex flex-col items-center justify-center gap-6 transform transition-transform duration-300 group-hover:scale-105 z-10">
+        <div className={`
+          p-5
+          rounded-full 
+          border-2
+          transition-all
+          duration-300
+          backdrop-blur-sm
+          ${content.iconClass}
+        `}>
+          <Plus className="w-8 h-8" />
+        </div>
+
         <p className={`
-          text-sm 
+          text-lg
           font-medium
+          transition-colors
+          duration-300
+          text-center
+          px-4
           ${content.textClass}
         `}>
           {content.title}
@@ -76,5 +110,6 @@ const AddItemButton = ({ type, className }) => {
     </button>
   );
 }
+
 
 export default AddItemButton;

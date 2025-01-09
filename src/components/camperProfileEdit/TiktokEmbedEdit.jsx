@@ -1,31 +1,56 @@
-import { useEffect } from "react";
-import styles from "./styles/TiktokEmbedEdit.module.css";
+import { useEffect, useState } from "react";
+import styles from './styles/TiktokEmbedEdit.module.css';
 
 const TikTokEmbedEdit = ({ videoUrl }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    // Asegurarse de que el script de TikTok se cargue para inicializar los videos incrustados
     const scriptId = "tiktok-embed-script";
     if (!document.getElementById(scriptId)) {
       const script = document.createElement("script");
       script.id = scriptId;
       script.src = "https://www.tiktok.com/embed.js";
       script.async = true;
+      script.onload = () => {
+        if (window.TikTok) {
+          setIsLoading(false);
+        }
+      };
       document.body.appendChild(script);
+    } else {
+      // Si el script ya existe, intentamos recargar los widgets
+      if (window.TikTok) {
+        window.TikTok.reload();
+        setIsLoading(false);
+      }
     }
-  }, []);
+  }, [videoUrl]);
+  
   return (
-    <div>
+    <div className={styles.tiktokContainer}>
       <blockquote
-        className={styles.tiktokEmbed}
+        className={`tiktok-embed ${styles.tiktokEmbed}`}
         cite={videoUrl}
         data-video-id={videoUrl.split("/").pop()}
-        style={{ maxWidth: "605px", minWidth: "325px" }}
+        data-autoplay="false"
+        data-playsinline="false"
+        data-autoplay-policy="user-initiated"
+        data-muted="false"
+        style={{ 
+          maxWidth: "325px", 
+          minWidth: "325px",
+          background: 'transparent'
+        }}
       >
-        <section>
-          {/* Este bloque será reemplazado automáticamente por el reproductor embebido */}
-        </section>
+        <section />
       </blockquote>
+      {isLoading && (
+        <div className={styles.preloader}>
+          <div className={styles.preloaderSpinner}></div>
+        </div>
+      )}
     </div>
   );
 };
+
 export default TikTokEmbedEdit;
