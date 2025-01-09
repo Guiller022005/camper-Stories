@@ -1,107 +1,133 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
-import { Lock, Mail, User, MapPin, Calendar, FileText } from 'lucide-react';
-import campushm from '/src/assets/Campushm.png';
-import './RegisterPage.css';
+import { useState } from 'react';
+import { Loader2, User, Mail, Lock, MapPin, FileText, Calendar } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { endpoints } from '@/services/apiConfig'; // Importar los endpoints
 
-const RegisterPage = () => {
-    const navigate = useNavigate();
+export default function RegisterForm() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
-    return (
-        <div className="reg-container">
-            <div className="reg-main-container">
-                <div className="reg-form-panel">
-                    <div className="reg-form-fir-content">
-                        <div className="reg-form-logo">
-                            <img src={campushm} alt="Campus" />
-                            <h1>Camper Stories</h1>
-                        </div>
+  async function onSubmit(event) {
+    event.preventDefault();
+    setIsLoading(true);
+    setError('');
+    setSuccess(false);
 
-                        <p>Cada historia tiene el poder de inspirar. Únete a Camper Stories y comparte la tuya con el mundo. Comparte tus logros, desafíos y sueños mientras te conectas con una comunidad apasionada por crecer y aprender juntos.</p>
-                    </div>
-                    <div className='reg-divider'></div>
-                    <div className="reg-form-sec-content">
-                        <form>
-                            <div className="reg-form-group">
-                                <User className="reg-input-icon" size={20} />
-                                <input
-                                    type="text"
-                                    className="reg-form-input"
-                                    placeholder="Nombre"
-                                    required
-                                />
-                            </div>
-                            <div className="reg-form-group">
-                                <User className="reg-input-icon" size={20} />
-                                <input
-                                    type="text"
-                                    className="reg-form-input"
-                                    placeholder="Apellido"
-                                    required
-                                />
-                            </div>
-                            <div className="reg-form-group">
-                                <FileText className="reg-input-icon" size={20} />
-                                <input
-                                    type="text"
-                                    className="reg-form-input"
-                                    placeholder="Número de documento"
-                                    required
-                                />
-                            </div>
-                            <div className="reg-form-group">
-                                <Mail className="reg-input-icon" size={20} />
-                                <input
-                                    type="email"
-                                    className="reg-form-input"
-                                    placeholder="Correo electrónico"
-                                    required
-                                />
-                            </div>
-                            <div className="reg-form-group">
-                                <Lock className="reg-input-icon" size={20} />
-                                <input
-                                    type="password"
-                                    className="reg-form-input"
-                                    placeholder="Contraseña"
-                                    required
-                                />
-                            </div>
-                            <div className="reg-form-group">
-                                <Calendar className="reg-input-icon" size={20} />
-                                <input
-                                    type="number"
-                                    className="reg-form-input"
-                                    placeholder="Edad"
-                                    required
-                                />
-                            </div>
-                            <div className="reg-form-group">
-                                <MapPin className="reg-input-icon" size={20} />
-                                <input
-                                    type="text"
-                                    className="reg-form-input"
-                                    placeholder="Ciudad"
-                                    required
-                                />
-                            </div>
-                            <button type="submit" className="reg-btn reg-btn-primary">Registrarse</button>
-                            <button type="button" className="reg-btn reg-btn-google">
-                                Continuar con Google
-                            </button>
-                        </form>
-                        <div className="reg-toggle-form">
-                            <button
-                                className="reg-toggle-btn"
-                                onClick={() => navigate('/campers/login')}
-                            >¿Ya tienes una cuenta? Inicia sesión
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    // Captura los valores del formulario
+    const formData = new FormData(event.target);
+    const data = {
+      first_name: formData.get('first_name'),       // Campo esperado por el backend
+      last_name: formData.get('last_name'),         // Campo esperado por el backend
+      email: formData.get('email'),                 // Campo esperado por el backend
+      password: formData.get('password'),           // Campo esperado por el backend
+      role: 'camper',                               // Asignar siempre el rol 'camper'
+      document_number: formData.get('documento'),   // Campo que será usado para CAMPER
+    };
+
+    try {
+      const response = await fetch(endpoints.register, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setSuccess(true);
+        console.log('Usuario registrado con éxito:', result);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || 'Error al registrarse. Intenta nuevamente.');
+        console.error('Error del servidor:', errorData);
+      }
+    } catch (err) {
+      setError('Hubo un error al intentar registrar al usuario. Intenta nuevamente.');
+      console.error('Error de red:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#1a1b26] p-4">
+      <Card className="w-full max-w-lg border-0 bg-[#1f2937]/50 shadow-2xl shadow-purple-500/10">
+        <CardHeader className="space-y-6 text-center">
+          <div className="flex justify-center">
+            <div className="w-24 h-24">
+              <svg
+                viewBox="0 0 100 100"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-full"
+              >
+                <circle cx="50" cy="50" r="45" stroke="white" strokeWidth="2" />
+                <path
+                  d="M50 20C35 20 25 35 25 50C25 65 35 80 50 80C65 80 75 65 75 50C75 35 65 20 50 20Z"
+                  stroke="white"
+                  strokeWidth="2"
+                />
+              </svg>
             </div>
-        </div>
-    );
-};
-
-export default RegisterPage;
+          </div>
+          <CardTitle className="text-2xl font-bold tracking-tight text-white">
+            Camper Stories
+          </CardTitle>
+          <CardDescription className="text-gray-400 max-w-sm mx-auto">
+            Cada historia tiene el poder de inspirar. Únete a Camper Stories y comparte tu historia con el mundo.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="first_name" className="text-white">Nombre</Label>
+                <Input id="first_name" name="first_name" required placeholder="Tu nombre" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="last_name" className="text-white">Apellido</Label>
+                <Input id="last_name" name="last_name" required placeholder="Tu apellido" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="documento" className="text-white">Número de documento</Label>
+              <Input id="documento" name="documento" required placeholder="Tu número de documento" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-white">Correo electrónico</Label>
+              <Input id="email" name="email" type="email" required placeholder="tu@ejemplo.com" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-white">Contraseña</Label>
+              <Input id="password" name="password" type="password" required placeholder="••••••••" />
+              <p className="text-xs text-gray-400">
+                La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="edad" className="text-white">Edad</Label>
+                <Input id="edad" name="edad" type="number" required placeholder="Tu edad" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="ciudad" className="text-white">Ciudad</Label>
+                <Input id="ciudad" name="ciudad" required placeholder="Tu ciudad" />
+              </div>
+            </div>
+            {error && <Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>}
+            {success && <Alert variant="success"><AlertDescription>Registro exitoso.</AlertDescription></Alert>}
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? <Loader2 className="mr-2 animate-spin" /> : 'Registrarse'}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

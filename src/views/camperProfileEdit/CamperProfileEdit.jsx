@@ -17,7 +17,7 @@ import { ProyectsEditModal } from '@/components/camperProfileEdit/ProyectsEditMo
 import { Dialog } from '@/components/ui/dialog';
 import AboutMeModal from '../../components/camperProfileEdit/AboutMeModal';
 
-const CamperProfile = () => {
+const CamperProfileEdit = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     const [technologuies] = useState ([
@@ -64,15 +64,7 @@ const CamperProfile = () => {
     const [selectedProject, setSelectedProject] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const swiperRef = useRef(null);
-    const [camperInfo, setCamperInfo] = useState({
-        name: "Cristopher Buitrago",
-        ciudadOrigen: "Bucaramanga, Santander",
-        edad: "17",
-        mainImage: "/src/assets/Christopher.svg",
-        about: "Aprovechando la tecnología para crear soluciones impactantes, cuento con más de 2 años de experiencia en tecnología y administración, especializándome en desarrollo FullStack. Mi enfoque es aplicar tecnología a problemas del día a día",
-        mainVideo: "https://www.youtube.com/embed/example"
-    });
-
+    
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768);
@@ -136,10 +128,10 @@ const CamperProfile = () => {
             }
         ],
         skills: [
-            { name: "Espiritu Guerrero ⚔️" },
-            { name: "Nuevos horizontes🌅" },
-            { name: "Trota mundos 🌎"},
-            { name: "Primer programador 💻"}
+            { name: "Espiritu Guerrero ⚔️", description: "Valiente y determinado en todos los retos." },
+            { name: "Nuevos horizontes🌅", description: "Explorando nuevas ideas y oportunidades." },
+            { name: "Trota mundos 🌎", description: "Adaptable a cualquier entorno y situación." },
+            { name: "Primer programador 💻", description: "Innovador y pionero en soluciones tecnológicas." }
         ],
     };
 
@@ -153,29 +145,18 @@ const CamperProfile = () => {
                     ciudadOrigen={camper.ciudadOrigen}
                     edad={camper.edad}
                     mainImage={camper.mainImage}
-                    {...camperInfo}
-                    onUpdateInfo={setCamperInfo}
                 />
                 <section className={styles.about} id="sobre-mi-profile">
                     <div className={styles.aboutContent}>
                         <div className={styles.colVideo}>
-                            <VideoPlayer videoUrl={camperInfo.mainVideo} title="Historia Camper" />
+                            <VideoPlayer videoUrl={camper.mainVideo} title="Historia Camper" />
                         </div>
                         <div className={styles.colInfo}>
                             <h2 className={styles.aboutSubtitle}>
                                 Acerca de
-                                <AboutMeModal 
-                                    initialData={camperInfo}
-                                    onSave={(newData) => {
-                                        setCamperInfo(prev => ({
-                                        ...prev,
-                                        about: newData.about,
-                                        mainVideo: newData.videoUrl
-                                        }));
-                                    }}
-                                />
+                                <AboutMeModal initialData={camper}/>
                             </h2>
-                            <p>{camperInfo.about}</p>
+                            <p>{camper.about}</p>
                             <button className={styles.btnPatrocinar}>Patrocinar</button>
                         </div>
                     </div>
@@ -288,4 +269,4 @@ const CamperProfile = () => {
     );
 };
 
-export default CamperProfile;
+export default CamperProfileEdit;

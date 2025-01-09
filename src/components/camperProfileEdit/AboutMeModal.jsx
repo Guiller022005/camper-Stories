@@ -11,7 +11,7 @@ import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
 import { Edit } from 'lucide-react';
 
-const AboutMeModal = ({ initialData, onSave }) => {
+const AboutMeModal = ({ initialData }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [formData, setFormData] = useState({
     about: initialData?.about || '',
@@ -26,16 +26,15 @@ const AboutMeModal = ({ initialData, onSave }) => {
     }, [isOpen]);
 
     const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-        ...prev,
-        [name]: value
-    }));
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
     setIsOpen(false);
     };
 

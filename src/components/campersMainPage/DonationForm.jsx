@@ -6,29 +6,60 @@ export default function DonationForm() {
         nombre: '',
         apellido: '',
         email: '',
-        celular: '',
-        mensaje: '',
-        valor: '' // Campo adicional para el monto de la donación
-    })
+        phone: '',
+        message: '', // Cambiado de mensaje
+        contribution: '' // Cambiado de valor
+    });
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
-        const valor = parseFloat(formData.valor)
-        if (isNaN(valor) || valor <= 0) {
-            alert('Por favor ingresa un valor válido para la donación.')
-            return
-        }
-
-        console.log('Form submitted:', formData)
-    }
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
-        })
-    }
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const contribution = parseFloat(formData.contribution);
+        if (isNaN(contribution) || contribution <= 0) {
+            alert('Por favor ingresa un valor válido para la donación.');
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            const response = await fetch(endpoints.sponsors, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                alert('¡Gracias por tu contribución!');
+                setFormData({
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    phone: '',
+                    message: '',
+                    contribution: ''
+                });
+            } else {
+                const errorData = await response.json();
+                alert(`Error al enviar la donación: ${errorData.message || 'Intenta nuevamente.'}`);
+            }
+        } catch (error) {
+            alert('Hubo un problema al enviar los datos. Por favor, verifica tu conexión.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className="donation-form-card">
@@ -40,8 +71,8 @@ export default function DonationForm() {
                         </label>
                         <input
                             className="donation-form-input"
-                            name="nombre"
-                            value={formData.nombre}
+                            name="first_name"
+                            value={formData.first_name}
                             onChange={handleChange}
                             placeholder="Tu nombre"
                             required
@@ -53,8 +84,8 @@ export default function DonationForm() {
                         </label>
                         <input
                             className="donation-form-input"
-                            name="apellido"
-                            value={formData.apellido}
+                            name="last_name"
+                            value={formData.last_name}
                             onChange={handleChange}
                             placeholder="Tu apellido"
                             required
@@ -100,11 +131,12 @@ export default function DonationForm() {
                     <input
                         className="donation-form-input"
                         type="number"
-                        name="valor"
-                        value={formData.valor}
+                        name="contribution"
+                        value={formData.contribution}
                         onChange={handleChange}
                         placeholder="Ingresa el monto a donar"
                         required
+                        disabled={isSubmitting}
                     />
                 </div>
 
@@ -112,15 +144,15 @@ export default function DonationForm() {
                     <label className="donation-form-label">Tu Mensaje!</label>
                     <textarea
                         className="donation-form-textarea"
-                        name="mensaje"
-                        value={formData.mensaje}
+                        name="message"
+                        value={formData.message}
                         onChange={handleChange}
                         placeholder="Deja un mensaje para los campers!"
                     />
                 </div>
 
-                <button type="submit" className="donation-submit-button">
-                    PATROCINAR
+                <button type="submit" className="donation-submit-button" disabled={isSubmitting}>
+                    {isSubmitting ? 'Enviando...' : 'PATROCINAR'}
                 </button>
             </form>
         </div>

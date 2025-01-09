@@ -17,7 +17,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Edit } from 'lucide-react';
 
-const ProfileHeaderModal = ({ initialData, onSave }) => {
+const ProfileHeaderModal = ({ initialData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     nombre: initialData?.nombre || '',
@@ -62,10 +62,6 @@ const ProfileHeaderModal = ({ initialData, onSave }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({
-      ...formData,
-      mainImage: formData.imageUrl // Para actualizar la imagen en el ProfileHeader
-    });
     setIsOpen(false);
   };
   

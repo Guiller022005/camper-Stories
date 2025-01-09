@@ -16,7 +16,7 @@ const MainCampers = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % profiles.length);
-    }, 60000);
+    }, 600000);
     return () => clearInterval(interval);
   }, []);
 

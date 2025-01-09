@@ -56,7 +56,7 @@ const CampersGrid = () => {
     const [expandedSkills, setExpandedSkills] = useState({});
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
-    const visibleSkillsCount = 5;
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     
     const predefinedSkills = [
         "Espiritu Guerrero ⚔",
@@ -71,18 +71,24 @@ const CampersGrid = () => {
         "Rompe Esquemas 💥"
     ];
 
-    const visibleSkills = isFilterExpanded 
-        ? predefinedSkills 
-        : predefinedSkills.slice(0, visibleSkillsCount);
+    const mobileVisibleSkillsCount = 4;
+    const desktopVisibleSkillsCount = predefinedSkills.length;
 
     useEffect(() => {
-        const updateCampersPerPage = () => {
-            setCampersPerPage(window.innerWidth <= 768 ? 4 : 8);
+        const updateDimensions = () => {
+            const mobile = window.innerWidth <= 768;
+            setIsMobile(mobile);
+            setCampersPerPage(mobile ? 4 : 8);
         };
-        updateCampersPerPage();
-        window.addEventListener("resize", updateCampersPerPage);
-        return () => window.removeEventListener("resize", updateCampersPerPage);
+        
+        updateDimensions();
+        window.addEventListener("resize", updateDimensions);
+        return () => window.removeEventListener("resize", updateDimensions);
     }, []);
+
+    const visibleSkills = isMobile
+        ? (isFilterExpanded ? predefinedSkills : predefinedSkills.slice(0, mobileVisibleSkillsCount))
+        : predefinedSkills.slice(0, desktopVisibleSkillsCount);
 
     const filteredCampers = selectedSkills.length === 0 
         ? campersData 
@@ -129,7 +135,7 @@ const CampersGrid = () => {
                             ))}
                         </AnimatePresence>
                     </motion.div>
-                    {predefinedSkills.length > visibleSkillsCount && window.innerWidth <= 768 && (
+                    {isMobile && predefinedSkills.length > mobileVisibleSkillsCount && (
                         <button
                             className="expand-filters-button mt-2 flex items-center text-sm text-gray-600 hover:text-gray-800"
                             onClick={() => setIsFilterExpanded(!isFilterExpanded)}
