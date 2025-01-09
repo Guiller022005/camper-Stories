@@ -15,7 +15,7 @@ const FormSection = () => {
                 </div>
                 <div className="bot-text">
                     <p>Tu donación nos permite seguir <span>transformando vidas</span> y fortaleciendo el talento en tecnología.</p>
-                    <p><span>¡Gracias por contribuir a un futuro más prometedor!</span></p>
+                    <p>Por cada aporte recibirás un certificado de donación.  <span>¡Gracias por contribuir a un futuro más prometedor!</span></p>
                 </div>
             </div>
         </section>
