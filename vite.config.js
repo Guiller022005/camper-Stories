@@ -12,7 +12,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': API_BASE_URL,
+      '/api': process.env.VITE_API_BASE_URL, 
     },
   },
 });
