@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
-import './styles/ProfileHeader.css';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from "lucide-react";
+import "./styles/ProfileHeader.css";
 
-const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMerits }) => {
+const ProfileHeader = ({
+  skills,
+  name,
+  ciudadOrigen,
+  edad,
+  mainImage,
+  initialMerits,
+}) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
@@ -17,7 +24,7 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMer
     <motion.div
       className="profile-header"
       initial={false}
-      animate={{ height: 'auto' }}
+      animate={{ height: "auto" }}
       transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
       layout
     >
@@ -32,9 +39,7 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMer
             />
           </div>
           <div className="profile-details">
-            <h1 className="profile-name">
-              {name}
-            </h1>
+            <h1 className="profile-name">{name}</h1>
             <div className="camper-details">
               <div className="profile-city">
                 <MapPin />
@@ -68,12 +73,16 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMer
             <Trophy />
             <p>Méritos</p>
           </div>
-          <div className="badges-container">
-            {skills && skills.slice(0, showAllBadges ? skills.length : maxVisibleBadges).map((skill, index) => (
-              <div key={index} className="skill-item">
-                {skill.name}
-              </div>
-            ))}
+          <div className="badges-container wrapper">
+            {skills &&
+              skills
+                .slice(0, showAllBadges ? skills.length : maxVisibleBadges)
+                .map((skill, index) => (
+                  <div key={index} className="skill-item icon badgeInfo">
+                    <div className="tooltip">{skill.description}</div>
+                    {skill.name}
+                  </div>
+                ))}
           </div>
           {skills && skills.length > maxVisibleBadges && (
             <div className="toggle-badges-button" onClick={handleToggleBadges}>

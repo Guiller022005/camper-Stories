@@ -1,341 +1,391 @@
-@import '/src/styles/variables.css';
+@import "/src/styles/variables.css";
 
 /* Estilos base */
 .developer-profiles {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-    background: linear-gradient(180deg, #0C0C74 0%, #03033D 70%, #030337 100%);
-    position: relative;
-    overflow: hidden;
-    padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(180deg, #0c0c74 0%, #03033d 70%, #030337 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 1rem;
 }
 
 .logo {
-    width: 50%;
-    height: auto;
-    margin: 0 auto;
+  width: 50%;
+  height: auto;
+  margin: 0 auto;
 }
 
 .profile-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 0 auto;
 }
 
 .profile-content-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    height: 93vh;
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 93vh;
+  padding: 0;
 }
 
 .camper-img-frame {
-    display: grid;
-    place-items: center;
-    position: relative;
-    width: 100%;
-    height: 30vh;
-    max-width: 300px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 100%;
+  height: 30vh;
+  max-width: 300px;
 }
 
 .camper {
-    grid-area: 1 / 1;
-    z-index: 2;
-    width: 100%;
-    height: auto;
-    transform: translate(-5%, -12.9%);
+  grid-area: 1 / 1;
+  z-index: 2;
+  width: 100%;
+  height: auto;
+  transform: translate(-5%, -12.9%);
 }
 
 .camper-frame {
-    grid-area: 1 / 1;
-    z-index: 1;
-    width: 95%;
-    height: auto;
-    transform: translate(0);
+  grid-area: 1 / 1;
+  z-index: 1;
+  width: 95%;
+  height: auto;
+  transform: translate(0);
 }
 
 .profile-card-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    padding: 0 1rem;
-    margin: 0;
-    z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 0 1rem;
+  margin: 0;
+  z-index: 3;
 }
 
 .merits-container {
-    display: flex;
-    width: 100%;
-    gap: 5px;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 15px 0 10px;
+  display: flex;
+  width: 100%;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0 10px;
 }
 
 .merit-item {
-    padding: 5px 10px;
-    background-color: #59599c;
-    font-size: 12px;
-    width: fit-content;
-    white-space: nowrap;
-    border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  justify-content: center;
+  padding: 5px 10px;
+  background-color: #59599c;
+  font-size: 12px;
+  width: fit-content;
+  white-space: nowrap;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .merit-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
+/*WRAPPER BADGES*/
+
+.wrapper .icon {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip {
+  position: fixed;
+  bottom: 120%;
+  font-size: 14px;
+  background: #ffffff;
+  color: #ffffff;
+  z-index: 9999;
+  font-size: small;
+  padding: 8px 8px;
+  max-width: 300px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.wrapper .icon:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wrapper .icon:hover span,
+.wrapper .icon:hover .tooltip {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper .badgeInfo:hover,
+.wrapper .badgeInfo:hover .tooltip,
+.wrapper .badgeInfo:hover .tooltip::before {
+  background: #1877f2;
+  color: #ffffff;
+}
+
+/*End wrapper*/
 
 /* Typography */
 .profile-card-content h2 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
-    line-height: 1.3;
-    font-size: 1.8rem;
-    word-wrap: break-word;
-    max-width: 100%;
-    background: linear-gradient(to right, #3DDCF9 0%, #E4F7FF 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  line-height: 1.3;
+  font-size: 1.8rem;
+  word-wrap: break-word;
+  max-width: 100%;
+  background: linear-gradient(to right, #3ddcf9 0%, #e4f7ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .profile-card-content h4 {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1.2rem;
-    line-height: 1.5;
-    font-weight: 500;
-    padding-bottom: 15px;
-    color: #ffffff;
+  font-family: "Roboto Mono", monospace;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  font-weight: 500;
+  padding-bottom: 15px;
+  color: #ffffff;
 }
 
 .profile-card-content p {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 1.3;
-    color: #f0f0f0;
-    max-width: 100%;
-    margin: 10px 0 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #f0f0f0;
+  max-width: 100%;
+  margin: 10px 0 0;
 }
 
 .profile-card-signature p {
-    font-family: "firma";
-    font-size: 3rem;
-    color: #4ac1ff;
-    margin: 15px 0 25px;
+  font-family: "firma";
+  font-size: 3rem;
+  color: #4ac1ff;
+  margin: 15px 0 25px;
 }
 
 .profile-card-button {
-    background-color: #5B57EB;
-    border: none;
-    padding: 24px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 5px;
-    width: fit-content;
-    transition: background-color 0.3s;
+  background-color: #5b57eb;
+  border: none;
+  padding: 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  width: fit-content;
+  transition: background-color 0.3s;
 }
 
 /* Pagination */
 .custom-pagination {
-    display: flex;
-    gap: 4px;
-    z-index: 3;
+  display: flex;
+  gap: 4px;
+  z-index: 3;
 }
 
 .pagination-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .pagination-dot.active {
-    background: #6C3AFF;
-    transform: scale(1.3);
+  background: #6c3aff;
+  transform: scale(1.3);
 }
 
 /* Media Queries */
 
 /* Tableta vertical y dispositivos más grandes */
 @media screen and (min-width: 768px) {
-    .developer-profiles {
-        height: 90vh;
-    }
+  .developer-profiles {
+    height: 90vh;
+  }
 
-    .logo {
-        width: 30%;
-    }
+  .logo {
+    width: 30%;
+  }
 
-    .profile-card {
-        max-width: 1200px;
-        padding: 1.5rem;
-    }
+  .profile-card {
+    max-width: 1200px;
+    padding: 1.5rem;
+  }
 
-    .profile-content-wrapper {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 2rem;
-        height: 70vh;
-        padding: 0 2rem;
-    }
+  .profile-content-wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    height: 70vh;
+    padding: 0 2rem;
+  }
 
-    .camper-img-frame {
-        width: 45%;
-        min-width: 400px;
-        height: 400px;
-        max-width: none;
-    }
+  .camper-img-frame {
+    width: 45%;
+    min-width: 400px;
+    height: 400px;
+    max-width: none;
+  }
 
-    .camper {
-        transform: translate(-6%, -20.15%);
-    }
+  .camper {
+    transform: translate(-6%, -20.15%);
+  }
 
-    .camper-frame {
-        transform: translate(0%, -10.5%);
-    }
+  .camper-frame {
+    transform: translate(0%, -10.5%);
+  }
 
-    .profile-card-content {
-        width: 45%;
-        align-items: flex-start;
-        text-align: left;
-    }
+  .profile-card-content {
+    width: 45%;
+    align-items: flex-start;
+    text-align: left;
+  }
 
-    .merits-container {
-        justify-content: flex-start;
-    }
+  .merits-container {
+    justify-content: flex-start;
+  }
 
-    .profile-card-content h2 {
-        font-size: 2.5rem;
-        white-space: nowrap;
-    }
+  .profile-card-content h2 {
+    font-size: 2.5rem;
+    white-space: nowrap;
+  }
 
-    .profile-card-content p {
-        max-width: 400px;
-    }
+  .profile-card-content p {
+    max-width: 400px;
+  }
 
-    .pagination-dot {
-        width: 8px;
-        height: 8px;
-    }
+  .pagination-dot {
+    width: 8px;
+    height: 8px;
+  }
 }
 
 /* Portátil */
 @media screen and (min-width: 1024px) {
-    .profile-card {
-        max-width: 1400px;
-    }
+  .profile-card {
+    max-width: 1400px;
+  }
 
-    .camper-img-frame {
-        width: 500px;
-        height: 500px;
-    }
+  .camper-img-frame {
+    width: 500px;
+    height: 500px;
+  }
 
-    .profile-card-content h2 {
-        font-size: 3rem;
-    }
+  .profile-card-content h2 {
+    font-size: 3rem;
+  }
 
-    .profile-card-content p {
-        font-size: 1.1rem;
-        max-width: 450px;
-    }
+  .profile-card-content p {
+    font-size: 1.1rem;
+    max-width: 450px;
+  }
 
-    .profile-card-signature p {
-        font-size: 3.5rem;
-    }
+  .profile-card-signature p {
+    font-size: 3.5rem;
+  }
 }
 
 /* Pantalla grande */
 @media screen and (min-width: 1440px) {
-    .profile-card {
-        max-width: 1700px;
-    }
+  .profile-card {
+    max-width: 1700px;
+  }
 
-    .camper-img-frame {
-        width: 900px;
-        height: 900px;
-    }
+  .camper-img-frame {
+    width: 900px;
+    height: 900px;
+  }
 
-    .profile-card-content h2 {
-        font-size: 3.5rem;
-    }
+  .profile-card-content h2 {
+    font-size: 3.5rem;
+  }
 
-    .profile-card-content p {
-        font-size: 1.2rem;
-        max-width: 550px;
-    }
+  .profile-card-content p {
+    font-size: 1.2rem;
+    max-width: 550px;
+  }
 
-    .profile-card-signature p {
-        font-size: 4rem;
-    }
+  .profile-card-signature p {
+    font-size: 4rem;
+  }
 }
 
 /* Orientación landscape para tablets */
 @media screen and (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
-    .developer-profiles {
-        height: 100vh;
-    }
+  .developer-profiles {
+    height: 100vh;
+  }
 
-    .profile-content-wrapper {
-        height: 80vh;
-    }
+  .profile-content-wrapper {
+    height: 80vh;
+  }
 
-    .camper-img-frame {
-        width: 40%;
-        min-width: 350px;
-        height: 350px;
-    }
+  .camper-img-frame {
+    width: 40%;
+    min-width: 350px;
+    height: 350px;
+  }
 
-    .profile-card-content {
-        width: 55%;
-    }
+  .profile-card-content {
+    width: 55%;
+  }
 
-    .profile-card-content h2 {
-        font-size: 2rem;
-    }
+  .profile-card-content h2 {
+    font-size: 2rem;
+  }
 }
 
 /* Ajustes específicos para móviles pequeños */
 @media screen and (max-width: 480px) {
-    .developer-profiles {
-        padding: 0.5rem;
-    }
+  .developer-profiles {
+    padding: 0.5rem;
+  }
 
-    .profile-content-wrapper {
-        gap: 1rem;
-    }
+  .profile-content-wrapper {
+    gap: 1rem;
+  }
 
-    .profile-card-content h2 {
-        font-size: 1.5rem;
-    }
+  .profile-card-content h2 {
+    font-size: 1.5rem;
+  }
 
-    .profile-card-signature p {
-        font-size: 2.5rem;
-    }
+  .profile-card-signature p {
+    font-size: 2.5rem;
+  }
 
-    .pagination-dot {
-        width: 5px;
-        height: 5px;
-    }
+  .pagination-dot {
+    width: 5px;
+    height: 5px;
+  }
 }
