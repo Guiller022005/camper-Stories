@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from "lucide-react";
-import "./styles/ProfileHeader.css";
-import ProfileHeaderModal from "../camperProfileEdit/ProfileHeaderModal";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
+import './styles/ProfileHeader.css';
 
-const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage }) => {
+const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
@@ -16,38 +17,23 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage }) => {
     <motion.div
       className="profile-header"
       initial={false}
-      animate={{ height: "auto" }} // Deja que Framer Motion calcule automáticamente
+      animate={{ height: 'auto' }}
       transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
-      layout // Framer Motion ajustará automáticamente el diseño
+      layout
     >
       <div className="profile-container">
         <div className="profile-content">
           <div className="profile-image">
-            <img
+            <LazyLoadImage
               src={mainImage}
-              className="profile-image-content"
               alt="Profile"
+              effect="blur"
+              className="profile-image-content"
             />
           </div>
           <div className="profile-details">
             <h1 className="profile-name">
               {name}
-              <ProfileHeaderModal
-                initialData={{
-                  nombre: name,
-                  city: ciudadOrigen,
-                  age: edad,
-                  mainImage: mainImage,
-                }}
-                onSave={(newData) => {
-                  onUpdateInfo({
-                    name: newData.nombre,
-                    ciudadOrigen: newData.city,
-                    edad: newData.age,
-                    mainImage: newData.mainImage,
-                  });
-                }}
-              />
             </h1>
             <div className="camper-details">
               <div className="profile-city">
@@ -82,16 +68,12 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage }) => {
             <Trophy />
             <p>Méritos</p>
           </div>
-          <div className="badges-container wrapper">
-            {skills &&
-              skills
-                .slice(0, showAllBadges ? skills.length : maxVisibleBadges)
-                .map((skill, index) => (
-                  <div key={index} className="skill-item icon badgeInfo">
-                    <div className="tooltip">{skill.description}</div>
-                    {skill.name}
-                  </div>
-                ))}
+          <div className="badges-container">
+            {skills && skills.slice(0, showAllBadges ? skills.length : maxVisibleBadges).map((skill, index) => (
+              <div key={index} className="skill-item">
+                {skill.name}
+              </div>
+            ))}
           </div>
           {skills && skills.length > maxVisibleBadges && (
             <div className="toggle-badges-button" onClick={handleToggleBadges}>

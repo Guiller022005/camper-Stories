@@ -4,7 +4,7 @@
    width: 100%;
    padding-top: 2rem;
    min-height: 100vh;
-   background-color: #030337;
+   background: linear-gradient(180deg, #030337 0%, #050536 100%);
    display: flex;
    flex-direction: column;
 }
@@ -98,46 +98,46 @@
 }
 
 .card {
-   width: 100%;
-   max-width: 300px;
+   width: 300px;
    height: auto;
    min-height: 450px;
    background: var(--color3);
-   border: 2px solid var(--color2);
+   border: 0.23rem solid var(--color2);
    border-radius: 15px;
-   padding: clamp(10px, 2vw, 20px);
+   padding: 8px;
    position: relative;
    overflow: visible;
    cursor: pointer;
    transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s ease;
    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-   margin: 0 5px;
 }
 
 .card:hover {
    z-index: 10;
 }
 
-.cardImage {
-   width: 100%;
-   height: 300px;
-   object-fit: cover;
-   border-radius: 10px;
+.cardImage,
+.perfil span{
+    width: 100%;
+    height: 300px; /* Mantén un tamaño constante */
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
 }
 
 .cardContent {
    padding: 1rem;
    position: relative;
-   height: 200px;
-   margin-top: clamp(-8px, -1vw, -4px);
+   height: 210px;
+   margin-top: clamp(-9px, -1vw, -4px);
    z-index: 2;
    background-color: var(--color3);
    border-radius: 0 0 15px 15px;
-   transition: background-color 0.3s ease;
+   transition: background-color 0.3s ease, margin 0.3s ease;
 }
 
 .cardContent h3 {
-   font-size: clamp(0.9rem, 2vw, 1.2rem);
+   font-size: clamp(1.3rem, 2vw, 1.2rem);
    color: var(--color1);
    margin-bottom: clamp(0.3rem, 1vw, 0.5rem);
    font-family: 'titulo--campers';
@@ -145,7 +145,7 @@
 }
 
 .cardContent h4 {
-   font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+   font-size: clamp(0.9rem, 1.5vw, 0.7rem);
    color: var(--color2);
    margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
    font-family: 'titulo--programador';
@@ -154,7 +154,7 @@
 }
 
 .cardContent p {
-   font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+   font-size: clamp(0.8rem, 1.5vw, 0.7rem);
    color: var(--color1);
    line-height: 1.3;
    margin: 0;
@@ -175,7 +175,7 @@
    bottom: 0;
    left: 0;
    width: 100%;
-   height: 55px;
+   height: 60px;
    background: var(--color3);
    clip-path: polygon(0 100%, 100% 100%, 50% 0);
    z-index: 1;
@@ -195,6 +195,7 @@
 
    .card:hover .cardContent {
        background-color: var(--color2);
+       margin-top: clamp(-13px, -1vw, -4px);
    }
 
    .card:hover .cardContent h4 {

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import Logo from '../../assets/Logo.png';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './styles/MainCampers.css';
-import profiles from '../../services/camperProfile';
+import profiles from '../../data/camperProfile';
 import VideoPlayer from "../../components/camperProfile/VIdeoPlayer";
 
 

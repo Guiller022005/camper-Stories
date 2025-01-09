@@ -9,8 +9,8 @@
   width: 100%;
   min-height: 100vh;
   padding: 4rem 1rem;
-  background-image: linear-gradient(rgba(1, 1, 48, 0.7), rgba(1, 1, 48, 0.7)), 
-                    url('src/assets/campuswall.png');
+  background-image: linear-gradient(rgba(1, 1, 48, 0.7), rgba(1, 1, 48, 0.7)),
+    url('src/assets/campuswall.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -57,7 +57,8 @@
   flex-direction: row;
   width: 440px;
   height: auto;
-  padding: 20px;
+  padding: 20px 20px 20px 30px;
+  gap: 3px;
 }
 
 /* Camper Information */
@@ -67,18 +68,25 @@
   justify-content: center;
   align-items: center;
   min-height: 200px;
+  width: 70%;
+}
+
+.camper-maininfo h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 .camper-image {
   display: flex;
   align-items: center;
-  width: 100px;
+  width: 155px;
   height: 230px;
+  
 }
 
 .camper-image img {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 113px;
   object-fit: cover;
   border: 2px solid #D9D9D9;
   border-radius: 50%;
@@ -120,11 +128,12 @@
   flex-direction: column;
   align-items: center;
   margin: 20px;
+  gap: 5px;
 }
 
 .filter-buttons {
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -135,13 +144,14 @@
   width: 150px;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 0.5rem;
   color: #ffffff;
   font-size: 20px;
   border: none;
   background-color: #FFA500;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Skills Display */
@@ -154,7 +164,8 @@
   width: 300px !important;
   max-height: 40px;
   overflow: hidden;
-  transition: max-height 0.1s ease; /* más rápida */
+  transition: max-height 0.4s ease;
+  /* más rápida */
 }
 
 .skills-container.expanded {
@@ -169,12 +180,12 @@
   height: fit-content;
   white-space: nowrap;
   border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .skill-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* Skils Buttons */
@@ -221,7 +232,7 @@ button {
   border: 1px solid transparent;
   border-radius: 8px;
   cursor: pointer;
-  
+
 }
 
 .buttons {
@@ -238,7 +249,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  
+
 }
 
 .info-button,
@@ -292,8 +303,8 @@ button {
 
 
   .expand-filters-button {
-  display: none;
-}
+    display: none;
+  }
 
   .campers-pagination {
     display: flex;
@@ -312,6 +323,42 @@ button {
   }
 }
 
+.buttons button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 45px;
+  padding: 15px;
+  margin: 5px;
+  font-size: 14px;
+}
+
+.skills-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.badge-filters {
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  align-items: center;
+  flex-direction: column;
+}
+
+.badge-filters h3 {
+  display: flex;
+  flex-direction: column;
+  color: #FFA500;
+  font-size: 65px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+}
+
+
 @media (max-width: 480px) {
   .campersgrid {
     padding: 2.2rem 0.5rem;
@@ -326,7 +373,7 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+
     width: 340px;
     padding: 8px 0 0 0;
     border-radius: 20px;
@@ -362,9 +409,6 @@ button {
     height: 128px;
   }
 
-
-
-
   .badge-filters {
     display: flex;
     justify-content: center;
@@ -376,105 +420,48 @@ button {
   }
 
 
-/* Skills Display */
-.filter-buttons {
-  display: flex;
-  gap: 0.5px;
-  flex-direction: row;
-  justify-content: center;
-  width: 380px;
-  color: #ffffff;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+  /* Skills Display */
 
+  .filter-buttons {
+    display: flex;
+    gap: 0.5px;
+    flex-direction: row;
+    justify-content: center;
+    width: 380px;
+    min-height: 105px;
+    max-height: 105px;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
+  .filter-buttons.expanded {
+    max-height: 510px;
+  }
 
-.filter-buttons.expanded {
-   max-height: 500px;
-}
-
-
-
-
-
-.expand-filters-button {
-  width: 150px;
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem;
-  color: #ffffff;
-  font-size: 20px;
-  border: none;
-  background-color: #FFA500;
-  cursor: pointer;
-}
-
-
+  .expand-filters-button {
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    color: #ffffff;
+    font-size: 20px;
+    border: none;
+    background-color: #FFA500;
+    cursor: pointer;
+  }
 
   .grid-container {
     padding: 0px;
   }
 
-  .buttons button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    height: 10px;
-    padding: 15px;
-    margin: 5px;
-    font-size: 10px;
-  }
-
-
   .badge-filters h3 {
     display: flex;
-    justify-content: center !important;
-    align-items: center !important;
+    text-align: center;
     width: 290px;
     flex-direction: column;
-    color: #f9f7dd;
-    
-    font-weight: 500px;  
-    text-transform: uppercase;  /* Mayúsculas para más impacto */
-    font-family: 'Poppins', sans-serif;  /* Cambio a Poppins */
+    line-height: 50px;
+    font-size: 45px;
+    padding-left: 5px;
   }
 
-
-}
-
-.buttons button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100px;
-  height: 45px;
-  padding: 15px;
-  margin: 5px;
-  font-size: 14px;
-}
-
-.skills-wrapper {
-  position: relative;
-  width: 100%; 
-}
-
-.badge-filters {
-  display: flex;
-  justify-content: center;
-  background-color: transparent;
-  align-items: center;
-  flex-direction: column;
-}
-
-.badge-filters h3 {
-  display: flex;
-  flex-direction: column;
-  color: #FFA500;
-  font-size: 45px;
-  font-weight: 700;  
-  letter-spacing: 0.9px;
-  text-transform: uppercase;  /* Mayúsculas para más impacto */
-  font-family: 'Poppins', sans-serif;  /* Cambio a Poppins */
 }

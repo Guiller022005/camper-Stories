@@ -5,10 +5,10 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '../../components/ui/dialog';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Textarea } from '../../components/ui/textarea';
+} from '../../ui/dialog';
+import { Button } from '../../ui/button';
+import { Input } from '../../ui/input';
+import { Textarea } from '../../ui/textarea';
 import { Edit } from 'lucide-react';
 
 const AboutMeModal = ({ initialData }) => {
@@ -41,7 +41,7 @@ const AboutMeModal = ({ initialData }) => {
 return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghostNoHover" size="icon">
                 <Edit className="h-6 w-6" />
             </Button>
         </DialogTrigger>

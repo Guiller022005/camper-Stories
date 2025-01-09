@@ -1,0 +1,88 @@
+/* components/camperProfile/styles/AboutMe.module.css */
+.about {
+    display: flex;
+    flex-direction: column;  
+    align-items: flex-start;
+    min-height: 60vh;
+  }
+  
+  .aboutContent {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(20px, 3vw, 40px);
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .colInfo {
+    display: flex;
+    flex-direction: column;
+    max-width: 40%;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .colInfo p {
+    color: white;
+    line-height: 20px;
+  }
+  
+  .colVideo {
+    flex: 1 1 300px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .aboutSubtitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #FFFFFF;
+    display: inline-flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    padding-bottom: 1.5rem;
+  }
+  
+  .btnPatrocinar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f7b500;
+    color: #000000;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    padding: clamp(8px, 2vw, 15px) clamp(16px, 3vw, 40px);
+    margin-top: 2rem;
+    border: none;
+  }
+  
+  .btnPatrocinar:hover {
+    background-color: #f0a500;
+    cursor: pointer;
+  }
+  
+  .btnPatrocinar:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  @media (max-width: 768px) {
+    .about {
+      min-height: auto;
+    }
+    
+    .aboutContent {
+      flex-direction: column;
+    }
+    
+    .colInfo,
+    .colVideo {
+      max-width: 100%;
+    }
+  }
