@@ -10,19 +10,7 @@ const camper = {
         {
             title: "TikTok1",
             url: "https://www.tiktok.com/@campuslands/video/7441695191163063559",
-        },
-        {
-            title: "TikTok2",
-            url: "https://www.tiktok.com/@campuslands/video/7441695191657975048",
-        },
-        {
-            title: "TikTok3",
-            url: "https://www.tiktok.com/@campuslands/video/7441694512537275656",
-        },
-        {
-            title: "TikTok2",
-            url: "https://www.tiktok.com/@campuslands/video/7390518130801462533",
-        },
+        }
     ],
     skills: [
         { name: "Espiritu Guerrero ⚔️" },

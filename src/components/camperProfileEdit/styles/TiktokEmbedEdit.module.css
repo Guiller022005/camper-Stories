@@ -1,6 +1,81 @@
-.tiktokEmbed * {
-    border-radius: 10px;
-    min-height: 764px;
-    width: 100px;
-}
-
+/* TiktokEmbedEdit.module.css */
+.tiktokContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 573px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .tiktokEmbed {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .tiktokEmbed:not(:empty) {
+    opacity: 1;
+  }
+  
+  .preloader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  
+  .preloaderSpinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Estilos para el contenedor virtual de Swiper */
+  .virtualSlide {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Estilo para ocultar el contenido mientras carga */
+  .virtualSlide[data-swiper-virtual-loading] {
+    opacity: 0;
+  }
+  
+  /* Estilo para mostrar el contenido cuando está listo */
+  .virtualSlide:not([data-swiper-virtual-loading]) {
+    opacity: 1;
+  }
+  
+  /* Estilo para el estado de carga */
+  .loading {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  /* Estilo para el estado cargado */
+  .loaded {
+    opacity: 1;
+    pointer-events: all;
+  }
