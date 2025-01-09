@@ -17,20 +17,21 @@ export default function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const tiposDocumento = [
-    { id: 'CC', nombre: 'Cédula de Ciudadanía' },
-    { id: 'CE', nombre: 'Cédula de Extranjería' },
-    { id: 'TI', nombre: 'Tarjeta de Identidad' },
-    { id: 'PP', nombre: 'Pasaporte' }
-  ];
-
-  const ciudadesColombia = [
-    { id: 'BOG', nombre: 'Bogotá' },
-    { id: 'MED', nombre: 'Medellín' },
-    { id: 'CAL', nombre: 'Cali' },
-    { id: 'BAR', nombre: 'Barranquilla' },
-    { id: 'BUC', nombre: 'Bucaramanga' }
-  ];
+    // Datos de ejemplo - reemplazar con datos de la API
+    const tiposDocumento = [
+        { id: 'CC', nombre: 'Cédula de Ciudadanía' },
+        { id: 'CE', nombre: 'Cédula de Extranjería' },
+        { id: 'TI', nombre: 'Tarjeta de Identidad' },
+        { id: 'PP', nombre: 'Pasaporte' }
+      ];
+    
+      const ciudadesColombia = [
+        { id: 'BOG', nombre: 'Bogotá' },
+        { id: 'MED', nombre: 'Medellín' },
+        { id: 'CAL', nombre: 'Cali' },
+        { id: 'BAR', nombre: 'Barranquilla' },
+        { id: 'BUC', nombre: 'Bucaramanga' }
+      ];
 
   const validatePasswords = () => {
     if (password !== confirmPassword) {
@@ -80,14 +81,14 @@ export default function RegisterForm() {
         const result = await response.json();
         setSuccess(true);
         console.log('Usuario registrado con éxito:', result);
-        navigate('/campers/login'); // Redirige al login después del registro exitoso
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Error al registrarse. Intenta nuevamente.');
+        console.error('Error del servidor:', errorData);
       }
     } catch (err) {
-      setError('Error de red: No se pudo conectar con el servidor.');
-      console.error('Error:', err);
+      setError('Hubo un error al intentar registrar al usuario. Intenta nuevamente.');
+      console.error('Error de red:', err);
     } finally {
       setIsLoading(false);
     }
@@ -272,18 +273,17 @@ export default function RegisterForm() {
             </Button>
           </form>
 
-            <div className="text-center mt-6">
-              <button
-                className="bg-transparent border-none text-[#7c3aed] cursor-pointer text-sm hover:text-[#6d28d9]"
-                onClick={() => navigate('/campers/login')}
-              >
-                ¿Ya tienes una cuenta? Inicia sesión
-              </button>
-            </div>
-          </CardContent>
+          <div className="text-center mt-6">
+            <button
+              className="bg-transparent border-none text-[#7c3aed] cursor-pointer text-sm hover:text-[#6d28d9]"
+              onClick={() => navigate('/campers/login')}
+            >
+              ¿Ya tienes una cuenta? Inicia sesión
+            </button>
+          </div>
+        </CardContent>
         </div>
       </div>
     </div>
   );
 }
-
