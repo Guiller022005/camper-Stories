@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,8 +16,8 @@ import { addDreams } from "../../../services/dreamsService";
 
 const DreamsModal = ({ onAddDream }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     image: null,
     imagePreview: null,
   });
@@ -61,8 +61,8 @@ const DreamsModal = ({ onAddDream }) => {
       throw error;
     }
     setFormData({
-      title: '',
-      description: '',
+      title: "",
+      description: "",
       image: null,
       imagePreview: null,
     });
@@ -71,14 +71,16 @@ const DreamsModal = ({ onAddDream }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <AddItemButton 
+        <AddItemButton
           type="dream"
           className="rounded-2xl bg-transparent backdrop-blur-none"
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-gray-900">Añadir Nuevo Sueño</DialogTitle>
+          <DialogTitle className="text-gray-900">
+            Añadir Nuevo Sueño
+          </DialogTitle>
           <DialogDescription>
             Completa los detalles de tu nuevo sueño aquí.
           </DialogDescription>
@@ -86,7 +88,9 @@ const DreamsModal = ({ onAddDream }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Campo de título */}
           <div className="space-y-2">
-            <Label className="text-gray-900" htmlFor="title">Título</Label>
+            <Label className="text-gray-900" htmlFor="title">
+              Título
+            </Label>
             <Input
               id="title"
               name="title"
@@ -99,7 +103,9 @@ const DreamsModal = ({ onAddDream }) => {
 
           {/* Campo de descripción */}
           <div className="space-y-2">
-            <Label className="text-gray-900" htmlFor="description">Descripción</Label>
+            <Label className="text-gray-900" htmlFor="description">
+              Descripción
+            </Label>
             <Textarea
               id="description"
               name="description"
@@ -112,7 +118,9 @@ const DreamsModal = ({ onAddDream }) => {
 
           {/* Campo de imagen */}
           <div className="space-y-2">
-            <Label className="text-gray-900" htmlFor="image">Imagen</Label>
+            <Label className="text-gray-900" htmlFor="image">
+              Imagen
+            </Label>
             <Input
               id="image"
               name="image"
