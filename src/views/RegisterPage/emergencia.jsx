@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Loader2, User, Mail, Lock, MapPin, FileText, Calendar } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { endpoints } from '../../services/apiConfig';
+import { endpoints } from '@/services/apiConfig';
 import campushm from '/src/assets/Campushm.png';
 
 export default function RegisterForm() {
@@ -16,38 +16,22 @@ export default function RegisterForm() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [ciudadesColombia, setCiudadesColombia] = useState([]);
 
-  const tiposDocumento = [
-    { id: 'CC', nombre: 'Cédula de Ciudadanía' },
-    { id: 'CE', nombre: 'Cédula de Extranjería' },
-    { id: 'TI', nombre: 'Tarjeta de Identidad' },
-    { id: 'PP', nombre: 'Pasaporte' }
-  ];
-
-  useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const response = await fetch(endpoints.city);
-        const text = await response.text(); // Obtener la respuesta como texto
-        console.log('Respuesta de la API:', text); // Para depuración
-
-        // Verificar si la respuesta es JSON
-        const contentType = response.headers.get("content-type");
-        if (response.ok && contentType && contentType.includes("application/json")) {
-          const data = JSON.parse(text); // Convertir a JSON
-          console.log('Ciudades obtenidas:', data);
-          setCiudadesColombia(data.data); // Accediendo a la propiedad 'data'
-        } else {
-          console.error('Error: La respuesta no es un JSON válido o hubo un problema con la solicitud.');
-        }
-      } catch (error) {
-        console.error('Error de red:', error);
-      }
-    };
-
-    fetchCities();
-  }, []);
+    // Datos de ejemplo - reemplazar con datos de la API
+    const tiposDocumento = [
+        { id: 'CC', nombre: 'Cédula de Ciudadanía' },
+        { id: 'CE', nombre: 'Cédula de Extranjería' },
+        { id: 'TI', nombre: 'Tarjeta de Identidad' },
+        { id: 'PP', nombre: 'Pasaporte' }
+      ];
+    
+      const ciudadesColombia = [
+        { id: 'BOG', nombre: 'Bogotá' },
+        { id: 'MED', nombre: 'Medellín' },
+        { id: 'CAL', nombre: 'Cali' },
+        { id: 'BAR', nombre: 'Barranquilla' },
+        { id: 'BUC', nombre: 'Bucaramanga' }
+      ];
 
   const validatePasswords = () => {
     if (password !== confirmPassword) {
@@ -86,7 +70,7 @@ export default function RegisterForm() {
 
     try {
       const response = await fetch(endpoints.register, {
-        method: '',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -97,14 +81,14 @@ export default function RegisterForm() {
         const result = await response.json();
         setSuccess(true);
         console.log('Usuario registrado con éxito:', result);
-        navigate('/campers/login'); // Redirige al login después del registro exitoso
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Error al registrarse. Intenta nuevamente.');
+        console.error('Error del servidor:', errorData);
       }
     } catch (err) {
-      setError('Error de red: No se pudo conectar con el servidor.');
-      console.error('Error:', err);
+      setError('Hubo un error al intentar registrar al usuario. Intenta nuevamente.');
+      console.error('Error de red:', err);
     } finally {
       setIsLoading(false);
     }
@@ -289,18 +273,17 @@ export default function RegisterForm() {
             </Button>
           </form>
 
-            <div className="text-center mt-6">
-              <button
-                className="bg-transparent border-none text-[#7c3aed] cursor-pointer text-sm hover:text-[#6d28d9]"
-                onClick={() => navigate('/campers/login')}
-              >
-                ¿Ya tienes una cuenta? Inicia sesión
-              </button>
-            </div>
-          </CardContent>
+          <div className="text-center mt-6">
+            <button
+              className="bg-transparent border-none text-[#7c3aed] cursor-pointer text-sm hover:text-[#6d28d9]"
+              onClick={() => navigate('/campers/login')}
+            >
+              ¿Ya tienes una cuenta? Inicia sesión
+            </button>
+          </div>
+        </CardContent>
         </div>
       </div>
     </div>
   );
 }
-
