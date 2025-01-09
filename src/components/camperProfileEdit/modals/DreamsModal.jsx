@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import AddItemButton from '../ui/AddItemButton';
+import { addDreams } from "../../../services/dreamsService";
 
 const DreamsModal = ({ onAddDream }) => {
   const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ const DreamsModal = ({ onAddDream }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newDream = {
       id: Date.now().toString(),
@@ -51,6 +52,14 @@ const DreamsModal = ({ onAddDream }) => {
       image: formData.imagePreview,
     };
     onAddDream(newDream);
+    const userId = localStorage.getItem("userID");
+    try {
+      const response = await addDreams(userId, newDream);
+      console.log("respuesta del servidor", response)
+    } catch (error) {
+      console.error("No fue posible enviar la informacion", error)
+      throw error;
+    }
     setFormData({
       title: '',
       description: '',
