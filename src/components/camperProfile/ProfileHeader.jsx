@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
 import './styles/ProfileHeader.css';
 
@@ -15,25 +17,32 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMer
     <motion.div
       className="profile-header"
       initial={false}
-      animate={{ height: 'auto' }} // Deja que Framer Motion calcule automáticamente
+      animate={{ height: 'auto' }}
       transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
-      layout // Framer Motion ajustará automáticamente el diseño
+      layout
     >
       <div className="profile-container">
         <div className="profile-content">
           <div className="profile-image">
-            <img src={mainImage} className="profile-image-content" alt="Profile" />
+            <LazyLoadImage
+              src={mainImage}
+              alt="Profile"
+              effect="blur"
+              className="profile-image-content"
+            />
           </div>
           <div className="profile-details">
             <h1 className="profile-name">
               {name}
             </h1>
-            <div className='camper-details'>
-              <div className='profile-city'>
-                <MapPin /><p>{ciudadOrigen}</p>
+            <div className="camper-details">
+              <div className="profile-city">
+                <MapPin />
+                <p>{ciudadOrigen}</p>
               </div>
-              <div className='profile-age'>
-                <Cake /><p>{edad} Años</p>
+              <div className="profile-age">
+                <Cake />
+                <p>{edad} Años</p>
               </div>
             </div>
             <div className="profile-buttons">
@@ -49,11 +58,11 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMer
           </div>
         </div>
         <motion.div
-          className='profile-badges-box'
+          className="profile-badges-box"
           layout
           initial={false}
-          animate={{ height: 'auto' }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          animate={{ height: "auto" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <div className="badges-title">
             <Trophy />
@@ -69,9 +78,11 @@ const ProfileHeader = ({ skills, name, ciudadOrigen, edad, mainImage, initialMer
           {skills && skills.length > maxVisibleBadges && (
             <div className="toggle-badges-button" onClick={handleToggleBadges}>
               <span className="toggle-badges-content">
-                {showAllBadges ? 'Ver menos' : 'Ver más'}
+                {showAllBadges ? "Ver menos" : "Ver más"}
                 <ChevronDown
-                  className={`ml-2 h-4 w-4 transition-transform ${showAllBadges ? 'rotate-180' : ''}`}
+                  className={`ml-2 h-4 w-4 transition-transform ${
+                    showAllBadges ? "rotate-180" : ""
+                  }`}
                 />
               </span>
             </div>

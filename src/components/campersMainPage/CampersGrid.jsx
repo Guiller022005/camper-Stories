@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import campersData from "../../data/camperSucess";
 import "./styles/CampersGrid.css";
 
@@ -158,7 +160,12 @@ const CampersGrid = () => {
                         <div key={camper.id} className="developer-card">
                             <div className="dev-card-content">
                                 <div className="camper-image">
-                                    <img src={camper.image} alt={camper.name} />
+                                    <LazyLoadImage
+                                        src={camper.image}
+                                        alt={camper.name}
+                                        effect="blur"
+                                        className="w-full h-[300px] object-cover rounded-lg"
+                                    />
                                 </div>
                                 <div className='camper-maininfo'>
                                     <h3>{camper.name}</h3>

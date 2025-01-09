@@ -4,8 +4,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Pagination, Autoplay } from "swiper/modules";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import campersData from "../../data/camperSucess";
-import styles from './styles/Campers.module.css';
+import styles from "./styles/Campers.module.css";
 
 const Campers = () => {
   const [slidesPerView, setSlidesPerView] = useState(6);
@@ -27,8 +29,8 @@ const Campers = () => {
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
@@ -109,9 +111,10 @@ const Campers = () => {
             <SwiperSlide key={`${index}-${camper.name}`} className={styles.swiperSlide}>
               <div className={styles.card}>
                 <div className={styles.perfil}>
-                  <img
+                  <LazyLoadImage
                     src={camper.image}
                     alt={camper.name}
+                    effect="blur" // Aplica un efecto de desenfoque al cargar
                     className={styles.cardImage}
                   />
                 </div>

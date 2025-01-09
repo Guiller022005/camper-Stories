@@ -98,8 +98,7 @@
 }
 
 .card {
-   width: 100%;
-   max-width: 300px;
+   width: 300px;
    height: auto;
    min-height: 450px;
    background: var(--color3);
@@ -117,11 +116,13 @@
    z-index: 10;
 }
 
-.cardImage {
-   width: 100%;
-   height: 300px;
-   object-fit: cover;
-   border-radius: 10px;
+.cardImage,
+.perfil span{
+    width: 100%;
+    height: 300px; /* Mantén un tamaño constante */
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
 }
 
 .cardContent {
