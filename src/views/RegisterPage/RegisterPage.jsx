@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { endpoints } from '@/services/apiConfig';
+import { endpoints } from '../../services/apiConfig';
 import campushm from '/src/assets/Campushm.png';
 
 export default function RegisterForm() {
@@ -26,9 +26,9 @@ export default function RegisterForm() {
   ];
 
   useEffect(() => {
-    const fetchCiudades = async () => {
+    const fetchCities = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/cities`);
+        const response = await fetch(endpoints.city);
         const text = await response.text(); // Obtener la respuesta como texto
         console.log('Respuesta de la API:', text); // Para depuración
 
@@ -46,7 +46,7 @@ export default function RegisterForm() {
       }
     };
 
-    fetchCiudades();
+    fetchCities();
   }, []);
 
   const validatePasswords = () => {
@@ -86,7 +86,7 @@ export default function RegisterForm() {
 
     try {
       const response = await fetch(endpoints.register, {
-        method: 'POST',
+        method: '',
         headers: {
           'Content-Type': 'application/json'
         },
