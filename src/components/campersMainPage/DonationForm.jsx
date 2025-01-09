@@ -7,8 +7,8 @@ export default function DonationForm() {
         apellido: '',
         email: '',
         phone: '',
-        message: '', // Cambiado de mensaje
-        contribution: '' // Cambiado de valor
+        message: '',
+        contribution: ''
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
