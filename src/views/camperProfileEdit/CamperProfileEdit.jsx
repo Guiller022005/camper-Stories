@@ -10,6 +10,7 @@ import ProyectsEdit from '../../components/camperProfileEdit/ProyectsEdit';
 import Footer from "../../components/footer/Footer";
 import SponsorCTAEdit from '@/components/camperProfileEdit/SponsorCTAEdit';
 import { fetchCamperById } from '@/services/camperService';
+import { fetchCamperById } from '@/services/camperService';
 
 const CamperProfileEdit = () => {
     const [camperData, setCamperData] = useState(null);
@@ -32,6 +33,7 @@ const CamperProfileEdit = () => {
             <NavbarProfile />
             <div className={styles.profileMainContent}>
                 <ProfileHeaderEdit
+                    data={camperData}
                     data={camperData}
                     initialMerits={camper.skills}
                 />

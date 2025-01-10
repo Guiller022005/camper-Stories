@@ -8,6 +8,7 @@ import styles from "./styles/ProfileHeaderEdit.module.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const ProfileHeaderEdit = ({ data, initialMerits }) => {
+const ProfileHeaderEdit = ({ data, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
@@ -32,6 +33,12 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
               effect="blur"
               className="profile-image-content"
             />
+            <LazyLoadImage
+              src={data.profile_picture}
+              alt={`Perfil de ${data.full_name}`}
+              effect="blur"
+              className="profile-image-content"
+            />
           </div>
           <div className={styles.profileDetails}>
             <h1 className={styles.profileName}>
@@ -49,8 +56,12 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
               <div className={styles.profileCity}>
                 <MapPin />
                 <p>{data.city}</p>
+                <MapPin />
+                <p>{data.city}</p>
               </div>
               <div className={styles.profileAge}>
+                <Cake />
+                <p>{`${data.age} Años`}</p>
                 <Cake />
                 <p>{`${data.age} Años`}</p>
               </div>
@@ -77,6 +88,7 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
           <div className={styles.badgesTitle}>
             <Trophy />
             <p>Méritos</p>
+            <MeritsModal initialMerits={initialMerits} />
             <MeritsModal initialMerits={initialMerits} />
           </div>
           <div className={`${styles.badgesContainer} ${styles.wrapper}`}>

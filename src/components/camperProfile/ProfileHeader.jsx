@@ -1,4 +1,5 @@
 // ProfileHeader.jsx
+// ProfileHeader.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -29,6 +30,8 @@ const ProfileHeader = ({ data, initialMerits }) => {
             <LazyLoadImage
               src={data.profile_picture}
               alt={`Perfil de ${data.full_name}`}
+              src={data.profile_picture}
+              alt={`Perfil de ${data.full_name}`}
               effect="blur"
               className="profile-image-content"
             />
@@ -36,14 +39,17 @@ const ProfileHeader = ({ data, initialMerits }) => {
           <div className="profile-details">
             <h1 className="profile-name">
               <p>{data.full_name}</p>
+              <p>{data.full_name}</p>
             </h1>
             <div className="camper-details">
               <div className="profile-city">
                 <MapPin />
                 <p>{data.city}</p>
+                <p>{data.city}</p>
               </div>
               <div className="profile-age">
                 <Cake />
+                <p>{`${data.age} Años`}</p>
                 <p>{`${data.age} Años`}</p>
               </div>
             </div>
