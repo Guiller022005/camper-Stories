@@ -120,7 +120,7 @@ export default function RegisterForm() {
         const result = await response.json();
         setSuccess(true);
         console.log('Usuario registrado con éxito:', result);
-        navigate('/campers/login'); // Redirige al login después del registro exitoso
+        navigate('/profile'); // Redirige al login después del registro exitoso
       } else {
         const errorData = await response.json();
         setError(
