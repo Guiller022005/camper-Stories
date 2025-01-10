@@ -30,8 +30,6 @@ const ProfileHeader = ({ data, initialMerits }) => {
             <LazyLoadImage
               src={data.profile_picture}
               alt={`Perfil de ${data.full_name}`}
-              src={data.profile_picture}
-              alt={`Perfil de ${data.full_name}`}
               effect="blur"
               className="profile-image-content"
             />

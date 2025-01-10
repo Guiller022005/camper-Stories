@@ -34,7 +34,6 @@ const CamperProfileEdit = () => {
             <div className={styles.profileMainContent}>
                 <ProfileHeaderEdit
                     data={camperData}
-                    data={camperData}
                     initialMerits={camper.skills}
                 />
                 <AboutMeEdit

@@ -8,7 +8,6 @@ import styles from "./styles/ProfileHeaderEdit.module.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const ProfileHeaderEdit = ({ data, initialMerits }) => {
-const ProfileHeaderEdit = ({ data, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
