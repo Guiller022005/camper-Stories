@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Loader2, User, Mail, Lock, MapPin, FileText, Calendar } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ export default function RegisterForm() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [ciudadesColombia, setCiudadesColombia] = useState([]);
 
   const tiposDocumento = [
     { id: 'CC', nombre: 'Cédula de Ciudadanía' },
@@ -24,13 +25,29 @@ export default function RegisterForm() {
     { id: 'PP', nombre: 'Pasaporte' }
   ];
 
-  const ciudadesColombia = [
-    { id: 'BOG', nombre: 'Bogotá' },
-    { id: 'MED', nombre: 'Medellín' },
-    { id: 'CAL', nombre: 'Cali' },
-    { id: 'BAR', nombre: 'Barranquilla' },
-    { id: 'BUC', nombre: 'Bucaramanga' }
-  ];
+  useEffect(() => {
+    const fetchCiudades = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/cities`);
+        const text = await response.text(); // Obtener la respuesta como texto
+        console.log('Respuesta de la API:', text); // Para depuración
+
+        // Verificar si la respuesta es JSON
+        const contentType = response.headers.get("content-type");
+        if (response.ok && contentType && contentType.includes("application/json")) {
+          const data = JSON.parse(text); // Convertir a JSON
+          console.log('Ciudades obtenidas:', data);
+          setCiudadesColombia(data.data); // Accediendo a la propiedad 'data'
+        } else {
+          console.error('Error: La respuesta no es un JSON válido o hubo un problema con la solicitud.');
+        }
+      } catch (error) {
+        console.error('Error de red:', error);
+      }
+    };
+
+    fetchCiudades();
+  }, []);
 
   const validatePasswords = () => {
     if (password !== confirmPassword) {
