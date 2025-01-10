@@ -1,18 +1,13 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
-import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from "lucide-react";
-import "./styles/ProfileHeader.css";
+// ProfileHeader.jsx
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
+import './styles/ProfileHeader.css';
 
-const ProfileHeader = ({
-  skills,
-  name,
-  ciudadOrigen,
-  edad,
-  mainImage,
-  initialMerits,
-}) => {
+ 
+const ProfileHeader = ({ data, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
@@ -32,22 +27,24 @@ const ProfileHeader = ({
         <div className="profile-content">
           <div className="profile-image">
             <LazyLoadImage
-              src={mainImage}
-              alt="Profile"
+              src={data.profile_picture}
+              alt={`Perfil de ${data.full_name}`}
               effect="blur"
               className="profile-image-content"
             />
           </div>
           <div className="profile-details">
-            <h1 className="profile-name">{name}</h1>
+            <h1 className="profile-name">
+              <p>{data.full_name}</p>
+            </h1>
             <div className="camper-details">
               <div className="profile-city">
                 <MapPin />
-                <p>{ciudadOrigen}</p>
+                <p>{data.city}</p>
               </div>
               <div className="profile-age">
                 <Cake />
-                <p>{edad} Años</p>
+                <p>{`${data.age} Años`}</p>
               </div>
             </div>
             <div className="profile-buttons">
@@ -74,24 +71,19 @@ const ProfileHeader = ({
             <p>Méritos</p>
           </div>
           <div className="badges-container wrapper">
-            {skills &&
-              skills
-                .slice(0, showAllBadges ? skills.length : maxVisibleBadges)
-                .map((skill, index) => (
-                  <div key={index} className="skill-item icon badgeInfo">
-                    <div className="tooltip">{skill.description}</div>
-                    {skill.name}
-                  </div>
-                ))}
+            {initialMerits.slice(0, showAllBadges ? initialMerits.length : maxVisibleBadges).map((skill, index) => (
+              <div key={index} className="skill-item">
+                <div className="tooltip icon badgeInfo">{skill.description}</div>
+                {skill.name}
+              </div>
+            ))}
           </div>
-          {skills && skills.length > maxVisibleBadges && (
+          {initialMerits.length > maxVisibleBadges && (
             <div className="toggle-badges-button" onClick={handleToggleBadges}>
               <span className="toggle-badges-content">
                 {showAllBadges ? "Ver menos" : "Ver más"}
                 <ChevronDown
-                  className={`ml-2 h-4 w-4 transition-transform ${
-                    showAllBadges ? "rotate-180" : ""
-                  }`}
+                  className={`ml-2 h-4 w-4 transition-transform ${showAllBadges ? "rotate-180" : ""}`}
                 />
               </span>
             </div>
