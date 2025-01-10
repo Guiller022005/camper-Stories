@@ -32,37 +32,27 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
               effect="blur"
               className={styles.profileImageContent}
             />
-            <LazyLoadImage
-              src={data.profile_picture}
-              alt={`Perfil de ${data.full_name}`}
-              effect="blur"
-              className="profile-image-content"
-            />
           </div>
           <div className={styles.profileDetails}>
             <h1 className={styles.profileName}>
-              <p>{data.full_name}
-              <ProfileHeaderModal
-                initialData={{
-                  nombre: data.full_name,
-                  city: data.city,
-                  age: data.age,
-                  mainImage: data.profile_picture,
-                }}
-              />
+              <p>
+                {data.full_name}
+                <ProfileHeaderModal
+                  initialData={{
+                    nombre: data.full_name,
+                    city: data.city,
+                    age: data.age,
+                    mainImage: data.profile_picture,
+                  }}
+                />
               </p>
-              
             </h1>
             <div className={styles.camperDetails}>
               <div className={styles.profileCity}>
                 <MapPin />
                 <p>{data.city}</p>
-                <MapPin />
-                <p>{data.city}</p>
               </div>
               <div className={styles.profileAge}>
-                <Cake />
-                <p>{`${data.age} Años`}</p>
                 <Cake />
                 <p>{`${data.age} Años`}</p>
               </div>
@@ -89,7 +79,6 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
           <div className={styles.badgesTitle}>
             <Trophy />
             <p>Méritos</p>
-            <MeritsModal initialMerits={initialMerits} />
             <MeritsModal initialMerits={initialMerits} />
           </div>
           <div className={`${styles.badgesContainer} ${styles.wrapper}`}>
