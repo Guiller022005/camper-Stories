@@ -30,12 +30,12 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
               src={data.profile_picture}
               alt={`Perfil de ${data.full_name}`}
               effect="blur"
-              className="profile-image-content"
+              className={styles.profileImageContent}
             />
           </div>
           <div className={styles.profileDetails}>
             <h1 className={styles.profileName}>
-              <p>{data.full_name}</p>
+              <p>{data.full_name}
               <ProfileHeaderModal
                 initialData={{
                   nombre: data.full_name,
@@ -44,6 +44,8 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
                   mainImage: data.profile_picture
                 }}
               />
+              </p>
+              
             </h1>
             <div className={styles.camperDetails}>
               <div className={styles.profileCity}>
