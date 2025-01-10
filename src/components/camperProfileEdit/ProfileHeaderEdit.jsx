@@ -57,12 +57,8 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
               <div className={styles.profileCity}>
                 <MapPin />
                 <p>{data.city}</p>
-                <MapPin />
-                <p>{data.city}</p>
               </div>
               <div className={styles.profileAge}>
-                <Cake />
-                <p>{`${data.age} Años`}</p>
                 <Cake />
                 <p>{`${data.age} Años`}</p>
               </div>
@@ -89,7 +85,6 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
           <div className={styles.badgesTitle}>
             <Trophy />
             <p>Méritos</p>
-            <MeritsModal initialMerits={initialMerits} />
             <MeritsModal initialMerits={initialMerits} />
           </div>
           <div className={`${styles.badgesContainer} ${styles.wrapper}`}>

@@ -1,5 +1,5 @@
 // ProyectsEdit.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProjectCardEdit from "./ProjectCardEdit";
 import { ProyectsModal } from "./modals/ProyectsModal";
 import { ProyectsEditModal } from "./modals/ProyectsEditModal";

@@ -6,6 +6,7 @@ import { fetchCamperById } from '../../services/camperService';
 import styles from './styles/CamperProfile.module.css';
 import LazySection from '../../components/common/LazySection';
 import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
+import { fetchTikToksByCamperId } from '@/services/tiktokService';
 
 // Lazy load components
 const ProfileHeader = lazy(() => import("../../components/camperProfile/ProfileHeader"));
@@ -17,6 +18,7 @@ const SponsorCTA = lazy(() => import('../../components/camperProfile/SponsorCTA'
 
 const CamperProfile = () => {
     const [camperData, setCamperData] = useState(DEFAULT_CAMPER_DATA);
+    const [camperTiktoksData, setCamperTiktoksData] = useState([]); 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -25,12 +27,18 @@ const CamperProfile = () => {
         const loadCamper = async () => {
             try {
                 setIsLoading(true);
-                const data = await fetchCamperById(52);
-                console.log("Data recibida:", data); // Veamos qué datos recibimos
-                setCamperData(data);
+                const [data_infoCamper, data_tiktoks] = await Promise.all([
+                    fetchCamperById(52),
+                    fetchTikToksByCamperId(1)
+                ]);
+                setCamperData(data_infoCamper);
+                setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
             } catch (err) {
                 setError(err.message);
-                console.error('Error cargando datos del camper:', err);
+                console.error('Error cargando datos:', err);
+                // Establecer datos por defecto en caso de error
+                setCamperData(DEFAULT_CAMPER_DATA);
+                setCamperTiktoksData([]);
             } finally {
                 setIsLoading(false);
             }
@@ -86,7 +94,7 @@ const CamperProfile = () => {
 
                 <LazySection>
                     <TrainingProcess
-                        videos={camper.processTikToks}
+                        videos={camperTiktoksData}
                     />
                 </LazySection>
 
