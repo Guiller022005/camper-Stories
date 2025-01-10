@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './styles/CamperProfileEdit.module.css';
 import NavbarProfile from '../../components/navbar/NavbarProfile';
 import camper from '../../data/camperProfilePage';
@@ -9,18 +9,30 @@ import TrainingProcessEdit from '../../components/camperProfileEdit/TrainingProc
 import ProyectsEdit from '../../components/camperProfileEdit/ProyectsEdit';
 import Footer from "../../components/footer/Footer";
 import SponsorCTAEdit from '@/components/camperProfileEdit/SponsorCTAEdit';
+import { fetchCamperById } from '@/services/camperService';
 
 const CamperProfileEdit = () => {
+    const [camperData, setCamperData] = useState(null);
+
+    // Obtener informacion del camper por id
+    useEffect(() => {
+        const loadCamper = async () => {
+            try {
+                const data = await fetchCamperById(52);
+                setCamperData(data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        loadCamper();
+    }, []);
+
     return (
         <div className={styles.camperProfileView}>
             <NavbarProfile />
             <div className={styles.profileMainContent}>
                 <ProfileHeaderEdit
-                    skills={camper.skills}
-                    name={camper.name}
-                    ciudadOrigen={camper.ciudadOrigen}
-                    edad={camper.edad}
-                    mainImage={camper.mainImage}
+                    data={camperData}
                     initialMerits={camper.skills}
                 />
                 <AboutMeEdit
