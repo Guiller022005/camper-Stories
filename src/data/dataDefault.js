@@ -1,6 +1,6 @@
 // constants/defaultValues.js
 export const DEFAULT_CAMPER_DATA = {
-    profile_picture: 'https://camper-stories.s3.us-east-2.amazonaws.com/pruebatml.jpeg',
+    profile_picture: 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg',
     full_name: 'Nombre no disponible',
     city: 'Ciudad no especificada',
     age: 'Edad no especificada',

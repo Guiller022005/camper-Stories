@@ -19,13 +19,13 @@ export default function RegisterForm() {
   const [ciudadesColombia, setCiudadesColombia] = useState([]);
 
   const tiposDocumento = [
-    { id: 'CC', nombre: 'Cédula de Ciudadanía' },
-    { id: 'CE', nombre: 'Cédula de Extranjería' },
-    { id: 'TI', nombre: 'Tarjeta de Identidad' },
-    { id: 'PP', nombre: 'Pasaporte' }
+    { id: '1', nombre: 'Cédula de Ciudadanía' },
+    { id: '2', nombre: 'Cédula de Extranjería' },
+    { id: '3', nombre: 'Tarjeta de Identidad' },
+    { id: '4', nombre: 'Pasaporte' }
   ];
 
-  useEffect(() => {
+  useEffect(() => { 
     const fetchCities = async () => {
       try {
         const response = await fetch(endpoints.city);
@@ -73,20 +73,23 @@ export default function RegisterForm() {
     setSuccess(false);
 
     const formData = new FormData(event.target);
+
     const data = {
       first_name: formData.get('first_name'),
       last_name: formData.get('last_name'),
       email: formData.get('email'),
       password: formData.get('password'),
-      role: 'camper',
       document_type: formData.get('document_type'),
       document_number: formData.get('documento'),
+      birth_date: formData.get('edad'),
       city: formData.get('ciudad')
     };
 
+    console.log(data)
+
     try {
       const response = await fetch(endpoints.register, {
-        method: '',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -97,7 +100,7 @@ export default function RegisterForm() {
         const result = await response.json();
         setSuccess(true);
         console.log('Usuario registrado con éxito:', result);
-        navigate('/campers/login'); // Redirige al login después del registro exitoso
+        navigate('/profile'); // Redirige al login después del registro exitoso
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Error al registrarse. Intenta nuevamente.');
@@ -124,7 +127,7 @@ export default function RegisterForm() {
               Camper Stories
             </CardTitle>
             <CardDescription className="text-gray-400 max-w-sm mx-auto">
-              Cada historia tiene el poder de inspirar. Únete a Camper Stories y comparte tu historia con el mundo.
+                
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -249,15 +252,15 @@ export default function RegisterForm() {
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="edad" className="text-white text-left block">Edad</Label>
+                <Label htmlFor="edad" className="text-white text-left block">Fecha de Nacimiento</Label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                   <input
                     id="edad"
                     name="edad"
-                    type="number"
+                    type="date"
                     required
-                    placeholder="Tu edad"
+                    placeholder="Tu fecha de nacimiento"
                     className="w-full py-3 px-4 pl-10 bg-[#3a3a4e] rounded-lg text-white text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:ring-offset-0"
                   />
                 </div>
