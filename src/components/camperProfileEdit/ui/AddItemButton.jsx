@@ -1,6 +1,7 @@
-import { Plus } from 'lucide-react'
+import React, { forwardRef } from 'react';
+import { Plus } from 'lucide-react';
 
-const AddItemButton = ({ type, className, onClick }) => {
+const AddItemButton = forwardRef(({ type, className, onClick }, ref) => {
   const getCardContent = () => {
     switch (type) {
       case 'project':
@@ -17,7 +18,7 @@ const AddItemButton = ({ type, className, onClick }) => {
           `,
           iconClass: 'text-gray-300 border-gray-500/50 group-hover:border-gray-300/80',
           textClass: 'text-gray-300 group-hover:text-white'
-        }
+        };
       case 'dream':
         return {
           title: 'Añadir Nuevo Sueño',
@@ -32,7 +33,7 @@ const AddItemButton = ({ type, className, onClick }) => {
           `,
           iconClass: 'text-gray-300 border-gray-500/50 group-hover:border-gray-300/80',
           textClass: 'text-gray-300 group-hover:text-white'
-        }
+        };
       case 'tiktok':
         return {
           title: 'Añadir Nuevo TikTok',
@@ -47,21 +48,22 @@ const AddItemButton = ({ type, className, onClick }) => {
           `,
           iconClass: 'text-gray-300 border-gray-500/50 group-hover:border-gray-300/80',
           textClass: 'text-gray-300 group-hover:text-white'
-        }
+        };
       default:
         return {
           title: 'Añadir Nuevo Item',
           containerClass: 'h-[300px] bg-gray-100',
           iconClass: 'text-gray-600',
           textClass: 'text-gray-600'
-        }
+        };
     }
-  }
+  };
 
-  const content = getCardContent()
+  const content = getCardContent();
 
   return (
     <button
+      ref={ref} // Maneja el ref aquí
       onClick={onClick}
       className={`
         group
@@ -79,37 +81,39 @@ const AddItemButton = ({ type, className, onClick }) => {
         ${className}
       `}
     >
-      {/* Efecto de overlay gradiente */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="relative flex flex-col items-center justify-center gap-6 transform transition-transform duration-300 group-hover:scale-105 z-10">
-        <div className={`
-          p-5
-          rounded-full 
-          border-2
-          transition-all
-          duration-300
-          backdrop-blur-sm
-          ${content.iconClass}
-        `}>
+        <div
+          className={`
+            p-5
+            rounded-full 
+            border-2
+            transition-all
+            duration-300
+            backdrop-blur-sm
+            ${content.iconClass}
+          `}
+        >
           <Plus className="w-8 h-8" />
         </div>
 
-        <p className={`
-          text-lg
-          font-medium
-          transition-colors
-          duration-300
-          text-center
-          px-4
-          ${content.textClass}
-        `}>
+        <p
+          className={`
+            text-lg
+            font-medium
+            transition-colors
+            duration-300
+            text-center
+            px-4
+            ${content.textClass}
+          `}
+        >
           {content.title}
         </p>
       </div>
     </button>
   );
-}
-
+});
 
 export default AddItemButton;
