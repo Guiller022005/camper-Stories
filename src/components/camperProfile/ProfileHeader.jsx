@@ -43,7 +43,7 @@ const ProfileHeader = ({ data, initialMerits }) => {
               </div>
               <div className="profile-age">
                 <Cake />
-                <p>{`${data.age} Años`}</p>
+                <p>{`${data.age}`}</p>
               </div>
             </div>
             <div className="profile-buttons">

@@ -6,7 +6,7 @@ import styles from './styles/TrainingProcess.module.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-const TrainingProcess = ({ videos = [] }) => {
+const TrainingProcess = ({ videos = [] = [] }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const swiperRef = useRef(null);
 
@@ -48,6 +48,7 @@ const TrainingProcess = ({ videos = [] }) => {
           >
             {videoArray.map((video, index) => (
               <SwiperSlide key={index} className={styles.swiperSlide}>
+                <TikTokEmbed videoUrl={video.video_url} title={video.title} />
                 <TikTokEmbed videoUrl={video.video_url} title={video.title} />
               </SwiperSlide>
             ))}

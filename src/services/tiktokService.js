@@ -4,6 +4,7 @@ import { endpoints } from './apiConfig';
 export const fetchTikToksByCamperId = async (id) => {
     try {
         const response = await axios.get(`${endpoints.campers}/${id}/videos`);
+        console.log(response.data);
         return response.data || []; // Retornar solo los datos
     } catch (error) {
         console.error(`Error fetching camper tik toks with id ${id}:`, error);

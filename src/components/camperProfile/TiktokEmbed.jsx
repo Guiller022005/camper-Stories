@@ -1,10 +1,14 @@
 // TiktokEmbed.jsx
+// TiktokEmbed.jsx
 import { useEffect } from "react";
 import "./styles/TiktokEmbed.css";
 
 const TikTokEmbed = ({ videoUrl }) => {
-
-  console.log(videoUrl);
+  console.log('URL recibida:', videoUrl);
+  // Ejemplos de URLs válidas:
+  console.log('Ejemplos de URLs válidas:');
+  console.log('- URL directa:', 'https://www.tiktok.com/@campuslands/video/7441695191163063559');
+  console.log('- URL de embed:', 'https://www.tiktok.com/embed/7441695191163063559');
 
   // Validar que videoUrl exista y sea string
   if (!videoUrl || typeof videoUrl !== 'string') {
@@ -83,13 +87,22 @@ const TikTokEmbed = ({ videoUrl }) => {
 
   return (
     <div className="tiktok-embed-container">
+    <div className="tiktok-embed-container">
       <blockquote
         className="tiktok-embed"
         cite={videoUrl}
         data-video-id={videoId}
+        data-video-id={videoId}
         style={{ maxWidth: "605px", minWidth: "325px" }}
       >
         <section>
+          <a 
+            target="_blank" 
+            href={videoUrl}
+            rel="noopener noreferrer"
+          >
+            {/* El reproductor se insertará aquí automáticamente */}
+          </a>
           <a 
             target="_blank" 
             href={videoUrl}
