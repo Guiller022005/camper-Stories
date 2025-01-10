@@ -37,17 +37,14 @@ const ProfileHeader = ({ data, initialMerits }) => {
           <div className="profile-details">
             <h1 className="profile-name">
               <p>{data.full_name}</p>
-              <p>{data.full_name}</p>
             </h1>
             <div className="camper-details">
               <div className="profile-city">
                 <MapPin />
                 <p>{data.city}</p>
-                <p>{data.city}</p>
               </div>
               <div className="profile-age">
                 <Cake />
-                <p>{`${data.age} Años`}</p>
                 <p>{`${data.age} Años`}</p>
               </div>
             </div>

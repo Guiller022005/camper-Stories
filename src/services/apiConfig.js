@@ -6,7 +6,7 @@ export const endpoints = {
   campers: `${API_BASE_URL}campers`, // Endpoint para crear sueno
   dreams: `${API_BASE_URL}campers/{id}/dreams`,
   city: `${API_BASE_URL}cities`, // Endpoint para crear sueno
-  technologuies: `${API_BASE_URL}technologuies`,
+  technology: `${API_BASE_URL}technology`,
   projects: `${API_BASE_URL}campers/{id}/proyects`,
 };
 
