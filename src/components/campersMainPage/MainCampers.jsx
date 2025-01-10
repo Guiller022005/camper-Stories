@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import './styles/MainCampers.css';
-import profiles from '../../data/camperProfile';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import "swiper/css";
+import "swiper/css/pagination";
+import "./styles/MainCampers.css";
+import profiles from "../../data/camperProfile";
 import VideoPlayer from "../../components/camperProfile/VIdeoPlayer";
-
 
 const MainCampers = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,21 +23,25 @@ const MainCampers = () => {
         initial={{ rotate: 15, opacity: 0 }}
         animate={{ rotate: 0, opacity: 1 }}
         exit={{ rotate: -10, opacity: 0 }}
-        transition={{ duration: 1.2, ease: 'easeInOut' }}
+        transition={{ duration: 1.2, ease: "easeInOut" }}
       >
-        <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
+        <VideoPlayer
+          videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"}
+          title="Historia Camper"
+        />
       </motion.div>
       <motion.div
         className="profile-card-content"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -50 }}
-        transition={{ duration: 1.2, ease: 'easeInOut' }}
+        transition={{ duration: 1.2, ease: "easeInOut" }}
       >
         <h2>{profile.name}</h2>
-        <div className='merits-container'>
+        <div className="merits-container wrapper">
           {profile.merits.slice(0, 4).map((skill, index) => (
-            <div className="merit-item" key={index}>
+            <div className="merit-item icon badgeInfo" key={index}>
+              <div className="tooltip">{skill.description}</div>
               {skill.name}
             </div>
           ))}
@@ -51,14 +54,13 @@ const MainCampers = () => {
       </motion.div>
     </div>
   );
-  
 
   const renderPagination = () => (
     <div className="custom-pagination">
       {profiles.map((_, index) => (
         <button
           key={index}
-          className={`pagination-dot ${index === currentIndex ? 'active' : ''}`}
+          className={`pagination-dot ${index === currentIndex ? "active" : ""}`}
           onClick={() => setCurrentIndex(index)}
         />
       ))}
@@ -74,7 +76,7 @@ const MainCampers = () => {
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
           >
             {renderContent(profiles[currentIndex])}
           </motion.div>

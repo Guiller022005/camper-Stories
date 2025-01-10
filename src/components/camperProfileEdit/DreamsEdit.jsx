@@ -8,7 +8,7 @@ const DreamsEdit = () => {
       <h2 className={styles.profileSubtitle}>
         <span className={styles.highlight}>&lt;/</span> Mis Sueños
       </h2>
-      <div className={styles.dreamsGridContainer}>
+      <div className={styles.dreamsGridContainer} >
         <DreamsGridEdit />
       </div>
     </section>

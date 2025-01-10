@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -15,12 +15,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import 'boxicons'
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import "boxicons";
 import styles from "./styles/ProyectsModal.module.css";
-import { useState } from "react"
-import { time } from "framer-motion"
+import { useState } from "react";
+import { time } from "framer-motion";
 import AddItemButton from "../ui/AddItemButton";
 
 // async function saveToDatabase(data) {
@@ -34,8 +34,7 @@ import AddItemButton from "../ui/AddItemButton";
 //     }
 //   }
 
-
-export function ProyectsModal({ onAddProject, technologuies }) {
+export function ProyectsModal({ onAddProject, technologies }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -74,7 +73,12 @@ export function ProyectsModal({ onAddProject, technologuies }) {
   };
 
   const handleSubmit = () => {
-    if (!formData.title || !formData.description || !formData.image || !formData.codeUrl) {
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.image ||
+      !formData.codeUrl
+    ) {
       alert("Por favor, completa todos los campos.");
       return;
     }
@@ -88,22 +92,25 @@ export function ProyectsModal({ onAddProject, technologuies }) {
       codeUrl: "",
       technologies: [],
     });
+  };
 
-  }
+  const techArray = Array.isArray(technologies) ? technologies : [];
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <div className="w-full h-full ">
-            <AddItemButton 
-              type="project"
-              className="w-full h-full bg-indigo-950/30 border-none"
-            />
+          <AddItemButton
+            type="project"
+            className="w-full h-full bg-indigo-950/30 border-none"
+          />
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-gray-900">Añadir Proyectos</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-gray-900">
+            Añadir Proyectos
+          </DialogTitle>
           <DialogDescription className="text-gray-600">
             Añade tus proyectos aqui, presiona guardar cuando hayas acabado.
           </DialogDescription>
@@ -154,7 +161,9 @@ export function ProyectsModal({ onAddProject, technologuies }) {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-900">Tecnologías</label>
+            <label className="text-sm font-medium text-gray-900">
+              Tecnologías
+            </label>
             <Select
               onValueChange={(value) => handleSelectTechnology(value)} // Manejar selección
             >
@@ -162,7 +171,7 @@ export function ProyectsModal({ onAddProject, technologuies }) {
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
               <SelectContent className="bg-white">
-                {technologuies.map((tech) => (
+                {techArray.map((tech) => (
                   <SelectItem
                     key={tech.name}
                     value={tech.name}
@@ -175,7 +184,10 @@ export function ProyectsModal({ onAddProject, technologuies }) {
             </Select>
             <ul className="mt-2 space-y-1">
               {formData.technologies.map((tech) => (
-                <li key={tech} className="flex justify-between items-center px-3 py-1 bg-gray-100 rounded-md">
+                <li
+                  key={tech}
+                  className="flex justify-between items-center px-3 py-1 bg-gray-100 rounded-md"
+                >
                   <span className="text-sm text-gray-900">{tech}</span>
                   <button
                     type="button"
@@ -200,5 +212,5 @@ export function ProyectsModal({ onAddProject, technologuies }) {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

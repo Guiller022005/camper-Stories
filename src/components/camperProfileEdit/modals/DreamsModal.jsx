@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,11 +12,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import AddItemButton from '../ui/AddItemButton';
+import { addDreams } from "../../../services/dreamsService";
 
 const DreamsModal = ({ onAddDream }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     image: null,
     imagePreview: null,
   });
@@ -42,7 +43,7 @@ const DreamsModal = ({ onAddDream }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newDream = {
       id: Date.now().toString(),
@@ -51,9 +52,17 @@ const DreamsModal = ({ onAddDream }) => {
       image: formData.imagePreview,
     };
     onAddDream(newDream);
+    const userId = localStorage.getItem("userID");
+    try {
+      const response = await addDreams(userId, newDream);
+      console.log("respuesta del servidor", response)
+    } catch (error) {
+      console.error("No fue posible enviar la informacion", error)
+      throw error;
+    }
     setFormData({
-      title: '',
-      description: '',
+      title: "",
+      description: "",
       image: null,
       imagePreview: null,
     });
@@ -62,14 +71,16 @@ const DreamsModal = ({ onAddDream }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <AddItemButton 
+        <AddItemButton
           type="dream"
           className="rounded-2xl bg-transparent backdrop-blur-none"
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-gray-900">Añadir Nuevo Sueño</DialogTitle>
+          <DialogTitle className="text-gray-900">
+            Añadir Nuevo Sueño
+          </DialogTitle>
           <DialogDescription>
             Completa los detalles de tu nuevo sueño aquí.
           </DialogDescription>
@@ -77,7 +88,9 @@ const DreamsModal = ({ onAddDream }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Campo de título */}
           <div className="space-y-2">
-            <Label className="text-gray-900" htmlFor="title">Título</Label>
+            <Label className="text-gray-900" htmlFor="title">
+              Título
+            </Label>
             <Input
               id="title"
               name="title"
@@ -90,7 +103,9 @@ const DreamsModal = ({ onAddDream }) => {
 
           {/* Campo de descripción */}
           <div className="space-y-2">
-            <Label className="text-gray-900" htmlFor="description">Descripción</Label>
+            <Label className="text-gray-900" htmlFor="description">
+              Descripción
+            </Label>
             <Textarea
               id="description"
               name="description"
@@ -103,7 +118,9 @@ const DreamsModal = ({ onAddDream }) => {
 
           {/* Campo de imagen */}
           <div className="space-y-2">
-            <Label className="text-gray-900" htmlFor="image">Imagen</Label>
+            <Label className="text-gray-900" htmlFor="image">
+              Imagen
+            </Label>
             <Input
               id="image"
               name="image"

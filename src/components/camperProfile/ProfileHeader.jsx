@@ -1,4 +1,5 @@
 // ProfileHeader.jsx
+// ProfileHeader.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -6,6 +7,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
 import './styles/ProfileHeader.css';
 
+ 
 const ProfileHeader = ({ data, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
@@ -18,7 +20,7 @@ const ProfileHeader = ({ data, initialMerits }) => {
     <motion.div
       className="profile-header"
       initial={false}
-      animate={{ height: 'auto' }}
+      animate={{ height: "auto" }}
       transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
       layout
     >
@@ -69,9 +71,10 @@ const ProfileHeader = ({ data, initialMerits }) => {
             <Trophy />
             <p>Méritos</p>
           </div>
-          <div className="badges-container">
+          <div className="badges-container wrapper">
             {initialMerits.slice(0, showAllBadges ? initialMerits.length : maxVisibleBadges).map((skill, index) => (
               <div key={index} className="skill-item">
+                <div className="tooltip icon badgeInfo">{skill.description}</div>
                 {skill.name}
               </div>
             ))}
@@ -81,8 +84,7 @@ const ProfileHeader = ({ data, initialMerits }) => {
               <span className="toggle-badges-content">
                 {showAllBadges ? "Ver menos" : "Ver más"}
                 <ChevronDown
-                  className={`ml-2 h-4 w-4 transition-transform ${showAllBadges ? "rotate-180" : ""
-                    }`}
+                  className={`ml-2 h-4 w-4 transition-transform ${showAllBadges ? "rotate-180" : ""}`}
                 />
               </span>
             </div>

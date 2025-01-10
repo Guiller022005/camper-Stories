@@ -13,17 +13,43 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: davidImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Primer programador 💻"},
-      { name: "Gran jefe 👑"},
-
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Rompe Esquemas 💥"}
-     ]
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Trota Mundos 🌎",
+          description: "Foráneos que se mudaron para estudiar programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
+    ]
   },
   {
     id: 2,
@@ -32,13 +58,42 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: christopherImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Despegue Digital 🚀"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -48,14 +103,38 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: silviaImg,
     skills: [
-      { name: "Nuevos horizontes🌅" },
-      { name: "Emprendedor 💼"},
-      { name: "Gran jefe 👑"},
-      { name: "Despegue Digital 🚀"},
-      { name: "Rompe Esquemas 💥"},
-      { name: "Emprendedor 💼"},
-      { name: "Mujer de Impacto 💪"},
-
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -65,12 +144,30 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: hernanImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Trota mundos 🌎"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Primer programador 💻"},
-      { name: "Gran jefe 👑"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -80,12 +177,42 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: angieImg,
     skills: [
-      { name: "Nuevos horizontes🌅" },
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Gran jefe 👑"},
-      { name: "Despegue Digital 🚀"},
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -95,12 +222,42 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: jhonImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Trota mundos 🌎"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Despegue Digital 🚀"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -110,12 +267,42 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: christopherImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Trota mundos 🌎"},
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -125,12 +312,42 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: silviaImg,
     skills: [
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Emprendedor 💼"},
-      { name: "Primer programador 💻"},
-      { name: "Gran jefe 👑"},
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -140,12 +357,42 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: hernanImg,
     skills: [
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Gran jefe 👑"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -155,13 +402,42 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: davidImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Trota mundos 🌎"},
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Gran jefe 👑"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -171,13 +447,26 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: christopherImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Primer programador 💻"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      }
     ]
   },
   {
@@ -187,13 +476,38 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: silviaImg,
     skills: [
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Primer programador 💻"},
-      { name: "Gran jefe 👑"},
-      { name: "Despegue Digital 🚀"},
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -203,12 +517,34 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: hernanImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Primer programador 💻"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -218,13 +554,38 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: angieImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Primer programador 💻"},
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -234,11 +595,34 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: jhonImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   },
   {
@@ -248,14 +632,30 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: christopherImg,
     skills: [
-      { name: "Trota mundos 🌎"},
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Emprendedor 💼"},
-      { name: "Primer programador 💻"},
-      { name: "Gran jefe 👑"},
-      { name: "Despegue Digital 🚀"},
-      { name: "Rompe Esquemas 💥"}
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      }
     ]
   },
   {
@@ -265,13 +665,38 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: silviaImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Emprendedor 💼"},
-      { name: "Primer programador 💻"},
-      { name: "Gran jefe 👑"},
-      { name: "Despegue Digital 🚀"},
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Primer Programador 💻",
+          description: "Quien marca el inicio del camino en programación dentro de su familia."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Mujer de Impacto 💪",
+          description: "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      }
     ]
   },
   {
@@ -281,12 +706,34 @@ const campersData = [
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Justo suscipit pharetra semectus duis, modi himenaeos liquido dopibus fermentum pellentesque vivamus vulputate mollis magnus sed.",
     image: hernanImg,
     skills: [
-      { name: "Espiritu Guerrero ⚔️" },
-      { name: "Nuevos horizontes🌅" },
-      { name: "Trota mundos 🌎"},
-      { name: "Cabeza de familia 👨‍👩‍👧‍👦"},
-      { name: "Mujer de Impacto 💪"},
-      { name: "Rompe Esquemas 💥"},
+      { 
+          name: "Espíritu Guerrero ⚔️",
+          description: "La persona que, además de programar, trabaja aparte del campus para superarse."
+      },
+      { 
+          name: "Nuevos Horizontes 🌅",
+          description: "Las personas que dejaron otra profesión para dedicarse a la programación."
+      },
+      { 
+          name: "Gran Jefe 👑",
+          description: "Líderes que destacan en equipos de desarrollo o proyectos de programación."
+      },
+      { 
+          name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+          description: "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan."
+      },
+      { 
+          name: "Emprendedor 💼",
+          description: "Programadores que crean sus propios proyectos o startups tecnológicas."
+      },
+      { 
+          name: "Despegue Digital 🚀",
+          description: "Programadores que aprovechan al máximo las herramientas digitales para crecer."
+      },
+      { 
+          name: "Rompe Esquemas 💥",
+          description: "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir."
+      }
     ]
   }
 ];
