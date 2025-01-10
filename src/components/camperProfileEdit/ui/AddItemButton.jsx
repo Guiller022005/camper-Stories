@@ -7,7 +7,7 @@ const AddItemButton = ({ type, className, onClick }) => {
         return {
           title: 'Añadir Nuevo Proyecto',
           containerClass: `
-            h-[460px] w-full
+            h-[470px] w-full
             bg-gradient-to-b from-gray-800/40 to-gray-900/40 
             backdrop-blur-sm 
             border border-gray-700/50 
