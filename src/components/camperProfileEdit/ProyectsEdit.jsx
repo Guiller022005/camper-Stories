@@ -30,12 +30,30 @@ const ProyectsEdit = () => {
     },
   ]);
 
-  const [technologuies] = useState([
-    { name: "React" },
-    { name: "Css" },
-    { name: "Node" },
-    { name: "Java" },
-  ]);
+  const [technologuies, setTechnologuies] = useState([]);
+
+  useEffect(() => {
+    const fetchTechnologuies = async () => {
+      try {
+        const response = await fetch(endpoints.technologies);
+        const text = await response.text(); 
+        console.log('Respuesta de la API:', text); 
+        // Verificar si la respuesta es JSON
+        const contentType = response.headers.get("content-type");
+        if (response.ok && contentType && contentType.includes("application/json")) {
+          const data = JSON.parse(text); // Convertir a JSON
+          console.log('tecnologias obtenidas:', data);
+          setTechnologuies(data.data); // Accediendo a la propiedad 'data'
+        } else {
+          console.error('Error: La respuesta no es un JSON válido o hubo un problema con la solicitud.');
+        }
+      } catch (error) {
+        console.error('Error de red:', error);
+      }
+    };
+
+    fetchTechnologuies();
+  }, []);
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
