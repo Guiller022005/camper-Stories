@@ -16,14 +16,17 @@ const normalizeCalperData = (data) => {
     dreams: Array.isArray(data.dreams) ? data.dreams : DEFAULT_CAMPER_DATA.dreams,
     about: data.about || DEFAULT_CAMPER_DATA.about,
     processTikToks: Array.isArray(data.processTikToks) ? data.processTikToks : DEFAULT_CAMPER_DATA.processTikToks,
+    main_video_url: data.main_video_url !== null ? data.main_video_url : DEFAULT_CAMPER_DATA.main_video_url
   };
 };
 
-// Función base para obtener un camper por ID
 export const fetchCamperById = async (id) => {
   try {
     const response = await axios.get(`${endpoints.campers}/${id}`);
-    return normalizeCalperData(response.data);
+    console.log(response);
+    const normalizedData = normalizeCalperData(response.data);
+    console.log(normalizedData);
+    return normalizedData;
   } catch (error) {
     console.error(`Error fetching camper with id ${id}:`, error);
     return DEFAULT_CAMPER_DATA;
