@@ -6,12 +6,17 @@ import "swiper/css/autoplay";
 import { Pagination, Autoplay } from "swiper/modules";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import campersData from "../../data/camperSucess";
+import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/camperService";
 import styles from "./styles/Campers.module.css";
 
 const Campers = () => {
   const [slidesPerView, setSlidesPerView] = useState(6);
+  const [campersData, setCampersData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [meritsData, setMeritsData] = useState([]);
 
+  // Handle window resizing for responsive slides
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
@@ -33,6 +38,52 @@ const Campers = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Fetch campers and merits data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const campers = await fetchCampersEgresados();
+        setCampersData(campers);
+
+        // Fetch merits for each camper
+        const meritsPromises = campers.map(async (camper) => {
+          const merits = await fetchMeritsCamperById(camper.camper_id);  // assuming camper_id is used for fetching merits
+          return {
+            camperId: camper.camper_id,
+            merits,
+          };
+        });
+
+        const meritsResults = await Promise.all(meritsPromises);
+        setMeritsData(meritsResults);
+        setIsLoading(false);
+      } catch (err) {
+        setError("Error al cargar los datos de los campers.");
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return <div className={styles.loading}>Cargando...</div>;
+  }
+
+  if (error) {
+    return <div className={styles.error}>{error}</div>;
+  }
+
+  // Select a random merit for each camper and store it
+  const getRandomMerit = (camperId) => {
+    const camperMerits = meritsData.find((merit) => merit.camperId === camperId);
+    if (camperMerits && camperMerits.merits.length > 0) {
+      const randomIndex = Math.floor(Math.random() * camperMerits.merits.length);  // Select random merit
+      return camperMerits.merits[randomIndex];
+    }
+    return null; // Return null if no merits found
+  };
+
   return (
     <div className={styles.campersContainer}>
       <div className={styles.titleCampers}>
@@ -50,37 +101,6 @@ const Campers = () => {
           }}
           pagination={{
             clickable: true,
-            renderBullet: (index, className) => {
-              const totalPages = Math.ceil(campersData.length / slidesPerView);
-
-              // Logic to show only 3 bullets:
-              const maxVisibleBullets = 3;
-              const midpoint = Math.floor(maxVisibleBullets / 2);
-
-              let visibleBullets = [];
-              if (totalPages <= maxVisibleBullets) {
-                visibleBullets = Array.from({ length: totalPages }, (_, i) => i);
-              } else {
-                if (index < midpoint) {
-                  visibleBullets = Array.from({ length: maxVisibleBullets }, (_, i) => i);
-                } else if (index > totalPages - midpoint - 1) {
-                  visibleBullets = Array.from(
-                    { length: maxVisibleBullets },
-                    (_, i) => totalPages - maxVisibleBullets + i
-                  );
-                } else {
-                  visibleBullets = Array.from(
-                    { length: maxVisibleBullets },
-                    (_, i) => index - midpoint + i
-                  );
-                }
-              }
-
-              if (visibleBullets.includes(index)) {
-                return `<span class="${className}"></span>`;
-              }
-              return "";
-            },
           }}
           modules={[Pagination, Autoplay]}
           className={`${styles.swiper} ${styles.customSwiper}`}
@@ -107,25 +127,48 @@ const Campers = () => {
             },
           }}
         >
-          {campersData.map((camper, index) => (
-            <SwiperSlide key={`${index}-${camper.name}`} className={styles.swiperSlide}>
-              <div className={styles.card}>
-                <div className={styles.perfil}>
-                  <LazyLoadImage
-                    src={camper.image}
-                    alt={camper.name}
-                    effect="blur" // Aplica un efecto de desenfoque al cargar
-                    className={styles.cardImage}
-                  />
+          {campersData.map((camper, index) => {
+            // Get the random merit for this camper
+            const randomMerit = getRandomMerit(camper.camper_id);
+
+            return (
+              <SwiperSlide key={`${index}-${camper.full_name}`} className={styles.swiperSlide}>
+                <div className={styles.card}>
+                  <div className={styles.perfil}>
+                    <LazyLoadImage
+                      src={camper.profile_picture} // Use profile_picture from API
+                      alt={camper.full_name}
+                      effect="blur"
+                      className={styles.cardImage}
+                    />
+                  </div>
+                  <div className={styles.cardContent}>
+                    <h3>{camper.full_name}</h3>
+                    <p>{camper.about}</p>
+
+                    {/* Display the random merit with icon before and after the name */}
+                    {randomMerit ? (
+                      <div className={styles.merit}>
+                        <h4>
+                          {/* Show the icon before and after the merit name */}
+                          <span className={styles.meritIcon}>
+                            {randomMerit.icon}
+                          </span>
+                          {randomMerit.name}
+                          <span className={styles.meritIcon}>
+                            {randomMerit.icon}
+                          </span>
+                        </h4>
+                        <p>{camper.history}</p>
+                      </div>
+                    ) : (
+                      <p>No merit available</p>
+                    )}
+                  </div>
                 </div>
-                <div className={styles.cardContent}>
-                  <h3>{camper.name}</h3>
-                  <h4>{camper.role}</h4>
-                  <p>{camper.description}</p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </div>
     </div>
