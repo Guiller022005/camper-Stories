@@ -1,3 +1,4 @@
+/* ProjectCard.module.css */
 .projects {
   display: flex;
   flex-wrap: wrap;
@@ -6,41 +7,41 @@
   box-sizing: border-box;
 }
 
-.project-card {
+.projectCard {
   flex: 1 1 calc(33.33% - 24px);
   box-sizing: border-box;
 }
 
-.project-card-img {
+.projectCardImg {
   object-fit: cover;
   width: 100%;
   height: 180px;
   background-color: #cccccc;
 }
 
-.project-card-meta {
+.projectCardMeta {
   padding: 16px;
 }
 
-.project-card-title {
+.projectCardTitle {
   font-size: 1.25rem;
   font-weight: 600;
   color: #333;
 }
 
-.project-card-description {
+.projectCardDescription {
   font-size: 0.875rem;
   color: #9ca3af;
 }
 
-.project-card-techs {
+.projectCardTechs {
   margin-top: 16px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.project-card-badge {
+.projectCardBadge {
   background-color: #211e8b;
   color: #fff;
   padding: 3px 10px;
@@ -48,63 +49,73 @@
   border-radius: 20px;
 }
 
-.project-card-button {
+.projectCardButton {
   margin-top: 16px;
 }
 
+.editButton {
+  margin-top: 8px;
+  width: 100%;
+  padding: 8px;
+  background-color: #211e8b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
 /* Media queries para tablets */
 @media (max-width: 1024px) {
   .projects {
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+    grid-template-columns: repeat(2, 1fr);
   }
  
-  .project-card {
+  .projectCard {
     flex: 1 1 calc(50% - 24px);
   }
- }
+}
  
- /* Media queries para móviles */
+/* Media queries para móviles */
 @media (max-width: 768px) {
   .projects {
-    grid-template-columns: 1fr; /* 1 columna */
+    grid-template-columns: 1fr;
     padding: 0 1rem;
   }
  
-  .project-card {
+  .projectCard {
     flex: 1 1 100%;
   }
  
-  .project-card-img {
+  .projectCardImg {
     height: 160px;
   }
  
-  .project-card-meta {
+  .projectCardMeta {
     padding: 12px;
   }
  
-  .project-card-techs {
+  .projectCardTechs {
     margin-top: 12px;
     gap: 6px;
   }
  
-  .project-card-badge {
+  .projectCardBadge {
     font-size: 0.75rem;
     padding: 2px 8px;
   }
- }
+}
  
- /* Media query para móviles pequeños */
- @media (max-width: 480px) {
-  .project-card-img {
+/* Media query para móviles pequeños */
+@media (max-width: 480px) {
+  .projectCardImg {
     height: 140px;
   }
  
-  .project-card-title {
+  .projectCardTitle {
     font-size: 1.1rem;
   }
  
-  .project-card-description {
+  .projectCardDescription {
     font-size: 0.8rem;
   }
- }
+}
