@@ -19,18 +19,10 @@ const AppRouter = () => {
         <Route path="/campers/login" element={<LoginPage />} />
         <Route path="/campers/register" element={<RegisterPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/campers/profile/:id/" element={<CamperProfile />} />
 
         <Route
-          path="/profile"
-          element={
-            <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
-              <CamperProfile />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/profileEdit"
+          path="/campers/profile/:id/edit"
           element={
             <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
               <CamperProfileEdit />

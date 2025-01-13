@@ -1,12 +1,14 @@
-import React, { useEffect, useState, lazy } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
+import { useParams } from 'react-router-dom';
+
 import styles from './styles/CamperProfile.module.css';
 import LazySection from '../../components/common/LazySection';
 import Loader from '@/components/common/Loader';
 import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
-
 import { fetchCamperById } from '../../services/camperService';
 import { fetchTikToksByCamperId } from '@/services/tiktokService';
 import { fetchMeritsByCamperId } from '@/services/meritsService';
+import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
 import ErrorPage from '../ErrorPage/ErrorPage';
 
 // Lazy load components
@@ -17,24 +19,26 @@ const Dreams = lazy(() => import('../../components/camperProfile/Dreams'));
 const TrainingProcess = lazy(() => import('../../components/camperProfile/TrainingProcess'));
 const Proyects = lazy(() => import('@/components/camperProfile/Proyects'));
 const SponsorCTA = lazy(() => import('../../components/camperProfile/SponsorCTA'));
-const Footer = lazy(() => import('../../components/footer/Footer'))
+const Footer = lazy(() => import('../../components/footer/Footer'));
+
 
 const CamperProfile = () => {
+    const { id } = useParams(); // Obtenemos el id de la URL
     const [camperData, setCamperData] = useState(DEFAULT_CAMPER_DATA);
     const [camperTiktoksData, setCamperTiktoksData] = useState([]); 
     const [camperMerits, setCamperMerits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Fetch campers, tiktoks, merits by camper_id
+    // Modificamos el useEffect para usar el id de la URL
     useEffect(() => {
         const loadCamperData = async () => {
             try {
                 setIsLoading(true);
                 const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
-                    fetchCamperById(57),
-                    fetchTikToksByCamperId(1),
-                    fetchMeritsByCamperId(57)
+                    fetchCamperById(Number(id)), // Convertimos el id a número
+                    fetchTikToksByCamperId(Number(id)), // Usamos el mismo id para tiktoks
+                    fetchMeritsByCamperId(Number(id)) // Y para méritos
                 ]);
 
                 setCamperData(data_infoCamper);
@@ -52,8 +56,10 @@ const CamperProfile = () => {
             }
         };
 
-        loadCamperData();
-    }, []);
+        if (id) { // Solo cargar si hay un id
+            loadCamperData();
+        }
+    }, [id]);
 
     if (isLoading) {
         return <Loader />; 
@@ -70,7 +76,7 @@ const CamperProfile = () => {
     }
 
     return (
-        <div className={`${styles.camperProfileView} flex flex-col`}>
+        <div className={`${styles.camperProfileView} flex flex-col relative`}>
             <LazySection>
                 <NavbarProfile />
             </LazySection>
@@ -113,6 +119,9 @@ const CamperProfile = () => {
                 <Footer />
             </LazySection>
             
+            <Suspense fallback={null}>
+                <FloatingActionMenu />
+            </Suspense>
         </div>
     );
 };
