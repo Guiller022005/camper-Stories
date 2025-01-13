@@ -120,11 +120,6 @@ const MainCampers = () => {
     </div>
   );
 
-  // Si los campers aún no se han cargado, muestra un mensaje de carga
-  if (campers.length === 0) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="developer-profiles">
       <div className="profile-card">
