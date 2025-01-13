@@ -37,9 +37,6 @@ function ProjectCard({ title, description, image, technologies, codeUrl, onEdit 
       >
         Ver Código
       </Button>
-      <button className="edit-button" onClick={onEdit}>
-        Editar
-      </button>
     </Card>
   );
 }

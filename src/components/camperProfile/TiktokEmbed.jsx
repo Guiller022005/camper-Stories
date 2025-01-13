@@ -4,6 +4,8 @@ import "./styles/TiktokEmbed.css";
 
 const TikTokEmbed = ({ videoUrl }) => {
 
+  console.log(videoUrl);
+
   // Validar que videoUrl exista y sea string
   if (!videoUrl || typeof videoUrl !== 'string') {
     console.log('Error: URL no válida o no es string');

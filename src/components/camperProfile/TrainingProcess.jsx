@@ -64,7 +64,7 @@ const TrainingProcess = ({ videos = [] }) => {
           >
             {videoArray.map((video, index) => (
               <SwiperSlide key={index} className={styles.videoItem}>
-                <TikTokEmbed videoUrl={video.vide_url} title={video.title} />
+                <TikTokEmbed videoUrl={video.video_url} title={video.title} />
               </SwiperSlide>
             ))}
           </Swiper>
