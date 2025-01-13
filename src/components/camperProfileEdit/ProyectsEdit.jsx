@@ -5,7 +5,10 @@ import { ProyectsModal } from "./modals/ProyectsModal";
 import { ProyectsEditModal } from "./modals/ProyectsEditModal";
 import styles from "./styles/ProyectsEdit.module.css";
 import { getProjects, addProjects } from "../../services/proyectsService";
-import { getTechnology } from "../../services/technologiesService";
+import {
+  getTechnology,
+  getTechnologyForProject,
+} from "../../services/technologiesService";
 
 const ProyectsEdit = () => {
   const [projects, setProjects] = useState([]);
@@ -32,22 +35,55 @@ const ProyectsEdit = () => {
   }, []);
 
   useEffect(() => {
-    const fechProjects = async () => {
+    const fetchProjects = async () => {
       try {
         const id = localStorage.getItem("userId");
         setLoading(true);
         const projectsData = await getProjects(58);
-        setProjects(projectsData);
+
+        // Initialize projects with empty technologies array
+        const projectsWithEmptyTech = projectsData.map((project) => ({
+          ...project,
+          technologies: [],
+        }));
+
+        setProjects(projectsWithEmptyTech);
+
+        // After setting initial projects, fetch technologies for each project
+        projectsData.forEach((project) => {
+          fetchTechnologyForProject(project.id);
+        });
+
+        console.log(projectsData)
       } catch (err) {
         setError(err.message);
-        console.error("Error loading dreams: ", err);
+        console.error("Error loading projects: ", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fechProjects();
+    fetchProjects();
   }, []);
+
+  // Function to fetch technologies for a specific project
+  const fetchTechnologyForProject = async (projectId) => {
+    try {
+      const technologies = await getTechnologyForProject(projectId);
+
+      // Update the specific project with its technologies
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.id === projectId ? { ...project, technologies } : project
+        )
+      );
+    } catch (err) {
+      console.error(
+        `Error loading technologies for project ${projectId}:`,
+        err
+      );
+    }
+  };
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -93,7 +129,7 @@ const ProyectsEdit = () => {
 
       <div className={styles.projects} id="projects-profile">
         <div className={styles.projectCard}>
-          <div>
+          <div className={styles.projectCardAdd}>
             <ProyectsModal
               onAddProject={isEditing ? handleUpdateProject : handleAddProject}
               technologies={technologies}

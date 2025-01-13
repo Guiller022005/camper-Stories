@@ -1,12 +1,37 @@
-import React from 'react';
-import { dreamsData } from '../../data/data';
+import React, { use, useEffect, useState } from "react";
+import { getDreams } from "../../services/dreamsService";
 import styles from './styles/DreamsGrid.module.css'
 
 const DreamsGrid = () => {
+  const [dreams, setDreams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const uniqueDreams = [...new Set(dreamsData.dreams.map(dream => dream.id))].map(id => 
-    dreamsData.dreams.find(dream => dream.id === id)
+  useEffect(() => {
+    const fechDreams = async () => {
+      try {
+        const id = 58; 
+        setLoading(true);
+        const dreamsData = await getDreams(id);
+        setDreams(dreamsData);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error loading dreams: ", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fechDreams();
+  }, []);
+
+  const uniqueDreams = [...new Set(dreams.map((dream) => dream.id))].map((id) =>
+    dreams.find((dream) => dream.id === id)
   );
+
+  const handleAddDream = (newDream) => {
+    setDreams((prevDreams) => [...prevDreams, newDream]);
+  };
   
   return (
     <div className={styles.cardArea}>

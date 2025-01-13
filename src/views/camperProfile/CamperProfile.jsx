@@ -102,7 +102,7 @@ const CamperProfile = () => {
 
                 <LazySection>
                     <Proyects
-                        projects={camper.projects}
+                        projects={camperData.projects}
                     />
                 </LazySection>
 
