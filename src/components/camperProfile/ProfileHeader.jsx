@@ -1,5 +1,4 @@
 // ProfileHeader.jsx
-// ProfileHeader.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -7,7 +6,6 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
 import './styles/ProfileHeader.css';
 
- 
 const ProfileHeader = ({ data, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
@@ -72,10 +70,11 @@ const ProfileHeader = ({ data, initialMerits }) => {
             <p>Méritos</p>
           </div>
           <div className="badges-container wrapper">
-            {initialMerits.slice(0, showAllBadges ? initialMerits.length : maxVisibleBadges).map((skill, index) => (
+            {initialMerits.slice(0, showAllBadges ? initialMerits.length : maxVisibleBadges).map((merit, index) => (
               <div key={index} className="skill-item">
-                <div className="tooltip icon badgeInfo">{skill.description}</div>
-                {skill.name}
+                <div className="tooltip icon badgeInfo">{merit.description}</div>
+                {merit.name}
+                {merit.icon}
               </div>
             ))}
           </div>

@@ -6,6 +6,8 @@ import Footer from "../../components/footer/Footer";
 import { fetchCamperById } from "@/services/camperService";
 import LazySection from "@/components/common/LazySection";
 import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
+import { fetchTikToksByCamperId } from "@/services/tiktokService";
+import { fetchMeritsByCamperId } from "@/services/meritsService";
 
 // Lazy load components
 const ProfileHeaderEdit = lazy(() =>
@@ -29,26 +31,39 @@ const SponsorCTAEdit = lazy(() =>
 
 const CamperProfileEdit = () => {
   const [camperData, setCamperData] = useState(DEFAULT_CAMPER_DATA);
+  const [camperTiktoksData, setCamperTiktoksData] = useState([]); 
+  const [camperMerits, setCamperMerits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Obtener informacion del camper por id
+  // Fetch campers, tiktoks, merits by camper_id
   useEffect(() => {
-    const loadCamper = async () => {
-      try {
-        setIsLoading(true);
-        const data = await fetchCamperById(58);
-        console.log("Data recibida:", data); // Veamos qué datos recibimos
-        setCamperData(data);
-      } catch (err) {
-        setError(err.message);
-        console.error("Error cargando datos del camper:", err);
-      } finally {
-        setIsLoading(false);
-      }
+    const loadCamperData = async () => {
+        try {
+            setIsLoading(true);
+            const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
+                fetchCamperById(52),
+                fetchTikToksByCamperId(1),
+                fetchMeritsByCamperId(57)
+            ]);
+
+            setCamperData(data_infoCamper);
+            setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
+            setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
+        } catch (err) {
+            setError(err.message);
+            console.error('Error cargando datos:', err);
+            // Establecer datos por defecto en caso de error
+            setCamperData(DEFAULT_CAMPER_DATA);
+            setCamperTiktoksData([]);
+            setCamperMerits([]);
+        } finally {
+            setIsLoading(false);
+        }
     };
-    loadCamper();
-  }, []);
+
+    loadCamperData();
+}, []);
 
   if (isLoading) {
     return (
@@ -81,7 +96,7 @@ const CamperProfileEdit = () => {
         <LazySection>
           <ProfileHeaderEdit
             data={camperData}
-            initialMerits={camperData.merits}
+            initialMerits={camperMerits}
           />
         </LazySection>
 
@@ -98,7 +113,9 @@ const CamperProfileEdit = () => {
         </LazySection>
 
         <LazySection>
-          <TrainingProcessEdit videos={camper.processTikToks} />
+          <TrainingProcessEdit 
+            videos={camperTiktoksData} 
+          />
         </LazySection>
 
         <LazySection>
