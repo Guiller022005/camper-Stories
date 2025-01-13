@@ -15,7 +15,7 @@ const Proyects = () => {
       try {
         const id = localStorage.getItem("userId");
         setLoading(true);
-        const projectsData = await getProjects(58);
+        const projectsData = await getProjects(57);
 
         // Initialize projects with empty technologies array
         const projectsWithEmptyTech = projectsData.map((project) => ({

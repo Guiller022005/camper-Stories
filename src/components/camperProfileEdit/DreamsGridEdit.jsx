@@ -1,26 +1,20 @@
-import React, { use, useEffect, useState } from "react";
-import { dreamsData } from "../../data/data";
+import React, { useEffect, useState } from "react";
 import { getDreams } from "../../services/dreamsService";
 import styles from "./styles/DreamsGridEdit.module.css";
 import DreamsModal from "./modals/DreamsModal";
 
 const DreamsGridEdit = () => {
   const [dreams, setDreams] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fechDreams = async () => {
       try {
         const id = 58; 
-        setLoading(true);
         const dreamsData = await getDreams(id);
         setDreams(dreamsData);
       } catch (err) {
-        setError(err.message);
         console.error("Error loading dreams: ", err);
       } finally {
-        setLoading(false);
       }
     };
 
