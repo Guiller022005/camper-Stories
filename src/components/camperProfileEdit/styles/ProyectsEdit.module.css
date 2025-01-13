@@ -4,9 +4,11 @@
 }
 
 .projects {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(20px, 2vw, 20px);
   width: 100%;
   margin-top: 2rem;
 }
@@ -27,23 +29,21 @@
 }
 
 .profileSubtitle {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: bold;
-  color: #ffffff;
+  color: #FFFFFF;
   font-size: clamp(1.5rem, 3vw, 3rem);
   margin-bottom: 1rem;
   margin-top: 1rem;
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .highlight {
   color: #facc15;
   font-weight: bold;
-}
-
-@media (max-width: 1024px) {
-  .projects {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (max-width: 768px) {

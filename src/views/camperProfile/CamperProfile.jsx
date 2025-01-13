@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import styles from './styles/CamperProfile.module.css';
 import LazySection from '../../components/common/LazySection';
-import Loader from '@/components/common/Loader';
 import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
 import { fetchCamperById } from '../../services/camperService';
 import { fetchTikToksByCamperId } from '@/services/tiktokService';
@@ -106,9 +105,7 @@ const CamperProfile = () => {
                 </LazySection>
 
                 <LazySection>
-                    <Proyects
-                        projects={camperData.projects}
-                    />
+                    <Proyects />
                 </LazySection>
 
                 <LazySection>
