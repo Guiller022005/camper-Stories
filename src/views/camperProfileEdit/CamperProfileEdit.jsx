@@ -98,11 +98,11 @@ const CamperProfileEdit = () => {
         </LazySection>
 
         <LazySection>
-          <TrainingProcessEdit videos={camper.processTikToks} />
+          <TrainingProcessEdit videos={camperData.processTikToks} />
         </LazySection>
 
         <LazySection>
-          <ProyectsEdit projects={camper.projects} />
+          <ProyectsEdit />
         </LazySection>
 
         <LazySection>

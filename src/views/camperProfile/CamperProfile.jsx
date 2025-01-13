@@ -20,20 +20,20 @@ const CamperProfile = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Fetch campers by id
+    // Obtener informacion del camper por id
     useEffect(() => {
         const loadCamper = async () => {
-            try {
-                setIsLoading(true);
-                const data = await fetchCamperById(52);
-                console.log("Data recibida:", data); // Veamos qué datos recibimos
-                setCamperData(data);
-            } catch (err) {
-                setError(err.message);
-                console.error('Error cargando datos del camper:', err);
-            } finally {
-                setIsLoading(false);
-            }
+        try {
+            setIsLoading(true);
+            const data = await fetchCamperById(58);
+            console.log("Data recibida:", data); // Veamos qué datos recibimos
+            setCamperData(data);
+        } catch (err) {
+            setError(err.message);
+            console.error("Error cargando datos del camper:", err);
+        } finally {
+            setIsLoading(false);
+        }
         };
         loadCamper();
     }, []);
@@ -86,13 +86,13 @@ const CamperProfile = () => {
 
                 <LazySection>
                     <TrainingProcess
-                        videos={camper.processTikToks}
+                        videos={camperData.processTikToks}
                     />
                 </LazySection>
 
                 <LazySection>
                     <Proyects
-                        projects={camper.projects}
+                        projects={camperData.projects}
                     />
                 </LazySection>
 
