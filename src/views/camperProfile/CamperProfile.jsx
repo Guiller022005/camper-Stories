@@ -30,7 +30,7 @@ const CamperProfile = () => {
             try {
                 setIsLoading(true);
                 const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
-                    fetchCamperById(52),
+                    fetchCamperById(57),
                     fetchTikToksByCamperId(1),
                     fetchMeritsByCamperId(57)
                 ]);
