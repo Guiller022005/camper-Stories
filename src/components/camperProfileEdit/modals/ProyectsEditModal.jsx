@@ -1,10 +1,10 @@
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogDescription 
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -18,12 +18,17 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
-export function ProyectsEditModal({ project, technologuies, onUpdateProject, onClose }) {
+export function ProyectsEditModal({
+  project,
+  technologies,
+  onUpdateProject,
+  onClose,
+}) {
   const [formData, setFormData] = useState({
-    title: project?.title || '',
-    description: project?.description || '',
-    image: project?.image || '',
-    codeUrl: project?.codeUrl || '',
+    title: project?.title || "",
+    description: project?.description || "",
+    image: project?.image || "",
+    codeUrl: project?.codeUrl || "",
     technologies: project?.technologies || [],
   });
 
@@ -59,12 +64,22 @@ export function ProyectsEditModal({ project, technologuies, onUpdateProject, onC
   };
 
   const handleSubmit = () => {
-    if (!formData.title || !formData.description || !formData.image || !formData.codeUrl) {
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.image ||
+      !formData.codeUrl
+    ) {
       alert("Por favor, completa todos los campos.");
       return;
     }
 
-    onUpdateProject(formData);
+    const updatedProject = {
+      ...formData,
+      image: formData.image, // Envía el archivo al backend
+    };
+
+    onUpdateProject(updatedProject);
     onClose(); // Cerrar el modal
   };
 
@@ -133,7 +148,7 @@ export function ProyectsEditModal({ project, technologuies, onUpdateProject, onC
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
               <SelectContent className="bg-white">
-                {technologuies.map((tech) => (
+                {technologies.map((tech) => (
                   <SelectItem
                     key={tech.name}
                     value={tech.name}

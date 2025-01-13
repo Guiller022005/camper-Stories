@@ -18,27 +18,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "boxicons";
-import styles from "./styles/ProyectsModal.module.css";
 import { useState } from "react";
-import { time } from "framer-motion";
 import AddItemButton from "../ui/AddItemButton";
-
-// async function saveToDatabase(data) {
-//     const response = await fetch("/api/saveProject", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(data),
-//     });
-//     if (!response.ok) {
-//       throw new Error("Error guardando en la base de datos");
-//     }
-//   }
 
 export function ProyectsModal({ onAddProject, technologies }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    image: "",
+    image: null, // Archivo de imagen
+    imagePreview: null, // Vista previa de la imagen
     codeUrl: "",
     technologies: [],
   });
@@ -48,13 +36,22 @@ export function ProyectsModal({ onAddProject, technologies }) {
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  // const handleSubmit = async = () => {
-  //     try {
-  //         setFormData()
-  //     } catch(error){
-
-  //     }
-  // }
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({
+          ...prev,
+          image: file, // Guarda el archivo
+          imagePreview: reader.result, // Vista previa
+        }));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("Por favor, selecciona un archivo de imagen válido.");
+    }
+  };
 
   const handleSelectTechnology = (techName) => {
     setFormData((prev) => ({
@@ -82,13 +79,23 @@ export function ProyectsModal({ onAddProject, technologies }) {
       alert("Por favor, completa todos los campos.");
       return;
     }
-    onAddProject(formData);
 
-    // Limpiar el formulario
+    console.log(formData.image);
+
+    // Envía los datos al componente padre
+    const projectData = {
+      ...formData,
+      image: formData.image, // Envía la vista previa como representación de la imagen
+    };
+
+    onAddProject(projectData);
+
+    // Limpia el formulario
     setFormData({
       title: "",
       description: "",
-      image: "",
+      image: null,
+      imagePreview: null,
       codeUrl: "",
       technologies: [],
     });
@@ -99,7 +106,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="w-full h-full ">
+        <div className="w-full h-full">
           <AddItemButton
             type="project"
             className="w-full h-full bg-indigo-950/30 border-none"
@@ -109,16 +116,16 @@ export function ProyectsModal({ onAddProject, technologies }) {
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-gray-900">
-            Añadir Proyectos
+            Añadir Proyecto
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Añade tus proyectos aqui, presiona guardar cuando hayas acabado.
+            Añade tus proyectos aquí y presiona guardar cuando hayas terminado.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right text-gray-900">
-              Titulo
+            <Label htmlFor="title" className="text-right text-gray-900">
+              Título
             </Label>
             <Input
               id="title"
@@ -128,8 +135,8 @@ export function ProyectsModal({ onAddProject, technologies }) {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right text-gray-900">
-              Descripcion
+            <Label htmlFor="description" className="text-right text-gray-900">
+              Descripción
             </Label>
             <Input
               id="description"
@@ -138,20 +145,32 @@ export function ProyectsModal({ onAddProject, technologies }) {
               className="col-span-3 text-gray-900 border-gray-300"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right text-gray-900">
-              URL imagen
+          <div className="grid grid-cols-4 items-center gap-4 cursor-pointer">
+            <Label htmlFor="image" className="text-right text-gray-900">
+              Imagen
             </Label>
             <Input
               id="image"
-              value={formData.image}
-              onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="col-span-3 text-gray-900 border-gray-300 cursor-pointer"
             />
           </div>
+          {formData.imagePreview && (
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="col-span-4 mt-2">
+                <img
+                  src={formData.imagePreview}
+                  alt="Vista previa"
+                  className="w-full h-32 object-cover rounded"
+                />
+              </Label>
+            </div>
+          )}
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right text-gray-900">
-              Link del proyecto
+            <Label htmlFor="codeUrl" className="text-right text-gray-900">
+              Link del Proyecto
             </Label>
             <Input
               id="codeUrl"
@@ -164,9 +183,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
             <label className="text-sm font-medium text-gray-900">
               Tecnologías
             </label>
-            <Select
-              onValueChange={(value) => handleSelectTechnology(value)} // Manejar selección
-            >
+            <Select onValueChange={(value) => handleSelectTechnology(value)}>
               <SelectTrigger className="w-full text-gray-900 border-gray-300">
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
@@ -194,7 +211,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
                     onClick={() => handleRemoveTechnology(tech)}
                     className="text-red-500 hover:text-red-700 ml-2 font-medium"
                   >
-                    &times;
+                    ×
                   </button>
                 </li>
               ))}

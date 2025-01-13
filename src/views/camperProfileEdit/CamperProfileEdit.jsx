@@ -119,7 +119,7 @@ const CamperProfileEdit = () => {
         </LazySection>
 
         <LazySection>
-          <ProyectsEdit projects={camper.projects} />
+          <ProyectsEdit />
         </LazySection>
 
         <LazySection>

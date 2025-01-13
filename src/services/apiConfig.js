@@ -10,6 +10,7 @@ export const endpoints = {
   city: `${API_BASE_URL}cities`, // Endpoint para crear sueno
   technology: `${API_BASE_URL}technology`,
   projects: `${API_BASE_URL}campers/{id}/proyects`,
+  technologyProject: `${API_BASE_URL}projects/technologies`
 };
 
 export default API_BASE_URL;
