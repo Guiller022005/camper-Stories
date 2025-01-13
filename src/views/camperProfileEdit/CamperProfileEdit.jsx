@@ -113,7 +113,9 @@ const CamperProfileEdit = () => {
         </LazySection>
 
         <LazySection>
-          <TrainingProcessEdit videos={camperData.processTikToks} />
+          <TrainingProcessEdit 
+            videos={camperTiktoksData} 
+          />
         </LazySection>
 
         <LazySection>
