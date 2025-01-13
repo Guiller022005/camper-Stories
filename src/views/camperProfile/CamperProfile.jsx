@@ -1,21 +1,24 @@
 import React, { useEffect, useState, lazy } from 'react';
-import NavbarProfile from '../../components/navbar/NavbarProfile';
-import Footer from "../../components/footer/Footer";
 import camper from '../../data/camperProfilePage';
-import { fetchCamperById } from '../../services/camperService';
 import styles from './styles/CamperProfile.module.css';
 import LazySection from '../../components/common/LazySection';
+import Loader from '@/components/common/Loader';
 import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
+
+import { fetchCamperById } from '../../services/camperService';
 import { fetchTikToksByCamperId } from '@/services/tiktokService';
 import { fetchMeritsByCamperId } from '@/services/meritsService';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 // Lazy load components
+const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
 const ProfileHeader = lazy(() => import("../../components/camperProfile/ProfileHeader"));
 const AboutMe = lazy(() => import('../../components/camperProfile/AboutMe'));
 const Dreams = lazy(() => import('../../components/camperProfile/Dreams'));
 const TrainingProcess = lazy(() => import('../../components/camperProfile/TrainingProcess'));
 const Proyects = lazy(() => import('@/components/camperProfile/Proyects'));
 const SponsorCTA = lazy(() => import('../../components/camperProfile/SponsorCTA'));
+const Footer = lazy(() => import('../../components/footer/Footer'))
 
 const CamperProfile = () => {
     const [camperData, setCamperData] = useState(DEFAULT_CAMPER_DATA);
@@ -54,33 +57,25 @@ const CamperProfile = () => {
     }, []);
 
     if (isLoading) {
-        return (
-            <div className={styles.loadingContainer}>
-                <div className={styles.loadingSpinner}>Cargando...</div>
-            </div>
-        );
+        return <Loader />; 
     }
 
     if (error) {
         return (
-            <div className={styles.errorContainer}>
-                <div className={styles.errorMessage}>
-                    Error: {error}
-                    <button 
-                        onClick={() => window.location.reload()} 
-                        className={styles.retryButton}
-                    >
-                        Reintentar
-                    </button>
-                </div>
-            </div>
+            <ErrorPage 
+                title="Error al cargar el perfil"
+                message={`No pudimos cargar la información del camper. ${error}`}
+                error="404" // O podrías usar un código de error específico según el tipo de error
+            />
         );
     }
 
     return (
-        <div className={styles.camperProfileView}>
-            <NavbarProfile />
-            <div className={styles.profileMainContent}>
+        <div className={`${styles.camperProfileView} flex flex-col`}>
+            <LazySection>
+                <NavbarProfile />
+            </LazySection>
+            <div className={`${styles.profileMainContent} flex flex-col gap-4`}>
                 <LazySection>
                     <ProfileHeader 
                         data={camperData}
@@ -115,7 +110,10 @@ const CamperProfile = () => {
                     <SponsorCTA />
                 </LazySection>
             </div>
-            <Footer />
+            <LazySection>
+                <Footer />
+            </LazySection>
+            
         </div>
     );
 };
