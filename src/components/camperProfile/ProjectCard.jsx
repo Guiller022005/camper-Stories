@@ -51,9 +51,6 @@ function ProjectCardEdit({
       >
         Ver Código
       </Button>
-      <button className={styles.editButton} onClick={onEdit}>
-        Editar
-      </button>
     </Card>
   );
 }
