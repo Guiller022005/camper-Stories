@@ -102,7 +102,7 @@ const TrainingProcessEdit = ({ videos }) => {
             {/* Mapeo de videos existentes */}
             {videos.map((video, index) => (
               <SwiperSlide key={index} className={styles.videoItem}>
-                <TikTokEmbedEdit videoUrl={video.url} title={video.title} />
+                <TikTokEmbedEdit videoUrl={video.video_url} title={video.title} />
               </SwiperSlide>
             ))}
           </Swiper>

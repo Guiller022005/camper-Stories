@@ -10,8 +10,6 @@ const ProfileHeader = ({ data, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
-  console.log(data);
-
   const handleToggleBadges = () => {
     setShowAllBadges((prev) => !prev);
   };
@@ -45,7 +43,7 @@ const ProfileHeader = ({ data, initialMerits }) => {
               </div>
               <div className="profile-age">
                 <Cake />
-                <p>{`${data.age}`}</p>
+                <p>{`${data.age} Años`}</p>
               </div>
             </div>
             <div className="profile-buttons">
