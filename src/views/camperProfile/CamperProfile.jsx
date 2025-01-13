@@ -1,5 +1,4 @@
 import React, { useEffect, useState, lazy } from 'react';
-import camper from '../../data/camperProfilePage';
 import styles from './styles/CamperProfile.module.css';
 import LazySection from '../../components/common/LazySection';
 import Loader from '@/components/common/Loader';
