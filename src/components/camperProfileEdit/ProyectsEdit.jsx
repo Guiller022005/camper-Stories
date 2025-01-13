@@ -1,43 +1,34 @@
 // ProyectsEdit.jsx
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProjectCardEdit from "./ProjectCardEdit";
 import { ProyectsModal } from "./modals/ProyectsModal";
 import { ProyectsEditModal } from "./modals/ProyectsEditModal";
 import styles from "./styles/ProyectsEdit.module.css";
 import { getProjects, addProjects } from "../../services/proyectsService";
+import { getTechnology } from "../../services/technologiesService";
 
 const ProyectsEdit = () => {
   const [projects, setProjects] = useState([]);
-
   const [technologies, setTechnologies] = useState([]);
+  const [loading, setLoading] = useState(false); // Añadir esto
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchTechnologuies = async () => {
+    const fetchTechnology = async () => {
       try {
-        const response = await fetch(endpoints.technologies);
-        const text = await response.text();
-        console.log("Respuesta de la API:", text);
-        // Verificar si la respuesta es JSON
-        const contentType = response.headers.get("content-type");
-        if (
-          response.ok &&
-          contentType &&
-          contentType.includes("application/json")
-        ) {
-          const data = JSON.parse(text); // Convertir a JSON
-          console.log("tecnologias obtenidas:", data);
-          setTechnologies(data.data); // Accediendo a la propiedad 'data'
-        } else {
-          console.error(
-            "Error: La respuesta no es un JSON válido o hubo un problema con la solicitud."
-          );
-        }
-      } catch (error) {
-        console.error("Error de red:", error);
+        setLoading(true);
+        const technologyData = await getTechnology();
+        setTechnologies(technologyData);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error loading technologies: ", err);
+        setTechnologies([]);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchTechnologuies();
+    fetchTechnology();
   }, []);
 
   useEffect(() => {
@@ -45,8 +36,8 @@ const ProyectsEdit = () => {
       try {
         const id = localStorage.getItem("userId");
         setLoading(true);
-        const dreamsData = await getProjects(id);
-        setProjects(dreamsData);
+        const projectsData = await getProjects(58);
+        setProjects(projectsData);
       } catch (err) {
         setError(err.message);
         console.error("Error loading dreams: ", err);
@@ -64,13 +55,13 @@ const ProyectsEdit = () => {
   const handleAddProject = async (newProject) => {
     try {
       const id = localStorage.getItem("userId");
-      const response = await addProjects(id, newProject);
+      const response = await addProjects(109, newProject);
       if (!response.ok) {
         throw new Error("Error al enviar la informacion");
       }
-      setProjects((prevProjects) => [...prevProjects, savedProject]); 
+      setProjects((prevProjects) => [...prevProjects, newProject]);
     } catch (error) {
-      console.error("error", error)
+      console.error("error", error);
     }
   };
 
@@ -105,7 +96,7 @@ const ProyectsEdit = () => {
           <div>
             <ProyectsModal
               onAddProject={isEditing ? handleUpdateProject : handleAddProject}
-              technologuies={technologies}
+              technologies={technologies}
               initialData={isEditing ? selectedProject : null}
               closeModal={() => {
                 setIsEditing(false);
@@ -130,7 +121,7 @@ const ProyectsEdit = () => {
         {isEditing && selectedProject && (
           <ProyectsEditModal
             project={selectedProject}
-            technologuies={technologies}
+            technologies={technologies}
             onUpdateProject={handleUpdateProject}
             onClose={closeEditModal}
           />

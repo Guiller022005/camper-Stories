@@ -12,7 +12,7 @@ const DreamsGridEdit = () => {
   useEffect(() => {
     const fechDreams = async () => {
       try {
-        const id = "1"; 
+        const id = 58; 
         setLoading(true);
         const dreamsData = await getDreams(id);
         setDreams(dreamsData);

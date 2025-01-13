@@ -23,7 +23,7 @@ const AppRouter = () => {
         <Route
           path="/profile"
           element={
-            <ProtectedRoute allowedRoles={['USER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
               <CamperProfile />
             </ProtectedRoute>
           }
@@ -32,7 +32,7 @@ const AppRouter = () => {
         <Route
           path="/profileEdit"
           element={
-            <ProtectedRoute allowedRoles={['USER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
               <CamperProfileEdit />
             </ProtectedRoute>
           }
@@ -41,7 +41,7 @@ const AppRouter = () => {
         <Route
           path="/profile/:id"
           element={
-            <ProtectedRoute allowedRoles={['USER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
               <CamperProfile />
             </ProtectedRoute>
           }

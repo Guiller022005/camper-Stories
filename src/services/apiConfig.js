@@ -7,7 +7,7 @@ export const endpoints = {
   dreams: `${API_BASE_URL}campers/{id}/dreams`,
   tiktoks: `${API_BASE_URL}campers/{id}/videos`,
   city: `${API_BASE_URL}cities`, // Endpoint para crear sueno
-  technologuies: `${API_BASE_URL}technologuies`,
+  technology: `${API_BASE_URL}technology`,
   projects: `${API_BASE_URL}campers/{id}/proyects`,
 };
 

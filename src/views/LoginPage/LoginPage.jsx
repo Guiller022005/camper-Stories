@@ -13,7 +13,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (token) {
       console.log("Usuario ya autenticado. Redirigiendo a /");
-      navigate('/');
+      // navigate('/');
     }
   }, [token]);
 
@@ -31,8 +31,9 @@ const LoginPage = () => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
-        console.log("Inicio de sesión exitoso. Token recibido:", data.token);
-        navigate('/');
+        localStorage.setItem('role', data.user.role);
+        console.log("Inicio de sesión exitoso. Token recibido:", data);
+        // navigate('/');
       } else {
         console.error("Error de autenticación. Credenciales incorrectas.");
       }
@@ -52,12 +53,6 @@ const LoginPage = () => {
               <div className="flex justify-center">
                 <div className="w-40 h-auto">
                   <img src={campushm} alt="Campus" className="w-40 h-auto mx-auto" />
-                  <circle cx="50" cy="50" r="45" stroke="white" strokeWidth="2" />
-                  <path
-                    d="M50 20C35 20 25 35 25 50C25 65 35 80 50 80C65 80 75 65 75 50C75 35 65 20 50 20Z"
-                    stroke="white"
-                    strokeWidth="2"
-                  />
                 </div>
               </div>
               <CardTitle className="text-2xl font-bold tracking-tight text-white">

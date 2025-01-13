@@ -40,7 +40,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
     description: "",
     image: "",
     codeUrl: "",
-    technologies: technologies,
+    technologies: [],
   });
 
   const handleChange = (e) => {
@@ -93,6 +93,8 @@ export function ProyectsModal({ onAddProject, technologies }) {
       technologies: [],
     });
   };
+
+  const techArray = Array.isArray(technologies) ? technologies : [];
 
   return (
     <Dialog>
@@ -169,7 +171,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
               <SelectContent className="bg-white">
-                {technologies.map((tech) => (
+                {techArray.map((tech) => (
                   <SelectItem
                     key={tech.name}
                     value={tech.name}

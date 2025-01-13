@@ -33,13 +33,13 @@ export default function RegisterForm() {
   const [ciudadesColombia, setCiudadesColombia] = useState([]);
 
   const tiposDocumento = [
-    { id: "CC", nombre: "Cédula de Ciudadanía" },
-    { id: "CE", nombre: "Cédula de Extranjería" },
-    { id: "TI", nombre: "Tarjeta de Identidad" },
-    { id: "PP", nombre: "Pasaporte" },
+    { id: '1', nombre: 'Cédula de Ciudadanía' },
+    { id: '2', nombre: 'Cédula de Extranjería' },
+    { id: '3', nombre: 'Tarjeta de Identidad' },
+    { id: '4', nombre: 'Pasaporte' }
   ];
 
-  useEffect(() => {
+  useEffect(() => { 
     const fetchCities = async () => {
       try {
         const response = await fetch(endpoints.city);
@@ -93,20 +93,23 @@ export default function RegisterForm() {
     setSuccess(false);
 
     const formData = new FormData(event.target);
+
     const data = {
-      first_name: formData.get("first_name"),
-      last_name: formData.get("last_name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      role: "camper",
-      document_type: formData.get("document_type"),
-      document_number: formData.get("documento"),
-      city: formData.get("ciudad"),
+      first_name: formData.get('first_name'),
+      last_name: formData.get('last_name'),
+      email: formData.get('email'),
+      password: formData.get('password'),
+      document_type: formData.get('document_type'),
+      document_number: formData.get('documento'),
+      birth_date: formData.get('edad'),
+      city: formData.get('ciudad')
     };
+
+    console.log(data)
 
     try {
       const response = await fetch(endpoints.register, {
-        method: "POST",
+        method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },
@@ -116,8 +119,8 @@ export default function RegisterForm() {
       if (response.ok) {
         const result = await response.json();
         setSuccess(true);
-        console.log("Usuario registrado con éxito:", result);
-        navigate("/campers/login"); // Redirige al login después del registro exitoso
+        console.log('Usuario registrado con éxito:', result);
+        navigate('/profile'); // Redirige al login después del registro exitoso
       } else {
         const errorData = await response.json();
         setError(
@@ -336,54 +339,39 @@ export default function RegisterForm() {
                 un número.
               </p>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="edad" className="text-white text-left block">
-                    Edad
-                  </Label>
-                  <div className="relative">
-                    <Calendar
-                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                      size={20}
-                    />
-                    <input
-                      id="edad"
-                      name="edad"
-                      type="number"
-                      required
-                      placeholder="Tu edad"
-                      className="w-full py-3 px-4 pl-10 bg-[#3a3a4e] rounded-lg text-white text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:ring-offset-0"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="ciudad"
-                    className="text-white text-left block"
-                  >
-                    Ciudad
-                  </Label>
-                  <div className="relative">
-                    <MapPin
-                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                      size={20}
-                    />
-                    <select
-                      id="ciudad"
-                      name="ciudad"
-                      required
-                      className="w-full py-3 px-4 pl-10 bg-[#3a3a4e] rounded-lg text-gray-400 text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:ring-offset-0 appearance-none"
-                    >
-                      <option value="">Selecciona ciudad</option>
-                      {ciudadesColombia.map((ciudad) => (
-                        <option key={ciudad.id} value={ciudad.id}>
-                          {ciudad.nombre}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="edad" className="text-white text-left block">Fecha de Nacimiento</Label>
+                <div className="relative">
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <input
+                    id="edad"
+                    name="edad"
+                    type="date"
+                    required
+                    placeholder="Tu fecha de nacimiento"
+                    className="w-full py-3 px-4 pl-10 bg-[#3a3a4e] rounded-lg text-white text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:ring-offset-0"
+                  />
                 </div>
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="ciudad" className="text-white text-left block">Ciudad</Label>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <select
+                    id="ciudad"
+                    name="ciudad"
+                    required
+                    className="w-full py-3 px-4 pl-10 bg-[#3a3a4e] rounded-lg text-gray-400 text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:ring-offset-0 appearance-none"
+                  >
+                    <option value="">Selecciona ciudad</option>
+                    {ciudadesColombia.map(ciudad => (
+                      <option key={ciudad.id} value={ciudad.id}>{ciudad.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
 
               {error && (
                 <Alert variant="destructive">
