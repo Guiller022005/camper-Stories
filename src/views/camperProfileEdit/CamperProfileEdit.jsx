@@ -1,15 +1,18 @@
 import React, { useEffect, useState, lazy } from "react";
 import styles from "./styles/CamperProfileEdit.module.css";
-import NavbarProfile from "../../components/navbar/NavbarProfile";
-import camper from "../../data/camperProfilePage";
-import Footer from "../../components/footer/Footer";
-import { fetchCamperById } from "@/services/camperService";
 import LazySection from "@/components/common/LazySection";
 import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
+
+import ErrorPage from "../ErrorPage/ErrorPage";
+import Loader from "@/components/common/Loader";
+
+
+import { fetchCamperById } from "@/services/camperService";
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
 
 // Lazy load components
+const NavbarProfile = lazy(() => import("@/components/navbar/NavbarProfile"))
 const ProfileHeaderEdit = lazy(() =>
   import("../../components/camperProfileEdit/ProfileHeaderEdit")
 );
@@ -28,10 +31,11 @@ const ProyectsEdit = lazy(() =>
 const SponsorCTAEdit = lazy(() =>
   import("@/components/camperProfileEdit/SponsorCTAEdit")
 );
+const Footer = lazy(() => import("../../components/footer/Footer"))
 
 const CamperProfileEdit = () => {
   const [camperData, setCamperData] = useState(DEFAULT_CAMPER_DATA);
-  const [camperTiktoksData, setCamperTiktoksData] = useState([]); 
+  const [camperTiktoksData, setCamperTiktoksData] = useState([]);
   const [camperMerits, setCamperMerits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,59 +43,51 @@ const CamperProfileEdit = () => {
   // Fetch campers, tiktoks, merits by camper_id
   useEffect(() => {
     const loadCamperData = async () => {
-        try {
-            setIsLoading(true);
-            const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
-                fetchCamperById(52),
-                fetchTikToksByCamperId(1),
-                fetchMeritsByCamperId(57)
-            ]);
+      try {
+        setIsLoading(true);
+        const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
+          fetchCamperById(52),
+          fetchTikToksByCamperId(1),
+          fetchMeritsByCamperId(57)
+        ]);
 
-            setCamperData(data_infoCamper);
-            setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
-            setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
-        } catch (err) {
-            setError(err.message);
-            console.error('Error cargando datos:', err);
-            // Establecer datos por defecto en caso de error
-            setCamperData(DEFAULT_CAMPER_DATA);
-            setCamperTiktoksData([]);
-            setCamperMerits([]);
-        } finally {
-            setIsLoading(false);
-        }
+        setCamperData(data_infoCamper);
+        setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
+        setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error cargando datos:', err);
+        // Establecer datos por defecto en caso de error
+        setCamperData(DEFAULT_CAMPER_DATA);
+        setCamperTiktoksData([]);
+        setCamperMerits([]);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     loadCamperData();
-}, []);
+  }, []);
 
   if (isLoading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.loadingSpinner}>Cargando...</div>
-      </div>
-    );
-  }
+    return <Loader />; 
+}
 
-  if (error) {
-    return (
-      <div className={styles.errorContainer}>
-        <div className={styles.errorMessage}>
-          Error: {error}
-          <button
-            onClick={() => window.location.reload()}
-            className={styles.retryButton}
-          >
-            Reintentar
-          </button>
-        </div>
-      </div>
-    );
-  }
+if (error) {
+  return (
+      <ErrorPage 
+          title="Error al cargar el perfil"
+          message={`No pudimos cargar la información del camper. ${error}`}
+          error="404" // O podrías usar un código de error específico según el tipo de error
+      />
+  );
+}
 
   return (
     <div className={styles.camperProfileView}>
-      <NavbarProfile />
+      <LazySection>
+        <NavbarProfile />
+      </LazySection>
       <div className={styles.profileMainContent}>
         <LazySection>
           <ProfileHeaderEdit
@@ -104,7 +100,7 @@ const CamperProfileEdit = () => {
           <AboutMeEdit
             videoUrl={camperData.main_video_url}
             about={camperData.about}
-            camperInfoInitialData={camper}
+            camperInfoInitialData={camperData}
           />
         </LazySection>
 
@@ -113,8 +109,8 @@ const CamperProfileEdit = () => {
         </LazySection>
 
         <LazySection>
-          <TrainingProcessEdit 
-            videos={camperTiktoksData} 
+          <TrainingProcessEdit
+            videos={camperTiktoksData}
           />
         </LazySection>
 
@@ -126,7 +122,9 @@ const CamperProfileEdit = () => {
           <SponsorCTAEdit />
         </LazySection>
       </div>
-      <Footer />
+      <LazySection>
+        <Footer />
+      </LazySection>
     </div>
   );
 };

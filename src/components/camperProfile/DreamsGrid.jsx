@@ -19,7 +19,6 @@ const DreamsGrid = () => {
       } finally {
       }
     };
-
     fetchDreams();
   }, []);
 
