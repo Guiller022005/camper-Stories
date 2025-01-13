@@ -3,11 +3,6 @@ import { useEffect } from "react";
 import "./styles/TiktokEmbed.css";
 
 const TikTokEmbed = ({ videoUrl }) => {
-  console.log('URL recibida:', videoUrl);
-  // Ejemplos de URLs válidas:
-  console.log('Ejemplos de URLs válidas:');
-  console.log('- URL directa:', 'https://www.tiktok.com/@campuslands/video/7441695191163063559');
-  console.log('- URL de embed:', 'https://www.tiktok.com/embed/7441695191163063559');
 
   // Validar que videoUrl exista y sea string
   if (!videoUrl || typeof videoUrl !== 'string') {
