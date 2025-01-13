@@ -82,19 +82,20 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
             <MeritsModal initialMerits={initialMerits} />
           </div>
           <div className={`${styles.badgesContainer} ${styles.wrapper}`}>
-            {data.merits
-              .slice(0, showAllBadges ? data.merits.length : maxVisibleBadges)
-              .map((skill, index) => (
+            {initialMerits
+              .slice(0, showAllBadges ? initialMerits.length : maxVisibleBadges)
+              .map((merit, index) => (
                 <div
                   key={index}
                   className={`${styles.skillItem} ${styles.icon} ${styles.badgeInfo}`}
                 >
-                  <div className={styles.tooltip}>{skill.description}</div>
-                  {skill.name}
+                  <div className={styles.tooltip}>{merit.description}</div>
+                  {merit.name}
+                  {merit.icon}
                 </div>
               ))}
           </div>
-          {data.merits.length > maxVisibleBadges && (
+          {initialMerits.length > maxVisibleBadges && (
             <div
               className={styles.toggleBadgesButton}
               onClick={handleToggleBadges}
