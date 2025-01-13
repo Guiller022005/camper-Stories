@@ -1,103 +1,65 @@
-// ProyectsEdit.jsx
 import React, { useState, useEffect } from "react";
 import ProjectCardEdit from "./ProjectCardEdit";
 import { ProyectsModal } from "./modals/ProyectsModal";
 import { ProyectsEditModal } from "./modals/ProyectsEditModal";
 import styles from "./styles/ProyectsEdit.module.css";
 import { getProjects, addProjects } from "../../services/proyectsService";
-import {
-  getTechnology,
-  getTechnologyForProject,
-} from "../../services/technologiesService";
+import { getTechnology } from "../../services/technologiesService";
 
 const ProyectsEdit = () => {
   const [projects, setProjects] = useState([]);
-  const [technologies, setTechnologies] = useState([]);
-  const [loading, setLoading] = useState(false); // Añadir esto
-  const [error, setError] = useState(null);
+  const [availableTechnologies, setAvailableTechnologies] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  // Cargar todas las tecnologías disponibles para los modales de edición/creación
   useEffect(() => {
-    const fetchTechnology = async () => {
+    const loadAvailableTechnologies = async () => {
       try {
         setLoading(true);
-        const technologyData = await getTechnology();
-        setTechnologies(technologyData);
-      } catch (err) {
-        setError(err.message);
-        console.error("Error loading technologies: ", err);
-        setTechnologies([]);
+        const response = await getTechnology();
+        setAvailableTechnologies(response.technologies || []);
+      } catch (error) {
+        console.error("Error al cargar tecnologías disponibles:", error);
+        setAvailableTechnologies([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTechnology();
+    loadAvailableTechnologies();
   }, []);
 
+  // Cargar los proyectos
   useEffect(() => {
-    const fetchProjects = async () => {
+    const loadProjects = async () => {
       try {
-        const id = localStorage.getItem("userId");
         setLoading(true);
         const projectsData = await getProjects(58);
-
-        // Initialize projects with empty technologies array
-        const projectsWithEmptyTech = projectsData.map((project) => ({
-          ...project,
-          technologies: [],
-        }));
-
-        setProjects(projectsWithEmptyTech);
-
-        // After setting initial projects, fetch technologies for each project
-        projectsData.forEach((project) => {
-          fetchTechnologyForProject(project.id);
-        });
-
-        console.log(projectsData)
-      } catch (err) {
-        setError(err.message);
-        console.error("Error loading projects: ", err);
+        setProjects(projectsData);
+      } catch (error) {
+        console.error("Error al cargar proyectos:", error);
+        setProjects([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProjects();
+    loadProjects();
   }, []);
-
-  // Function to fetch technologies for a specific project
-  const fetchTechnologyForProject = async (projectId) => {
-    try {
-      const technologies = await getTechnologyForProject(projectId);
-
-      // Update the specific project with its technologies
-      setProjects((prevProjects) =>
-        prevProjects.map((project) =>
-          project.id === projectId ? { ...project, technologies } : project
-        )
-      );
-    } catch (err) {
-      console.error(
-        `Error loading technologies for project ${projectId}:`,
-        err
-      );
-    }
-  };
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleAddProject = async (newProject) => {
     try {
-      const id = localStorage.getItem("userId");
-      const response = await addProjects(109, newProject);
+      const userId = localStorage.getItem("userId");
+      const response = await addProjects(userId, newProject);
       if (!response.ok) {
-        throw new Error("Error al enviar la informacion");
+        throw new Error("Error al enviar la información");
       }
       setProjects((prevProjects) => [...prevProjects, newProject]);
     } catch (error) {
-      console.error("error", error);
+      console.error("Error al añadir proyecto:", error);
     }
   };
 
@@ -109,14 +71,9 @@ const ProyectsEdit = () => {
   const handleUpdateProject = (updatedProject) => {
     setProjects((prevProjects) =>
       prevProjects.map((proj) =>
-        proj.title === selectedProject.title ? updatedProject : proj
+        proj.id === updatedProject.id ? updatedProject : proj
       )
     );
-    setIsEditing(false);
-    setSelectedProject(null);
-  };
-
-  const closeEditModal = () => {
     setIsEditing(false);
     setSelectedProject(null);
   };
@@ -131,9 +88,9 @@ const ProyectsEdit = () => {
         <div className={styles.projectCard}>
           <div className={styles.projectCardAdd}>
             <ProyectsModal
-              onAddProject={isEditing ? handleUpdateProject : handleAddProject}
-              technologies={technologies}
-              initialData={isEditing ? selectedProject : null}
+              onAddProject={handleAddProject}
+              technologies={availableTechnologies}
+              initialData={null}
               closeModal={() => {
                 setIsEditing(false);
                 setSelectedProject(null);
@@ -142,24 +99,27 @@ const ProyectsEdit = () => {
           </div>
         </div>
 
-        {projects.map((project, index) => (
+        {projects.map((project) => (
           <ProjectCardEdit
-            key={index}
+            key={project.id}
+            id={project.id}
             title={project.title}
             description={project.description}
             image={project.image}
-            technologies={project.technologies}
             codeUrl={project.codeUrl}
-            onEdit={() => handleEditProject(project)}
+            onEdit={handleEditProject}
           />
         ))}
 
         {isEditing && selectedProject && (
           <ProyectsEditModal
             project={selectedProject}
-            technologies={technologies}
+            technologies={availableTechnologies}
             onUpdateProject={handleUpdateProject}
-            onClose={closeEditModal}
+            onClose={() => {
+              setIsEditing(false);
+              setSelectedProject(null);
+            }}
           />
         )}
       </div>
