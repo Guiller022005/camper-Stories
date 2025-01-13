@@ -3,7 +3,7 @@ import { Card, Button, Tag } from "antd";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Code } from "lucide-react";
-import styles from "./styles/ProjectCard.css";
+import styles from "./styles/ProjectCard.module.css";
 
 function ProjectCardEdit({
   title,
