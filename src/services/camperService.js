@@ -27,7 +27,7 @@ const normalizeCalperData = (data) => {
     profile_picture: data.profile_picture || DEFAULT_CAMPER_DATA.profile_picture,
     full_name: data.full_name || DEFAULT_CAMPER_DATA.full_name,
     city: data.name || DEFAULT_CAMPER_DATA.city,
-    age: data.age || DEFAULT_CAMPER_DATA.age,
+    age: calculateAge(data.birth_date) || DEFAULT_CAMPER_DATA.age,
     about: data.about || DEFAULT_CAMPER_DATA.about,
     processTikToks: Array.isArray(data.processTikToks) ? data.processTikToks : DEFAULT_CAMPER_DATA.processTikToks,
     main_video_url: data.main_video_url !== null ? data.main_video_url : DEFAULT_CAMPER_DATA.main_video_url
@@ -37,9 +37,7 @@ const normalizeCalperData = (data) => {
 export const fetchCamperById = async (id) => {
   try {
     const response = await axios.get(`${endpoints.campers}/${id}`);
-    console.log(response);
     const normalizedData = normalizeCalperData(response.data);
-    console.log(normalizedData);
     return normalizedData;
   } catch (error) {
     console.error(`Error fetching camper with id ${id}:`, error);

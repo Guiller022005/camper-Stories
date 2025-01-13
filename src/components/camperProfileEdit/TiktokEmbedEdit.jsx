@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import styles from './styles/TiktokEmbedEdit.module.css';
+import "../camperProfile/styles/TiktokEmbed.css"
 
 const TikTokEmbedEdit = ({ videoUrl }) => {
   // Validar que videoUrl exista y sea string
   if (!videoUrl || typeof videoUrl !== 'string') {
     console.log('Error: URL no válida o no es string');
-    return <div className={styles.videoError}>URL de video no válida</div>;
+    return <div className="video-error">URL de video no válida</div>;
   }
 
   // Función para extraer el ID del video de la URL de TikTok
@@ -34,7 +34,7 @@ const TikTokEmbedEdit = ({ videoUrl }) => {
 
   const videoId = getVideoId(videoUrl);
   if (!videoId) {
-    return <div className={styles.videoError}>Formato de URL de TikTok no válido</div>;
+    return <div className="video-error">Formato de URL de TikTok no válido</div>;
   }
 
   useEffect(() => {
@@ -78,9 +78,9 @@ const TikTokEmbedEdit = ({ videoUrl }) => {
   }, []);
 
   return (
-    <div className={styles.tiktokContainer}>
+    <div className="tiktok-embed-container">
       <blockquote
-        className={styles.tiktokEmbed}
+        className="tiktok-embed"
         cite={videoUrl}
         data-video-id={videoId}
         style={{ maxWidth: "605px", minWidth: "325px" }}
