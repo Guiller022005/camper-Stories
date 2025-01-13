@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import styles from "./styles/CamperProfileEdit.module.css";
 import LazySection from "@/components/common/LazySection";
@@ -6,13 +6,13 @@ import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import Loader from "@/components/common/Loader";
 import { fetchCamperById } from "@/services/camperService";
-import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
+import FloatingActionMenu from "@/components/FloatingMenu/FloatingActionMenu";
 import { fetchCamperById } from "@/services/camperService";
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
 
 // Lazy load components
-const NavbarProfile = lazy(() => import("@/components/navbar/NavbarProfile"))
+const NavbarProfile = lazy(() => import("@/components/navbar/NavbarProfile"));
 const ProfileHeaderEdit = lazy(() =>
   import("../../components/camperProfileEdit/ProfileHeaderEdit")
 );
@@ -31,7 +31,7 @@ const ProyectsEdit = lazy(() =>
 const SponsorCTAEdit = lazy(() =>
   import("@/components/camperProfileEdit/SponsorCTAEdit")
 );
-const Footer = lazy(() => import("../../components/footer/Footer"))
+const Footer = lazy(() => import("../../components/footer/Footer"));
 
 const CamperProfileEdit = () => {
   const { id } = useParams(); // Obtén el ID desde la URL
@@ -81,18 +81,18 @@ const CamperProfileEdit = () => {
   }, [id]);
 
   if (isLoading) {
-    return <Loader />; 
-}
+    return <Loader />;
+  }
 
-if (error) {
-  return (
-      <ErrorPage 
-          title="Error al cargar el perfil"
-          message={`No pudimos cargar la información del camper. ${error}`}
-          error="404" // O podrías usar un código de error específico según el tipo de error
+  if (error) {
+    return (
+      <ErrorPage
+        title="Error al cargar el perfil"
+        message={`No pudimos cargar la información del camper. ${error}`}
+        error="404" // O podrías usar un código de error específico según el tipo de error
       />
-  );
-}
+    );
+  }
 
   return (
     <div className={styles.camperProfileView}>
