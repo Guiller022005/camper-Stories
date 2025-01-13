@@ -55,3 +55,42 @@ export const fetchCampers = async () => {
     throw error;
   }
 };
+
+// Para obtener los campers egresados
+export const fetchCampersEgresados = async () => {
+  try {
+    const response = await axios.get(endpoints.egresados);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching campers:', error);
+    throw error;
+  }
+};
+
+// Para obtener los campers en proceso de formacion
+export const fetchCampersFormacion = async () => {
+  try {
+    const response = await axios.get(endpoints.formados);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching campers:', error);
+    throw error;
+  }
+};
+
+// Para obtener los meritos de un camper
+export const fetchMeritsCamperById = async (id) => {
+  if (!id) {
+    console.error("ID inválido para merits API:", id); // Debug adicional
+    return [];
+  }
+
+  try {
+    const response = await axios.get(endpoints.merits.replace("{id}", id));
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching merits for camper ${id}:`, error);
+    return [];
+  }
+};
+
