@@ -12,8 +12,9 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (token) {
+      const camperId = localStorage.getItem('camper_id');
       console.log("Usuario ya autenticado. Redirigiendo a /");
-      // navigate('/');
+      navigate(`/campers/profile/${camperId}/edit`);
     }
   }, [token]);
 
@@ -32,15 +33,16 @@ const LoginPage = () => {
         const data = await response.json();
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.user.role);
+        localStorage.setItem('camper_id', data.user.camper_id);
         console.log("Inicio de sesión exitoso. Token recibido:", data);
-        // navigate('/');
+        navigate(`/campers/profile/${data.user.camper_id}/edit`);
       } else {
         console.error("Error de autenticación. Credenciales incorrectas.");
       }
     } catch (error) {
       console.error("Error al intentar iniciar sesión:", error);
     }
-  };
+};
 
   return (
     <div className="min-h-screen w-screen bg-[#1a1a2e] flex flex-col items-center justify-center p-8 gap-12 font-sans">
@@ -105,9 +107,9 @@ const LoginPage = () => {
             <button type="submit" className="w-full py-3 px-4 rounded-lg text-base cursor-pointer transition-colors duration-300 bg-[#6C3AFF] text-white hover:bg-[#6d28d9]">
               Iniciar Sesión
             </button>
-            <button type="button" className="w-full py-3 px-4 rounded-lg text-base cursor-pointer transition-colors duration-300 bg-white text-gray-800 flex items-center justify-center gap-2 hover:bg-gray-100">
+            {/* <button type="button" className="w-full py-3 px-4 rounded-lg text-base cursor-pointer transition-colors duration-300 bg-white text-gray-800 flex items-center justify-center gap-2 hover:bg-gray-100">
               Continuar con Google
-            </button>
+            </button> */}
           </form>
 
           <div className="text-center mt-6">
