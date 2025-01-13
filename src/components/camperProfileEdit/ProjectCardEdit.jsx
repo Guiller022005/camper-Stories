@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Tag } from "antd";
 import { Code } from "lucide-react";
 import styles from "./styles/ProjectCardEdit.module.css";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { getTechnologyForProject } from "../../services/technologiesService";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
   const [projectTechnologies, setProjectTechnologies] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   // Efecto para cargar las tecnologías específicas de este proyecto
   useEffect(() => {
@@ -31,12 +32,19 @@ function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
     <Card
       className={styles.projectCard}
       cover={
-        <img alt={title} src={image} className={styles.projectCardImage} />
+        <LazyLoadImage
+          src={image}
+          alt={title}
+          effect="blur"
+          className={styles.projectCardImg}
+        />
       }
     >
-      <h3 className={styles.projectCardTitle}>{title}</h3>
-      <p className={styles.projectCardDescription}>{description}</p>
-
+      <Card.Meta
+        title={title}
+        description={description}
+        className={styles.projectCardMeta}
+      />
       <div className={styles.projectCardTech}>
         {projectTechnologies.map((tech, index) => (
           <Tag key={index} className={styles.projectCardTag}>
@@ -45,7 +53,6 @@ function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
         ))}
       </div>
 
-      <div className={styles.projectCardButtons}>
         <Button
           href={codeUrl}
           target="_blank"
@@ -60,7 +67,6 @@ function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
         <Button onClick={onEdit} className={styles.projectCardButton} block>
           Editar
         </Button>
-      </div>
     </Card>
   );
 }
