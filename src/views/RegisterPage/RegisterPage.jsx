@@ -153,8 +153,7 @@ export default function RegisterForm() {
               Camper Stories
             </CardTitle>
             <CardDescription className="text-gray-400 max-w-sm mx-auto">
-              Cada historia tiene el poder de inspirar. Únete a Camper Stories y
-              comparte tu historia con el mundo.
+                
             </CardDescription>
           </CardHeader>
           <CardContent>
