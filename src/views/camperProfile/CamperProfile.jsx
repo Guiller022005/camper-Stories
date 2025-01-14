@@ -11,7 +11,6 @@ import { fetchCamperById } from '../../services/camperService';
 import { fetchTikToksByCamperId } from '@/services/tiktokService';
 import { fetchMeritsByCamperId } from '@/services/meritsService';
 import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
-import ErrorPage from '../ErrorPage/ErrorPage';
 
 // Lazy load components
 const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
