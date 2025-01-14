@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { Settings, Edit, LogOut, Eye } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const FloatingActionMenu = () => {
     const navigate = useNavigate();
@@ -36,12 +37,15 @@ const FloatingActionMenu = () => {
         })
             .then((response) => {
                 if (!response.ok) {
+                    toast.error("Error. Por favor, inténtalo de nuevo.");
                     throw new Error('Logout failed');
                 }
                 localStorage.removeItem('token');
+                toast.success("¡Hasta pronto! Has cerrado sesión exitosamente.");
                 navigate('/campers/login');
             })
             .catch((error) => {
+                toast.error("Error. Por favor, inténtalo de nuevo.");
                 console.error('Error during logout:', error);
             });
     };

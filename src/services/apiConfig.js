@@ -12,10 +12,9 @@ export const endpoints = {
   city: `${API_BASE_URL}cities`, // Endpoint para crear sueno
   technology: `${API_BASE_URL}technology`,
   projects: `${API_BASE_URL}campers/{id}/proyects`,
-  meritsbyid: `${API_BASE_URL}merits/{id}`, // Endpoint para obtener los meritos de un usuario
+  technologyProject: `${API_BASE_URL}projects/technologies`,
   addProjects: `${API_BASE_URL}projects`,
-  merits: `${API_BASE_URL}merits/{id}`, // Endpoint para obtener los meritos de un usuario
-  technologyProject: `${API_BASE_URL}projects/technologies`
+  meritsbyid: `${API_BASE_URL}merits/{id}`, // Endpoint para obtener los meritos de un usuario
 };
 
 export default API_BASE_URL;

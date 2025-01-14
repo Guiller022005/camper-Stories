@@ -25,15 +25,6 @@ const AppRouter = () => {
           path="/campers/profile/:id/edit"
           element={
             <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
-              <CamperProfile />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/profileEdit"
-          element={
-            <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
               <CamperProfileEdit />
             </ProtectedRoute>
           }
