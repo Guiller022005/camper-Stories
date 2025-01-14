@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { Lock, Mail } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import campushm from '/src/assets/Campushm.png';
 import { endpoints } from '../../services/apiConfig';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardHeader, CardTitle } from "@/components/ui/card";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const notify = () => toast("Wow so easy!");
+
 
   useEffect(() => {
     if (token) {
@@ -31,16 +34,23 @@ const LoginPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        toast.success("Inicio de sesión exitoso");
+
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.user.role);
         localStorage.setItem('camper_id', data.user.camper_id);
         console.log("Inicio de sesión exitoso. Token recibido:", data);
         navigate(`/campers/profile/${data.user.camper_id}/edit`);
+
+
       } else {
         console.error("Error de autenticación. Credenciales incorrectas.");
+        toast.error("Error de autenticación. Credenciales incorrectas.");
       }
     } catch (error) {
       console.error("Error al intentar iniciar sesión:", error);
+      toast.error("Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.");
+
     }
 };
 
