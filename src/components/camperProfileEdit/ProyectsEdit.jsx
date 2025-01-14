@@ -37,7 +37,16 @@ const ProyectsEdit = () => {
       try {
         setLoading(true);
         const projectsData = await getProjects(58);
-        setProjects(projectsData);
+        // Asegurarse de que los datos tengan la estructura correcta
+        const formattedProjects = projectsData.map(project => ({
+          id: project.id,
+          title: project.title,
+          description: project.description,
+          image: project.image,
+          code_url: project.code_url,
+          technologies: project.technologies || []
+        }));
+        setProjects(formattedProjects);
       } catch (error) {
         console.error("Error al cargar proyectos:", error);
         setProjects([]);
@@ -45,7 +54,7 @@ const ProyectsEdit = () => {
         setLoading(false);
       }
     };
-
+  
     loadProjects();
   }, []);
 
@@ -54,7 +63,6 @@ const ProyectsEdit = () => {
 
   const handleAddProject = async (newProject) => {
     try {
-      const userId = localStorage.getItem("userId");
       const response = await addProjects(newProject);
       if (!response.ok) {
         throw new Error("Error al enviar la información");
@@ -66,18 +74,28 @@ const ProyectsEdit = () => {
   };
 
   const handleEditProject = (project) => {
+    console.log("Proyecto a editar:", project); // Debug
     setSelectedProject(project);
     setIsEditing(true);
   };
-
-  const  handleUpdateProject = (updatedProject) => {
-    setProjects((prevProjects) =>
-      prevProjects.map((proj) =>
-        proj.id === updatedProject.id ? updatedProject : proj
-      )
-    );
-    setIsEditing(false);
-    setSelectedProject(null);
+  
+  const handleUpdateProject = async (updatedProject) => {
+    try {
+      console.log("Proyecto actualizado:", updatedProject); // Debug
+      const response = await updateProject(updatedProject);
+      if (!response.ok){
+        throw new Error("Error al enviar la informacion")
+      }
+      setProjects((prevProjects) =>
+        prevProjects.map((proj) =>
+          proj.id === updatedProject.id ? updatedProject : proj
+        )
+      );
+      setIsEditing(false);
+      setSelectedProject(null);
+    } catch (error) {
+      console.error("Error al actualizar proyecto:", error);
+    }
   };
 
   console.log(availableTechnologies);
@@ -110,7 +128,7 @@ const ProyectsEdit = () => {
             title={project.title}
             description={project.description}
             image={project.image}
-            codeUrl={project.codeUrl}
+            code_url={project.code_url}
             onEdit={handleEditProject}
           />
         ))}

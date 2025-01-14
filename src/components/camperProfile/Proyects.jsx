@@ -13,9 +13,9 @@ const Proyects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const id = localStorage.getItem("userId");
+        const id = localStorage.getItem("camper_id");
         setLoading(true);
-        const projectsData = await getProjects(57);
+        const projectsData = await getProjects(id);
 
         // Initialize projects with empty technologies array
         const projectsWithEmptyTech = projectsData.map((project) => ({

@@ -54,6 +54,35 @@ export const addProjects = async (data) => {
     throw error;
   }
 };
+export const updateProjects = async (camper_id, project_id, data) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    console.log(token)
+
+    if (!token) {
+      throw new Error("No se enconteo un token, porfavor inicia sesion");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+    };
+
+    const url = `${endpoints.addProjects}/${camper_id}/${project_id}`;
+    const response = await axios.post(url, data, config);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching the data", error);
+    throw error;
+  }
+};
+
 
 // export const deleteDreams = async (camperId, data) => {
 //   try {

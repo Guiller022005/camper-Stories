@@ -18,28 +18,31 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
-export function ProyectsEditModal({
-  project,
-  technologies,
-  onUpdateProject,
-  onClose,
-}) {
+export function ProyectsEditModal({ project, technologies, onUpdateProject, onClose }) {
   const [formData, setFormData] = useState({
-    title: project?.title || "",
-    description: project?.description || "",
-    image: project?.image || "",
-    code_url: project?.code_url || "",
-    technologies: project?.technologies || []
+    id: project?.id || '',
+    title: project?.title || '',
+    description: project?.description || '',
+    image: project?.image || '',
+    code_url: project?.code_url || '', // Asegurarse de usar code_url
+    technologies: project?.technologies || [] // Inicializar como array vacío si no existe
   });
 
+  // Debug
+  console.log("Project recibido:", project);
+  console.log("FormData inicial:", formData);
+
   useEffect(() => {
-    setFormData({
-      title: project?.title || "",
-      description: project?.description || "",
-      image: project?.image || "",
-      code_url: project?.code_url || "",
-      technologies: project?.technologies || []
-    });
+    if (project) {
+      setFormData({
+        id: project.id,
+        title: project.title || '',
+        description: project.description || '',
+        image: project.image || '',
+        code_url: project.code_url || '',
+        technologies: project.technologies || []
+      });
+    }
   }, [project]);
 
   const handleChange = (e) => {
@@ -129,11 +132,11 @@ export function ProyectsEditModal({
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="codeUrl" className="text-right text-gray-900">
+            <Label htmlFor="code_url" className="text-right text-gray-900">
               Link del Proyecto
             </Label>
             <Input
-              id="codeUrl"
+              id="code_url"
               value={formData.code_url}
               onChange={handleChange}
               className="col-span-3 text-gray-900 border-gray-300"
