@@ -9,12 +9,10 @@
   width: 100%;
   min-height: 100vh;
   padding: 4rem 1rem;
-  background-image: linear-gradient(rgba(1, 1, 48, 0.7), rgba(1, 1, 48, 0.7)),
-    url("src/assets/campuswall.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  box-shadow: 0px -10px 200px #17172b;
+  background: linear-gradient(180deg, #030352 50%, #0a0a29 100%);
   position: relative;
   overflow: visible;
 }
