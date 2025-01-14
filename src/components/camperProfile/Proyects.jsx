@@ -40,35 +40,6 @@ const Proyects = () => {
     fetchProjects();
   }, []);
 
-  // Function to fetch technologies for a specific project
-  const fetchTechnologyForProject = async (projectId) => {
-    try {
-      const technologies = await getTechnologyForProject(projectId);
-
-      // Update the specific project with its technologies
-      setProjects((prevProjects) =>
-        prevProjects.map((project) =>
-          project.id === projectId ? { ...project, technologies } : project
-        )
-      );
-    } catch (err) {
-      console.error(
-        `Error loading technologies for project ${projectId}:`,
-        err
-      );
-    }
-  };
-
-  // Show loading state while initial projects are being fetched
-  if (loading && projects.length === 0) {
-    return <div>Cargando proyectos...</div>;
-  }
-
-  // Show error state if initial loading failed
-  if (error && projects.length === 0) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
     <section className={styles.tecInfo}>
       <h2 className={styles.profileSubtitle}>
@@ -78,10 +49,10 @@ const Proyects = () => {
         {projects.map((project, index) => (
           <ProjectCard
             key={index}
+            id={project.id}
             title={project.title}
             description={project.description}
             image={project.image}
-            technologies={project.technologies || []}
             codeUrl={project.codeUrl}
           />
         ))}

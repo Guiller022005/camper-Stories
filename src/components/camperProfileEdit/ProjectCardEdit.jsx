@@ -15,8 +15,9 @@ function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
       try {
         setLoading(true);
         const response = await getTechnologyForProject(id);
-        const technologies = response.technologies || [];
-        setProjectTechnologies(technologies);
+        console.log(response);
+        const techNames = response.technologies.map((tech) => tech.name);
+        setProjectTechnologies(techNames);
       } catch (error) {
         console.error("Error al cargar tecnologías del proyecto:", error);
         setProjectTechnologies([]);
@@ -47,7 +48,7 @@ function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
       />
       <div className={styles.projectCardTech}>
         {projectTechnologies.map((tech, index) => (
-          <Tag key={index} className={styles.projectCardTag}>
+          <Tag key={index} className={styles.projectCardBadge}>
             {tech}
           </Tag>
         ))}

@@ -1,18 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Tag } from "antd";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Code } from "lucide-react";
-import styles from "./styles/ProjectCard.module.css";
+import styles from "./styles/ProjectCard.css";
+import { getTechnologyForProject } from "../../services/technologiesService";
 
-function ProjectCardEdit({
+function ProjectCard({
+  id,
   title,
   description,
-  image,
-  technologies = [], // Provide default empty array
+  image, // Provide default empty array
   codeUrl,
   onEdit,
 }) {
+  const [projectTechnologies, setProjectTechnologies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Efecto para cargar las tecnologías específicas de este proyecto
+  useEffect(() => {
+    const loadProjectTechnologies = async () => {
+      try {
+        setLoading(true);
+        const response = await getTechnologyForProject(id);
+        console.log(response);
+        const techNames = response.technologies.map((tech) => tech.name);
+        setProjectTechnologies(techNames);
+      } catch (error) {
+        console.error("Error al cargar tecnologías del proyecto:", error);
+        setProjectTechnologies([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProjectTechnologies();
+  }, [id]);
+
   return (
     <Card
       className={styles.projectCard}
@@ -32,9 +56,9 @@ function ProjectCardEdit({
         className={styles.projectCardMeta}
       />
       {/* Only render technologies section if there are technologies */}
-      {Array.isArray(technologies) && technologies.length > 0 && (
+      {Array.isArray(projectTechnologies) && projectTechnologies.length > 0 && (
         <div className={styles.projectCardTechs}>
-          {technologies.map((tech) => (
+          {projectTechnologies.map((tech) => (
             <Tag key={tech} color="default" className={styles.projectCardBadge}>
               {tech}
             </Tag>
@@ -55,4 +79,4 @@ function ProjectCardEdit({
   );
 }
 
-export default ProjectCardEdit;
+export default ProjectCard;
