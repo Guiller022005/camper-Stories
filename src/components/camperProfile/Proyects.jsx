@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import ProjectCard from "./ProjectCard";
 import { getProjects } from "../../services/proyectsService";
 import { getTechnologyForProject } from "../../services/technologiesService";
@@ -9,13 +10,13 @@ const Proyects = () => {
   const [techProject, setTechProject] = useState();
   const [loading, setLoading] = useState(false); // Añadir esto
   const [error, setError] = useState(null);
+  const { id } = useParams(); 
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const id = localStorage.getItem("userId");
         setLoading(true);
-        const projectsData = await getProjects(57);
+        const projectsData = await getProjects(id);
 
         // Initialize projects with empty technologies array
         const projectsWithEmptyTech = projectsData.map((project) => ({
