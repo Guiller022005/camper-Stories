@@ -106,3 +106,22 @@ export const fetchAllMerits = async () => {
 
 // update Camper Profile
 
+export const updateCamperProfile = async (id, updatedData) => {
+  try {
+    const formData = new FormData(); // Usamos FormData para incluir archivos
+    for (const key in updatedData) {
+      formData.append(key, updatedData[key]);
+    }
+
+    const response = await axios.put(`${endpoints.campers}/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating camper profile with id ${id}:`, error);
+    throw error;
+  }
+};
