@@ -1,13 +1,9 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useParams, Navigate } from "react-router-dom";
 import styles from "./styles/CamperProfileEdit.module.css";
-import LazySection from "@/components/common/LazySection";
-import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import Loader from "@/components/common/Loader";
 import { fetchCamperById } from "@/services/camperService";
-import NavbarProfile from "../../components/navbar/NavbarProfile";
-import Footer from "../../components/footer/Footer";
 import LazySection from "@/components/common/LazySection";
 import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
 import { fetchTikToksByCamperId } from "@/services/tiktokService";

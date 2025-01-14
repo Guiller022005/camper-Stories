@@ -5,7 +5,6 @@ import styles from './styles/CamperProfile.module.css';
 import LazySection from '../../components/common/LazySection';
 import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
 
-import ErrorPage from '../ErrorPage/ErrorPage';
 import Loader from '@/components/common/Loader';
 import { fetchCamperById } from '../../services/camperService';
 import { fetchTikToksByCamperId } from '@/services/tiktokService';
