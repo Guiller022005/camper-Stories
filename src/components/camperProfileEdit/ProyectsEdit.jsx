@@ -1,47 +1,66 @@
-// ProyectsEdit.jsx
-import React, { useState } from 'react';
-import ProjectCardEdit from './ProjectCardEdit';
-import { ProyectsModal } from './modals/ProyectsModal';
-import { ProyectsEditModal } from './modals/ProyectsEditModal';
-import styles from './styles/ProyectsEdit.module.css';
+import React, { useState, useEffect } from "react";
+import ProjectCardEdit from "./ProjectCardEdit";
+import { ProyectsModal } from "./modals/ProyectsModal";
+import { ProyectsEditModal } from "./modals/ProyectsEditModal";
+import styles from "./styles/ProyectsEdit.module.css";
+import { getProjects, addProjects } from "../../services/proyectsService";
+import { getTechnology } from "../../services/technologiesService";
 
 const ProyectsEdit = () => {
-  const [projects, setProjects] = useState([
-    {
-      title: "E-commerce Platform",
-      description: "Una plataforma de comercio electrónico completa con carrito de compras, pagos y gestión de pedidos.",
-      image: "src/assets/proyecto.png",
-      technologies: ["React", "Node.js", "MongoDB"],
-      codeUrl: "https://github.com/example/e-commerce",
-    },
-    {
-      title: "Task Manager App",
-      description: "Aplicación de gestión de tareas con funcionalidades de colaboración en tiempo real.",
-      image: "src/assets/proyecto.png",
-      technologies: ["Vue.js", "Firebase", "Tailwind CSS"],
-      codeUrl: "https://github.com/example/task-manager",
-    },
-    {
-      title: "Weather Forecast Dashboard",
-      description: "Dashboard interactivo que muestra pronósticos del tiempo utilizando datos de API en tiempo real.",
-      image: "src/assets/proyecto.png",
-      technologies: ["React", "D3.js", "Weather API"],
-      codeUrl: "https://github.com/example/weather-dashboard",
-    },
-  ]);
+  const [projects, setProjects] = useState([]);
+  const [availableTechnologies, setAvailableTechnologies] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const [technologuies] = useState([
-    { name: "React" },
-    { name: "Css" },
-    { name: "Node" },
-    { name: "Java" },
-  ]);
+  // Cargar todas las tecnologías disponibles para los modales de edición/creación
+  useEffect(() => {
+    const loadAvailableTechnologies = async () => {
+      try {
+        setLoading(true);
+        const response = await getTechnology();
+        setAvailableTechnologies(response.technologies || []);
+      } catch (error) {
+        console.error("Error al cargar tecnologías disponibles:", error);
+        setAvailableTechnologies([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAvailableTechnologies();
+  }, []);
+
+  // Cargar los proyectos
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        setLoading(true);
+        const projectsData = await getProjects(58);
+        setProjects(projectsData);
+      } catch (error) {
+        console.error("Error al cargar proyectos:", error);
+        setProjects([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProjects();
+  }, []);
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleAddProject = (newProject) => {
-    setProjects((prevProjects) => [...prevProjects, newProject]);
+  const handleAddProject = async (newProject) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const response = await addProjects(userId, newProject);
+      if (!response.ok) {
+        throw new Error("Error al enviar la información");
+      }
+      setProjects((prevProjects) => [...prevProjects, newProject]);
+    } catch (error) {
+      console.error("Error al añadir proyecto:", error);
+    }
   };
 
   const handleEditProject = (project) => {
@@ -52,14 +71,9 @@ const ProyectsEdit = () => {
   const handleUpdateProject = (updatedProject) => {
     setProjects((prevProjects) =>
       prevProjects.map((proj) =>
-        proj.title === selectedProject.title ? updatedProject : proj
+        proj.id === updatedProject.id ? updatedProject : proj
       )
     );
-    setIsEditing(false);
-    setSelectedProject(null);
-  };
-
-  const closeEditModal = () => {
     setIsEditing(false);
     setSelectedProject(null);
   };
@@ -69,14 +83,14 @@ const ProyectsEdit = () => {
       <h2 className={styles.profileSubtitle}>
         <span className={styles.highlight}>&lt;/</span> Mis Proyectos
       </h2>
-      
+
       <div className={styles.projects} id="projects-profile">
-        <div className={styles.addCardContainer}>
-          <div>
+        <div className={styles.projectCard}>
+          <div className={styles.projectCardAdd}>
             <ProyectsModal
-              onAddProject={isEditing ? handleUpdateProject : handleAddProject}
-              technologuies={technologuies}
-              initialData={isEditing ? selectedProject : null}
+              onAddProject={handleAddProject}
+              technologies={availableTechnologies}
+              initialData={null}
               closeModal={() => {
                 setIsEditing(false);
                 setSelectedProject(null);
@@ -84,25 +98,28 @@ const ProyectsEdit = () => {
             />
           </div>
         </div>
-        
-        {projects.map((project, index) => (
+
+        {projects.map((project) => (
           <ProjectCardEdit
-            key={index}
+            key={project.id}
+            id={project.id}
             title={project.title}
             description={project.description}
             image={project.image}
-            technologies={project.technologies}
             codeUrl={project.codeUrl}
-            onEdit={() => handleEditProject(project)}
+            onEdit={handleEditProject}
           />
         ))}
-        
+
         {isEditing && selectedProject && (
           <ProyectsEditModal
             project={selectedProject}
-            technologuies={technologuies}
+            technologies={availableTechnologies}
             onUpdateProject={handleUpdateProject}
-            onClose={closeEditModal}
+            onClose={() => {
+              setIsEditing(false);
+              setSelectedProject(null);
+            }}
           />
         )}
       </div>

@@ -55,7 +55,7 @@ const MeritsModal = ({ initialMerits }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghostNoHover" size="icon">
           <Edit className="h-6 w-6" />
         </Button>
       </DialogTrigger>

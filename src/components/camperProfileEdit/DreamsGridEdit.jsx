@@ -1,19 +1,33 @@
-import React, { useState } from 'react';
-import { dreamsData } from '../../data/data';
-import styles from './styles/DreamsGridEdit.module.css';
-import DreamsModal from './modals/DreamsModal';
+import React, { useEffect, useState } from "react";
+import { getDreams } from "../../services/dreamsService";
+import styles from "./styles/DreamsGridEdit.module.css";
+import DreamsModal from "./modals/DreamsModal";
 
 const DreamsGridEdit = () => {
-  const [dreams, setDreams] = useState(dreamsData.dreams);
+  const [dreams, setDreams] = useState([]);
 
-  const uniqueDreams = [...new Set(dreams.map(dream => dream.id))].map(id => 
-    dreams.find(dream => dream.id === id)
-  );
+  useEffect(() => {
+    const fetchDreams = async () => {
+      try {
+        const id = 58;
+        const dreamsData = await getDreams(id);
+        const uniqueDreams = [...new Set(dreamsData.map(dream => dream.id))]
+          .map(id => dreamsData.find(dream => dream.id === id));
+        console.log(uniqueDreams);
+        setDreams(uniqueDreams);
+      } catch (err) {
+        console.error("Error loading dreams: ", err);
+      } finally {
+      }
+    };
+
+    fetchDreams();
+  }, []);
 
   const handleAddDream = (newDream) => {
-    setDreams(prevDreams => [...prevDreams, newDream]);
+    setDreams((prevDreams) => [...prevDreams, newDream]);
   };
-  
+
   return (
     <div className={styles.cardArea}>
       <div className={styles.wrapper}>
@@ -21,15 +35,16 @@ const DreamsGridEdit = () => {
           <div className={styles.openDreamsModal}>
             <DreamsModal onAddDream={handleAddDream} />
           </div>
-          {uniqueDreams.map(box => (
-            <div key={box.id} className={styles.box}>
+          {dreams.map(dream => (
+            <div key={dream.id} className={styles.box}>
               <img 
-                src={box.image} 
-                alt={box.title} 
+                src={dream.image} 
+                alt={dream.title}
+                loading="lazy"
               />
               <div className={styles.overlay}>
-                <h3>{box.title}</h3>
-                <p>{box.description}</p>
+                <h3>{dream.title}</h3>
+                <p>{dream.description}</p>
               </div>
             </div>
           ))}
@@ -38,5 +53,5 @@ const DreamsGridEdit = () => {
     </div>
   );
 };
- 
+
 export default DreamsGridEdit;

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@500;600;700&display=swap");
 
 /* Base Layout */
 
@@ -10,7 +10,7 @@
   min-height: 100vh;
   padding: 4rem 1rem;
   background-image: linear-gradient(rgba(1, 1, 48, 0.7), rgba(1, 1, 48, 0.7)),
-    url('src/assets/campuswall.png');
+    url("src/assets/campuswall.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -47,7 +47,7 @@
   max-width: 600px;
   height: fit-content;
   margin-bottom: 20px;
-  background-color: #2D2B54;
+  background-color: #2d2b54;
   color: #ffffff;
   border-radius: 10px;
 }
@@ -58,7 +58,7 @@
   width: 440px;
   height: auto;
   padding: 20px 20px 20px 30px;
-  gap: 4px;
+  gap: 3px;
 }
 
 /* Camper Information */
@@ -81,19 +81,18 @@
   align-items: center;
   width: 155px;
   height: 230px;
-  
 }
 
 .camper-image img {
   width: 150px;
   height: 113px;
   object-fit: cover;
-  border: 2px solid #D9D9D9;
+  border: 2px solid #d9d9d9;
   border-radius: 50%;
 }
 
 .camper-title {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: clamp(12px, 1.5vw, 15px);
   line-height: 1.2;
   text-align: start;
@@ -109,7 +108,7 @@
 }
 
 .tech-label {
-  color: #F4B422;
+  color: #f4b422;
   font-size: clamp(13px, 1.5vw, 15px);
   font-weight: 500;
 }
@@ -139,7 +138,6 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-
 .expand-filters-button {
   width: 150px;
   display: flex;
@@ -149,13 +147,14 @@
   color: #ffffff;
   font-size: 20px;
   border: none;
-  background-color: #FFA500;
+  background-color: #ffa500;
   cursor: pointer;
   transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Skills Display */
 .skills-container {
+  position: relative;
   display: flex;
   gap: 7px;
   flex-direction: row !important;
@@ -221,7 +220,6 @@
   color: #f4b422;
 }
 
-
 /* Buttons */
 button {
   padding: 0.6em 1.2em;
@@ -232,7 +230,6 @@ button {
   border: 1px solid transparent;
   border-radius: 8px;
   cursor: pointer;
-
 }
 
 .buttons {
@@ -241,26 +238,23 @@ button {
   margin-top: 0.5em;
 }
 
-
-
 .buttons button {
   padding: 8px 24px;
   font-weight: 500;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-
 }
 
 .info-button,
 .sponsor-button {
-  background-color: #F4B422;
+  background-color: #f4b422;
   color: #0d0d12;
 }
 
 .info-button:hover,
 .sponsor-button:hover {
-  background-color: #FDC347;
+  background-color: #fdc347;
 }
 
 .expand-skills-button {
@@ -273,6 +267,20 @@ button {
   border: none;
   position: relative;
   bottom: -20px;
+}
+
+.merit-item {
+  display: flex;
+  justify-content: center;
+  padding: 5px 6px;
+  background-color: #59599c;
+  font-size: 12px;
+  width: -moz-fit-content;
+  width: fit-content;
+  white-space: nowrap;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .expand-skills-button:focus {
@@ -300,7 +308,6 @@ button {
   .buttons {
     padding: 3px 0 5px 0;
   }
-
 
   .expand-filters-button {
     display: none;
@@ -350,14 +357,13 @@ button {
 .badge-filters h3 {
   display: flex;
   flex-direction: column;
-  color: #FFA500;
+  color: #ffa500;
   font-size: 65px;
   font-weight: 700;
   letter-spacing: 0.9px;
   text-transform: uppercase;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
-
 
 @media (max-width: 480px) {
   .campersgrid {
@@ -419,7 +425,6 @@ button {
     margin: 0px;
   }
 
-
   /* Skills Display */
 
   .filter-buttons {
@@ -430,7 +435,6 @@ button {
     width: 380px;
     min-height: 105px;
     max-height: 105px;
-    overflow: hidden;
     transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -446,7 +450,7 @@ button {
     color: #ffffff;
     font-size: 20px;
     border: none;
-    background-color: #FFA500;
+    background-color: #ffa500;
     cursor: pointer;
   }
 
@@ -463,5 +467,56 @@ button {
     font-size: 45px;
     padding-left: 5px;
   }
-
 }
+
+/*WRAPPER BADGES*/
+
+.wrapper-filter {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.wrapper-filter .icon-filter {
+  position: relative;
+  cursor: pointer;
+}
+
+.wrapper-filter .tooltip-filter {
+  position: absolute;
+  bottom: 120%;
+  font-size: 14px;
+  color: #ffffff;
+  z-index: 9999;
+  font-size: small;
+  padding: 8px 8px;
+  max-width: 300px;
+  border-radius: 5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.wrapper-filter .icon-filter:hover .tooltip-filter {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wrapper-filter .icon-filter:hover span,
+.wrapper-filter .icon-filter:hover .tooltip-filter {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper-filter .badgeInfo:hover,
+.wrapper-filter .badgeInfo:hover .tooltip-filter,
+.wrapper-filter .badgeInfo:hover .tooltip-filter::before {
+  background: #1a1a1a;
+  border: 1px solid #fdc347;
+}
+
+/*End wrapper*/

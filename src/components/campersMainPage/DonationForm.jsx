@@ -1,14 +1,23 @@
-import { useState } from 'react'
-import './styles/DonationForm.css'
+import { useState } from 'react';
+import "./styles/DonationForm.css";
 
 export default function DonationForm() {
+    const documentTypes = [
+        { id: 'CC', name: 'Cédula de Ciudadanía' },
+        { id: 'CE', name: 'Cédula de Extranjería' },
+        { id: 'PS', name: 'Pasaporte' },
+        { id: 'NIT', name: 'NIT' }
+    ];
+
     const [formData, setFormData] = useState({
-        nombre: '',
-        apellido: '',
+        first_name: '',
+        last_name: '',
         email: '',
-        phone: '',
-        message: '', // Cambiado de mensaje
-        contribution: '' // Cambiado de valor
+        celular: '',
+        message: '',
+        contribution: '',
+        documentType: '',
+        documentNumber: ''
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,37 +31,33 @@ export default function DonationForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const contribution = parseFloat(formData.contribution);
         if (isNaN(contribution) || contribution <= 0) {
             alert('Por favor ingresa un valor válido para la donación.');
             return;
         }
-
         setIsSubmitting(true);
-
         try {
             const response = await fetch(endpoints.sponsors, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
-
             if (response.ok) {
                 alert('¡Gracias por tu contribución!');
                 setFormData({
                     first_name: '',
                     last_name: '',
                     email: '',
-                    phone: '',
+                    celular: '',
                     message: '',
-                    contribution: ''
+                    contribution: '',
+                    documentType: '',
+                    documentNumber: ''
                 });
             } else {
                 const errorData = await response.json();
-                alert(`Error al enviar la donación: ${errorData.message || 'Intenta nuevamente.'}`);
+                alert(`Error: ${errorData.message || 'Intenta nuevamente.'}`);
             }
         } catch (error) {
             alert('Hubo un problema al enviar los datos. Por favor, verifica tu conexión.');
@@ -88,6 +93,41 @@ export default function DonationForm() {
                             value={formData.last_name}
                             onChange={handleChange}
                             placeholder="Tu apellido"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="donation-form-row">
+                    <div className="donation-form-group">
+                        <label className="donation-form-label">
+                            Tipo de Documento <span className="donation-required">*</span>
+                        </label>
+                        <select
+                            className="donation-form-input"
+                            name="documentType"
+                            value={formData.documentType}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Selecciona tipo de documento</option>
+                            {documentTypes.map(type => (
+                                <option key={type.id} value={type.id}>
+                                    {type.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="donation-form-group">
+                        <label className="donation-form-label">
+                            Número de Documento <span className="donation-required">*</span>
+                        </label>
+                        <input
+                            className="donation-form-input"
+                            name="documentNumber"
+                            value={formData.documentNumber}
+                            onChange={handleChange}
+                            placeholder="Ingresa tu número de documento"
                             required
                         />
                     </div>
@@ -156,5 +196,5 @@ export default function DonationForm() {
                 </button>
             </form>
         </div>
-    )
+    );
 }

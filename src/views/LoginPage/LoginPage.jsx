@@ -1,19 +1,23 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { Lock, Mail } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import campushm from '/src/assets/Campushm.png';
 import { endpoints } from '../../services/apiConfig';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardHeader, CardTitle } from "@/components/ui/card";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const notify = () => toast("Wow so easy!");
+
 
   useEffect(() => {
     if (token) {
+      const camperId = localStorage.getItem('camper_id');
       console.log("Usuario ya autenticado. Redirigiendo a /");
-      navigate('/');
+      navigate(`/campers/profile/${camperId}/edit`);
     }
   }, [token]);
 
@@ -30,16 +34,25 @@ const LoginPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        toast.success("Inicio de sesión exitoso");
+
         localStorage.setItem('token', data.token);
-        console.log("Inicio de sesión exitoso. Token recibido:", data.token);
-        navigate('/');
+        localStorage.setItem('role', data.user.role);
+        localStorage.setItem('camper_id', data.user.camper_id);
+        console.log("Inicio de sesión exitoso. Token recibido:", data);
+        navigate(`/campers/profile/${data.user.camper_id}/edit`);
+
+
       } else {
         console.error("Error de autenticación. Credenciales incorrectas.");
+        toast.error("Error de autenticación. Credenciales incorrectas.");
       }
     } catch (error) {
       console.error("Error al intentar iniciar sesión:", error);
+      toast.error("Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.");
+
     }
-  };
+};
 
   return (
     <div className="min-h-screen w-screen bg-[#1a1a2e] flex flex-col items-center justify-center p-8 gap-12 font-sans">
@@ -52,12 +65,6 @@ const LoginPage = () => {
               <div className="flex justify-center">
                 <div className="w-40 h-auto">
                   <img src={campushm} alt="Campus" className="w-40 h-auto mx-auto" />
-                  <circle cx="50" cy="50" r="45" stroke="white" strokeWidth="2" />
-                  <path
-                    d="M50 20C35 20 25 35 25 50C25 65 35 80 50 80C65 80 75 65 75 50C75 35 65 20 50 20Z"
-                    stroke="white"
-                    strokeWidth="2"
-                  />
                 </div>
               </div>
               <CardTitle className="text-2xl font-bold tracking-tight text-white">
@@ -110,9 +117,9 @@ const LoginPage = () => {
             <button type="submit" className="w-full py-3 px-4 rounded-lg text-base cursor-pointer transition-colors duration-300 bg-[#6C3AFF] text-white hover:bg-[#6d28d9]">
               Iniciar Sesión
             </button>
-            <button type="button" className="w-full py-3 px-4 rounded-lg text-base cursor-pointer transition-colors duration-300 bg-white text-gray-800 flex items-center justify-center gap-2 hover:bg-gray-100">
+            {/* <button type="button" className="w-full py-3 px-4 rounded-lg text-base cursor-pointer transition-colors duration-300 bg-white text-gray-800 flex items-center justify-center gap-2 hover:bg-gray-100">
               Continuar con Google
-            </button>
+            </button> */}
           </form>
 
           <div className="text-center mt-6">

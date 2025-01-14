@@ -1,4 +1,3 @@
-// components/camperProfile/TrainingProcess.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
@@ -7,9 +6,12 @@ import styles from './styles/TrainingProcess.module.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-const TrainingProcess = ({ videos }) => {
+const TrainingProcess = ({ videos = [] }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const swiperRef = useRef(null);
+
+  // Validar que videos sea un array
+  const videoArray = Array.isArray(videos) ? videos : [];
 
   useEffect(() => {
     const handleResize = () => {
@@ -44,9 +46,9 @@ const TrainingProcess = ({ videos }) => {
             }}
             className={`${styles.profileSwiper} ${styles.mobileSwiper}`}
           >
-            {videos.map((video, index) => (
+            {videoArray.map((video, index) => (
               <SwiperSlide key={index} className={styles.swiperSlide}>
-                <TikTokEmbed videoUrl={video.url} title={video.title} />
+                <TikTokEmbed videoUrl={video.video_url} title={video.title} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -60,9 +62,9 @@ const TrainingProcess = ({ videos }) => {
             modules={[Pagination]}
             className={styles.profileSwiper}
           >
-            {videos.map((video, index) => (
+            {videoArray.map((video, index) => (
               <SwiperSlide key={index} className={styles.videoItem}>
-                <TikTokEmbed videoUrl={video.url} title={video.title} />
+                <TikTokEmbed videoUrl={video.video_url} title={video.title} />
               </SwiperSlide>
             ))}
           </Swiper>
