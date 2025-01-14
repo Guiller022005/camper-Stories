@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// ProyectsEdit.jsx
+import React, { useEffect, useState } from "react";
 import ProjectCardEdit from "./ProjectCardEdit";
 import { useParams } from 'react-router-dom';
 import { ProyectsModal } from "./modals/ProyectsModal";
@@ -19,7 +20,8 @@ const ProyectsEdit = () => {
       try {
         setLoading(true);
         const response = await getTechnology();
-        setAvailableTechnologies(response.technologies || []);
+        console.log(response)
+        setAvailableTechnologies(response.data);
       } catch (error) {
         console.error("Error al cargar tecnologías disponibles:", error);
         setAvailableTechnologies([]);
@@ -49,13 +51,13 @@ const ProyectsEdit = () => {
     loadProjects();
   }, []);
 
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [ selectedProject, setSelectedProject] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleAddProject = async (newProject) => {
     try {
       const userId = localStorage.getItem("userId");
-      const response = await addProjects(userId, newProject);
+      const response = await addProjects(newProject);
       if (!response.ok) {
         throw new Error("Error al enviar la información");
       }
@@ -70,7 +72,7 @@ const ProyectsEdit = () => {
     setIsEditing(true);
   };
 
-  const handleUpdateProject = (updatedProject) => {
+  const  handleUpdateProject = (updatedProject) => {
     setProjects((prevProjects) =>
       prevProjects.map((proj) =>
         proj.id === updatedProject.id ? updatedProject : proj
@@ -79,6 +81,8 @@ const ProyectsEdit = () => {
     setIsEditing(false);
     setSelectedProject(null);
   };
+
+  console.log(availableTechnologies);
 
   return (
     <section className={styles.tecInfo}>

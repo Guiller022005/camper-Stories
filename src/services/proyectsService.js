@@ -4,9 +4,8 @@ import API_BASE_URL, { endpoints } from "./apiConfig";
 
 export const getProjects = async (camperId) => {
   try {
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-    const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA5LCJlbWFpbCI6InBlZHJhemFtYWxkb25hZG9uQGdtYWlsLmNvbSIsInJvbGUiOiJjYW1wZXIiLCJpYXQiOjE3MzY1NDQ1NDYsImV4cCI6MTczNjYzMDk0Nn0.wF-NmQUBNKrxGLl2roJ4D-p4wCYDPu-GJGup2kygJ2I"
     if (!token) {
       throw new Error("No se encontro un token, porfavor inicia sesion");
     }
@@ -27,10 +26,11 @@ export const getProjects = async (camperId) => {
   }
 };
 
-export const addProjects = async (camperId, data) => {
+export const addProjects = async (data) => {
   try {
-    // const token = localStorage.getItem("token");
-    const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA5LCJlbWFpbCI6InBlZHJhemFtYWxkb25hZG9uQGdtYWlsLmNvbSIsInJvbGUiOiJjYW1wZXIiLCJpYXQiOjE3MzY1NDQ1NDYsImV4cCI6MTczNjYzMDk0Nn0.wF-NmQUBNKrxGLl2roJ4D-p4wCYDPu-GJGup2kygJ2I"
+    const token = localStorage.getItem("token");
+
+    console.log(token)
 
     if (!token) {
       throw new Error("No se enconteo un token, porfavor inicia sesion");
@@ -39,10 +39,13 @@ export const addProjects = async (camperId, data) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       },
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
     };
 
-    const url = `${endpoints.campers}/${camperId}/proyects`;
+    const url = `${endpoints.addProjects}`;
     const response = await axios.post(url, data, config);
 
     return response.data;

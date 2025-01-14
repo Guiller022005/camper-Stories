@@ -46,7 +46,6 @@ const DreamsModal = ({ onAddDream }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newDream = {
-      id: Date.now().toString(),
       title: formData.title,
       description: formData.description,
       image: formData.imagePreview,
@@ -54,7 +53,7 @@ const DreamsModal = ({ onAddDream }) => {
     onAddDream(newDream);
     const userId = localStorage.getItem("userID");
     try {
-      const response = await addDreams(userId, newDream);
+      const response = await addDreams(58, newDream);
       console.log("respuesta del servidor", response)
     } catch (error) {
       console.error("No fue posible enviar la informacion", error)

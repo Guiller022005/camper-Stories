@@ -13,6 +13,9 @@ const TrainingProcess = ({ videos = [] }) => {
   // Validar que videos sea un array
   const videoArray = Array.isArray(videos) ? videos : [];
 
+  // Validar que videos sea un array
+  const videoArray = Array.isArray(videos) ? videos : [];
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -47,6 +50,7 @@ const TrainingProcess = ({ videos = [] }) => {
             className={`${styles.profileSwiper} ${styles.mobileSwiper}`}
           >
             {videoArray.map((video, index) => (
+            {videoArray.map((video, index) => (
               <SwiperSlide key={index} className={styles.swiperSlide}>
                 <TikTokEmbed videoUrl={video.video_url} title={video.title} />
               </SwiperSlide>
@@ -62,6 +66,7 @@ const TrainingProcess = ({ videos = [] }) => {
             modules={[Pagination]}
             className={styles.profileSwiper}
           >
+            {videoArray.map((video, index) => (
             {videoArray.map((video, index) => (
               <SwiperSlide key={index} className={styles.videoItem}>
                 <TikTokEmbed videoUrl={video.video_url} title={video.title} />

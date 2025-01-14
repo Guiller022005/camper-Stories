@@ -41,20 +41,20 @@ const CamperProfile = () => {
                     fetchMeritsByCamperId(Number(id)) // Y para méritos
                 ]);
 
-                setCamperData(data_infoCamper);
-                setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
-                setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
-            } catch (err) {
-                setError(err.message);
-                console.error('Error cargando datos:', err);
-                // Establecer datos por defecto en caso de error
-                setCamperData(DEFAULT_CAMPER_DATA);
-                setCamperTiktoksData([]);
-                setCamperMerits([]);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        setCamperData(data_infoCamper);
+        setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
+        setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error cargando datos:", err);
+        // Establecer datos por defecto en caso de error
+        setCamperData(DEFAULT_CAMPER_DATA);
+        setCamperTiktoksData([]);
+        setCamperMerits([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
         if (id) { // Solo cargar si hay un id
             loadCamperData();
@@ -90,28 +90,20 @@ const CamperProfile = () => {
                     </div>
                 </LazySection>
 
-                <LazySection>
-                    <div id="sobre-mi">
-                        <AboutMe
-                            videoUrl={camperData.main_video_url}
-                            about={camperData.about}
-                        />
-                    </div>
-                </LazySection>
+        <LazySection>
+          <AboutMe
+            videoUrl={camperData.main_video_url}
+            about={camperData.about}
+          />
+        </LazySection>
 
-                <LazySection>
-                    <div id="sueños-grid">
-                        <Dreams />
-                    </div>
-                </LazySection>
+        <LazySection>
+          <Dreams />
+        </LazySection>
 
-                <LazySection>
-                    <div id="proceso-formacion">
-                        <TrainingProcess
-                            videos={camperTiktoksData}
-                        />
-                    </div>
-                </LazySection>
+        <LazySection>
+          <TrainingProcess videos={camperTiktoksData} />
+        </LazySection>
 
                 <LazySection>
                     <div id="projects">

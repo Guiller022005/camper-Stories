@@ -28,8 +28,8 @@ export function ProyectsEditModal({
     title: project?.title || "",
     description: project?.description || "",
     image: project?.image || "",
-    codeUrl: project?.codeUrl || "",
-    technologies: project?.technologies || [],
+    code_url: project?.code_url || "",
+    technologies: project?.technologies || []
   });
 
   useEffect(() => {
@@ -37,8 +37,8 @@ export function ProyectsEditModal({
       title: project?.title || "",
       description: project?.description || "",
       image: project?.image || "",
-      codeUrl: project?.codeUrl || "",
-      technologies: project?.technologies || [],
+      code_url: project?.code_url || "",
+      technologies: project?.technologies || []
     });
   }, [project]);
 
@@ -68,7 +68,7 @@ export function ProyectsEditModal({
       !formData.title ||
       !formData.description ||
       !formData.image ||
-      !formData.codeUrl
+      !formData.code_url
     ) {
       alert("Por favor, completa todos los campos.");
       return;
@@ -134,7 +134,7 @@ export function ProyectsEditModal({
             </Label>
             <Input
               id="codeUrl"
-              value={formData.codeUrl}
+              value={formData.code_url}
               onChange={handleChange}
               className="col-span-3 text-gray-900 border-gray-300"
             />
@@ -171,7 +171,7 @@ export function ProyectsEditModal({
                     onClick={() => handleRemoveTechnology(tech)}
                     className="text-red-500 hover:text-red-700 ml-2 font-medium"
                   >
-                    ×
+                    x
                   </button>
                 </li>
               ))}
