@@ -1,5 +1,5 @@
 // ProfileHeaderEdit.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from "lucide-react";
 import ProfileHeaderModal from "../camperProfileEdit/modals/ProfileHeaderModal";
@@ -14,6 +14,8 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
   const handleToggleBadges = () => {
     setShowAllBadges((prev) => !prev);
   };
+
+  
 
   return (
     <motion.div
