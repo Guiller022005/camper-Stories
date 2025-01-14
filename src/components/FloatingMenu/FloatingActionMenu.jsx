@@ -56,6 +56,8 @@ const FloatingActionMenu = () => {
                     throw new Error('Logout failed');
                 }
                 localStorage.removeItem('token');
+                localStorage.removeItem('role');
+                localStorage.removeItem('camper_id');
                 toast.success("¡Hasta pronto! Has cerrado sesión exitosamente.");
                 navigate('/campers/login');
             })
