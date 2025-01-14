@@ -1,16 +1,15 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
 
-import styles from './styles/CamperProfile.module.css';
-import LazySection from '../../components/common/LazySection';
-import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
-
-import Loader from '@/components/common/Loader';
-import { fetchCamperById } from '../../services/camperService';
-import { fetchTikToksByCamperId } from '@/services/tiktokService';
-import { fetchMeritsByCamperId } from '@/services/meritsService';
-import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
-import ErrorPage from '../ErrorPage/ErrorPage';
+import styles from "./styles/CamperProfile.module.css";
+import LazySection from "../../components/common/LazySection";
+import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
+import Loader from "@/components/common/Loader";
+import { fetchCamperById } from "../../services/camperService";
+import { fetchTikToksByCamperId } from "@/services/tiktokService";
+import { fetchMeritsByCamperId } from "@/services/meritsService";
+import FloatingActionMenu from "@/components/FloatingMenu/FloatingActionMenu";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 // Lazy load components
 const NavbarProfile = lazy(() =>
