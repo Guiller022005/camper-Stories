@@ -86,7 +86,7 @@ export const fetchMeritsCamperById = async (id) => {
   }
 
   try {
-    const response = await axios.get(endpoints.merits.replace("{id}", id));
+    const response = await axios.get(endpoints.meritsbyid.replace("{id}", id));
     return response.data;
   } catch (error) {
     console.error(`Error fetching merits for camper ${id}:`, error);
@@ -103,6 +103,3 @@ export const fetchAllMerits = async () => {
     throw error;
   }
 };
-
-// update Camper Profile
-
