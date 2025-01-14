@@ -1,5 +1,4 @@
-import React, { use, useEffect, useState } from "react";
-import { dreamsData } from "../../data/data";
+import React, { useEffect, useState } from "react";
 import { getDreams } from "../../services/dreamsService";
 import styles from "./styles/DreamsGridEdit.module.css";
 import DreamsModal from "./modals/DreamsModal";
@@ -10,9 +9,9 @@ const DreamsGridEdit = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fechDreams = async () => {
+    const fetchDreams = async () => {
       try {
-        const id = 58; 
+        const id = 58; // ID del usuario actual o contexto relevante
         setLoading(true);
         const dreamsData = await getDreams(id);
         setDreams(dreamsData);
@@ -24,16 +23,20 @@ const DreamsGridEdit = () => {
       }
     };
 
-    fechDreams();
+    fetchDreams();
   }, []);
 
   const uniqueDreams = [...new Set(dreams.map((dream) => dream.id))].map((id) =>
-    dreams.find((dream) => dream.id === id)
-  );
+        dreams.find((dream) => dream.id === id)
+      )
+    : [];
 
   const handleAddDream = (newDream) => {
     setDreams((prevDreams) => [...prevDreams, newDream]);
   };
+
+  if (loading) return <p>Loading dreams...</p>;
+  if (error) return <p>Error loading dreams: {error}</p>;
 
   return (
     <div className={styles.cardArea}>
