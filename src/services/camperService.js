@@ -103,3 +103,6 @@ export const fetchAllMerits = async () => {
     throw error;
   }
 };
+
+// update Camper Profile
+

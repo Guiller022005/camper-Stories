@@ -16,9 +16,11 @@ import {
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Edit } from 'lucide-react';
+import { endpoints } from '@/services/apiConfig';
 
 const ProfileHeaderModal = ({ initialData }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [ciudadesColombia, setCiudadesColombia] = useState([]);
   const [formData, setFormData] = useState({
     nombre: initialData?.nombre || '',
     city: initialData?.city || '',
@@ -26,12 +28,35 @@ const ProfileHeaderModal = ({ initialData }) => {
     profilePicture: null
   });
 
-  const cities = [
-    { label: "Bucaramanga", value: "Bucaramanga" },
-    { label: "Bogotá", value: "Bogota" },
-    { label: "Medellín", value: "Medellin" },
-    { label: "Cali", value: "Cali" }
-  ];
+  useEffect(() => { 
+    const fetchCities = async () => {
+      try {
+        const response = await fetch(endpoints.city);
+        const text = await response.text(); // Obtener la respuesta como texto
+        console.log("Respuesta de la API:", text); // Para depuración
+
+        // Verificar si la respuesta es JSON
+        const contentType = response.headers.get("content-type");
+        if (
+          response.ok &&
+          contentType &&
+          contentType.includes("application/json")
+        ) {
+          const data = JSON.parse(text); // Convertir a JSON
+          console.log("Ciudades obtenidas:", data);
+          setCiudadesColombia(data.data); // Accediendo a la propiedad 'data'
+        } else {
+          console.error(
+            "Error: La respuesta no es un JSON válido o hubo un problema con la solicitud."
+          );
+        }
+      } catch (error) {
+        console.error("Error de red:", error);
+      }
+    };
+
+    fetchCities();
+  }, []);
   
   useEffect(() => {
     const navbar = document.querySelector('.navbar-profile');
@@ -113,38 +138,18 @@ const ProfileHeaderModal = ({ initialData }) => {
               <SelectTrigger className="w-full text-gray-900 bg-gray-50">
                 <SelectValue placeholder="Selecciona una ciudad" />
               </SelectTrigger>
-              <SelectContent className="bg-white z-[9999]">
-                {cities.map((city) => (
-                  <SelectItem key={city.value} value={city.value}>
-                    {city.label}
+              <SelectContent className="bg-white z-[9999] text-gray-900">
+                {ciudadesColombia.map((city) => (
+                  <SelectItem 
+                    key={city.id} 
+                    value={city.id}
+                    className="hover:bg-gray-100 cursor-pointer"
+                  >
+                    {city.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Edad</label>
-            <Input
-              type="number"
-              name="age"
-              className="text-gray-900 bg-gray-50"
-              value={formData.age}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (/^\d{0,2}$/.test(value)) {
-                  handleChange(e);
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === '-') {
-                  e.preventDefault();
-                }
-              }}
-              placeholder="Tu edad"
-              min="1"
-              max="99"
-            />
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">
