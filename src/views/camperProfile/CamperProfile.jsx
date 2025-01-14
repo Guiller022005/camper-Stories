@@ -10,6 +10,7 @@ import { fetchCamperById } from '../../services/camperService';
 import { fetchTikToksByCamperId } from '@/services/tiktokService';
 import { fetchMeritsByCamperId } from '@/services/meritsService';
 import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
+import NoRecords from '@/components/common/NoRecords';
 
 // Lazy load components
 const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
@@ -20,7 +21,6 @@ const TrainingProcess = lazy(() => import('../../components/camperProfile/Traini
 const Proyects = lazy(() => import('@/components/camperProfile/Proyects'));
 const SponsorCTA = lazy(() => import('../../components/camperProfile/SponsorCTA'));
 const Footer = lazy(() => import('../../components/footer/Footer'));
-
 
 const CamperProfile = () => {
     const { id } = useParams(); // Obtenemos el id de la URL
@@ -75,6 +75,15 @@ const CamperProfile = () => {
         );
     }
 
+    const renderTrainingProcess = () => {
+        if (!camperTiktoksData || camperTiktoksData.length === 0) {
+            return <NoRecords title='Mi Proceso de Formacion'/>;
+        }
+        return (
+            <TrainingProcess videos={camperTiktoksData} />
+        );
+    };
+
     return (
         <div className={`${styles.camperProfileView} flex flex-col relative`}>
             <LazySection>
@@ -107,9 +116,7 @@ const CamperProfile = () => {
 
                 <LazySection>
                     <div id="proceso-formacion">
-                        <TrainingProcess
-                            videos={camperTiktoksData}
-                        />
+                        {renderTrainingProcess()}
                     </div>
                 </LazySection>
 

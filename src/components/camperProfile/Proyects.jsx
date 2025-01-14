@@ -4,6 +4,7 @@ import ProjectCard from "./ProjectCard";
 import { getProjects } from "../../services/proyectsService";
 import { getTechnologyForProject } from "../../services/technologiesService";
 import styles from "./styles/Proyects.module.css";
+import NoRecords from "../common/NoRecords";
 
 const Proyects = () => {
   const [projects, setProjects] = useState([]);
@@ -60,14 +61,12 @@ const Proyects = () => {
     }
   };
 
-  // Show loading state while initial projects are being fetched
-  if (loading && projects.length === 0) {
-    return <div>Cargando proyectos...</div>;
+  if (loading) {
+    return null; // O un componente de loading si lo prefieres
   }
 
-  // Show error state if initial loading failed
-  if (error && projects.length === 0) {
-    return <div>Error: {error}</div>;
+  if (!projects || projects.length === 0) {
+    return <NoRecords title="Mis Proyectos"  />;
   }
 
   return (
