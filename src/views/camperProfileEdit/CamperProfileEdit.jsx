@@ -1,16 +1,21 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useParams, Navigate } from "react-router-dom";
 import styles from "./styles/CamperProfileEdit.module.css";
+import LazySection from "@/components/common/LazySection";
+import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
+import ErrorPage from "../ErrorPage/ErrorPage";
+import Loader from "@/components/common/Loader";
+import { fetchCamperById } from "@/services/camperService";
 import NavbarProfile from "../../components/navbar/NavbarProfile";
 import Footer from "../../components/footer/Footer";
 import LazySection from "@/components/common/LazySection";
 import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
-import { fetchCamperById } from "@/services/camperService";
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
 import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
 
 // Lazy load components
+const NavbarProfile = lazy(() => import("@/components/navbar/NavbarProfile"))
 const ProfileHeaderEdit = lazy(() =>
   import("../../components/camperProfileEdit/ProfileHeaderEdit")
 );
@@ -29,6 +34,7 @@ const ProyectsEdit = lazy(() =>
 const SponsorCTAEdit = lazy(() =>
   import("@/components/camperProfileEdit/SponsorCTAEdit")
 );
+const Footer = lazy(() => import("../../components/footer/Footer"))
 
 const CamperProfileEdit = () => {
   const { id } = useParams(); // Obtén el ID desde la URL
@@ -78,32 +84,24 @@ const CamperProfileEdit = () => {
   }, [id]);
 
   if (isLoading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.loadingSpinner}>Cargando...</div>
-      </div>
-    );
-  }
+    return <Loader />; 
+}
 
-  if (error) {
-    return (
-      <div className={styles.errorContainer}>
-        <div className={styles.errorMessage}>
-          Error: {error}
-          <button
-            onClick={() => window.location.reload()}
-            className={styles.retryButton}
-          >
-            Reintentar
-          </button>
-        </div>
-      </div>
-    );
-  }
+if (error) {
+  return (
+      <ErrorPage 
+          title="Error al cargar el perfil"
+          message={`No pudimos cargar la información del camper. ${error}`}
+          error="404" // O podrías usar un código de error específico según el tipo de error
+      />
+  );
+}
 
   return (
     <div className={styles.camperProfileView}>
-      <NavbarProfile />
+      <LazySection>
+        <NavbarProfile />
+      </LazySection>
       <div className={styles.profileMainContent}>
         <LazySection>
           <ProfileHeaderEdit data={camperData} initialMerits={camperMerits} />
