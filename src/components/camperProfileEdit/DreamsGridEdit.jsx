@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import { getDreams } from "../../services/dreamsService";
 import styles from "./styles/DreamsGridEdit.module.css";
 import DreamsModal from "./modals/DreamsModal";
 
 const DreamsGridEdit = () => {
   const [dreams, setDreams] = useState([]);
+  const { id } = useParams(); 
 
   useEffect(() => {
     const fetchDreams = async () => {
       try {
-        const id = 58;
         const dreamsData = await getDreams(id);
         const uniqueDreams = [...new Set(dreamsData.map(dream => dream.id))]
           .map(id => dreamsData.find(dream => dream.id === id));
