@@ -22,16 +22,16 @@
 
 .projectCardAdd {
   display: flex;
-  max-width: 325px;
-  height: 400px;
+  max-width: 450px;
+  height: 450px;
   align-items: center;
   justify-content: center;
 }
 
 .profileSubtitle {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: bold;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: clamp(1.5rem, 3vw, 3rem);
   margin-bottom: 1rem;
   margin-top: 1rem;

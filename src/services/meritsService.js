@@ -14,10 +14,54 @@ export const fetchMeritsByCamperId = async (camperId) => {
 
 export const updateCamperMerits = async (camperId, meritsData) => {
     try {
-        const response = await axios.put(`${API_BASE_URL}/merits/camper/${camperId}`, meritsData);
+        const response = await axios.post(`${endpoints.merits}/${camperId}`, meritsData);
         return response.data;
     } catch (error) {
         console.error('Error updating merits:', error);
         throw new Error('No se pudieron actualizar los méritos del camper');
     }
 };
+
+export const getMerits = async () => {
+    try {
+      const token = localStorage.getItem("token");
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      const url = `${endpoints.merits}`;
+      const response = await axios.get(url, config);
+  
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching the data", error);
+      throw error;
+    }
+  };
+
+export const addMerit = async (camperId, data) => {
+    try {
+      const token = localStorage.getItem("token");
+  
+      if (!token) {
+        throw new Error("No se enconteo un token, porfavor inicia sesion");
+      }
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      const url = `${endpoints.merits}/${camperId}`;
+      const response = await axios.post(url, data, config);
+  
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching the data", error);
+      throw error;
+    }
+  };

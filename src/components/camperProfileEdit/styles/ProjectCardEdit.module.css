@@ -1,54 +1,61 @@
+.projectCard {
+  flex: 1 1 calc(33.33% - 24px);
+  box-sizing: border-box;
+}
+
+.projectCardBadge {
+  background-color: #211e8b;
+  color: #fff;
+  padding: 3px 10px;
+  font-size: 0.875rem;
+  border-radius: 20px;
+}
+
+.projectCardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.projectCardDescription {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.projectCardButton {
+  margin-top: 16px;
+}
+
+/* Media queries para tablets */
+@media (max-width: 1024px) {
+  .projects {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .projectCard {
-    flex: 1 1 calc(33.33% - 24px);
-    box-sizing: border-box;
+    flex: 1 1 calc(50% - 24px);
   }
-  
+}
+
+/* Media queries para móviles */
+@media (max-width: 768px) {
+  .projects {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+
+  .projectCard {
+    flex: 1 1 100%;
+  }
+}
+
+/* Media query para móviles pequeños */
+@media (max-width: 480px) {
   .projectCardTitle {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #333;
+    font-size: 1.1rem;
   }
-  
+
   .projectCardDescription {
-    font-size: 0.875rem;
-    color: #9ca3af;
+    font-size: 0.8rem;
   }
-  
-  .projectCardButton {
-    margin-top: 16px;
-  }
-   
-  /* Media queries para tablets */
-  @media (max-width: 1024px) {
-    .projects {
-      grid-template-columns: repeat(2, 1fr);
-    }
-   
-    .projectCard {
-      flex: 1 1 calc(50% - 24px);
-    }
-  }
-   
-  /* Media queries para móviles */
-  @media (max-width: 768px) {
-    .projects {
-      grid-template-columns: 1fr;
-      padding: 0 1rem;
-    }
-   
-    .projectCard {
-      flex: 1 1 100%;
-    }
-  }
-   
-  /* Media query para móviles pequeños */
-  @media (max-width: 480px) {
-    
-    .projectCardTitle {
-      font-size: 1.1rem;
-    }
-   
-    .projectCardDescription {
-      font-size: 0.8rem;
-    }
-  }
+}

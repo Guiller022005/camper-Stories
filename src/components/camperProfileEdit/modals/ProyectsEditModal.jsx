@@ -62,6 +62,16 @@ export function ProyectsEditModal({
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        image: file,
+      }));
+    }
+  };
+
   const handleRemoveTechnology = (techId) => {
     const numericId = Number(techId);
     setFormData((prev) => ({
@@ -149,15 +159,16 @@ export function ProyectsEditModal({
             />
           </div>
 
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4 cursor-pointer">
             <Label htmlFor="image" className="text-right text-gray-900">
-              URL Imagen
+              Imagen
             </Label>
             <Input
               id="image"
-              value={typeof formData.image === "string" ? formData.image : ""}
-              onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="col-span-3 text-gray-900 border-gray-300 cursor-pointer"
             />
           </div>
 
