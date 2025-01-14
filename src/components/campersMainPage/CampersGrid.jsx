@@ -1,167 +1,225 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { fetchAllMerits, fetchCampersFormacion, fetchMeritsCamperById } from "../../services/camperService";
+import campersData from "../../data/camperSucess";
 import "./styles/CampersGrid.css";
+
+const predefinedSkills = [
+  {
+    name: "Espíritu Guerrero ⚔️",
+    description:
+      "La persona que, además de programar, trabaja aparte del campus para superarse.",
+  },
+  {
+    name: "Nuevos Horizontes 🌅",
+    description:
+      "Las personas que dejaron otra profesión para dedicarse a la programación.",
+  },
+  {
+    name: "Trota Mundos 🌎",
+    description: "Foráneos que se mudaron para estudiar programación.",
+  },
+  {
+    name: "Primer Programador 💻",
+    description:
+      "Quien marca el inicio del camino en programación dentro de su familia.",
+  },
+  {
+    name: "Gran Jefe 👑",
+    description:
+      "Líderes que destacan en equipos de desarrollo o proyectos de programación.",
+  },
+  {
+    name: "Cabeza de Familia 👨‍👩‍👧‍👦",
+    description:
+      "Programadores que lideran y sostienen a sus familias mientras se capacitan o trabajan.",
+  },
+  {
+    name: "Mujer de Impacto 💪",
+    description:
+      "Mujeres programadoras que generan un cambio significativo en su comunidad tecnológica.",
+  },
+  {
+    name: "Emprendedor 💼",
+    description:
+      "Programadores que crean sus propios proyectos o startups tecnológicas.",
+  },
+  {
+    name: "Despegue Digital 🚀",
+    description:
+      "Programadores que aprovechan al máximo las herramientas digitales para crecer.",
+  },
+  {
+    name: "Rompe Esquemas 💥",
+    description:
+      "Reconocimiento a programadores que, estudiando en campus y no en una universidad formal, logran sobresalir.",
+  },
+];
 
 const CampersGrid = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [campersPerPage, setCampersPerPage] = useState(8);
-  const [campersData, setCampersData] = useState([]);
-  const [expandedCampers, setExpandedCampers] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [expandedSkills, setExpandedSkills] = useState({});
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  const mobileVisibleSkillsCount = 4;
+  const desktopVisibleSkillsCount = predefinedSkills.length;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [allMerits, campers] = await Promise.all([
-          fetchAllMerits(),
-          fetchCampersFormacion(),
-        ]);
-
-        const meritsPromises = campers.map(async (camper) => {
-          const merits = await fetchMeritsCamperById(camper.camper_id);
-          const randomMerit =
-            merits.length > 0
-              ? merits[Math.floor(Math.random() * merits.length)]
-              : null;
-          return {
-            ...camper,
-            merits,
-            randomMerit, // Guardar el mérito aleatorio
-          };
-        });
-
-        const updatedCampers = await Promise.all(meritsPromises);
-        setCampersData(updatedCampers);
-        setIsLoading(false);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Error al cargar los datos.");
-        setIsLoading(false);
-      }
+    const updateDimensions = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      setCampersPerPage(mobile ? 4 : 8);
     };
 
-    fetchData();
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  const toggleExpand = (camperId) => {
-    setExpandedCampers((prevState) => ({
-      ...prevState,
-      [camperId]: !prevState[camperId],
-    }));
-  };
+  const visibleSkills = isMobile
+    ? isFilterExpanded
+      ? predefinedSkills
+      : predefinedSkills.slice(0, mobileVisibleSkillsCount)
+    : predefinedSkills.slice(0, desktopVisibleSkillsCount);
 
-  const totalPages = Math.ceil(campersData.length / campersPerPage);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+  const filteredCampers =
+    selectedSkills.length === 0
+      ? campersData
+      : campersData.filter((camper) =>
+          selectedSkills.every((skill) =>
+            camper.skills.some((camperSkill) => camperSkill.name === skill)
+          )
+        );
 
   const startIndex = (currentPage - 1) * campersPerPage;
-  const currentCampers = campersData.slice(
+  const currentCampers = filteredCampers.slice(
     startIndex,
     startIndex + campersPerPage
   );
 
-  if (isLoading) return <div className="loading">Cargando...</div>;
-  if (error) return <div className="error">{error}</div>;
+  const handleSkillFilter = (skill) => {
+    setSelectedSkills((prev) =>
+      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
+    );
+    setCurrentPage(1);
+  };
 
   return (
     <section className="campersgrid">
+      <div className="badge-filters">
+        <h3>Busca a Tu Camper</h3>
+        <div className="skill-filters wrapper-filter">
+          <div
+            className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}
+          >
+            <AnimatePresence>
+              {visibleSkills.map(({ name, description }) => (
+                <motion.div
+                  key={name}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                >
+                  <Button
+                    className={`skill-button icon-filter badgeInfo ${
+                      selectedSkills.includes(name) ? "selected" : "outline"
+                    }`}
+                    onClick={() => handleSkillFilter(name)}
+                  >
+                    <div className="tooltip-filter">{description}</div>
+                    {name}
+                  </Button>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+          {isMobile && predefinedSkills.length > mobileVisibleSkillsCount && (
+            <button
+              className={`expand-filters-button ${
+                isFilterExpanded ? "expanded" : ""
+              }`}
+              onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+            >
+              {isFilterExpanded ? "Ver menos" : "Ver más"}
+              <ChevronDown
+                className={`ml-2 h-4 w-4 transition-transform ${
+                  isFilterExpanded ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+          )}
+        </div>
+      </div>
       <AnimatePresence mode="wait">
         <motion.div key={currentPage} className="grid-container">
           {currentCampers.map((camper) => (
-            <div key={camper.camper_id} className="developer-card">
+            <div key={camper.id} className="developer-card">
               <div className="dev-card-content">
                 <div className="camper-image">
                   <LazyLoadImage
-                    src={camper.profile_picture}
-                    alt={camper.full_name}
+                    src={camper.image}
+                    alt={camper.name}
                     effect="blur"
                     className="w-full h-[300px] object-cover rounded-lg"
                   />
                 </div>
                 <div className="camper-maininfo">
-                  <h3>{camper.full_name}</h3>
-                  {/* Mérito Aleatorio */}
-                  {camper.randomMerit && (
-                    <div>
-                      <span className="merit-icon">{camper.randomMerit.icon}</span>
-                      {camper.randomMerit.name}
-                      <span className="merit-icon">{camper.randomMerit.icon}</span>
-                    </div>
-                  )}
+                  <h3>{camper.name}</h3>
+                  <p>{camper.role}</p>
+
                   <div className="technologies">
-                    <span className="tech-label">Méritos:</span>
-                    <div className={`skills-wrapper wrapper`}>
+                    <span className="tech-label">Meritos:</span>
+                    <div layout className="skills-wrapper wrapper">
                       <div
                         className={`skills-container ${
-                          expandedCampers[camper.camper_id] ? "expanded" : ""
+                          expandedSkills[camper.id] ? "expanded" : ""
                         }`}
                       >
                         <AnimatePresence>
-                        {camper.merits && camper.merits.length > 0 ? (
-                        expandedCampers[camper.camper_id] ? (
-                          camper.merits.map((merit, index) => (
+                          {camper.skills.map((skill, index) => (
                             <motion.div
-                              key={merit.name}
+                              key={skill.name}
                               initial={{ opacity: 0, scale: 0.8 }}
                               animate={{ opacity: 1, scale: 1 }}
                               exit={{ opacity: 0, scale: 0.8 }}
-                              className={`merit-item ${
-                                camper.merits.length === 1 ? "merit-highlight" : ""
-                              }`}
+                              transition={{ delay: index * 0.1 }}
+                              className="skill-item"
                             >
-                              <span className="merit-icon">{merit.icon}</span>
-                              {merit.name}
+                              {skill.name}
                             </motion.div>
-                          ))
-                        ) : (
-                          <motion.div
-                            key={camper.merits[0].name}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            className={`merit-item ${
-                              camper.merits.length === 1 ? "merit-highlight" : ""
-                            }`}
-                          >
-                            <span className="merit-icon">{camper.merits[0].icon}</span>
-                            {camper.merits[0].name}
-                          </motion.div>
-                        )
-                      ) : (
-                        <div className="merit-item">Sin méritos disponibles</div>
-                      )}
-
+                          ))}
                         </AnimatePresence>
                       </div>
-                      {camper.merits && camper.merits.length > 1 && (
+                      {camper.skills.length > 4 && (
                         <button
                           variant="ghost"
                           size="sm"
                           className="expand-skills-button"
                           onClick={() =>
-                            toggleExpand(camper.camper_id)
+                            setExpandedSkills((prev) => ({
+                              ...prev,
+                              [camper.id]: !prev[camper.id],
+                            }))
                           }
                         >
-                          {expandedCampers[camper.camper_id] ? "Ver menos" : "Ver más"}
+                          {expandedSkills[camper.id] ? "Ver menos" : "Ver más"}
                           <ChevronDown
                             className={`ml-2 h-4 w-4 transition-transform ${
-                              expandedCampers[camper.camper_id] ? "rotate-180" : ""
+                              expandedSkills[camper.id] ? "rotate-180" : ""
                             }`}
                           />
                         </button>
                       )}
                     </div>
                   </div>
-
                   <div className="buttons">
-                    <button className="info-button">Más Info</button>
+                    <button className="info-button">Mas Info</button>
                     <button className="sponsor-button">Patrocinar</button>
                   </div>
                 </div>
@@ -170,19 +228,16 @@ const CampersGrid = () => {
           ))}
         </motion.div>
       </AnimatePresence>
-
-      {/* Dot Pagination */}
       <DotPagination
         current={currentPage}
         pageSize={campersPerPage}
-        total={campersData.length}
+        total={filteredCampers.length}
         onChange={setCurrentPage}
       />
     </section>
   );
 };
 
-// DotPagination Component
 const DotPagination = ({ current, total, pageSize, onChange }) => {
   const pageCount = Math.ceil(total / pageSize);
 
