@@ -9,15 +9,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { endpoints } from "../../services/apiConfig";
 import campushm from "/src/assets/Campushm.png";
 
@@ -250,10 +242,14 @@ export default function RegisterForm() {
                     type="password"
                     required
                     placeholder="••••••••"
-                    className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                             focus:ring-2 focus:ring-[#7c3aed] border-none"
+                    className={`w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
+                   focus:ring-2 focus:ring-[#7c3aed] border-none
+                   ${passwordError ? 'ring-2 ring-red-500' : ''}`} // Añadido feedback visual
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setPasswordError(''); // Limpiar error al cambiar
+                    }}
                   />
                 </div>
               </div>
@@ -267,14 +263,25 @@ export default function RegisterForm() {
                     type="password"
                     required
                     placeholder="••••••••"
-                    className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                             focus:ring-2 focus:ring-[#7c3aed] border-none"
+                    className={`w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
+                   focus:ring-2 focus:ring-[#7c3aed] border-none
+                   ${passwordError ? 'ring-2 ring-red-500' : ''}`} // Añadido feedback visual
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      setPasswordError(''); // Limpiar error al cambiar
+                    }}
                   />
                 </div>
               </div>
             </div>
+
+            {/* Mostrar el error de contraseña si existe */}
+            {passwordError && (
+              <p className="text-red-500 text-xs text-center">
+                {passwordError}
+              </p>
+            )}
 
             <p className="text-xs text-gray-400 text-center">
               La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.
