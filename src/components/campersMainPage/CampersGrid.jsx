@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { fetchAllMerits, fetchCampersFormacion, fetchMeritsCamperById } from "../../services/camperService"; // APIs
 import "./styles/CampersGrid.css";
+
+const defaultProfileImage = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";
 
 const CampersGrid = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,7 +23,7 @@ const CampersGrid = () => {
 
   // Definir el número de méritos visibles según el dispositivo (móvil o desktop)
   const mobileVisibleSkillsCount = 4;
-  const desktopVisibleSkillsCount = 6;  // Ajuste el número de méritos visibles para escritorio
+  const desktopVisibleSkillsCount = 2;  // Ajuste el número de méritos visibles para escritorio
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -104,8 +105,18 @@ const CampersGrid = () => {
         )
       );
 
+  // Actualizar el estado de los campers filtrados
+  useEffect(() => {
+    setFilteredCampers(filteredCampersResult);
+  }, [selectedMerits]);
+
   if (isLoading) return <div className="loading">Cargando...</div>;
   if (error) return <div className="error">{error}</div>;
+
+  // Función para manejar el error de imagen
+  const handleImageError = (event) => {
+    event.target.src = defaultProfileImage; // Establecer imagen por defecto si falla la carga
+  };
 
   return (
     <section className="campersgrid">
@@ -155,15 +166,16 @@ const CampersGrid = () => {
 
       <AnimatePresence mode="wait">
         <motion.div key={currentPage} className="grid-container">
-          {filteredCampersResult.map((camper) => (
+          {currentCampers.map((camper) => (
             <div key={camper.camper_id} className="developer-card">
               <div className="dev-card-content">
                 <div className="camper-image">
                   <LazyLoadImage
-                    src={camper.profile_picture}
+                    src={camper.profile_picture || defaultProfileImage}  // Verificar si la imagen es nula
                     alt={camper.full_name}
                     effect="blur"
                     className="w-full h-[300px] object-cover rounded-lg"
+                    onError={handleImageError}  // Manejar error de carga de imagen
                   />
                 </div>
                 <div className="camper-maininfo">
@@ -192,6 +204,27 @@ const CampersGrid = () => {
                           ))}
                         </AnimatePresence>
                       </div>
+                      {camper.merits.length > 4 && (
+                        <button
+                          variant="ghost"
+                          size="sm"
+                          className="expand-skills-button"
+                          onClick={() =>
+                            toggleExpand(camper.camper_id)
+                          }
+                        >
+                          {expandedCampers[camper.camper_id]
+                            ? "Ver menos"
+                            : "Ver más"}
+                          <ChevronDown
+                            className={`ml-2 h-4 w-4 transition-transform ${
+                              expandedCampers[camper.camper_id]
+                                ? "rotate-180"
+                                : ""
+                            }`}
+                          />
+                        </button>
+                      )}
                     </div>
                   </div>
                   <div className="buttons">
@@ -208,7 +241,7 @@ const CampersGrid = () => {
       <DotPagination
         current={currentPage}
         pageSize={campersPerPage}
-        total={filteredCampersResult.length}
+        total={filteredCampers.length}
         onChange={setCurrentPage}
       />
     </section>
