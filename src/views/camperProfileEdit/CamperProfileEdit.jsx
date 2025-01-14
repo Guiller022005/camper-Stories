@@ -1,15 +1,17 @@
-import React, { useEffect, useState, lazy } from "react";
+import React, { useEffect, useState, lazy, Suspense } from 'react';
+import { useParams, Navigate } from "react-router-dom";
 import styles from "./styles/CamperProfileEdit.module.css";
-import NavbarProfile from "../../components/navbar/NavbarProfile";
-import camper from "../../data/camperProfilePage";
-import Footer from "../../components/footer/Footer";
+import ErrorPage from "../ErrorPage/ErrorPage";
+import Loader from "@/components/common/Loader";
 import { fetchCamperById } from "@/services/camperService";
 import LazySection from "@/components/common/LazySection";
-import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
+import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
+import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
 
 // Lazy load components
+const NavbarProfile = lazy(() => import("@/components/navbar/NavbarProfile"))
 const ProfileHeaderEdit = lazy(() =>
   import("../../components/camperProfileEdit/ProfileHeaderEdit")
 );
@@ -28,83 +30,83 @@ const ProyectsEdit = lazy(() =>
 const SponsorCTAEdit = lazy(() =>
   import("@/components/camperProfileEdit/SponsorCTAEdit")
 );
+const Footer = lazy(() => import("../../components/footer/Footer"))
 
 const CamperProfileEdit = () => {
+  const { id } = useParams(); // Obtén el ID desde la URL
   const [camperData, setCamperData] = useState(DEFAULT_CAMPER_DATA);
-  const [camperTiktoksData, setCamperTiktoksData] = useState([]); 
+  const [camperTiktoksData, setCamperTiktoksData] = useState([]);
   const [camperMerits, setCamperMerits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch campers, tiktoks, merits by camper_id
+  // Obtener `camper_id` y `role` desde localStorage
+  const camperIdFromStorage = parseInt(localStorage.getItem("camper_id"));
+  const roleFromStorage = localStorage.getItem("role");
+
+  // Validar acceso al perfil
+  if (roleFromStorage === "camper" && parseInt(id) !== camperIdFromStorage) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  // Fetch camper, tiktoks, and merits based on camper ID
   useEffect(() => {
     const loadCamperData = async () => {
-        try {
-            setIsLoading(true);
-            const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
-                fetchCamperById(52),
-                fetchTikToksByCamperId(1),
-                fetchMeritsByCamperId(57)
-            ]);
+      try {
+        setIsLoading(true);
+        const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
+          fetchCamperById(id),
+          fetchTikToksByCamperId(id),
+          fetchMeritsByCamperId(id),
+        ]);
 
-            setCamperData(data_infoCamper);
-            setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
-            setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
-        } catch (err) {
-            setError(err.message);
-            console.error('Error cargando datos:', err);
-            // Establecer datos por defecto en caso de error
-            setCamperData(DEFAULT_CAMPER_DATA);
-            setCamperTiktoksData([]);
-            setCamperMerits([]);
-        } finally {
-            setIsLoading(false);
-        }
+        setCamperData(data_infoCamper);
+        setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
+        setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error cargando datos:", err);
+        setCamperData(DEFAULT_CAMPER_DATA);
+        setCamperTiktoksData([]);
+        setCamperMerits([]);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    loadCamperData();
-}, []);
+    if (id) {
+      loadCamperData();
+    }
+  }, [id]);
 
   if (isLoading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.loadingSpinner}>Cargando...</div>
-      </div>
-    );
-  }
+    return <Loader />; 
+}
 
-  if (error) {
-    return (
-      <div className={styles.errorContainer}>
-        <div className={styles.errorMessage}>
-          Error: {error}
-          <button
-            onClick={() => window.location.reload()}
-            className={styles.retryButton}
-          >
-            Reintentar
-          </button>
-        </div>
-      </div>
-    );
-  }
+if (error) {
+  return (
+      <ErrorPage 
+          title="Error al cargar el perfil"
+          message={`No pudimos cargar la información del camper. ${error}`}
+          error="404" // O podrías usar un código de error específico según el tipo de error
+      />
+  );
+}
 
   return (
     <div className={styles.camperProfileView}>
-      <NavbarProfile />
+      <LazySection>
+        <NavbarProfile />
+      </LazySection>
       <div className={styles.profileMainContent}>
         <LazySection>
-          <ProfileHeaderEdit
-            data={camperData}
-            initialMerits={camperMerits}
-          />
+          <ProfileHeaderEdit data={camperData} initialMerits={camperMerits} />
         </LazySection>
 
         <LazySection>
           <AboutMeEdit
             videoUrl={camperData.main_video_url}
             about={camperData.about}
-            camperInfoInitialData={camper}
           />
         </LazySection>
 
@@ -113,9 +115,7 @@ const CamperProfileEdit = () => {
         </LazySection>
 
         <LazySection>
-          <TrainingProcessEdit 
-            videos={camperTiktoksData} 
-          />
+          <TrainingProcessEdit videos={camperTiktoksData} />
         </LazySection>
 
         <LazySection>
@@ -126,7 +126,13 @@ const CamperProfileEdit = () => {
           <SponsorCTAEdit />
         </LazySection>
       </div>
-      <Footer />
+      <LazySection>
+        <Footer />
+      </LazySection>
+
+      <Suspense fallback={null}>
+        <FloatingActionMenu />
+      </Suspense>
     </div>
   );
 };

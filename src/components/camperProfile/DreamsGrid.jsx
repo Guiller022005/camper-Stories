@@ -1,58 +1,48 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getDreams } from "../../services/dreamsService";
-import styles from './styles/DreamsGrid.module.css'
+import styles from './styles/DreamsGrid.module.css';
 
 const DreamsGrid = () => {
   const [dreams, setDreams] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+  
   useEffect(() => {
-    const fechDreams = async () => {
+    const fetchDreams = async () => {
       try {
-        const id = 58; 
-        setLoading(true);
+        const id = 58;
         const dreamsData = await getDreams(id);
-        setDreams(dreamsData);
+        const uniqueDreams = [...new Set(dreamsData.map(dream => dream.id))]
+          .map(id => dreamsData.find(dream => dream.id === id));
+        console.log(uniqueDreams);
+        setDreams(uniqueDreams);
       } catch (err) {
-        setError(err.message);
         console.error("Error loading dreams: ", err);
       } finally {
-        setLoading(false);
       }
     };
-
-    fechDreams();
+    fetchDreams();
   }, []);
 
-  const uniqueDreams = [...new Set(dreams.map((dream) => dream.id))].map((id) =>
-    dreams.find((dream) => dream.id === id)
-  );
-
-  const handleAddDream = (newDream) => {
-    setDreams((prevDreams) => [...prevDreams, newDream]);
-  };
-  
   return (
     <div className={styles.cardArea}>
-     <div className={styles.wrapper}>
-       <div className={styles.boxArea}>
-         {uniqueDreams.map(box => (
-           <div key={box.id} className={styles.box}>
-             <img 
-              src={box.image} 
-              alt={box.title} 
-            />
-             <div className={styles.overlay}>
-               <h3>{box.title}</h3>
-               <p>{box.description}</p>
-             </div>
-           </div>
-         ))}
-       </div>
-     </div>
+      <div className={styles.wrapper}>
+        <div className={styles.boxArea}>
+          {dreams.map(dream => (
+            <div key={dream.id} className={styles.box}>
+              <img 
+                src={dream.image} 
+                alt={dream.title}
+                loading="lazy"
+              />
+              <div className={styles.overlay}>
+                <h3>{dream.title}</h3>
+                <p>{dream.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
- };
- 
- export default DreamsGrid;
+};
+
+export default DreamsGrid;
