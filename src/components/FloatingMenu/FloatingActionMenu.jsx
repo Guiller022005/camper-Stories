@@ -7,14 +7,28 @@ const FloatingActionMenu = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para verificar si el usuario está logueado
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const camperIdFromStorage = parseInt(localStorage.getItem("camper_id"));
 
-    // Verificar si hay token al cargar el componente
     useEffect(() => {
         const token = localStorage.getItem('token');
-        setIsLoggedIn(!!token); // Actualiza el estado según si el token existe
+        setIsLoggedIn(!!token);
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const menu = document.getElementById('floating-menu');
+            const button = document.getElementById('menu-button');
+            if (isOpen && menu && button && 
+                !menu.contains(event.target) && 
+                !button.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isOpen]);
 
     const handleToggleProfile = () => {
         if (location.pathname.includes('/edit')) {
@@ -22,6 +36,7 @@ const FloatingActionMenu = () => {
         } else {
             navigate(`/campers/profile/${camperIdFromStorage}/edit`);
         }
+        setIsOpen(false);
     };
 
     const handleLogout = () => {
@@ -50,45 +65,72 @@ const FloatingActionMenu = () => {
             });
     };
 
-    // Renderizar solo si está logueado
     if (!isLoggedIn) {
         return null;
     }
 
     return (
-        <div className="fixed bottom-6 right-6 z-50">
-            {isOpen && (
-                <div className="absolute bottom-16 right-0 mb-2 w-48 rounded-lg bg-white shadow-lg border border-gray-200">
-                    <ul className="py-2">
-                        <li>
-                            <button
-                                onClick={handleToggleProfile}
-                                className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                            >
-                                {location.pathname.includes('/edit') ? <Eye size={18} /> : <Edit size={18} />}
+        <div className="fixed bottom-5 right-7 z-50">
+            <div
+                id="floating-menu"
+                className={`absolute bottom-14 right-0 mb-2 w-52 rounded-xl bg-white shadow-lg border border-gray-200
+                    transform transition-all duration-300 ease-in-out origin-bottom-right
+                    ${isOpen 
+                        ? 'scale-100 opacity-100 translate-y-0' 
+                        : 'scale-95 opacity-0 translate-y-4 pointer-events-none'}`}
+            >
+                <ul className="py-2 space-y-1">
+                    <li className="px-1">
+                        <button
+                            onClick={handleToggleProfile}
+                            className="w-full px-4 py-3 text-left rounded-lg
+                                     flex items-center gap-3 transition-all duration-200
+                                     text-blue-700 hover:bg-blue-50 hover:pl-5
+                                     group"
+                        >
+                            {location.pathname.includes('/edit') ? (
+                                <Eye 
+                                    className="transition-transform duration-200 group-hover:scale-110 text-blue-600" 
+                                    size={18} 
+                                />
+                            ) : (
+                                <Edit 
+                                    className="transition-transform duration-200 group-hover:scale-110 text-blue-600" 
+                                    size={18} 
+                                />
+                            )}
+                            <span className="font-medium">
                                 {location.pathname.includes('/edit') ? 'Ver Perfil' : 'Editar Perfil'}
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                onClick={handleLogout}
-                                className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                            >
-                                <LogOut size={18} />
-                                Cerrar Sesión
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            )}
+                            </span>
+                        </button>
+                    </li>
+                    <li className="px-1">
+                        <button
+                            onClick={handleLogout}
+                            className="w-full px-4 py-3 text-left rounded-lg
+                                     flex items-center gap-3 transition-all duration-200
+                                     text-red-700 hover:bg-red-50 hover:pl-5
+                                     group"
+                        >
+                            <LogOut 
+                                className="transition-transform duration-200 group-hover:scale-110 text-red-600" 
+                                size={18} 
+                            />
+                            <span className="font-medium">Cerrar Sesión</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
 
             <button
+                id="menu-button"
                 onClick={() => setIsOpen(!isOpen)}
                 aria-expanded={isOpen}
                 aria-label="Opciones"
-                className={`p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition-transform duration-300 ${
-                    isOpen ? 'rotate-180' : 'rotate-0'
-                }`}
+                className={`p-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg
+                           transform transition-all duration-300 ease-in-out
+                           hover:scale-105 active:scale-95
+                           ${isOpen ? 'rotate-180 bg-blue-700' : 'rotate-0'}`}
             >
                 <Settings size={24} />
             </button>

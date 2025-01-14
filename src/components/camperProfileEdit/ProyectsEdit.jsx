@@ -1,6 +1,7 @@
 // ProyectsEdit.jsx
 import React, { useEffect, useState } from "react";
 import ProjectCardEdit from "./ProjectCardEdit";
+import { useParams } from 'react-router-dom';
 import { ProyectsModal } from "./modals/ProyectsModal";
 import { ProyectsEditModal } from "./modals/ProyectsEditModal";
 import styles from "./styles/ProyectsEdit.module.css";
@@ -11,6 +12,7 @@ const ProyectsEdit = () => {
   const [projects, setProjects] = useState([]);
   const [availableTechnologies, setAvailableTechnologies] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { id } = useParams(); 
 
   // Cargar todas las tecnologías disponibles para los modales de edición/creación
   useEffect(() => {
@@ -36,7 +38,7 @@ const ProyectsEdit = () => {
     const loadProjects = async () => {
       try {
         setLoading(true);
-        const projectsData = await getProjects(58);
+        const projectsData = await getProjects(id);
         // Asegurarse de que los datos tengan la estructura correcta
         const formattedProjects = projectsData.map(project => ({
           id: project.id,
@@ -47,6 +49,8 @@ const ProyectsEdit = () => {
           technologies: project.technologies || []
         }));
         setProjects(formattedProjects);
+        
+        setProjects(projectsData);
       } catch (error) {
         console.error("Error al cargar proyectos:", error);
         setProjects([]);
