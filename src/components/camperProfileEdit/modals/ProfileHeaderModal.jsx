@@ -152,30 +152,6 @@ const ProfileHeaderModal = ({ initialData }) => {
             </Select>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Edad</label>
-            <Input
-              type="number"
-              name="age"
-              className="text-gray-900 bg-gray-50"
-              value={formData.age}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (/^\d{0,2}$/.test(value)) {
-                  handleChange(e);
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === '-') {
-                  e.preventDefault();
-                }
-              }}
-              placeholder="Tu edad"
-              min="1"
-              max="99"
-            />
-          </div>
-
           <div className="flex justify-end space-x-2 pt-4">
             <DialogTrigger asChild>
               <Button variant="outline">Cancelar</Button>

@@ -80,18 +80,18 @@ const CamperProfileEdit = () => {
   }, [id]);
 
   if (isLoading) {
-    return <Loader />; 
-}
+    return <Loader />;
+  }
 
-if (error) {
-  return (
-      <ErrorPage 
-          title="Error al cargar el perfil"
-          message={`No pudimos cargar la información del camper. ${error}`}
-          error="404" // O podrías usar un código de error específico según el tipo de error
+  if (error) {
+    return (
+      <ErrorPage
+        title="Error al cargar el perfil"
+        message={`No pudimos cargar la información del camper. ${error}`}
+        error="404" // O podrías usar un código de error específico según el tipo de error
       />
-  );
-}
+    );
+  }
 
   return (
     <div className={styles.camperProfileView}>
@@ -104,26 +104,36 @@ if (error) {
         </LazySection>
 
         <LazySection>
-          <AboutMeEdit
-            videoUrl={camperData.main_video_url}
-            about={camperData.about}
-          />
+          <div id="sobre-mi-edit">
+            <AboutMeEdit
+              videoUrl={camperData.main_video_url}
+              about={camperData.about}
+            />
+          </div>
         </LazySection>
 
         <LazySection>
-          <DreamsEdit />
+          <div id="sueños-grid-edit">
+            <DreamsEdit />
+          </div>
         </LazySection>
 
         <LazySection>
-          <TrainingProcessEdit videos={camperTiktoksData} />
+          <div id="proceso-formacion-edit">
+            <TrainingProcessEdit videos={camperTiktoksData} />
+          </div>
         </LazySection>
 
         <LazySection>
-          <ProyectsEdit />
+          <div id="projects-edit">
+            <ProyectsEdit />
+          </div>
         </LazySection>
 
         <LazySection>
-          <SponsorCTAEdit />
+          <div id="patrocinar-edit">
+            <SponsorCTAEdit />
+          </div>
         </LazySection>
       </div>
       <LazySection>

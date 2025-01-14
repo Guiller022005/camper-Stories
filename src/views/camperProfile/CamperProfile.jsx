@@ -82,35 +82,47 @@ const CamperProfile = () => {
             </LazySection>
             <div className={`${styles.profileMainContent} flex flex-col gap-4`}>
                 <LazySection>
-                    <ProfileHeader 
-                        data={camperData}
-                        initialMerits={camperMerits}
-                    />
+                    <div id="profile-header">
+                        <ProfileHeader 
+                            data={camperData}
+                            initialMerits={camperMerits}
+                        />
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <AboutMe
-                        videoUrl={camperData.main_video_url}
-                        about={camperData.about}
-                    />
+                    <div id="sobre-mi">
+                        <AboutMe
+                            videoUrl={camperData.main_video_url}
+                            about={camperData.about}
+                        />
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <Dreams />
+                    <div id="sueños-grid">
+                        <Dreams />
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <TrainingProcess
-                        videos={camperTiktoksData}
-                    />
+                    <div id="proceso-formacion">
+                        <TrainingProcess
+                            videos={camperTiktoksData}
+                        />
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <Proyects />
+                    <div id="projects">
+                        <Proyects />
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <SponsorCTA />
+                    <div id="patrocinar">
+                        <SponsorCTA />
+                    </div>
                 </LazySection>
             </div>
             <LazySection>
