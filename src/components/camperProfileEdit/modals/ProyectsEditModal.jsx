@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,31 +17,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
 
-export function ProyectsEditModal({ project, technologies, onUpdateProject, onClose }) {
+export function ProyectsEditModal({
+  project,
+  technologies,
+  onUpdateProject,
+  onClose,
+}) {
   const [formData, setFormData] = useState({
-    id: project?.id || '',
-    title: project?.title || '',
-    description: project?.description || '',
-    image: project?.image || '',
-    code_url: project?.code_url || '', // Asegurarse de usar code_url
-    technologies: project?.technologies || [] // Inicializar como array vacío si no existe
+    id: "",
+    title: "",
+    description: "",
+    image: "",
+    code_url: "",
+    technologyIds: [], // Este array ahora vendrá directamente de la API
   });
-
-  // Debug
-  console.log("Project recibido:", project);
-  console.log("FormData inicial:", formData);
 
   useEffect(() => {
     if (project) {
+      // Ahora project.technologyIds ya viene con los IDs correctos
       setFormData({
-        id: project.id,
-        title: project.title || '',
-        description: project.description || '',
-        image: project.image || '',
-        code_url: project.code_url || '',
-        technologies: project.technologies || []
+        project_id: project.id,
+        title: project.title || "",
+        description: project.description || "",
+        image: project.image || "",
+        code_url: project.code_url || "",
+        technologyIds: project.technologyIds || [],
       });
     }
   }, [project]);
@@ -50,45 +52,68 @@ export function ProyectsEditModal({ project, technologies, onUpdateProject, onCl
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSelectTechnology = (techName) => {
+  const handleSelectTechnology = (selectedId) => {
+    const techId = Number(selectedId);
+    if (!isNaN(techId) && !formData.technologyIds.includes(techId)) {
+      setFormData((prev) => ({
+        ...prev,
+        technologyIds: [...prev.technologyIds, techId],
+      }));
+    }
+  };
+
+  const handleRemoveTechnology = (techId) => {
+    const numericId = Number(techId);
     setFormData((prev) => ({
       ...prev,
-      technologies: prev.technologies.includes(techName)
-        ? prev.technologies // Evita duplicados
-        : [...prev.technologies, techName],
+      technologyIds: prev.technologyIds.filter((id) => id !== numericId),
     }));
   };
 
-  const handleRemoveTechnology = (techName) => {
-    setFormData((prev) => ({
-      ...prev,
-      technologies: prev.technologies.filter((t) => t !== techName),
-    }));
+  // Esta función ahora es más simple porque solo necesita buscar el nombre
+  const getTechnologyName = (techId) => {
+    const tech = technologies.find((t) => t.id === techId);
+    return tech ? tech.name : `Technology ${techId}`;
   };
+
+  // Filtramos las tecnologías disponibles basándonos en los IDs
+  const availableTechnologies = technologies.filter(
+    (tech) => !formData.technologyIds.includes(tech.id)
+  );
 
   const handleSubmit = () => {
-    if (
-      !formData.title ||
-      !formData.description ||
-      !formData.image ||
-      !formData.code_url
-    ) {
-      alert("Por favor, completa todos los campos.");
+    if (!formData.title || !formData.description || !formData.code_url) {
+      alert("Por favor, completa todos los campos requeridos.");
       return;
     }
 
-    const updatedProject = {
-      ...formData,
-      image: formData.image, // Envía el archivo al backend
-    };
+    const projectData = new FormData();
+    projectData.append("project_id", formData.id);
+    projectData.append("title", formData.title.trim());
+    projectData.append("description", formData.description.trim());
+    projectData.append("code_url", formData.code_url.trim());
 
-    onUpdateProject(updatedProject);
-    onClose(); // Cerrar el modal
+    if (formData.image instanceof File) {
+      projectData.append("image", formData.image);
+    } else if (formData.image) {
+      projectData.append("image", formData.image);
+    }
+
+    // Los IDs de tecnología ahora son simplemente números
+    projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+
+    onUpdateProject({
+      ...formData,
+      id: project.id,
+    });
+
+    onClose();
   };
 
   return (
-    <Dialog open onClose={onClose}>
+    <Dialog open onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] bg-white">
+        {/* El resto del JSX permanece igual */}
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-gray-900">
             Editar Proyecto
@@ -97,7 +122,9 @@ export function ProyectsEditModal({ project, technologies, onUpdateProject, onCl
             Modifica los detalles de tu proyecto aquí.
           </DialogDescription>
         </DialogHeader>
+
         <div className="grid gap-4 py-4">
+          {/* Campos básicos */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="title" className="text-right text-gray-900">
               Título
@@ -109,6 +136,7 @@ export function ProyectsEditModal({ project, technologies, onUpdateProject, onCl
               className="col-span-3 text-gray-900 border-gray-300"
             />
           </div>
+
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="description" className="text-right text-gray-900">
               Descripción
@@ -120,17 +148,19 @@ export function ProyectsEditModal({ project, technologies, onUpdateProject, onCl
               className="col-span-3 text-gray-900 border-gray-300"
             />
           </div>
+
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="image" className="text-right text-gray-900">
               URL Imagen
             </Label>
             <Input
               id="image"
-              value={formData.image}
+              value={typeof formData.image === "string" ? formData.image : ""}
               onChange={handleChange}
               className="col-span-3 text-gray-900 border-gray-300"
             />
           </div>
+
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="code_url" className="text-right text-gray-900">
               Link del Proyecto
@@ -142,19 +172,21 @@ export function ProyectsEditModal({ project, technologies, onUpdateProject, onCl
               className="col-span-3 text-gray-900 border-gray-300"
             />
           </div>
+
+          {/* Sección de tecnologías */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-900">
+            <Label className="text-sm font-medium text-gray-900">
               Tecnologías
-            </label>
+            </Label>
             <Select onValueChange={handleSelectTechnology}>
               <SelectTrigger className="w-full text-gray-900 border-gray-300">
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
               <SelectContent className="bg-white">
-                {technologies.map((tech) => (
+                {availableTechnologies.map((tech) => (
                   <SelectItem
-                    key={tech.name}
-                    value={tech.name}
+                    key={tech.id}
+                    value={tech.id.toString()}
                     className="text-gray-900"
                   >
                     {tech.name}
@@ -162,16 +194,19 @@ export function ProyectsEditModal({ project, technologies, onUpdateProject, onCl
                 ))}
               </SelectContent>
             </Select>
+
             <ul className="mt-2 space-y-1">
-              {formData.technologies.map((tech) => (
+              {formData.technologyIds.map((techId) => (
                 <li
-                  key={tech}
+                  key={techId}
                   className="flex justify-between items-center px-3 py-1 bg-gray-100 rounded-md"
                 >
-                  <span className="text-sm text-gray-900">{tech}</span>
+                  <span className="text-sm text-gray-900">
+                    {getTechnologyName(techId)}
+                  </span>
                   <button
                     type="button"
-                    onClick={() => handleRemoveTechnology(tech)}
+                    onClick={() => handleRemoveTechnology(techId)}
                     className="text-red-500 hover:text-red-700 ml-2 font-medium"
                   >
                     x
@@ -181,6 +216,7 @@ export function ProyectsEditModal({ project, technologies, onUpdateProject, onCl
             </ul>
           </div>
         </div>
+
         <DialogFooter className="border-t pt-4 space-x-2">
           <Button
             type="button"

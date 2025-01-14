@@ -54,7 +54,7 @@ export const addProjects = async (data) => {
     throw error;
   }
 };
-export const updateProjects = async (camper_id, project_id, data) => {
+export const updateProject = async (camper_id, project_id, data) => {
   try {
     const token = localStorage.getItem("token");
 
@@ -74,7 +74,7 @@ export const updateProjects = async (camper_id, project_id, data) => {
     };
 
     const url = `${endpoints.addProjects}/${camper_id}/${project_id}`;
-    const response = await axios.post(url, data, config);
+    const response = await axios.put(url, data, config);
 
     return response.data;
   } catch (error) {

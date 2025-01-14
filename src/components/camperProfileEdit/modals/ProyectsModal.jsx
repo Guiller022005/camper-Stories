@@ -29,7 +29,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
     title: "",
     description: "",
     image: null,
-    code_url: "", // Changed from codeUrl to code_url to match API
+    code_url: "", 
     technologyIds: [],
   });
 

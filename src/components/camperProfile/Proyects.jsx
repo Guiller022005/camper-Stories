@@ -28,7 +28,7 @@ const Proyects = () => {
 
         // After setting initial projects, fetch technologies for each project
         projectsData.forEach((project) => {
-          fetchTechnologyForProject(project.id);
+          getTechnologyForProject(project.id);
         });
       } catch (err) {
         setError(err.message);
