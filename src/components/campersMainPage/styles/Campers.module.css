@@ -6,6 +6,8 @@
    min-height: 100vh;
    background: linear-gradient(180deg, #05053b 0%, #07073b 100%);
    display: flex;
+   overflow-x: hidden;
+   overflow-y: hidden;
    flex-direction: column;
 }
 
@@ -53,7 +55,7 @@
 .swiper {
    width: 98%;
    max-width: 98vw;
-   min-height: 530px;
+   min-height: 650px;
    height: 70vh;
    overflow: visible;
    padding: 10px 0;
@@ -187,6 +189,22 @@
    background: var(--color2);
 }
 
+.campersContainer {
+   overflow-x: hidden; /* Evitar scroll horizontal */
+ }
+ 
+ .cardsContainerWrapper {
+   overflow-x: hidden;
+   padding: 0 10px; /* Asegurar márgenes adecuados */
+ }
+ 
+ .swiper {
+   max-width: 100%;
+   overflow-x: hidden;
+   overflow-y: hidden;
+ }
+ 
+
 @media (hover: hover) and (pointer: fine) {
    .card:hover {
        transform: translateY(-10px) scale(1.05);
@@ -233,7 +251,7 @@
    }
    
    .cardsContainerWrapper {
-       min-height: 60vh;
+       min-height: 80vh;
    }
    .card {
        max-width: 240px;
