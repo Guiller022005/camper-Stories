@@ -6,6 +6,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { fetchCampersFormacion, fetchMeritsCamperById, fetchAllMerits } from "../../services/camperService";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "./styles/CampersGrid.css";
+import { useNavigate } from "react-router-dom";
 
 const defaultProfileImage = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";
 
@@ -21,6 +22,7 @@ const CampersGrid = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [campersData, setCampersData] = useState([]);
+    const navigate = useNavigate();
 
     const mobileVisibleSkillsCount = 4;
     const desktopVisibleSkillsCount = predefinedSkills.length;
@@ -167,7 +169,7 @@ const CampersGrid = () => {
                                 <div className="camper-maininfo">
                                     <h3>{camper.full_name}</h3>
                                     <p>{camper.title}</p>
-    
+
                                     <div className="technologies">
                                         <span className="tech-label">Méritos:</span>
                                         <div layout className="skills-wrapper wrapper">
@@ -212,7 +214,12 @@ const CampersGrid = () => {
                                         </div>
                                     </div>
                                     <div className="buttons">
-                                        <button className="info-button">Mas Info</button>
+                                        <button
+                                            className="info-button"
+                                            onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
+                                        >
+                                            Mas Info
+                                        </button>
                                         <button className="sponsor-button">Patrocinar</button>
                                     </div>
                                 </div>
@@ -229,7 +236,7 @@ const CampersGrid = () => {
             />
         </section>
     );
-    
+
 };
 
 const DotPagination = ({ current, total, pageSize, onChange }) => {
