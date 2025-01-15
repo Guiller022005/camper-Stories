@@ -12,7 +12,6 @@ const LoginPage = () => {
   const token = localStorage.getItem('token');
   const notify = () => toast("Wow so easy!");
 
-
   useEffect(() => {
     if (token) {
       const camperId = localStorage.getItem('camper_id');
@@ -52,83 +51,118 @@ const LoginPage = () => {
       toast.error("Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.");
 
     }
-};
+  };
 
   return (
-    <div className="min-h-screen w-screen bg-[#1a1a2e] flex flex-col items-center justify-center p-8 gap-12 font-sans">
+    <div className="min-h-screen w-full bg-[#1a1a2e] flex flex-col items-center justify-center p-4 md:p-6 lg:p-8">
       {/* Main Container */}
-      <div className="w-full px-80 max-w-7xl flex gap-8 items-stretch">
+      <div className="w-full max-w-md lg:max-w-lg px-4 sm:px-6 md:px-8 lg:px-10">
         {/* Form Panel */}
-        <div className="flex-1 bg-[#2a2a3e] p-8 border border-[#6b5ffd] rounded-2xl shadow-[0_10px_50px_-3px_#6b5ffd] text-center">
-          <div className="form-logo">
-            <CardHeader className="space-y-6 text-center">
+        <div className="w-full bg-[#2a2a3e] p-6 md:p-8 border border-[#6b5ffd] rounded-2xl 
+                     shadow-[0_0_30px_-6px_#6b5ffd] text-center relative overflow-hidden">
+          {/* Glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#6b5ffd20] to-[#6b5ffd10] opacity-50"></div>
+
+          {/* Content */}
+          <div className="relative z-10">
+            {/* Logo Section */}
+            <CardHeader className="space-y-4 md:space-y-6 text-center">
               <div className="flex justify-center">
-                <div className="w-40 h-auto">
-                  <img src={campushm} alt="Campus" className="w-40 h-auto mx-auto" />
+                <div className="w-24 sm:w-32 md:w-40 transition-transform duration-300 hover:scale-105">
+                  <img
+                    src={campushm}
+                    alt="Campus"
+                    className="w-full h-auto mx-auto"
+                  />
                 </div>
               </div>
-              <CardTitle className="text-2xl font-bold tracking-tight text-white">
+              <CardTitle className="text-xl sm:text-2xl font-bold tracking-tight text-white">
                 Camper Stories
               </CardTitle>
             </CardHeader>
-          </div>
 
-          <h2 className="text-white text-xl mb-7 text-center font-regular">¡Bienvenido de nuevo, Camper!</h2>
+            <h2 className="text-white text-lg sm:text-xl mb-6 md:mb-7 text-center font-regular">
+              ¡Bienvenido de nuevo, Camper!
+            </h2>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const email = e.target.email.value;
-              const password = e.target.password.value;
-              handleLogin(email, password);
-            }}
-            className="space-y-4"
-          >
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-white text-left block">Correo electrónico</Label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  className="w-full py-3 px-4 pl-10 bg-[#3a3a4e] rounded-lg text-white text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:ring-offset-0"
-                  placeholder="Correo electrónico"
-                  required
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-white text-left block">Contraseña</Label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                <input
-                  id="password"
-                  type="password"
-                  name="password"
-                  className="w-full py-3 px-4 pl-10 bg-[#3a3a4e] rounded-lg text-white text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:ring-offset-0"
-                  placeholder="Contraseña"
-                  required
-                />
-              </div>
-            </div>
-
-            <button type="submit" className="w-full py-3 px-4 rounded-lg text-base cursor-pointer transition-colors duration-300 bg-[#6C3AFF] text-white hover:bg-[#6d28d9]">
-              Iniciar Sesión
-            </button>
-            {/* <button type="button" className="w-full py-3 px-4 rounded-lg text-base cursor-pointer transition-colors duration-300 bg-white text-gray-800 flex items-center justify-center gap-2 hover:bg-gray-100">
-              Continuar con Google
-            </button> */}
-          </form>
-
-          <div className="text-center mt-6">
-            <button
-              className="bg-transparent border-none text-[#7c3aed] cursor-pointer text-sm hover:text-[#6d28d9]"
-              onClick={() => navigate('/campers/register')}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const email = e.target.email.value;
+                const password = e.target.password.value;
+                handleLogin(email, password);
+              }}
+              className="space-y-4"
             >
-              ¿No tienes cuenta aún? Regístrate
-            </button>
+              {/* Email Input */}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-white text-left block text-sm sm:text-base">
+                  Correo electrónico
+                </Label>
+                <div className="relative group">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 
+                               group-hover:text-[#6b5ffd] transition-colors duration-200"
+                    size={18} />
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    className="w-full py-2.5 px-4 pl-9 bg-[#3a3a4e] rounded-lg text-white 
+                           text-sm sm:text-base focus:outline-none focus:ring-2 
+                           focus:ring-[#7c3aed] focus:ring-offset-0 transition-all duration-200
+                           hover:bg-[#434360]"
+                    placeholder="Correo electrónico"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Password Input */}
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-white text-left block text-sm sm:text-base">
+                  Contraseña
+                </Label>
+                <div className="relative group">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400
+                               group-hover:text-[#6b5ffd] transition-colors duration-200"
+                    size={18} />
+                  <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    className="w-full py-2.5 px-4 pl-9 bg-[#3a3a4e] rounded-lg text-white 
+                           text-sm sm:text-base focus:outline-none focus:ring-2 
+                           focus:ring-[#7c3aed] focus:ring-offset-0 transition-all duration-200
+                           hover:bg-[#434360]"
+                    placeholder="Contraseña"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full py-2.5 sm:py-3 px-4 rounded-lg text-sm sm:text-base 
+                       cursor-pointer transition-all duration-300 bg-[#6C3AFF] 
+                       text-white hover:bg-[#6d28d9] mt-6 transform hover:scale-[1.02]
+                       active:scale-[0.98] hover:shadow-lg"
+              >
+                Iniciar Sesión
+              </button>
+            </form>
+
+            {/* Register Link */}
+            <div className="text-center mt-6">
+              <button
+                className="bg-transparent border-none text-[#7c3aed] cursor-pointer 
+                       text-xs sm:text-sm hover:text-[#6d28d9] transition-colors 
+                       duration-200 hover:underline"
+                onClick={() => navigate('/campers/register')}
+              >
+                ¿No tienes cuenta aún? Regístrate
+              </button>
+            </div>
           </div>
         </div>
       </div>
