@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,50 +6,75 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogDescription,
-  DialogFooter
-} from '../../ui/dialog';
+  DialogFooter,
+} from "../../ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Button } from '../../ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Edit } from 'lucide-react';
+} from "@/components/ui/select";
+import { Button } from "../../ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Edit } from "lucide-react";
+import {
+  fetchMeritsByCamperId,
+  updateCamperMerits,
+  getMerits,
+} from "../../../services/meritsService";
+import { useParams, Navigate } from "react-router-dom";
 
 const MeritsModal = ({ initialMerits }) => {
-  const [selectedMerits, setSelectedMerits] = useState(initialMerits || []);
+  const [selectedMerits, setSelectedMerits] = useState([]);
+  const [availableMerits, setAvailableMerits] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { id } = useParams();
 
-  // Lista de méritos disponibles
-  const availableMerits = [
-    { id: 1, name: "Espíritu Guerrero ⚔️" },
-    { id: 2, name: "Nuevos horizontes 🌅" },
-    { id: 3, name: "Trota mundos 🌎" },
-    { id: 4, name: "Primer programador 💻" },
-    { id: 5, name: "Trabajo en equipo 🤝" },
-    { id: 6, name: "Innovador 💡" },
-    { id: 7, name: "Líder nato 👑" },
-    { id: 8, name: "Mentor destacado 🎯" }
-  ];
+  useEffect(() => {
+    if (isOpen) {
+      loadInitialData();
+    }
+  }, [isOpen]);
+
+  const loadInitialData = async () => {
+    try {
+      // Fetch available merits
+      const merits = await getMerits();
+      setAvailableMerits(merits);
+
+      setSelectedMerits(initialMerits);
+      const camperMerits = await fetchMeritsByCamperId(id);
+      setSelectedMerits(camperMerits);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
 
   const handleAddMerit = (value) => {
-    const meritToAdd = availableMerits.find(merit => merit.name === value);
-    if (meritToAdd && !selectedMerits.some(m => m.id === meritToAdd.id)) {
+    const meritToAdd = availableMerits.find((merit) => merit.name === value);
+    if (meritToAdd && !selectedMerits.some((m) => m.id === meritToAdd.id)) {
       setSelectedMerits([...selectedMerits, meritToAdd]);
     }
   };
 
   const handleRemoveMerit = (meritId) => {
-    setSelectedMerits(selectedMerits.filter(merit => merit.id !== meritId));
+    setSelectedMerits(selectedMerits.filter((merit) => merit.id !== meritId));
   };
 
-  const handleSubmit = () => {
-    // Aquí iría la lógica para guardar los méritos
-    console.log('Méritos guardados:', selectedMerits);
-    setIsOpen(false);
+  const handleSubmit = async () => {
+    try {
+      // Extract only the IDs from the selected merits
+      const meritIds = selectedMerits.map((merit) => merit.id);
+
+      // Call the updateCamperMerits service with the correct payload
+      await updateCamperMerits(id, meritIds);
+      console.log("Méritos guardados:", meritIds);
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error saving merits:", error);
+      alert("Hubo un problema al guardar los méritos.");
+    }
   };
 
   return (
@@ -71,7 +96,9 @@ const MeritsModal = ({ initialMerits }) => {
 
         <div className="grid gap-4 py-4">
           <div className="space-y-4">
-            <label className="text-sm font-medium text-gray-900">Añadir Méritos</label>
+            <label className="text-sm font-medium text-gray-900">
+              Añadir Méritos
+            </label>
             <Select onValueChange={handleAddMerit}>
               <SelectTrigger className="w-full text-gray-900 border-gray-300">
                 <SelectValue placeholder="Selecciona un mérito" />
@@ -81,7 +108,7 @@ const MeritsModal = ({ initialMerits }) => {
                   <SelectItem
                     key={merit.id}
                     value={merit.name}
-                    disabled={selectedMerits.some(m => m.id === merit.id)}
+                    disabled={selectedMerits.some((m) => m.id === merit.id)}
                   >
                     {merit.name}
                   </SelectItem>
@@ -90,7 +117,9 @@ const MeritsModal = ({ initialMerits }) => {
             </Select>
 
             <div className="mt-4">
-              <label className="text-sm font-medium text-gray-900">Méritos Seleccionados</label>
+              <label className="text-sm font-medium text-gray-900">
+                Méritos Seleccionados
+              </label>
               <div className="mt-2 flex flex-wrap gap-2">
                 {selectedMerits.map((merit) => (
                   <Badge
@@ -118,14 +147,14 @@ const MeritsModal = ({ initialMerits }) => {
         </div>
 
         <DialogFooter className="flex justify-between border-t pt-4">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setIsOpen(false)}
             className="text-gray-700 hover:text-gray-900"
           >
             Cancelar
           </Button>
-          <Button 
+          <Button
             onClick={handleSubmit}
             className="bg-blue-600 text-white hover:bg-blue-700"
           >
@@ -134,7 +163,7 @@ const MeritsModal = ({ initialMerits }) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default MeritsModal
+export default MeritsModal;

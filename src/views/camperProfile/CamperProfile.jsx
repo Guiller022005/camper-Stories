@@ -41,20 +41,20 @@ const CamperProfile = () => {
                     fetchMeritsByCamperId(Number(id)) // Y para méritos
                 ]);
 
-                setCamperData(data_infoCamper);
-                setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
-                setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
-            } catch (err) {
-                setError(err.message);
-                console.error('Error cargando datos:', err);
-                // Establecer datos por defecto en caso de error
-                setCamperData(DEFAULT_CAMPER_DATA);
-                setCamperTiktoksData([]);
-                setCamperMerits([]);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        setCamperData(data_infoCamper);
+        setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
+        setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error cargando datos:", err);
+        // Establecer datos por defecto en caso de error
+        setCamperData(DEFAULT_CAMPER_DATA);
+        setCamperTiktoksData([]);
+        setCamperMerits([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
         if (id) { // Solo cargar si hay un id
             loadCamperData();

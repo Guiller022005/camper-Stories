@@ -29,7 +29,7 @@ const Proyects = () => {
 
         // After setting initial projects, fetch technologies for each project
         projectsData.forEach((project) => {
-          fetchTechnologyForProject(project.id);
+          getTechnologyForProject(project.id);
         });
       } catch (err) {
         setError(err.message);
@@ -78,10 +78,10 @@ const Proyects = () => {
         {projects.map((project, index) => (
           <ProjectCard
             key={index}
+            id={project.id}
             title={project.title}
             description={project.description}
             image={project.image}
-            technologies={project.technologies || []}
             codeUrl={project.codeUrl}
           />
         ))}
