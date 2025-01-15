@@ -29,15 +29,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
-        <Route
-          path="/profile/:id"
-          element={
-            <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
-              <CamperProfile />
-            </ProtectedRoute>
-          }
-        />
       </Routes>
     </>
   );

@@ -7,10 +7,13 @@ import { fetchCampersFormacion, fetchMeritsCamperById, fetchAllMerits } from "..
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "./styles/CampersGrid.css";
 
+const defaultProfileImage = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";
+
 const CampersGrid = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [campersPerPage, setCampersPerPage] = useState(8);
     const [expandedSkills, setExpandedSkills] = useState({});
+    const [searchTerm, setSearchTerm] = useState("");
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [predefinedSkills, setpredefinedSkills] = useState([]);
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
@@ -100,6 +103,15 @@ const CampersGrid = () => {
         <section className="campersgrid">
             <div className="badge-filters">
                 <h3>Busca a Tu Camper</h3>
+                {/* <div className="search-container">
+                    <input
+                        type="text"
+                        placeholder="Buscar por nombre"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="search-input"
+                    />
+                </div> */}
                 <div className="skill-filters wrapper-filter">
                     <div
                         className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}
@@ -155,9 +167,9 @@ const CampersGrid = () => {
                                 <div className="camper-maininfo">
                                     <h3>{camper.full_name}</h3>
                                     <p>{camper.title}</p>
-
+    
                                     <div className="technologies">
-                                        <span className="tech-label">Meritos:</span>
+                                        <span className="tech-label">Méritos:</span>
                                         <div layout className="skills-wrapper wrapper">
                                             <div
                                                 className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""
@@ -171,7 +183,7 @@ const CampersGrid = () => {
                                                             animate={{ opacity: 1, scale: 1 }}
                                                             exit={{ opacity: 0, scale: 0.8 }}
                                                             transition={{ delay: index * 0.1 }}
-                                                            className="skill-item"
+                                                            className="skill-item-mp"
                                                         >
                                                             {skill.name + " "}{skill.icon}
                                                         </motion.div>
@@ -217,6 +229,7 @@ const CampersGrid = () => {
             />
         </section>
     );
+    
 };
 
 const DotPagination = ({ current, total, pageSize, onChange }) => {
