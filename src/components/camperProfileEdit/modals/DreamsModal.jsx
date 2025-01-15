@@ -13,14 +13,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import AddItemButton from "../ui/AddItemButton";
 import { addDreams } from "../../../services/dreamsService";
+import { useParams } from "react-router-dom";
 
 const DreamsModal = ({ onAddDream, onUpdate }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    image: null,
+    image_url: null,
     imagePreview: null,
   });
+  const { id } = useParams();
 
   const handleInputChange = ({ target: { name, value } }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -33,7 +35,7 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
       reader.onloadend = () => {
         setFormData((prev) => ({
           ...prev,
-          image: file,
+          image_url: file,
           imagePreview: reader.result,
         }));
       };
@@ -48,12 +50,13 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
     const newDream = {
       title: formData.title,
       description: formData.description,
-      image: formData.imagePreview,
+      image_url: formData.image_url,
+      camper_id: id,
     };
     onAddDream(newDream);
-    const userId = localStorage.getItem("userID");
     try {
-      const response = await addDreams(58, newDream);
+      console.log(newDream);
+      const response = await addDreams(id, newDream);
       console.log("respuesta del servidor", response);
       onUpdate();
     } catch (error) {
@@ -63,7 +66,7 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
     setFormData({
       title: "",
       description: "",
-      image: null,
+      image_url: null,
       imagePreview: null,
     });
   };
@@ -125,7 +128,7 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
             </Label>
             <Input
               id="image"
-              name="image"
+              name="image_url"
               type="file"
               accept="image/*"
               onChange={handleImageChange}
@@ -153,7 +156,6 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
       </DialogContent>
     </Dialog>
   );
-
 };
 
 export default DreamsModal;
