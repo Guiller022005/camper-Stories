@@ -10,7 +10,7 @@ import { fetchCamperById } from '../../services/camperService';
 import { fetchTikToksByCamperId } from '@/services/tiktokService';
 import { fetchMeritsByCamperId } from '@/services/meritsService';
 import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
-import ErrorPage from '../ErrorPage/ErrorPage';
+import NoRecords from '@/components/common/NoRecords';
 
 // Lazy load components
 const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
@@ -21,7 +21,6 @@ const TrainingProcess = lazy(() => import('../../components/camperProfile/Traini
 const Proyects = lazy(() => import('@/components/camperProfile/Proyects'));
 const SponsorCTA = lazy(() => import('../../components/camperProfile/SponsorCTA'));
 const Footer = lazy(() => import('../../components/footer/Footer'));
-
 
 const CamperProfile = () => {
     const { id } = useParams(); // Obtenemos el id de la URL
@@ -42,20 +41,20 @@ const CamperProfile = () => {
                     fetchMeritsByCamperId(Number(id)) // Y para méritos
                 ]);
 
-                setCamperData(data_infoCamper);
-                setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
-                setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
-            } catch (err) {
-                setError(err.message);
-                console.error('Error cargando datos:', err);
-                // Establecer datos por defecto en caso de error
-                setCamperData(DEFAULT_CAMPER_DATA);
-                setCamperTiktoksData([]);
-                setCamperMerits([]);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        setCamperData(data_infoCamper);
+        setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
+        setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error cargando datos:", err);
+        // Establecer datos por defecto en caso de error
+        setCamperData(DEFAULT_CAMPER_DATA);
+        setCamperTiktoksData([]);
+        setCamperMerits([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
         if (id) { // Solo cargar si hay un id
             loadCamperData();
@@ -76,6 +75,15 @@ const CamperProfile = () => {
         );
     }
 
+    const renderTrainingProcess = () => {
+        if (!camperTiktoksData || camperTiktoksData.length === 0) {
+            return <NoRecords title='Mi Proceso de Formacion'/>;
+        }
+        return (
+            <TrainingProcess videos={camperTiktoksData} />
+        );
+    };
+
     return (
         <div className={`${styles.camperProfileView} flex flex-col relative`}>
             <LazySection>
@@ -83,35 +91,45 @@ const CamperProfile = () => {
             </LazySection>
             <div className={`${styles.profileMainContent} flex flex-col gap-4`}>
                 <LazySection>
-                    <ProfileHeader 
-                        data={camperData}
-                        initialMerits={camperMerits}
-                    />
+                    <div id="profile-header">
+                        <ProfileHeader 
+                            data={camperData}
+                            initialMerits={camperMerits}
+                        />
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <AboutMe
-                        videoUrl={camperData.main_video_url}
-                        about={camperData.about}
-                    />
+                    <div id="sobre-mi">
+                        <AboutMe
+                            videoUrl={camperData.main_video_url}
+                            about={camperData.about}
+                        />
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <Dreams />
+                    <div id="sueños-grid">
+                        <Dreams />
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <TrainingProcess
-                        videos={camperTiktoksData}
-                    />
+                    <div id="proceso-formacion">
+                        {renderTrainingProcess()}
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <Proyects />
+                    <div id="projects">
+                        <Proyects />
+                    </div>
                 </LazySection>
 
                 <LazySection>
-                    <SponsorCTA />
+                    <div id="patrocinar">
+                        <SponsorCTA />
+                    </div>
                 </LazySection>
             </div>
             <LazySection>

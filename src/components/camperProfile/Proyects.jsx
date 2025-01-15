@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import ProjectCard from "./ProjectCard";
 import { getProjects } from "../../services/proyectsService";
 import { getTechnologyForProject } from "../../services/technologiesService";
 import styles from "./styles/Proyects.module.css";
+import NoRecords from "../common/NoRecords";
 
 const Proyects = () => {
   const [projects, setProjects] = useState([]);
   const [techProject, setTechProject] = useState();
   const [loading, setLoading] = useState(false); // Añadir esto
   const [error, setError] = useState(null);
+  const { id } = useParams(); 
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const id = localStorage.getItem("userId");
         setLoading(true);
-        const projectsData = await getProjects(57);
+        const projectsData = await getProjects(id);
 
         // Initialize projects with empty technologies array
         const projectsWithEmptyTech = projectsData.map((project) => ({
@@ -27,7 +29,7 @@ const Proyects = () => {
 
         // After setting initial projects, fetch technologies for each project
         projectsData.forEach((project) => {
-          fetchTechnologyForProject(project.id);
+          getTechnologyForProject(project.id);
         });
       } catch (err) {
         setError(err.message);
@@ -59,14 +61,12 @@ const Proyects = () => {
     }
   };
 
-  // Show loading state while initial projects are being fetched
-  if (loading && projects.length === 0) {
-    return <div>Cargando proyectos...</div>;
+  if (loading) {
+    return null; // O un componente de loading si lo prefieres
   }
 
-  // Show error state if initial loading failed
-  if (error && projects.length === 0) {
-    return <div>Error: {error}</div>;
+  if (!projects || projects.length === 0) {
+    return <NoRecords title="Mis Proyectos"  />;
   }
 
   return (
@@ -78,10 +78,10 @@ const Proyects = () => {
         {projects.map((project, index) => (
           <ProjectCard
             key={index}
+            id={project.id}
             title={project.title}
             description={project.description}
             image={project.image}
-            technologies={project.technologies || []}
             codeUrl={project.codeUrl}
           />
         ))}

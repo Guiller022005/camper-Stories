@@ -9,12 +9,10 @@
   width: 100%;
   min-height: 100vh;
   padding: 4rem 1rem;
-  background-image: linear-gradient(rgba(1, 1, 48, 0.7), rgba(1, 1, 48, 0.7)),
-    url("src/assets/campuswall.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  box-shadow: 0px -10px 200px #17172b;
+  background: linear-gradient(180deg, #07073b 50%, #0a0a29 100%);
   position: relative;
   overflow: visible;
 }
@@ -55,10 +53,10 @@
 .dev-card-content {
   display: flex;
   flex-direction: row;
-  width: 440px;
+  width: 450px;
   height: auto;
-  padding: 20px 20px 20px 30px;
-  gap: 3px;
+  padding: 20px 20px 20px 20px;
+  gap: 8px;
 }
 
 /* Camper Information */
@@ -269,20 +267,6 @@ button {
   border: none;
   position: relative;
   bottom: -20px;
-}
-
-.merit-item {
-  display: flex;
-  justify-content: center;
-  padding: 5px 6px;
-  background-color: #59599c;
-  font-size: 12px;
-  width: -moz-fit-content;
-  width: fit-content;
-  white-space: nowrap;
-  border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .expand-skills-button:focus {

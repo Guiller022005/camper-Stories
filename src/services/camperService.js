@@ -1,22 +1,22 @@
 // campersService.js
-import axios from 'axios';
-import { endpoints } from './apiConfig';
-import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
+import axios from "axios";
+import { endpoints } from "./apiConfig";
+import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
 
 const calculateAge = (birthDate) => {
   if (!birthDate) return 0;
-  
+
   const birth = new Date(birthDate);
   const today = new Date();
-  
+
   let age = today.getFullYear() - birth.getFullYear();
   const monthDiff = today.getMonth() - birth.getMonth();
-  
+
   // Si aún no ha llegado el mes de cumpleaños, o si es el mes pero no ha llegado el día
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
     age--;
   }
-  
+
   return age;
 };
 
@@ -24,13 +24,19 @@ const normalizeCalperData = (data) => {
   if (!data) return DEFAULT_CAMPER_DATA;
 
   return {
-    profile_picture: data.profile_picture || DEFAULT_CAMPER_DATA.profile_picture,
+    profile_picture:
+      data.profile_picture || DEFAULT_CAMPER_DATA.profile_picture,
     full_name: data.full_name || DEFAULT_CAMPER_DATA.full_name,
     city: data.name || DEFAULT_CAMPER_DATA.city,
     age: calculateAge(data.birth_date) || DEFAULT_CAMPER_DATA.age,
     about: data.about || DEFAULT_CAMPER_DATA.about,
-    processTikToks: Array.isArray(data.processTikToks) ? data.processTikToks : DEFAULT_CAMPER_DATA.processTikToks,
-    main_video_url: data.main_video_url !== null ? data.main_video_url : DEFAULT_CAMPER_DATA.main_video_url
+    processTikToks: Array.isArray(data.processTikToks)
+      ? data.processTikToks
+      : DEFAULT_CAMPER_DATA.processTikToks,
+    main_video_url:
+      data.main_video_url !== null
+        ? data.main_video_url
+        : DEFAULT_CAMPER_DATA.main_video_url,
   };
 };
 
@@ -51,7 +57,7 @@ export const fetchCampers = async () => {
     const response = await axios.get(endpoints.campers);
     return response.data;
   } catch (error) {
-    console.error('Error fetching campers:', error);
+    console.error("Error fetching campers:", error);
     throw error;
   }
 };
@@ -62,7 +68,7 @@ export const fetchCampersEgresados = async () => {
     const response = await axios.get(endpoints.egresados);
     return response.data;
   } catch (error) {
-    console.error('Error fetching campers:', error);
+    console.error("Error fetching campers:", error);
     throw error;
   }
 };
@@ -73,7 +79,7 @@ export const fetchCampersFormacion = async () => {
     const response = await axios.get(endpoints.formados);
     return response.data;
   } catch (error) {
-    console.error('Error fetching campers:', error);
+    console.error("Error fetching campers:", error);
     throw error;
   }
 };
@@ -99,7 +105,7 @@ export const fetchAllMerits = async () => {
     const response = await axios.get(endpoints.merits);
     return response.data;
   } catch (error) {
-    console.error('Error fetching campers:', error);
+    console.error("Error fetching campers:", error);
     throw error;
   }
 };
