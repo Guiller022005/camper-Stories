@@ -39,7 +39,7 @@ const DreamsGridEdit = ({onUpdate}) => {
           {dreams.map(dream => (
             <div key={dream.id} className={styles.box}>
               <img 
-                src={dream.image} 
+                src={dream.image_url} 
                 alt={dream.title}
                 loading="lazy"
               />

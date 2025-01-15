@@ -7,7 +7,7 @@ export const endpoints = {
   egresados: `${API_BASE_URL}campers/graduates`, // Endpoint para obtener campers egresados
   formados: `${API_BASE_URL}campers/trainees`, // Endpoint para obtener campers en proceso de formacion
   merits: `${API_BASE_URL}merits`,
-  dreams: `${API_BASE_URL}campers/{id}/dreams`,
+  dreams: `${API_BASE_URL}dreams`,
   tiktoks: `${API_BASE_URL}campers/{id}/videos`,
   city: `${API_BASE_URL}cities`, // Endpoint para crear sueno
   technology: `${API_BASE_URL}technology`,

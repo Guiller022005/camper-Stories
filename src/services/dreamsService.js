@@ -42,7 +42,8 @@ export const addDreams = async (camperId, data) => {
       maxBodyLength: Infinity,
     };
 
-    const url = `${endpoints.campers}/${camperId}/dreams`;
+    const url = `${endpoints.dreams}`;
+    console.log(url)
     const response = await axios.post(url, data, config);
 
     return response.data;
