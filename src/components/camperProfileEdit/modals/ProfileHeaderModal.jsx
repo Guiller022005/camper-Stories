@@ -93,6 +93,7 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
   };
 
   const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       console.log("profile data", initialData);
@@ -127,13 +128,13 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghostNoHover" size="icon">
-          <Edit className="h-6 w-6" />
+        <Button variant="ghostNoHover" size="icon" className>
+          <Edit className="h-6 w-6 " />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto z-[9999] bg-white text-gray-800">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto z-[9999] bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
         <DialogHeader>
-          <DialogTitle className="text-gray-900">Editar Perfil</DialogTitle>
+          <DialogTitle className="text-2xl font-bold ">Editar Perfil</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 p-4">
           <div>
@@ -144,12 +145,12 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              className="cursor-pointer"
+              className="cursor-pointer bg-blue-950/50 border-blue-500/30 text-blue-200 hover:bg-blue-900/30 transition-colors file:bg-blue-950/50 file:align-top file:text-blue-100 file:border-0 file:rounded-lg file:px-4 file:py-0.5file:mr-10  file:hover:bg-yellow-500 file:hover:text-black file:transition-colors file:duration-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Nombre</label>
+            <label className="block text-sm font-medium mb-1 text-blue-300">Nombre</label>
             <Input
               name="full_name"
               className="text-gray-900 bg-gray-50"
@@ -161,7 +162,7 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
                   handleChange(e);
                 }
               }}
-              maxLength={35} // Añade esta prop para limitar también desde HTML
+              maxLength={35}
               placeholder="Tu nombre"
             />
           </div>
@@ -176,10 +177,10 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
                 setFormData((prev) => ({ ...prev, city_id: value }))
               }
             >
-              <SelectTrigger className="w-full text-gray-900 bg-gray-50">
+              <SelectTrigger className="w-full bg-blue-950/50 border-blue-500/30 text-blue-200 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all">
                 <SelectValue placeholder="Selecciona una ciudad" />
               </SelectTrigger>
-              <SelectContent className="bg-white z-[9999] text-gray-900">
+              <SelectContent className="bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-200 z-[9999]">
                 {ciudadesColombia.map((city) => (
                   <SelectItem
                     key={city.id}
@@ -195,14 +196,14 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
 
           <div className="flex justify-end space-x-2 pt-4">
             <DialogTrigger asChild>
-              <Button variant="outline">Cancelar</Button>
+              <Button variant="outline" className="text-blue-600 hover:bg-blue-900/30 hover:text-blue-200 transition-all border-blue-500/30">Cancelar</Button>
             </DialogTrigger>
-            <Button type="submit">Guardar Cambios</Button>
+            <Button type="submit" className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300">Guardar Cambios</Button>
           </div>
         </form>
       </DialogContent>
     </Dialog>
-  );
+);
 };
 
 export default ProfileHeaderModal;

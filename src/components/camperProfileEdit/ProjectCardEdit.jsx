@@ -59,7 +59,7 @@ function ProjectCardEdit({ id, title, description, image, code_url, onEdit }) {
         description={description}
         className={styles.projectCardMeta}
       />
-      <div className={styles.projectCardTech}>
+      <div className={styles.projectCardTechs}>
         {projectTechnologies.map((tech, index) => (
           <Tag key={index} className={styles.projectCardBadge}>
             {tech}
@@ -72,7 +72,7 @@ function ProjectCardEdit({ id, title, description, image, code_url, onEdit }) {
         target="_blank"
         rel="noopener noreferrer"
         className={styles.projectCardButton}
-        icon={<Code className={styles.projectCardIcon} />}
+        icon={<Code />}
         block
       >
         Ver Código

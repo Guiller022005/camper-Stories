@@ -73,22 +73,22 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
       <DialogTrigger asChild>
         <AddItemButton
           type="dream"
-          className="rounded-2xl bg-transparent backdrop-blur-none"
+          className="rounded-2xl bg-blue-950/50 hover:bg-blue-900/30 border border-blue-500/30 text-blue-200 transition-colors"
         />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
         <DialogHeader>
-          <DialogTitle className="text-gray-900">
+          <DialogTitle className="text-2xl font-bold text-blue-100">
             Añadir Nuevo Sueño
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-blue-300">
             Completa los detalles de tu nuevo sueño aquí.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 p-4">
           {/* Campo de título */}
           <div className="space-y-2">
-            <Label className="text-gray-900" htmlFor="title">
+            <Label className="text-blue-300" htmlFor="title">
               Título
             </Label>
             <Input
@@ -98,12 +98,13 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
               onChange={handleInputChange}
               placeholder="Ingresa el título de tu sueño"
               required
+              className="bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
             />
           </div>
 
           {/* Campo de descripción */}
           <div className="space-y-2">
-            <Label className="text-gray-900" htmlFor="description">
+            <Label className="text-blue-300" htmlFor="description">
               Descripción
             </Label>
             <Textarea
@@ -113,12 +114,13 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
               onChange={handleInputChange}
               placeholder="Describe tu sueño"
               required
+              className="bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
             />
           </div>
 
           {/* Campo de imagen */}
           <div className="space-y-2">
-            <Label className="text-gray-900" htmlFor="image">
+            <Label className="text-blue-300" htmlFor="image">
               Imagen
             </Label>
             <Input
@@ -127,7 +129,7 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="cursor-pointer text-gray-600   "
+              className="cursor-pointer bg-blue-950/50 border-blue-500/30 text-blue-200 hover:bg-blue-900/30 transition-colors file:bg-blue-950/50 file:align-top file:text-blue-100 file:border-0 file:rounded-lg file:px-4 file:py-0.5 file:mr-10 file:hover:bg-yellow-500 file:hover:text-black file:transition-colors file:duration-500"
             />
             {formData.imagePreview && (
               <div className="mt-2">
@@ -141,13 +143,17 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
           </div>
 
           {/* Botón para guardar */}
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
+          >
             Guardar Sueño
           </Button>
         </form>
       </DialogContent>
     </Dialog>
   );
+
 };
 
 export default DreamsModal;

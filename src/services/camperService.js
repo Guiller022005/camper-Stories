@@ -132,3 +132,39 @@ export const editCamperInfo = async (camper_id, data) => {
     throw error;
   }
 };
+
+
+// update Camper Profile
+
+export const updateCamperProfile = async (id, updatedData) => {
+  try {
+    const formData = new FormData(); // Usamos FormData para incluir archivos
+    for (const key in updatedData) {
+      formData.append(key, updatedData[key]);
+    }
+
+    const response = await axios.put(`${endpoints.campers}/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating camper profile with id ${id}:`, error);
+    throw error;
+  }
+};
+
+
+export const updateCamperAboutMe = async (camperId, updateData) => {
+  try {
+      const response = await axios.put(`${endpoints.campers}/${camperId}/about`, {
+          about: updateData.about,
+          main_video_url: updateData.videoUrl
+      });
+      return response.data;
+  } catch (error) {
+      console.error(`Error updating camper about me with id ${camperId}:`, error);
+      throw error; // Propagate error to handle it in the component
+  }
+};

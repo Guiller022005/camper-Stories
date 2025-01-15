@@ -1,5 +1,5 @@
 // components/camperProfile/AboutMe.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import VideoPlayerEdit from './VideoPlayerEdit';
 import styles from './styles/AboutMeEdit.module.css';
 import AboutMeModal from './modals/AboutMeModal';
@@ -11,7 +11,7 @@ const AboutMeEdit = ({ videoUrl, about, camperInfoInitialData, onUpdate }) => {
     <section className={styles.about}>
       <div className={styles.aboutContent}>
         <div className={styles.colVideo}>
-          <VideoPlayerEdit videoUrl={videoUrl} title="Historia Camper" />
+        <VideoPlayerEdit videoUrl={aboutData.videoUrl} title="Historia Camper" />
         </div>
         <div className={styles.colInfo}>
           <h2 className={styles.aboutSubtitle}>Acerca de
