@@ -157,11 +157,6 @@ const ProyectsEdit = () => {
     }
   };
 
-  // Si hay un error crítico, mostramos un mensaje
-  if (error) {
-    return <div className="text-red-500 p-4">{error}</div>;
-  }
-
   console.log(projects);
 
   return (
@@ -182,15 +177,26 @@ const ProyectsEdit = () => {
           </div>
         </div>
 
-        {/* Lista de proyectos */}
-        {!loading &&
+        {/* Manejo de estados: error, carga y contenido */}
+        {error ? (
+          <div className={styles.projectCard}>
+            <div className={styles.projectCardAdd}>
+              <div className="text-center p-4">
+                El camper no tiene proyectos disponibles...
+              </div>
+            </div>
+          </div>
+        ) : loading ? (
+          <div className="text-center p-4">Cargando...</div>
+        ) : (
           projects.map((project) => (
             <ProjectCardEdit
               key={project.id}
               {...project}
               onEdit={() => handleEditProject(project)}
             />
-          ))}
+          ))
+        )}
 
         {/* Modal de edición */}
         {isEditing && selectedProject && (
@@ -204,9 +210,6 @@ const ProyectsEdit = () => {
             }}
           />
         )}
-
-        {/* Indicador de carga */}
-        {loading && <div className="text-center p-4">Cargando...</div>}
       </div>
     </section>
   );
