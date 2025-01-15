@@ -18,18 +18,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "boxicons";
+import { toast } from 'react-toastify';
 import { useState, useEffect } from "react";
 import AddItemButton from "../ui/AddItemButton";
 
 export function ProyectsModal({ onAddProject, technologies }) {
   // Añadimos validación inicial para technologies
+  const [isOpen, setIsOpen] = useState(false);
   const techArray = Array.isArray(technologies) ? technologies : [];
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     image: null,
-    code_url: "", 
+    code_url: "",
     technologyIds: [],
   });
 
@@ -94,49 +96,56 @@ export function ProyectsModal({ onAddProject, technologies }) {
     return technology?.name || "Unknown Technology";
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Validate required fields using the correct field name
     if (
       !formData.title.trim() ||
       !formData.description.trim() ||
       !formData.code_url.trim()
     ) {
-      alert("Por favor, completa todos los campos obligatorios.");
+      toast.error("Por favor, completa todos los campos obligatorios.");
       return;
     }
 
-    // Create FormData object
-    const projectData = new FormData();
+    try {
+      // Create FormData object
+      const projectData = new FormData();
+      const camper_id = localStorage.getItem('camper_id');
 
-    const camper_id = localStorage.getItem('camper_id')
-    // Append all fields in the correct format
-    projectData.append("camper_id", camper_id);
-    projectData.append("title", formData.title.trim());
-    projectData.append("description", formData.description.trim());
-    projectData.append("code_url", formData.code_url.trim());
+      projectData.append("camper_id", camper_id);
+      projectData.append("title", formData.title.trim());
+      projectData.append("description", formData.description.trim());
+      projectData.append("code_url", formData.code_url.trim());
 
-    // Handle image if it exists
-    if (formData.image instanceof File) {
-      projectData.append("image", formData.image, formData.image.name);
+      if (formData.image instanceof File) {
+        projectData.append("image", formData.image, formData.image.name);
+      }
+
+      projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+
+      // Call the onAddProject function and await its response
+      await onAddProject(projectData);
+
+      // Show success toast
+      toast.success("¡Proyecto agregado exitosamente!");
+
+      // Reset form
+      setFormData({
+        title: "",
+        description: "",
+        image: null,
+        code_url: "",
+        technologyIds: [],
+      });
+
+      // Cerrar el modal
+      setIsOpen(false);
+
+    } catch (error) {
+      // Show error toast if something goes wrong
+      toast.error('Error al guardar el proyecto. Por favor intenta de nuevo.');
+      console.error('Error saving project:', error);
     }
-
-    // Append technology IDs in the format the API expects
-    projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
-
-    // Log the FormData contents for debugging
-    console.log(formData);
-    console.log(projectData);
-    // Send the FormData object instead of the formData state
-    onAddProject(projectData);
-
-    // Reset form with the correct field names
-    setFormData({
-      title: "",
-      description: "",
-      image: null,
-      code_url: "", // Match the field name we're using
-      technologyIds: [],
-    });
   };
 
   return (

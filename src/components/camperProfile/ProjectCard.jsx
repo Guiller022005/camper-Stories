@@ -10,7 +10,7 @@ function ProjectCard({
   id,
   title,
   description,
-  image, // Provide default empty array
+  image, 
   codeUrl,
   onEdit,
 }) {

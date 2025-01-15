@@ -10,9 +10,14 @@ import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Edit } from 'lucide-react';
+import { updateCamperAboutMe } from '@/services/camperService';
+import { useParams } from 'react-router-dom';
 
-const AboutMeModal = ({ initialData }) => {
+const AboutMeModal = ({ initialData, onUpdate }) => {
+    const { id } = useParams(); // Get camperId from URL
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         about: initialData?.about || '',
         videoUrl: initialData?.videoUrl || ''
@@ -74,7 +79,7 @@ const AboutMeModal = ({ initialData }) => {
                     </div>
                     <div className="flex justify-end space-x-2 pt-4">
                         <DialogTrigger asChild>
-                            <Button variant="outline" className="text-blue-600 hover:bg-blue-900/30 hover:text-blue-200 transition-all border-blue-500/30">Cancelar</Button>
+                            <Button variant="outline" disabled={isLoading} className="text-blue-600 hover:bg-blue-900/30 hover:text-blue-200 transition-all border-blue-500/30">Cancelar</Button>
                         </DialogTrigger>
                         <Button type="submit" className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300">Guardar Cambios</Button>
                     </div>

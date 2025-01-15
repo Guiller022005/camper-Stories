@@ -17,6 +17,7 @@ import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Edit } from 'lucide-react';
 import { endpoints } from '@/services/apiConfig';
+import { updateCamperProfile } from '@/services/camperService';
 
 const ProfileHeaderModal = ({ initialData }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +28,8 @@ const ProfileHeaderModal = ({ initialData }) => {
     age: initialData?.age || '',
     profilePicture: null
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => { 
     const fetchCities = async () => {
@@ -85,9 +88,30 @@ const ProfileHeaderModal = ({ initialData }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsOpen(false);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const updatedData = {
+        full_name: formData.nombre,
+        city: formData.city,
+        age: formData.age,
+        profile_picture: formData.profilePicture,
+      };
+
+      // Aquí llamamos al servicio para actualizar el perfil
+      const updatedProfile = await updateCamperProfile(initialData.id, updatedData);
+
+      console.log("Perfil actualizado exitosamente:", updatedProfile);
+      setIsOpen(false); // Cierra el modal tras la actualización
+    } catch (err) {
+      setError("No se pudo actualizar el perfil. Por favor, inténtalo nuevamente.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
   
   return (

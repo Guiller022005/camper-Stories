@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { 
+import {
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -9,14 +9,15 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { toast } from 'react-toastify';
+import { addTikTok } from '@/services/tiktokService';
 
 const TikTokAddModal = ({ onAddTiktok, onClose }) => {
   const [formData, setFormData] = useState({
     title: '',
-    url: '',
-    description: ''
-  }); 
-
+    video_url: '',
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const validateTikTokUrl = (url) => {
@@ -27,15 +28,15 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.title.trim()) {
       newErrors.title = 'El título es requerido';
     }
-    
-    if (!formData.url.trim()) {
-      newErrors.url = 'La URL es requerida';
-    } else if (!validateTikTokUrl(formData.url)) {
-      newErrors.url = 'Por favor, ingresa una URL válida de TikTok';
+
+    if (!formData.video_url.trim()) {
+      newErrors.video_url = 'La URL es requerida';
+    } else if (!validateTikTokUrl(formData.video_url)) {
+      newErrors.video_url = 'Por favor, ingresa una URL válida de TikTok';
     }
 
     setErrors(newErrors);
@@ -57,13 +58,33 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
-      onAddTiktok(formData);
-      setFormData({ title: '', url: '', description: '' });
-      onClose();
+      setIsLoading(true);
+      try {
+        const camper_id = localStorage.getItem('camper_id');
+        const tiktokData = {
+          title: formData.title.trim(),
+          video_url: formData.video_url.trim(),
+          platform: "TikTok"
+        };
+
+        const response = await addTikTok(tiktokData, camper_id);
+
+        if (response) {
+          toast.success('¡TikTok agregado exitosamente!');
+          onAddTiktok(response);
+          setFormData({ title: '', video_url: '' });
+          onClose();
+        }
+      } catch (error) {
+        toast.error('Error al agregar el TikTok. Verifica tus credenciales y la URL.');
+        console.error('Error adding TikTok:', error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -103,17 +124,17 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
             URL del TikTok
           </Label>
           <Input
-            id="url"
-            name="url"
-            value={formData.url}
+            id="video_url"
+            name="video_url"
+            value={formData.video_url}
             onChange={handleChange}
             className={`bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all ${
               errors.url ? 'border-red-500' : ''
             }`}
             placeholder="https://www.tiktok.com/@usuario/video/..."
           />
-          {errors.url && (
-            <p className="text-sm text-red-500">{errors.url}</p>
+          {errors.video_url && (
+            <p className="text-sm text-red-500">{errors.video_url}</p>
           )}
         </div>
 
@@ -137,14 +158,16 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
             variant="outline"
             onClick={onClose}
             className="text-blue-600 hover:bg-blue-900/30 hover:text-blue-200 transition-all border-blue-500/30"
+            disabled={isLoading}
           >
             Cancelar
           </Button>
           <Button
             type="submit"
+            disabled={isLoading}
             className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
           >
-            Añadir TikTok
+            {isLoading ? 'Añadiendo...' : 'Añadir TikTok'}
           </Button>
         </DialogFooter>
       </form>

@@ -10,9 +10,10 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/virtual'; // Cambiamos lazy por virtual
 
-const TrainingProcessEdit = ({ videos }) => {
+const TrainingProcessEdit = ({ videos: initialVideos }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [videos, setVideos] = useState(initialVideos || []);
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -30,11 +31,69 @@ const TrainingProcessEdit = ({ videos }) => {
     }
   }, [isMobile]);
 
-  const handleAddTiktok = (newTiktokData) => {
-    // Aquí manejarías la lógica para añadir el nuevo TikTok
-    console.log('Nuevo TikTok:', newTiktokData);
-    setIsModalOpen(false);
+  // Actualizado para manejar la respuesta del servidor
+  const handleAddTiktok = async (newTiktokData) => {
+    try {
+      // La lógica de la petición está en el modal, aquí solo actualizamos el estado
+      setVideos(prevVideos => [...prevVideos, {
+        video_url: newTiktokData.url,
+        title: newTiktokData.title,
+        description: newTiktokData.description
+      }]);
+
+      // Actualizar el Swiper después de añadir el nuevo video
+      if (swiperRef.current && swiperRef.current.swiper) {
+        setTimeout(() => {
+          swiperRef.current.swiper.update();
+        }, 100);
+      }
+
+      setIsModalOpen(false);
+    } catch (error) {
+      toast.error('Error al actualizar la lista de videos');
+      console.error('Error updating videos list:', error);
+    }
   };
+
+  const renderSwiper = (slidesPerView) => (
+    <Swiper
+      ref={swiperRef}
+      modules={[Pagination, Virtual]}
+      spaceBetween={30}
+      slidesPerView={slidesPerView}
+      virtual={{
+        enabled: true,
+        addSlidesAfter: slidesPerView === 1 ? 1 : 2,
+        addSlidesBefore: slidesPerView === 1 ? 1 : 2
+      }}
+      preloadImages={false}
+      watchSlidesProgress={true}
+      pagination={{
+        clickable: true,
+        dynamicBullets: slidesPerView === 1,
+      }}
+      className={`${styles.profileSwiper} ${slidesPerView === 1 ? styles.mobileSwiper : ''}`}
+    >
+      <SwiperSlide className={slidesPerView === 1 ? styles.swiperSlide : styles.videoItem}>
+        <AddItemButton
+          type="tiktok"
+          onClick={() => setIsModalOpen(true)}
+        />
+      </SwiperSlide>
+
+      {videos.map((video, index) => (
+        <SwiperSlide
+          key={video.id || index}
+          className={slidesPerView === 1 ? styles.swiperSlide : styles.videoItem}
+        >
+          <TikTokEmbedEdit
+            videoUrl={video.video_url}
+            title={video.title}
+          />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
 
   return (
     <section className={styles.process}>
@@ -42,71 +101,7 @@ const TrainingProcessEdit = ({ videos }) => {
         <span className={styles.highlight}>&lt;/</span> Mi proceso de Formación
       </h2>
       <div className={styles.videos}>
-        {isMobile ? (
-          <Swiper
-            ref={swiperRef}
-            modules={[Pagination, Virtual]} // Cambiamos Lazy por Virtual
-            spaceBetween={30}
-            slidesPerView={1}
-            virtual={{
-              enabled: true,
-              addSlidesAfter: 1,
-              addSlidesBefore: 1
-            }}
-            preloadImages={false}
-            watchSlidesProgress={true}
-            pagination={{
-              clickable: true,
-              dynamicBullets: true,
-            }}
-            className={`${styles.profileSwiper} ${styles.mobileSwiper}`}
-          >
-            {/* Botón de añadir como primera slide */}
-            <SwiperSlide className={styles.swiperSlide}>
-              <AddItemButton
-                type="tiktok"
-                onClick={() => setIsModalOpen(true)}
-              />
-            </SwiperSlide>
-            {/* Mapeo de videos existentes */}
-            {videos.map((video, index) => (
-              <SwiperSlide key={index} className={styles.swiperSlide}>
-                <TikTokEmbedEdit videoUrl={video.url} title={video.title} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        ) : (
-          <Swiper
-            modules={[Pagination, Virtual]}
-            slidesPerView={3}
-            spaceBetween={30}
-            virtual={{
-              enabled: true,
-              addSlidesAfter: 2,
-              addSlidesBefore: 2
-            }}
-            preloadImages={false}
-            watchSlidesProgress={true}
-            pagination={{
-              clickable: true,
-            }}
-            className={styles.profileSwiper}
-          >
-            {/* Botón de añadir como primera slide */}
-            <SwiperSlide className={styles.videoItem}>
-              <AddItemButton
-                type="tiktok"
-                onClick={() => setIsModalOpen(true)}
-              />
-            </SwiperSlide>
-            {/* Mapeo de videos existentes */}
-            {videos.map((video, index) => (
-              <SwiperSlide key={index} className={styles.videoItem}>
-                <TikTokEmbedEdit videoUrl={video.video_url} title={video.title} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        )}
+        {isMobile ? renderSwiper(1) : renderSwiper(3)}
       </div>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

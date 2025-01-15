@@ -3,6 +3,24 @@
   box-sizing: border-box;
 }
 
+.projectCardImg {
+  object-fit: cover;
+  width: 100%;
+  height: 180px;
+  background-color: #cccccc;
+}
+
+.projectCardTechs {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.projectCardMeta {
+  padding: 16px;
+}
+
 .projectCardBadge {
   background-color: #211e8b;
   color: #fff;
