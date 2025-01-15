@@ -8,8 +8,7 @@ import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
 import Loader from '@/components/common/Loader';
 import { fetchCamperById } from '../../services/camperService';
 import { fetchTikToksByCamperId } from '@/services/tiktokService';
-import { fetchMeritsByCamperId } from '@/services/meritsService';
-import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
+import { fetchMeritsByCamperId } from '@/services/meritsService';   
 import NoRecords from '@/components/common/NoRecords';
 
 // Lazy load components
@@ -136,9 +135,6 @@ const CamperProfile = () => {
                 <Footer />
             </LazySection>
             
-            <Suspense fallback={null}>
-                <FloatingActionMenu />
-            </Suspense>
         </div>
     );
 };

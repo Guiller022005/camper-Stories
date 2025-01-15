@@ -209,7 +209,7 @@
   max-height: 400px;
 }
 
-.skill-item {
+.skill-item-mp {
   padding: 5px 10px;
   background-color: #636386;
   font-size: 12px;
@@ -220,7 +220,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.skill-item:hover {
+.skill-item-mp:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
