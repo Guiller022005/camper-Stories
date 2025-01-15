@@ -91,33 +91,42 @@ export function ProyectsEditModal({
     (tech) => !formData.technologyIds.includes(tech.id)
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // Validación
     if (!formData.title || !formData.description || !formData.code_url) {
-      alert("Por favor, completa todos los campos requeridos.");
+      toast.error("Por favor, completa todos los campos requeridos.");
       return;
     }
 
-    const projectData = new FormData();
-    projectData.append("project_id", formData.id);
-    projectData.append("title", formData.title.trim());
-    projectData.append("description", formData.description.trim());
-    projectData.append("code_url", formData.code_url.trim());
+    try {
+      const projectData = new FormData();
+      projectData.append("project_id", formData.id);
+      projectData.append("title", formData.title.trim());
+      projectData.append("description", formData.description.trim());
+      projectData.append("code_url", formData.code_url.trim());
 
-    if (formData.image instanceof File) {
-      projectData.append("image", formData.image);
-    } else if (formData.image) {
-      projectData.append("image", formData.image);
+      if (formData.image instanceof File) {
+        projectData.append("image", formData.image);
+      } else if (formData.image) {
+        projectData.append("image", formData.image);
+      }
+
+      projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+
+      // Llamar a onUpdateProject y esperar su respuesta
+      await onUpdateProject({
+        ...formData,
+        id: project.id,
+      });
+
+      // Mostrar toast de éxito
+      toast.success('¡Proyecto actualizado exitosamente!');
+
+      onClose();
+    } catch (error) {
+      toast.error('Error al actualizar el proyecto. Por favor intenta de nuevo.');
+      console.error('Error updating project:', error);
     }
-
-    // Los IDs de tecnología ahora son simplemente números
-    projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
-
-    onUpdateProject({
-      ...formData,
-      id: project.id,
-    });
-
-    onClose();
   };
 
   return (

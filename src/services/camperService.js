@@ -124,10 +124,23 @@ export const updateCamperProfile = async (id, updatedData) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-
     return response.data;
   } catch (error) {
     console.error(`Error updating camper profile with id ${id}:`, error);
     throw error;
+  }
+};
+
+
+export const updateCamperAboutMe = async (camperId, updateData) => {
+  try {
+      const response = await axios.put(`${endpoints.campers}/${camperId}/about`, {
+          about: updateData.about,
+          main_video_url: updateData.videoUrl
+      });
+      return response.data;
+  } catch (error) {
+      console.error(`Error updating camper about me with id ${camperId}:`, error);
+      throw error; // Propagate error to handle it in the component
   }
 };
