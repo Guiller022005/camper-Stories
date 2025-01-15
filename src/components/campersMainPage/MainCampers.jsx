@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import "swiper/css";
 import "swiper/css/pagination";
 import "./styles/MainCampers.css";
@@ -11,6 +12,7 @@ const MainCampers = () => {
   const [currentIndex, setCurrentIndex] = useState(0); // Índice del camper actual
   const [currentMerits, setCurrentMerits] = useState([]); // Méritos del camper actual
   const [loadingMerits, setLoadingMerits] = useState(false); // Indicador de carga para los méritos
+  const navigate = useNavigate(); // Obtén la función navigate
 
   // Cargar los datos de los campers
   useEffect(() => {
@@ -102,7 +104,12 @@ const MainCampers = () => {
         <div className="profile-card-signature">
           <p>{profile.full_name || "Sin nombre"}</p>
         </div>
-        <button className="profile-card-button">Más Información</button>
+        <button 
+          className="profile-card-button" 
+          onClick={() => navigate(`/campers/profile/${profile.camper_id}`)}
+        >
+          Más Información
+        </button>
       </motion.div>
     </div>
   );
