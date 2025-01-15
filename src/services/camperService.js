@@ -23,6 +23,8 @@ const calculateAge = (birthDate) => {
 const normalizeCalperData = (data) => {
   if (!data) return DEFAULT_CAMPER_DATA;
 
+  console.log("Datos sin normalizar", data);
+
   return {
     profile_picture:
       data.profile_picture || DEFAULT_CAMPER_DATA.profile_picture,
@@ -43,6 +45,7 @@ const normalizeCalperData = (data) => {
 export const fetchCamperById = async (id) => {
   try {
     const response = await axios.get(`${endpoints.campers}/${id}`);
+    console.log("Profile picture: ", response.data);
     const normalizedData = normalizeCalperData(response.data);
     return normalizedData;
   } catch (error) {
@@ -120,7 +123,7 @@ export const editCamperInfo = async (camper_id, data) => {
         "Content-Type": "multipart/form-data",
       },
     };
-    console.log("data del usuario a actualizar",data);
+    console.log("data del usuario a actualizar", data);
 
     const url = `${endpoints.campers}/${camper_id}`;
 
@@ -128,43 +131,7 @@ export const editCamperInfo = async (camper_id, data) => {
 
     return response.data;
   } catch (error) {
-    console.error('error al enviar la data del camper', error);
+    console.error("error al enviar la data del camper", error);
     throw error;
-  }
-};
-
-
-// update Camper Profile
-
-export const updateCamperProfile = async (id, updatedData) => {
-  try {
-    const formData = new FormData(); // Usamos FormData para incluir archivos
-    for (const key in updatedData) {
-      formData.append(key, updatedData[key]);
-    }
-
-    const response = await axios.put(`${endpoints.campers}/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(`Error updating camper profile with id ${id}:`, error);
-    throw error;
-  }
-};
-
-
-export const updateCamperAboutMe = async (camperId, updateData) => {
-  try {
-      const response = await axios.put(`${endpoints.campers}/${camperId}/about`, {
-          about: updateData.about,
-          main_video_url: updateData.videoUrl
-      });
-      return response.data;
-  } catch (error) {
-      console.error(`Error updating camper about me with id ${camperId}:`, error);
-      throw error; // Propagate error to handle it in the component
   }
 };

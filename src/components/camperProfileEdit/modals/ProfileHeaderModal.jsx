@@ -93,7 +93,6 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
   };
 
   const handleSubmit = async (e) => {
-  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       console.log("profile data", initialData);

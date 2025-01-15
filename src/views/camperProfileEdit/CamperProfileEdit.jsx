@@ -141,6 +141,7 @@ const CamperProfileEdit = () => {
             <AboutMeEdit
               videoUrl={camperData.main_video_url}
               about={camperData.about}
+              camperInfoInitialData={camperData}
               onUpdate={refreshData}
             />
           </div>

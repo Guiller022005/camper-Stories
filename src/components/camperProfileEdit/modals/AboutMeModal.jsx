@@ -11,7 +11,7 @@ import { Input } from "../../ui/input";
 import { Textarea } from "../../ui/textarea";
 import { Edit } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { editCamperInfo } from "@/services/camperService";
+import { editCamperInfo, fetchCamperById } from "@/services/camperService";
 
 const AboutMeModal = ({ initialData, onUpdate }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +19,7 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
     about: initialData?.about || "",
     main_video_url: initialData?.main_video_url || "",
   });
+  const [currentImage, setCurrentImage] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
@@ -28,13 +29,27 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    const fetchCurrentImage = async () => {
+      try {
+        const camperData = await fetchCamperById(id);
+        setCurrentImage(camperData.profile_picture);
+      } catch (error) {
+        console.error("Error obteniendo imagen actual:", error);
+      }
+    };
+
+    if (isOpen) {
+      fetchCurrentImage();
+    }
+  }, [isOpen, id]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    // onUpdate();
   };
 
   const handleSubmit = async (e) => {
@@ -42,14 +57,18 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
     try {
       const userData = new FormData();
 
-      // Añadir los campos al FormData
       userData.append("about", formData.about.trim());
       userData.append("main_video_url", formData.main_video_url.trim());
+
+      if (currentImage) {
+        const response = await fetch(currentImage);
+        const blob = await response.blob();
+        userData.append("profile_picture", blob);
+      }
 
       const response = await editCamperInfo(id, userData);
 
       if (response) {
-        console.log('respuesta del servidor',response)
         onUpdate();
         setIsOpen(false);
       }
@@ -91,7 +110,7 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
             <Input
               name="main_video_url"
               className="text-gray-900 bg-gray-50"
-              value={formData.videoUrl}
+              value={formData.main_video_url}
               onChange={handleChange}
               placeholder="URL del video de presentación"
               type="url"
@@ -99,9 +118,13 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">
-            <DialogTrigger asChild>
-              <Button variant="outline">Cancelar</Button>
-            </DialogTrigger>
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => setIsOpen(false)}
+            >
+              Cancelar
+            </Button>
             <Button type="submit">Guardar Cambios</Button>
           </div>
         </form>
