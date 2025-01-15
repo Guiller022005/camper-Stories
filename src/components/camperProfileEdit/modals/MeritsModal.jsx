@@ -25,7 +25,7 @@ import {
 } from "../../../services/meritsService";
 import { useParams, Navigate } from "react-router-dom";
 
-const MeritsModal = ({ camperId }) => {
+const MeritsModal = ({ initialMerits }) => {
   const [selectedMerits, setSelectedMerits] = useState([]);
   const [availableMerits, setAvailableMerits] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -43,8 +43,8 @@ const MeritsModal = ({ camperId }) => {
       const merits = await getMerits();
       setAvailableMerits(merits);
 
-      // Fetch camper's current merits
-      const camperMerits = await fetchMeritsByCamperId(camperId);
+      setSelectedMerits(initialMerits);
+      const camperMerits = await fetchMeritsByCamperId(id);
       setSelectedMerits(camperMerits);
     } catch (error) {
       console.error("Error loading data:", error);
@@ -64,8 +64,12 @@ const MeritsModal = ({ camperId }) => {
 
   const handleSubmit = async () => {
     try {
-      await updateCamperMerits(id, selectedMerits);
-      console.log("Méritos guardados:", selectedMerits);
+      // Extract only the IDs from the selected merits
+      const meritIds = selectedMerits.map((merit) => merit.id);
+
+      // Call the updateCamperMerits service with the correct payload
+      await updateCamperMerits(id, meritIds);
+      console.log("Méritos guardados:", meritIds);
       setIsOpen(false);
     } catch (error) {
       console.error("Error saving merits:", error);

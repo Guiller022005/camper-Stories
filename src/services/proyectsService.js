@@ -30,7 +30,7 @@ export const addProjects = async (data) => {
   try {
     const token = localStorage.getItem("token");
 
-    console.log(token)
+    console.log(token);
 
     if (!token) {
       throw new Error("No se enconteo un token, porfavor inicia sesion");
@@ -39,13 +39,14 @@ export const addProjects = async (data) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
       maxContentLength: Infinity,
       maxBodyLength: Infinity,
     };
 
     const url = `${endpoints.addProjects}`;
+    console.log("TEST DATA", data);
     const response = await axios.post(url, data, config);
 
     return response.data;
@@ -57,24 +58,32 @@ export const addProjects = async (data) => {
 export const updateProject = async (camper_id, project_id, data) => {
   try {
     const token = localStorage.getItem("token");
-
-    console.log(token)
-
-    if (!token) {
-      throw new Error("No se enconteo un token, porfavor inicia sesion");
-    }
+    const formData = new FormData();
+    
+    // Agregar campos básicos
+    formData.append('project_id', data.project_id);
+    formData.append('title', data.title);
+    formData.append('description', data.description);
+    formData.append('code_url', data.code_url);
+    
+    // Forzar que technologyIds sea siempre un array
+    // Si solo hay un valor, lo envolvemos en un array antes de iterar
+    const technologiesArray = Array.isArray(data.technologyIds) ? data.technologyIds : [data.technologyIds];
+    
+    // Usar URLSearchParams para mantener múltiples valores para la misma clave
+    technologiesArray.forEach(id => {
+      formData.append('technologyIds', id.toString());
+    });
 
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
+        "Content-Type": "multipart/form-data",
+      }
     };
 
     const url = `${endpoints.addProjects}/${camper_id}/${project_id}`;
-    const response = await axios.put(url, data, config);
+    const response = await axios.put(url, formData, config);
 
     return response.data;
   } catch (error) {
@@ -82,7 +91,6 @@ export const updateProject = async (camper_id, project_id, data) => {
     throw error;
   }
 };
-
 
 // export const deleteDreams = async (camperId, data) => {
 //   try {

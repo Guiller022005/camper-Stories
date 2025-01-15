@@ -9,7 +9,10 @@ import {
   addProjects,
   updateProject,
 } from "../../services/proyectsService";
-import { getTechnology, getTechnologyForProject } from "../../services/technologiesService";
+import {
+  getTechnology,
+  getTechnologyForProject,
+} from "../../services/technologiesService";
 
 const ProyectsEdit = () => {
   // Estados iniciales con valores por defecto seguros
@@ -54,14 +57,14 @@ const ProyectsEdit = () => {
       try {
         setLoading(true);
         const projectsData = await getProjects(id);
-        
+
         if (isMounted) {
-          const formattedProjects = projectsData.map(project => ({
+          const formattedProjects = projectsData.map((project) => ({
             id: project.id,
-            title: project.title || '',
-            description: project.description || '',
-            image: project.image || '',
-            code_url: project.code_url || ''
+            title: project.title || "",
+            description: project.description || "",
+            image: project.image || "",
+            code_url: project.code_url || "",
           }));
           setProjects(formattedProjects);
         }
@@ -89,11 +92,11 @@ const ProyectsEdit = () => {
       setLoading(true);
       // Cargar las tecnologías específicas del proyecto
       const response = await getTechnologyForProject(project.id);
-      const techIds = response.technologies?.map(tech => tech.id) || [];
+      const techIds = response.technologies?.map((tech) => tech.id) || [];
 
       setSelectedProject({
         ...project,
-        technologyIds: techIds
+        technologyIds: techIds,
       });
       setIsEditing(true);
     } catch (error) {
@@ -101,7 +104,7 @@ const ProyectsEdit = () => {
       // Aún permitimos editar el proyecto, pero sin tecnologías
       setSelectedProject({
         ...project,
-        technologyIds: []
+        technologyIds: [],
       });
       setIsEditing(true);
     } finally {
@@ -111,14 +114,17 @@ const ProyectsEdit = () => {
 
   const handleUpdateProject = async (updatedProject) => {
     try {
-
-      console.log("aaa",updatedProject)
+      console.log("aaa", updatedProject);
       setLoading(true);
-      const response = await updateProject(id, updatedProject.id, updatedProject);
+      const response = await updateProject(
+        id,
+        updatedProject.id,
+        updatedProject
+      );
 
       if (response) {
-        setProjects(prevProjects =>
-          prevProjects.map(proj =>
+        setProjects((prevProjects) =>
+          prevProjects.map((proj) =>
             proj.id === updatedProject.id ? updatedProject : proj
           )
         );
@@ -137,7 +143,7 @@ const ProyectsEdit = () => {
     try {
       setLoading(true);
       const response = await addProjects(newProject);
-      
+
       if (response) {
         // Recargar los proyectos después de añadir uno nuevo
         const projectsData = await getProjects(id);
@@ -155,6 +161,8 @@ const ProyectsEdit = () => {
   if (error) {
     return <div className="text-red-500 p-4">{error}</div>;
   }
+
+  console.log(projects);
 
   return (
     <section className={styles.tecInfo}>
@@ -175,13 +183,14 @@ const ProyectsEdit = () => {
         </div>
 
         {/* Lista de proyectos */}
-        {!loading && projects.map((project) => (
-          <ProjectCardEdit
-            key={project.id}
-            {...project}
-            onEdit={() => handleEditProject(project)}
-          />
-        ))}
+        {!loading &&
+          projects.map((project) => (
+            <ProjectCardEdit
+              key={project.id}
+              {...project}
+              onEdit={() => handleEditProject(project)}
+            />
+          ))}
 
         {/* Modal de edición */}
         {isEditing && selectedProject && (
@@ -197,11 +206,7 @@ const ProyectsEdit = () => {
         )}
 
         {/* Indicador de carga */}
-        {loading && (
-          <div className="text-center p-4">
-            Cargando...
-          </div>
-        )}
+        {loading && <div className="text-center p-4">Cargando...</div>}
       </div>
     </section>
   );
