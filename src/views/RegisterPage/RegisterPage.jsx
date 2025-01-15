@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Label } from "@/components/ui/label";
 import { endpoints } from "../../services/apiConfig";
 import campushm from "/src/assets/Campushm.png";
+import { toast } from "react-toastify";
 
 export default function RegisterForm() {
   const navigate = useNavigate();
@@ -84,6 +85,16 @@ export default function RegisterForm() {
     setSuccess(false);
 
     const formData = new FormData(event.target);
+    // const documentType = formData.get('document_type');
+    // const documentNumber = formData.get('documento');
+
+    // Verificar si el documento está en la whitelist
+    // if (!isDocumentAllowed(documentType, documentNumber)) {
+    //   setError("Lo sentimos, este documento no está autorizado para registrarse.");
+    //   toast.error("Lo sentimos, este documento no está autorizado para registrarse.");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     const data = {
       first_name: formData.get('first_name'),
@@ -107,19 +118,21 @@ export default function RegisterForm() {
         body: JSON.stringify(data),
       });
 
+      const responseData = await response.json();
+
       if (response.ok) {
-        const result = await response.json();
         setSuccess(true);
-        console.log('Usuario registrado con éxito:', result);
-        navigate('/campers/login'); // Redirige al login después del registro exitoso
-      } else {
-        const errorData = await response.json();
-        setError(
-          errorData.message || "Error al registrarse. Intenta nuevamente."
-        );
-      }
+        toast.success('¡Registro exitoso!');  
+        navigate('/campers/login');
+    } else {
+        const errorMessage = responseData.error || responseData.message || "Error al registrarse. Intenta nuevamente.";
+        setError(errorMessage);
+        toast.error(errorMessage);
+    }
     } catch (err) {
-      setError("Error de red: No se pudo conectar con el servidor.");
+      const errorMessage = "Error de red: No se pudo conectar con el servidor.";
+      setError(errorMessage);
+      toast.error(errorMessage);
       console.error("Error:", err);
     } finally {
       setIsLoading(false);
