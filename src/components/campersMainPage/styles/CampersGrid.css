@@ -505,4 +505,23 @@ button {
   border: 1px solid #fdc347;
 }
 
+@media screen and (min-width: 1025px) {
+  :global(.swiper-horizontal > .swiper-pagination-bullets) {
+  --swiper-pagination-bottom: -49px; /* Ajusta la posición para pantallas mayores a 1024px /
+  }
+  }
+  
+  
+  @media screen and (max-width: 720px) {
+  :global(.swiper-horizontal > .swiper-pagination-bullets) {
+  --swiper-pagination-bottom: -49px; / Ajusta la posición para pantallas mayores a 1024px /
+  }
+  }
+  
+  @media screen and (max-width: 768px) {
+  :global(.swiper-horizontal > .swiper-pagination-bullets) {
+  --swiper-pagination-bottom: -49px; / Ajusta la posición para pantallas mayores a 1024px */
+  }
+  }
+
 /*End wrapper*/
