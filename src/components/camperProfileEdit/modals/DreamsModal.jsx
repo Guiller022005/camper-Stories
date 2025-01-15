@@ -11,10 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import AddItemButton from '../ui/AddItemButton';
+import AddItemButton from "../ui/AddItemButton";
 import { addDreams } from "../../../services/dreamsService";
 
-const DreamsModal = ({ onAddDream }) => {
+const DreamsModal = ({ onAddDream, onUpdate }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -54,9 +54,10 @@ const DreamsModal = ({ onAddDream }) => {
     const userId = localStorage.getItem("userID");
     try {
       const response = await addDreams(58, newDream);
-      console.log("respuesta del servidor", response)
+      console.log("respuesta del servidor", response);
+      onUpdate();
     } catch (error) {
-      console.error("No fue posible enviar la informacion", error)
+      console.error("No fue posible enviar la informacion", error);
       throw error;
     }
     setFormData({

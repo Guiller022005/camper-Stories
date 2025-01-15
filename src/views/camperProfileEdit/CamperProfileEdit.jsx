@@ -9,6 +9,7 @@ import { fetchCamperById } from "@/services/camperService";
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
 import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
+import { CopySlash } from "lucide-react";
 
 // Lazy load components
 const NavbarProfile = lazy(() => import("@/components/navbar/NavbarProfile"));
@@ -64,11 +65,13 @@ const CamperProfileEdit = () => {
         setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
         setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
 
-        const scrollPosition = localStorage.getItem('scrollPosition');
-  if (scrollPosition) {
-    window.scrollTo(0, parseInt(scrollPosition));
-    localStorage.removeItem('scrollPosition'); // Limpia después de usar
-  }
+        const scrollPosition = localStorage.getItem("scrollPosition");
+        console.log("info_inicial", data_infoCamper);
+
+        if (scrollPosition) {
+          window.scrollTo(0, parseInt(scrollPosition));
+          localStorage.removeItem("scrollPosition"); // Limpia después de usar
+        }
       } catch (err) {
         setError(err.message);
         console.error("Error cargando datos:", err);

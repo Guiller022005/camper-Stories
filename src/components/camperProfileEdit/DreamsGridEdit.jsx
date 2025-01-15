@@ -4,7 +4,7 @@ import { getDreams } from "../../services/dreamsService";
 import styles from "./styles/DreamsGridEdit.module.css";
 import DreamsModal from "./modals/DreamsModal";
 
-const DreamsGridEdit = () => {
+const DreamsGridEdit = ({onUpdate}) => {
   const [dreams, setDreams] = useState([]);
   const { id } = useParams(); 
 
@@ -34,7 +34,7 @@ const DreamsGridEdit = () => {
       <div className={styles.wrapper}>
         <div className={styles.boxArea}>
           <div className={styles.openDreamsModal}>
-            <DreamsModal onAddDream={handleAddDream} />
+            <DreamsModal onAddDream={handleAddDream} onUpdate={onUpdate}/>
           </div>
           {dreams.map(dream => (
             <div key={dream.id} className={styles.box}>

@@ -109,3 +109,26 @@ export const fetchAllMerits = async () => {
     throw error;
   }
 };
+
+export const editCamperInfo = async (camper_id, data) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    console.log("data del usuario a actualizar",data);
+
+    const url = `${endpoints.campers}/${camper_id}`;
+
+    const response = await axios.put(url, data, config);
+
+    return response.data;
+  } catch (error) {
+    console.error('error al enviar la data del camper', error);
+    throw error;
+  }
+};

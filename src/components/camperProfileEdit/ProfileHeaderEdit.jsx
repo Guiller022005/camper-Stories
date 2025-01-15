@@ -15,7 +15,6 @@ const ProfileHeaderEdit = ({ data, initialMerits, onUpdate }) => {
     setShowAllBadges((prev) => !prev);
   };
 
-  
 
   return (
     <motion.div
@@ -46,6 +45,8 @@ const ProfileHeaderEdit = ({ data, initialMerits, onUpdate }) => {
                     age: data.age,
                     mainImage: data.profile_picture,
                   }}
+                  onUpdate={onUpdate}
+              
                 />
               </p>
             </h1>
