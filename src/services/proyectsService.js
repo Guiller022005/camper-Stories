@@ -59,28 +59,35 @@ export const updateProject = async (camper_id, project_id, data) => {
   try {
     const token = localStorage.getItem("token");
     const formData = new FormData();
-    
+
     // Agregar campos básicos
-    formData.append('project_id', data.project_id);
-    formData.append('title', data.title);
-    formData.append('description', data.description);
-    formData.append('code_url', data.code_url);
-    
-    // Forzar que technologyIds sea siempre un array
-    // Si solo hay un valor, lo envolvemos en un array antes de iterar
-    const technologiesArray = Array.isArray(data.technologyIds) ? data.technologyIds : [data.technologyIds];
-    
-    // Usar URLSearchParams para mantener múltiples valores para la misma clave
-    technologiesArray.forEach(id => {
-      formData.append('technologyIds', id.toString());
+    formData.append("project_id", data.project_id);
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("code_url", data.code_url);
+
+    console.log(data.image);
+
+    formData.append("image", data.image);
+
+    const technologiesArray = Array.isArray(data.technologyIds)
+      ? data.technologyIds
+      : [data.technologyIds];
+
+    technologiesArray.forEach((id) => {
+      formData.append("technologyIds", id.toString());
     });
 
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
-      }
+      },
     };
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
 
     const url = `${endpoints.addProjects}/${camper_id}/${project_id}`;
     const response = await axios.put(url, formData, config);
