@@ -150,6 +150,45 @@
   transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Contenedor del buscador */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* Input del buscador */
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.5rem 1rem;
+  border: 2px solid #1e3a8a; /* Azul oscuro */
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #1e293b; /* Gris oscuro */
+  background-color: #f1f5f9; /* Gris claro */
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Input al hacer focus */
+.search-input:focus {
+  border-color: #2563eb; /* Azul brillante */
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); /* Resaltado */
+}
+
+/* Icono del buscador */
+.search-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #1e3a8a; /* Azul oscuro */
+}
+
+
+
 /* Skills Display */
 .skills-container {
   position: relative;
@@ -162,6 +201,7 @@
   max-height: 40px;
   overflow: hidden;
   transition: max-height 0.4s ease;
+  padding-top: 5px;
   /* más rápida */
 }
 

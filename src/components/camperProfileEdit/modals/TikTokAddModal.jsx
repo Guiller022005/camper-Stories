@@ -68,19 +68,19 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
   };
 
   return (
-    <DialogContent className="sm:max-w-[425px] bg-white">
+    <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
       <DialogHeader>
-        <DialogTitle className="text-xl font-bold text-gray-900">
+        <DialogTitle className="text-2xl font-bold text-blue-100">
           Añadir TikTok
         </DialogTitle>
-        <DialogDescription className="text-gray-600">
+        <DialogDescription className="text-blue-300">
           Agrega un nuevo TikTok a tu proceso de formación. Asegúrate de usar enlaces válidos de TikTok.
         </DialogDescription>
       </DialogHeader>
 
-      <form onSubmit={handleSubmit} className="space-y-6 py-4">
+      <form onSubmit={handleSubmit} className="space-y-6 py-4 px-4">
         <div className="space-y-2">
-          <Label htmlFor="title" className="text-sm font-medium text-gray-900">
+          <Label htmlFor="title" className="text-sm font-medium text-blue-300">
             Título del video
           </Label>
           <Input
@@ -88,7 +88,9 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className={`text-gray-900 border-gray-300 ${errors.title ? 'border-red-500' : ''}`}
+            className={`bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all ${
+              errors.title ? 'border-red-500' : ''
+            }`}
             placeholder="Ej: Mi experiencia en Campuslands"
           />
           {errors.title && (
@@ -97,7 +99,7 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="url" className="text-sm font-medium text-gray-900">
+          <Label htmlFor="url" className="text-sm font-medium text-blue-300">
             URL del TikTok
           </Label>
           <Input
@@ -105,7 +107,9 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
             name="url"
             value={formData.url}
             onChange={handleChange}
-            className={`text-gray-900 border-gray-300 ${errors.url ? 'border-red-500' : ''}`}
+            className={`bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all ${
+              errors.url ? 'border-red-500' : ''
+            }`}
             placeholder="https://www.tiktok.com/@usuario/video/..."
           />
           {errors.url && (
@@ -114,7 +118,7 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="description" className="text-sm font-medium text-gray-900">
+          <Label htmlFor="description" className="text-sm font-medium text-blue-300">
             Descripción (opcional)
           </Label>
           <Input
@@ -122,23 +126,23 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="text-gray-900 border-gray-300"
+            className="bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
             placeholder="Breve descripción del contenido"
           />
         </div>
 
-        <DialogFooter className="flex gap-2 pt-4 border-t">
+        <DialogFooter className="flex gap-2 pt-4 border-t border-blue-500/30">
           <Button
             type="button"
             variant="outline"
             onClick={onClose}
-            className="text-gray-700 hover:text-gray-900"
+            className="text-blue-600 hover:bg-blue-900/30 hover:text-blue-200 transition-all border-blue-500/30"
           >
             Cancelar
           </Button>
           <Button
             type="submit"
-            className="bg-blue-600 text-white hover:bg-blue-700"
+            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
           >
             Añadir TikTok
           </Button>
@@ -146,6 +150,7 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
       </form>
     </DialogContent>
   );
+
 };
 
 export default TikTokAddModal;
