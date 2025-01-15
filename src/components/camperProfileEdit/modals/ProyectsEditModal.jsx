@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { WindArrowDown } from "lucide-react";
 
 export function ProyectsEditModal({
   project,
@@ -118,6 +119,8 @@ export function ProyectsEditModal({
     });
 
     onClose();
+    localStorage.setItem('scrollPosition', window.scrollY);
+    window.location.reload();
   };
 
   return (

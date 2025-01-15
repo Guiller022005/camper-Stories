@@ -1,17 +1,17 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import styles from "./styles/CamperProfileEdit.module.css";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import Loader from "@/components/common/Loader";
 import LazySection from "@/components/common/LazySection";
-import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
+import FloatingActionMenu from "@/components/FloatingMenu/FloatingActionMenu";
 import { fetchCamperById } from "@/services/camperService";
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
 import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
 
 // Lazy load components
-const NavbarProfile = lazy(() => import("@/components/navbar/NavbarProfile"))
+const NavbarProfile = lazy(() => import("@/components/navbar/NavbarProfile"));
 const ProfileHeaderEdit = lazy(() =>
   import("../../components/camperProfileEdit/ProfileHeaderEdit")
 );
@@ -30,7 +30,7 @@ const ProyectsEdit = lazy(() =>
 const SponsorCTAEdit = lazy(() =>
   import("@/components/camperProfileEdit/SponsorCTAEdit")
 );
-const Footer = lazy(() => import("../../components/footer/Footer"))
+const Footer = lazy(() => import("../../components/footer/Footer"));
 
 const CamperProfileEdit = () => {
   const { id } = useParams(); // Obtén el ID desde la URL
@@ -63,6 +63,12 @@ const CamperProfileEdit = () => {
         setCamperData(data_infoCamper);
         setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
         setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
+
+        const scrollPosition = localStorage.getItem('scrollPosition');
+  if (scrollPosition) {
+    window.scrollTo(0, parseInt(scrollPosition));
+    localStorage.removeItem('scrollPosition'); // Limpia después de usar
+  }
       } catch (err) {
         setError(err.message);
         console.error("Error cargando datos:", err);
@@ -78,6 +84,26 @@ const CamperProfileEdit = () => {
       loadCamperData();
     }
   }, [id]);
+
+  const refreshData = async () => {
+    try {
+      setIsLoading(true);
+      const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
+        fetchCamperById(id),
+        fetchTikToksByCamperId(id),
+        fetchMeritsByCamperId(id),
+      ]);
+
+      setCamperData(data_infoCamper);
+      setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
+      setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
+    } catch (err) {
+      setError(err.message);
+      console.error("Error recargando datos:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -100,7 +126,11 @@ const CamperProfileEdit = () => {
       </LazySection>
       <div className={styles.profileMainContent}>
         <LazySection>
-          <ProfileHeaderEdit data={camperData} initialMerits={camperMerits} />
+          <ProfileHeaderEdit
+            data={camperData}
+            initialMerits={camperMerits}
+            onUpdate={refreshData}
+          />
         </LazySection>
 
         <LazySection>
@@ -108,31 +138,35 @@ const CamperProfileEdit = () => {
             <AboutMeEdit
               videoUrl={camperData.main_video_url}
               about={camperData.about}
+              onUpdate={refreshData}
             />
           </div>
         </LazySection>
 
         <LazySection>
           <div id="sueños-grid-edit">
-            <DreamsEdit />
+            <DreamsEdit onUpdate={refreshData} />
           </div>
         </LazySection>
 
         <LazySection>
           <div id="proceso-formacion-edit">
-            <TrainingProcessEdit videos={camperTiktoksData} />
+            <TrainingProcessEdit
+              videos={camperTiktoksData}
+              onUpdate={refreshData}
+            />
           </div>
         </LazySection>
 
         <LazySection>
           <div id="projects-edit">
-            <ProyectsEdit />
+            <ProyectsEdit onUpdate={refreshData} />
           </div>
         </LazySection>
 
         <LazySection>
           <div id="patrocinar-edit">
-            <SponsorCTAEdit />
+            <SponsorCTAEdit onUpdate={refreshData} />
           </div>
         </LazySection>
       </div>

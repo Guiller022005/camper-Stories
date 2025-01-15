@@ -70,6 +70,7 @@ const MeritsModal = ({ initialMerits }) => {
       // Call the updateCamperMerits service with the correct payload
       await updateCamperMerits(id, meritIds);
       console.log("Méritos guardados:", meritIds);
+      window.location.reload();
       setIsOpen(false);
     } catch (error) {
       console.error("Error saving merits:", error);
