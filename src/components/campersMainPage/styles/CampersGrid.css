@@ -53,10 +53,10 @@
 .dev-card-content {
   display: flex;
   flex-direction: row;
-  width: 440px;
+  width: 450px;
   height: auto;
-  padding: 20px 20px 20px 30px;
-  gap: 3px;
+  padding: 20px 20px 20px 20px;
+  gap: 8px;
 }
 
 /* Camper Information */
@@ -265,20 +265,6 @@ button {
   border: none;
   position: relative;
   bottom: -20px;
-}
-
-.merit-item {
-  display: flex;
-  justify-content: center;
-  padding: 5px 6px;
-  background-color: #59599c;
-  font-size: 12px;
-  width: -moz-fit-content;
-  width: fit-content;
-  white-space: nowrap;
-  border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .expand-skills-button:focus {

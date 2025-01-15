@@ -162,7 +162,7 @@ const Campers = () => {
                         <p>{camper.history}</p>
                       </div>
                     ) : (
-                      <p>No merit available</p>
+                      <p>Merito no Disponible.</p>
                     )}
                   </div>
                 </div>
