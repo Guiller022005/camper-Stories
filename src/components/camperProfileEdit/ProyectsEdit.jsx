@@ -114,7 +114,6 @@ const ProyectsEdit = () => {
 
   const handleUpdateProject = async (updatedProject) => {
     try {
-      console.log("aaa", updatedProject);
       setLoading(true);
       const response = await updateProject(
         id,
