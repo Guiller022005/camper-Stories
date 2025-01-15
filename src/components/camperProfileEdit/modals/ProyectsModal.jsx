@@ -108,8 +108,9 @@ export function ProyectsModal({ onAddProject, technologies }) {
     // Create FormData object
     const projectData = new FormData();
 
+    const camper_id = localStorage.getItem('camper_id')
     // Append all fields in the correct format
-    projectData.append("camper_id", 58);
+    projectData.append("camper_id", camper_id);
     projectData.append("title", formData.title.trim());
     projectData.append("description", formData.description.trim());
     projectData.append("code_url", formData.code_url.trim());
