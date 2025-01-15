@@ -7,6 +7,8 @@ import { fetchCampersFormacion, fetchMeritsCamperById, fetchAllMerits } from "..
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "./styles/CampersGrid.css";
 
+const defaultProfileImage = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";
+
 const CampersGrid = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [campersPerPage, setCampersPerPage] = useState(8);
