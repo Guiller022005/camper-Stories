@@ -42,7 +42,8 @@ export const addDreams = async (camperId, data) => {
       maxBodyLength: Infinity,
     };
 
-    const url = `${endpoints.campers}/${camperId}/dreams`;
+    const url = `${endpoints.dreams}`;
+    console.log(url)
     const response = await axios.post(url, data, config);
 
     return response.data;
@@ -76,5 +77,25 @@ export const deleteDreams = async (camperId, data) => {
   }
 };
 
+
+export const deleteDream = async (camperId, dreamId) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const url = `${endpoints.campers}/${camperId}/dreams/${dreamId}`;
+    const response = await axios.delete(url, config);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting dream:", error);
+    throw error;
+  }
+};
 // POST /api/campers/{id}/dreams -
 // DELETE /api/campers/{id}/dreams/{dream_id}

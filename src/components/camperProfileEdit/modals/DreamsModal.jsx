@@ -11,16 +11,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import AddItemButton from '../ui/AddItemButton';
+import AddItemButton from "../ui/AddItemButton";
 import { addDreams } from "../../../services/dreamsService";
+import { useParams } from "react-router-dom";
 
-const DreamsModal = ({ onAddDream }) => {
+const DreamsModal = ({ onAddDream, onUpdate }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    image: null,
+    image_url: null,
     imagePreview: null,
   });
+  const { id } = useParams();
 
   const handleInputChange = ({ target: { name, value } }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -33,7 +35,7 @@ const DreamsModal = ({ onAddDream }) => {
       reader.onloadend = () => {
         setFormData((prev) => ({
           ...prev,
-          image: file,
+          image_url: file,
           imagePreview: reader.result,
         }));
       };
@@ -48,21 +50,23 @@ const DreamsModal = ({ onAddDream }) => {
     const newDream = {
       title: formData.title,
       description: formData.description,
-      image: formData.imagePreview,
+      image_url: formData.image_url,
+      camper_id: id,
     };
     onAddDream(newDream);
-    const userId = localStorage.getItem("userID");
     try {
-      const response = await addDreams(58, newDream);
-      console.log("respuesta del servidor", response)
+      console.log(newDream);
+      const response = await addDreams(id, newDream);
+      console.log("respuesta del servidor", response);
+      onUpdate();
     } catch (error) {
-      console.error("No fue posible enviar la informacion", error)
+      console.error("No fue posible enviar la informacion", error);
       throw error;
     }
     setFormData({
       title: "",
       description: "",
-      image: null,
+      image_url: null,
       imagePreview: null,
     });
   };
@@ -124,7 +128,7 @@ const DreamsModal = ({ onAddDream }) => {
             </Label>
             <Input
               id="image"
-              name="image"
+              name="image_url"
               type="file"
               accept="image/*"
               onChange={handleImageChange}
@@ -152,7 +156,6 @@ const DreamsModal = ({ onAddDream }) => {
       </DialogContent>
     </Dialog>
   );
-
 };
 
 export default DreamsModal;
