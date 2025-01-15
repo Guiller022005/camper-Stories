@@ -105,7 +105,7 @@ const CampersGrid = () => {
         <section className="campersgrid">
             <div className="badge-filters">
                 <h3>Busca a Tu Camper</h3>
-                <div className="search-container">
+                {/* <div className="search-container">
                     <input
                         type="text"
                         placeholder="Buscar por nombre"
@@ -113,7 +113,7 @@ const CampersGrid = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="search-input"
                     />
-                </div>
+                </div> */}
                 <div className="skill-filters wrapper-filter">
                     <div
                         className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}
@@ -185,7 +185,7 @@ const CampersGrid = () => {
                                                             animate={{ opacity: 1, scale: 1 }}
                                                             exit={{ opacity: 0, scale: 0.8 }}
                                                             transition={{ delay: index * 0.1 }}
-                                                            className="skill-item"
+                                                            className="skill-item-mp"
                                                         >
                                                             {skill.name + " "}{skill.icon}
                                                         </motion.div>
