@@ -66,7 +66,6 @@ const DreamsGridEdit = ({ onUpdate }) => {
                   loading="lazy"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = '/placeholder.jpg'; 
                   }} 
                 />
               )}
