@@ -16,12 +16,13 @@ const CampersGrid = () => {
     const [expandedSkills, setExpandedSkills] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedSkills, setSelectedSkills] = useState([]);
-    const [predefinedSkills, setpredefinedSkills] = useState([]);
+    const [predefinedSkills, setPredefinedSkills] = useState([]);
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [campersData, setCampersData] = useState([]);
+    const [filteredCampers, setFilteredCampers] = useState([]);
     const navigate = useNavigate();
 
     const mobileVisibleSkillsCount = 4;
@@ -43,8 +44,9 @@ const CampersGrid = () => {
 
                 const campersWithMerits = await Promise.all(campersWithMeritsPromises);
 
-                setpredefinedSkills(allMerits);
+                setPredefinedSkills(allMerits);
                 setCampersData(campersWithMerits);
+                setFilteredCampers(campersWithMerits); // Inicialmente mostramos todos los campers
                 setIsLoading(false);
             } catch (err) {
                 setError("Error al cargar los datos de los campers.");
@@ -73,25 +75,6 @@ const CampersGrid = () => {
             : predefinedSkills.slice(0, mobileVisibleSkillsCount)
         : predefinedSkills.slice(0, desktopVisibleSkillsCount);
 
-    const filteredCampers =
-        selectedSkills.length === 0
-            ? campersData
-            : campersData.filter((camper) =>
-                selectedSkills.every((skill) =>
-                    camper.skills.some((camperSkill) => camperSkill.id === skill.id)
-                )
-            );
-
-    const startIndex = (currentPage - 1) * campersPerPage;
-    const currentCampers = filteredCampers.slice(
-        startIndex,
-        startIndex + campersPerPage
-    );
-    console.log("currentCampers:", currentCampers)
-    console.log("CamperData: ", campersData)
-    console.log("predefinedStills", predefinedSkills)
-    console.log(selectedSkills)
-
     const handleSkillFilter = (skill) => {
         setSelectedSkills((prev) =>
             prev.some(s => s.id === skill.id)
@@ -101,24 +84,45 @@ const CampersGrid = () => {
         setCurrentPage(1);
     };
 
+    // Filtrado de campers por el nombre a medida que se escribe
+    useEffect(() => {
+        if (searchTerm.trim() === "") {
+            setFilteredCampers(campersData); // Si no hay búsqueda, mostramos todos los campers
+            return;
+        }
+
+        const filtered = campersData.filter((camper) =>
+            camper.full_name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredCampers(filtered); // Actualizamos los campers filtrados
+    }, [searchTerm, campersData]);
+
+    const handleSearchSubmit = (e) => {
+        if (e.key === "Enter") {
+            // Puedes hacer que realice alguna acción adicional cuando presionan Enter
+            console.log("Búsqueda enviada:", searchTerm);
+        }
+    };
+
+    // Filtrado de campers por habilidades seleccionadas
+    const filteredCampersBySkills = selectedSkills.length === 0
+        ? filteredCampers
+        : filteredCampers.filter((camper) =>
+            selectedSkills.every((skill) =>
+                camper.skills.some((camperSkill) => camperSkill.id === skill.id)
+            )
+        );
+
+    const startIndex = (currentPage - 1) * campersPerPage;
+    const currentCampers = filteredCampersBySkills.slice(startIndex, startIndex + campersPerPage);
+
     return (
         <section className="campersgrid">
             <div className="badge-filters">
                 <h3>Busca a Tu Camper</h3>
-                {/* <div className="search-container">
-                    <input
-                        type="text"
-                        placeholder="Buscar por nombre"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="search-input"
-                    />
-                </div> */}
                 <div className="skill-filters wrapper-filter">
-                    <div
-                        className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}
-                    >
-                        <AnimatePresence>
+                    <div className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}>
+                        <AnimatePresence className="AnimatePresence">
                             {visibleSkills.map((skill) => (
                                 <motion.div
                                     key={skill.id}
@@ -127,8 +131,7 @@ const CampersGrid = () => {
                                     exit={{ opacity: 0, scale: 0.8 }}
                                 >
                                     <Button
-                                        className={`skill-button icon-filter badgeInfo ${selectedSkills.some(selectedSkill => selectedSkill.id === skill.id) ? "selected" : "outline"
-                                            }`}
+                                        className={`skill-button icon-filter badgeInfo ${selectedSkills.some(selectedSkill => selectedSkill.id === skill.id) ? "selected" : "outline"}`}
                                         onClick={() => handleSkillFilter(skill)}
                                     >
                                         <div className="tooltip-filter">{skill.description}</div>
@@ -137,7 +140,22 @@ const CampersGrid = () => {
                                 </motion.div>
                             ))}
                         </AnimatePresence>
+                        
                     </div>
+
+                    {/* Campo de búsqueda */}
+                    <div className="search-container">
+                            <input
+                                type="text"
+                                placeholder="Buscar por nombre 🔍"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={handleSearchSubmit}
+                                className="search-input"
+                            />
+                        </div>
+                    </div>
+                    
                     {isMobile && predefinedSkills.length > mobileVisibleSkillsCount && (
                         <button
                             className={`expand-filters-button ${isFilterExpanded ? "expanded" : ""
@@ -151,8 +169,11 @@ const CampersGrid = () => {
                             />
                         </button>
                     )}
+                    
+                    
                 </div>
-            </div>
+                
+
             <AnimatePresence mode="wait">
                 <motion.div key={currentPage} className="grid-container">
                     {currentCampers.map((camper) => (
@@ -160,7 +181,7 @@ const CampersGrid = () => {
                             <div className="dev-card-content">
                                 <div className="camper-image">
                                     <LazyLoadImage
-                                        src={camper.profile_picture}
+                                        src={camper.profile_picture || defaultProfileImage}
                                         alt={camper.full_name}
                                         effect="blur"
                                         className="w-full h-[300px] object-cover rounded-lg"
@@ -169,14 +190,10 @@ const CampersGrid = () => {
                                 <div className="camper-maininfo">
                                     <h3>{camper.full_name}</h3>
                                     <p>{camper.title}</p>
-
                                     <div className="technologies">
                                         <span className="tech-label">Méritos:</span>
                                         <div layout className="skills-wrapper wrapper">
-                                            <div
-                                                className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""
-                                                    }`}
-                                            >
+                                            <div className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""}`}>
                                                 <AnimatePresence>
                                                     {camper.skills.map((skill, index) => (
                                                         <motion.div
@@ -206,8 +223,7 @@ const CampersGrid = () => {
                                                 >
                                                     {expandedSkills[camper.camper_id] ? "Ver menos" : "Ver más"}
                                                     <ChevronDown
-                                                        className={`ml-2 h-4 w-4 transition-transform ${expandedSkills[camper.camper_id] ? "rotate-180" : ""
-                                                            }`}
+                                                        className={`ml-2 h-4 w-4 transition-transform ${expandedSkills[camper.camper_id] ? "rotate-180" : ""}`}
                                                     />
                                                 </button>
                                             )}
@@ -218,7 +234,7 @@ const CampersGrid = () => {
                                             className="info-button"
                                             onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
                                         >
-                                            Mas Info
+                                            Más Info
                                         </button>
                                         <button className="sponsor-button">Patrocinar</button>
                                     </div>
@@ -228,15 +244,16 @@ const CampersGrid = () => {
                     ))}
                 </motion.div>
             </AnimatePresence>
+            
+
             <DotPagination
                 current={currentPage}
                 pageSize={campersPerPage}
-                total={filteredCampers.length}
+                total={filteredCampersBySkills.length}
                 onChange={setCurrentPage}
             />
         </section>
     );
-
 };
 
 const DotPagination = ({ current, total, pageSize, onChange }) => {
@@ -278,14 +295,14 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
                     onClick={() => dot !== "..." && onChange(dot)}
                     disabled={dot === "..."}
                     className={`
-            w-3 h-3 rounded-full transition-all duration-200 ease-in-out
-            ${dot === "..."
+                        w-3 h-3 rounded-full transition-all duration-200 ease-in-out
+                        ${dot === "..."
                             ? "w-6 bg-gray-300 cursor-default"
                             : dot === current
                                 ? "bg-blue-500 scale-110"
                                 : "bg-gray-300 hover:bg-gray-400"
                         }
-          `}
+                    `}
                     aria-label={dot === "..." ? "More pages" : `Page ${dot}`}
                 >
                     {dot === "..." && <span className="text-xs text-gray-600">•••</span>}

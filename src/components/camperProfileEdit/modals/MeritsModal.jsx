@@ -82,7 +82,7 @@ const MeritsModal = ({ initialMerits }) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghostNoHover" size="icon">
-          <Edit className="h-6 w-6" />
+          <Edit className="h-6 w-6 " />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">

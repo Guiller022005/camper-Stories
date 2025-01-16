@@ -1,57 +1,107 @@
 .projectCard {
   flex: 1 1 calc(33.33% - 24px);
   box-sizing: border-box;
+  background: rgba(18, 27, 77, 0.95);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  backdrop-filter: blur(12px);
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.2);
+  transition: all 0.3s ease-in-out;
 }
+
+.projectCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.4);
+}
+
+
 
 .projectCardImg {
   object-fit: cover;
   width: 100%;
-  height: 180px;
-  background-color: #cccccc;
+  height: 200px;
+  background-color: rgba(30, 58, 138, 0.6);
+  border-radius: 0.75rem 0.75rem 0 0;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .projectCardTechs {
   margin-top: 16px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
 }
 
 .projectCardMeta {
+  color: white;
   padding: 16px;
 }
 
+
 .projectCardBadge {
-  background-color: #211e8b;
-  color: #fff;
-  padding: 3px 10px;
+  background: rgba(30, 58, 138, 0.8);
+  color: #bfdbfe;
+  padding: 4px 12px;
   font-size: 0.875rem;
   border-radius: 20px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease-in-out;
+}
+
+.projectCardBadge:hover {
+  background: rgba(30, 58, 138, 1);
+  color: #e0f2fe;
 }
 
 .projectCardTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #333;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #3b82f6, #fbbf24);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-top: 0.5rem;
+}
+
+.projectCardMeta :global(.ant-card-meta-title) {
+  color: #fff; /* O el color que prefieras */
+}
+
+.projectCardMeta :global(.ant-card-meta-description) {
+  color: #fff; /* O el color que prefieras */
 }
 
 .projectCardDescription {
-  font-size: 0.875rem;
-  color: #9ca3af;
+  font-size: 0.9rem;
+  color: #a5b4fc;
+  margin-top: 0.5rem;
 }
 
 .projectCardButton {
   margin-top: 16px;
+  background-color: #1f72f7;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.projectCardButton:hover {
+  background-color: #1f72f7;
+  box-shadow: 0 6px 8px -2px rgba(59, 130, 246, 0.5);
 }
 
 /* Media queries para tablets */
 @media (max-width: 1024px) {
   .projects {
     grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
-
   .projectCard {
-    flex: 1 1 calc(50% - 24px);
+    flex: 1 1 calc(50% - 16px);
   }
 }
 
@@ -61,19 +111,20 @@
     grid-template-columns: 1fr;
     padding: 0 1rem;
   }
-
   .projectCard {
     flex: 1 1 100%;
+  }
+  .projectCardImg {
+    height: 160px;
   }
 }
 
 /* Media query para móviles pequeños */
 @media (max-width: 480px) {
   .projectCardTitle {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
   }
-
   .projectCardDescription {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 }

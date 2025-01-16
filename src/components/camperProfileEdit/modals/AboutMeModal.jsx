@@ -84,48 +84,38 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
           <Edit className="h-6 w-6" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto z-[9999] bg-white text-gray-800">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto z-[9999] bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
         <DialogHeader>
-          <DialogTitle className="text-gray-900">Editar Sobre Mí</DialogTitle>
+          <DialogTitle className="text-2xl font-bold ">Editar Sobre Mí</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 p-4">
           <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">
-              Sobre Mí
-            </label>
+            <label className="block text-sm font-medium mb-1 text-blue-300">Sobre Mí</label>
             <Textarea
               name="about"
-              className="text-gray-900 bg-gray-50 min-h-[150px]"
+              className="bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 min-h-[150px]"
               value={formData.about}
               onChange={handleChange}
               placeholder="Cuéntanos sobre ti..."
               maxLength={500}
             />
           </div>
-
           <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">
-              URL del Video
-            </label>
+            <label className="block text-sm font-medium mb-1 text-blue-300">URL del Video</label>
             <Input
-              name="main_video_url"
-              className="text-gray-900 bg-gray-50"
-              value={formData.main_video_url}
+              name="videoUrl"
+              className="bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
+              value={formData.videoUrl}
               onChange={handleChange}
               placeholder="URL del video de presentación"
               type="url"
             />
           </div>
-
           <div className="flex justify-end space-x-2 pt-4">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={() => setIsOpen(false)}
-            >
-              Cancelar
-            </Button>
-            <Button type="submit">Guardar Cambios</Button>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="text-blue-600 hover:bg-blue-900/30 hover:text-blue-200 transition-all border-blue-500/30">Cancelar</Button>
+            </DialogTrigger>
+            <Button type="submit" className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300">Guardar Cambios</Button>
           </div>
         </form>
       </DialogContent>
