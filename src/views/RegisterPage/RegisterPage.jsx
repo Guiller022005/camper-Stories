@@ -23,6 +23,10 @@ export default function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [ciudadesColombia, setCiudadesColombia] = useState([]);
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+  });
 
   const tiposDocumento = [
     { id: '1', nombre: 'Cédula de Ciudadanía' },
@@ -72,6 +76,25 @@ export default function RegisterForm() {
     }
     setPasswordError("");
     return true;
+  };
+
+  const capitalizeWords = (str) => {
+    if (!str) return '';
+    return str
+      .trim()
+      .toLowerCase()
+      .split(' ')
+      .filter(word => word.length > 0)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: ['first_name', 'last_name'].includes(name) ? capitalizeWords(value) : value
+    }));
   };
 
   async function onSubmit(event) {
@@ -168,6 +191,8 @@ export default function RegisterForm() {
                     id="first_name"
                     name="first_name"
                     required
+                    value={formData.first_name}
+                    onChange={handleChange}
                     placeholder="Tu nombre"
                     className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
                              focus:ring-2 focus:ring-[#7c3aed] border-none"
@@ -182,6 +207,8 @@ export default function RegisterForm() {
                     id="last_name"
                     name="last_name"
                     required
+                    value={formData.last_name}
+                    onChange={handleChange}
                     placeholder="Tu apellido"
                     className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
                              focus:ring-2 focus:ring-[#7c3aed] border-none"
