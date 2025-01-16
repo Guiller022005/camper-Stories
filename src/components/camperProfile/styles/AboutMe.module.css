@@ -28,9 +28,9 @@
 }
 
 .aboutSubtitle {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: bold;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
@@ -51,7 +51,7 @@
   align-self: flex-start;
   background-color: #f7b500;
   color: #000000;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
   text-transform: uppercase;
   border-radius: 20px;
@@ -79,19 +79,19 @@
 /* Ajustamos el breakpoint para mantener la proporción en pantallas más grandes */
 @media (max-width: 1200px) {
   .aboutContent {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 
   .colVideo {
-      max-width: 100%;
+    max-width: 100%;
   }
 
   .colInfo {
-      max-width: 100%;
-      padding: 0;
+    max-width: 100%;
+    padding: 0;
   }
 
   .aboutText {
-      max-height: none;
+    max-height: none;
   }
 }
