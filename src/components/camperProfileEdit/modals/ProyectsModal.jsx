@@ -18,13 +18,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "boxicons";
-import { toast } from 'react-toastify';
-import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useState } from "react";
 import AddItemButton from "../ui/AddItemButton";
 
 export function ProyectsModal({ onAddProject, technologies }) {
-  // Añadimos validación inicial para technologies
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [urlError, setUrlError] = useState("");
   const techArray = Array.isArray(technologies) ? technologies : [];
 
   const [formData, setFormData] = useState({
@@ -33,13 +34,39 @@ export function ProyectsModal({ onAddProject, technologies }) {
     image: null,
     code_url: "",
     technologyIds: [],
+    imagePreview: null,
   });
 
-  // Función auxiliar para verificar si un valor es un ID válido
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      description: "",
+      image: null,
+      code_url: "",
+      technologyIds: [],
+      imagePreview: null,
+    });
+    setUrlError("");
+  };
+
+  const validateUrl = (url) => {
+    if (!url) return "El link del proyecto es requerido";
+    if (!url.match(/^https?:\/\//)) {
+      return "El link debe comenzar con 'http://' o 'https://'";
+    }
+    return "";
+  };
+
   const isValidId = (id) => typeof id === "number" && !isNaN(id);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
+
+    if (id === "code_url") {
+      const error = validateUrl(value);
+      setUrlError(error);
+    }
+
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
@@ -51,16 +78,16 @@ export function ProyectsModal({ onAddProject, technologies }) {
         setFormData((prev) => ({
           ...prev,
           image: file,
+          imagePreview: reader.result,
         }));
       };
       reader.readAsDataURL(file);
     } else {
-      alert("Por favor, selecciona un archivo de imagen válido.");
+      toast.error("Por favor, selecciona un archivo de imagen válido.");
     }
   };
 
   const handleSelectTechnology = (techId) => {
-    console.log("Seleccionado techId (raw):", techId); // Verifica el valor original
     const numericId = Number(techId);
 
     if (!isValidId(numericId)) {
@@ -70,13 +97,15 @@ export function ProyectsModal({ onAddProject, technologies }) {
 
     setFormData((prev) => {
       const alreadySelected = prev.technologyIds.includes(numericId);
-      console.log("Ya seleccionado:", alreadySelected);
+
+      if (alreadySelected) {
+        toast.info("Esta tecnología ya está seleccionada");
+        return prev;
+      }
 
       return {
         ...prev,
-        technologyIds: alreadySelected
-          ? prev.technologyIds
-          : [...prev.technologyIds, numericId],
+        technologyIds: [...prev.technologyIds, numericId],
       };
     });
   };
@@ -97,20 +126,37 @@ export function ProyectsModal({ onAddProject, technologies }) {
   };
 
   const handleSubmit = async () => {
-    // Validate required fields using the correct field name
-    if (
-      !formData.title.trim() ||
-      !formData.description.trim() ||
-      !formData.code_url.trim()
-    ) {
-      toast.error("Por favor, completa todos los campos obligatorios.");
+    if (!formData.title.trim()) {
+      toast.error("El título es requerido");
+      return;
+    }
+    if (!formData.description.trim()) {
+      toast.error("La descripción es requerida");
+      return;
+    }
+    if (!formData.code_url.trim()) {
+      toast.error("El link del proyecto es requerido");
       return;
     }
 
+    const urlError = validateUrl(formData.code_url);
+    if (urlError) {
+      toast.error(urlError);
+      return;
+    }
+
+    if (formData.technologyIds.length === 0) {
+      toast.error("Debes seleccionar al menos una tecnología");
+      return;
+    }
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     try {
-      // Create FormData object
       const projectData = new FormData();
-      const camper_id = localStorage.getItem('camper_id');
+      const camper_id = localStorage.getItem("camper_id");
 
       projectData.append("camper_id", camper_id);
       projectData.append("title", formData.title.trim());
@@ -121,44 +167,43 @@ export function ProyectsModal({ onAddProject, technologies }) {
         projectData.append("image", formData.image, formData.image.name);
       }
 
-      projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+      projectData.append(
+        "technologyIds",
+        JSON.stringify(formData.technologyIds)
+      );
 
-      // Call the onAddProject function and await its response
       await onAddProject(projectData);
-
-      // Show success toast
       toast.success("¡Proyecto agregado exitosamente!");
-
-      // Reset form
-      setFormData({
-        title: "",
-        description: "",
-        image: null,
-        code_url: "",
-        technologyIds: [],
-      });
-
-      // Cerrar el modal
+      resetForm();
       setIsOpen(false);
-
     } catch (error) {
-      // Show error toast if something goes wrong
-      toast.error('Error al guardar el proyecto. Por favor intenta de nuevo.');
-      console.error('Error saving project:', error);
+      toast.error("Error al guardar el proyecto. Por favor intenta de nuevo.");
+      console.error("Error saving project:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!isSubmitting) {
+          setIsOpen(open);
+          if (!open) resetForm();
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <div className="w-full h-full">
           <AddItemButton
             type="project"
-            className="w-full h-full bg-blue-950/30 hover:bg-blue-900/30 border-blue-500/30 text-blue-200 transition-all"
+            className="w-full h-full bg-blue-950/30 hover:bg-blue-900/30 border-blue-500/30 text-blue-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
           />
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-blue-950/20 [&::-webkit-scrollbar-thumb]:bg-blue-500/50 hover:[&::-webkit-scrollbar-thumb]:bg-blue-400/50 [&::-webkit-scrollbar-thumb]:rounded-full [scrollbar-width:thin] [scrollbar-color:rgba(10,15,42,0.98)_transparent]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-blue-100">
             Añadir Proyecto
@@ -176,6 +221,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
               id="title"
               value={formData.title}
               onChange={handleChange}
+              placeholder="Nombre del proyecto"
               className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
             />
           </div>
@@ -187,6 +233,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
               id="description"
               value={formData.description}
               onChange={handleChange}
+              placeholder="Describe tu proyecto"
               className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
             />
           </div>
@@ -214,21 +261,27 @@ export function ProyectsModal({ onAddProject, technologies }) {
             </div>
           )}
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="codeUrl" className="text-right text-blue-300">
+            <Label htmlFor="code_url" className="text-right text-blue-300">
               Link del Proyecto
             </Label>
-            <Input
-              id="code_url"
-              value={formData.code_url}
-              onChange={handleChange}
-              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
-            />
+            <div className="col-span-3 space-y-1">
+              <Input
+                id="code_url"
+                value={formData.code_url}
+                onChange={handleChange}
+                placeholder="https://github.com/tu-usuario/tu-proyecto"
+                className={`bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all w-full ${
+                  urlError ? "border-red-500" : ""
+                }`}
+              />
+              {urlError && <p className="text-sm text-red-500">{urlError}</p>}
+            </div>
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium text-blue-300">
               Tecnologías
             </label>
-            <Select onValueChange={(value) => handleSelectTechnology(value)}>
+            <Select onValueChange={handleSelectTechnology}>
               <SelectTrigger className="w-full bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all">
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
@@ -267,13 +320,13 @@ export function ProyectsModal({ onAddProject, technologies }) {
           <Button
             type="submit"
             onClick={handleSubmit}
-            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
+            disabled={isSubmitting || !!urlError}
+            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Guardar
+            {isSubmitting ? "Guardando..." : "Guardar"}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-
 }
