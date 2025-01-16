@@ -22,6 +22,7 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
     image_url: null,
     imagePreview: null,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { id } = useParams();
 
   const handleInputChange = ({ target: { name, value } }) => {
@@ -47,18 +48,23 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     const newDream = {
       title: formData.title,
       description: formData.description,
       image_url: formData.image_url,
       camper_id: id,
     };
+
     onAddDream(newDream);
     try {
       console.log(newDream);
       const response = await addDreams(id, newDream);
-      console.log("respuesta del servidor", response);
       onUpdate();
+      console.log("respuesta del servidor", response);
     } catch (error) {
       console.error("No fue posible enviar la informacion", error);
       throw error;
@@ -77,6 +83,7 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
         <AddItemButton
           type="dream"
           className="rounded-2xl bg-blue-950/50 hover:bg-blue-900/30 border border-blue-500/30 text-blue-200 transition-colors"
+          disabled={isSubmitting}
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
@@ -149,8 +156,9 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
           <Button
             type="submit"
             className="w-full bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
+            disabled={isSubmitting}
           >
-            Guardar Sueño
+            {isSubmitting ? "Guardando..." : "Guardar Sueño"}
           </Button>
         </form>
       </DialogContent>
