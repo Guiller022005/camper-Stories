@@ -18,15 +18,15 @@ import { Input } from "../../ui/input";
 import { Edit } from "lucide-react";
 import { endpoints } from "@/services/apiConfig";
 import { useParams } from "react-router-dom";
-import { toast } from 'react-toastify';
-import { editCamperInfo } from "@/services/camperService";
+import { toast } from "react-toastify";
+import { editCamperInfo, fetchCamperById } from "@/services/camperService";
 
 const capitalizeWords = (str) => {
-  if (!str) return '';
+  if (!str) return "";
   return str
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 };
 
 const ProfileHeaderModal = ({ initialData, onUpdate }) => {
@@ -34,6 +34,7 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
   const [ciudadesColombia, setCiudadesColombia] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentImage, setCurrentImage] = useState(null);
   const [formData, setFormData] = useState({
     full_name: capitalizeWords(initialData.nombre),
     city_id: "",
@@ -62,10 +63,12 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
 
     // Validación de la imagen (si se ha seleccionado una nueva)
     if (formData.profile_picture instanceof File) {
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
       if (!allowedTypes.includes(formData.profile_picture.type)) {
-        newErrors.profile_picture = "El archivo debe ser una imagen (JPEG, PNG o GIF)";
-      } else if (formData.profile_picture.size > 5 * 1024 * 1024) { // 5MB
+        newErrors.profile_picture =
+          "El archivo debe ser una imagen (JPEG, PNG o GIF)";
+      } else if (formData.profile_picture.size > 5 * 1024 * 1024) {
+        // 5MB
         newErrors.profile_picture = "La imagen no debe exceder 5MB";
       }
     }
@@ -115,11 +118,26 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    const fetchCurrentImage = async () => {
+      try {
+        const camperData = await fetchCamperById(id);
+        setCurrentImage(camperData.profile_picture);
+      } catch (error) {
+        console.error("Error obteniendo imagen actual:", error);
+      }
+    };
+
+    if (isOpen) {
+      fetchCurrentImage();
+    }
+  }, [isOpen, id]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'full_name' ? capitalizeWords(value) : value,
+      [name]: name === "full_name" ? capitalizeWords(value) : value,
     }));
     // Limpiar el error del campo cuando el usuario comienza a escribir
     if (errors[name]) {
@@ -134,12 +152,13 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
     const file = e.target.files[0];
     if (file) {
       // Validar el archivo antes de establecerlo
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
       if (!allowedTypes.includes(file.type)) {
         toast.error("Por favor selecciona una imagen válida (JPEG, PNG o GIF)");
         return;
       }
-      if (file.size > 5 * 1024 * 1024) { // 5MB
+      if (file.size > 5 * 1024 * 1024) {
+        // 5MB
         toast.error("La imagen no debe exceder 5MB");
         return;
       }
@@ -171,8 +190,16 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
 
       if (formData.profile_picture instanceof File) {
         userData.append("profile_picture", formData.profile_picture);
-      } else if (formData.profile_picture) {
-        userData.append("profile_picture", formData.profile_picture);
+      } else if (currentImage && typeof currentImage === 'string') {
+          try {
+              const response = await fetch(currentImage);
+              if (response.ok) {
+                  const blob = await response.blob();
+                  userData.append("profile_picture", blob, 'current_profile_picture.jpg');
+              }
+          } catch (error) {
+              console.error("Error al procesar la imagen actual:", error);
+          }
       }
 
       const response = await editCamperInfo(id, userData);
@@ -183,7 +210,9 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
         setIsOpen(false);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Error al actualizar el perfil");
+      toast.error(
+        error.response?.data?.message || "Error al actualizar el perfil"
+      );
       console.error("Error al actualizar el perfil:", error);
     } finally {
       setIsSubmitting(false);
@@ -199,7 +228,9 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto z-[9999] bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold ">Editar Perfil</DialogTitle>
+          <DialogTitle className="text-2xl font-bold ">
+            Editar Perfil
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 p-4">
           <div>
@@ -213,16 +244,21 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
               className="cursor-pointer bg-blue-950/50 border-blue-500/30 text-blue-200 hover:bg-blue-900/30 transition-colors file:bg-blue-950/50 file:align-top file:text-blue-100 file:border-0 file:rounded-lg file:px-4 file:py-0.5file:mr-10  file:hover:bg-yellow-500 file:hover:text-black file:transition-colors file:duration-500"
             />
             {errors.profile_picture && (
-              <p className="text-red-500 text-sm mt-1">{errors.profile_picture}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.profile_picture}
+              </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1 text-blue-300">Nombre</label>
+            <label className="block text-sm font-medium mb-1 text-blue-300">
+              Nombre
+            </label>
             <Input
               name="full_name"
-              className={`text-gray-900 bg-gray-50 ${errors.full_name ? 'border-red-500' : ''
-                }`}
+              className={`text-gray-900 bg-gray-50 ${
+                errors.full_name ? "border-red-500" : ""
+              }`}
               value={formData.full_name}
               onChange={handleChange}
               maxLength={35}
@@ -244,8 +280,11 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
                 setErrors((prev) => ({ ...prev, city_id: undefined }));
               }}
             >
-              <SelectTrigger className={`w-full bg-blue-950/50 border-blue-500/30 text-blue-200 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all ${errors.city_id ? 'border-red-500' : ''
-                }`}>
+              <SelectTrigger
+                className={`w-full bg-blue-950/50 border-blue-500/30 text-blue-200 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all ${
+                  errors.city_id ? "border-red-500" : ""
+                }`}
+              >
                 <SelectValue placeholder="Selecciona una ciudad" />
               </SelectTrigger>
               <SelectContent className="bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-200 z-[9999]">

@@ -167,12 +167,6 @@ const CamperProfileEdit = () => {
             <ProyectsEdit onUpdate={refreshData} />
           </div>
         </LazySection>
-
-        <LazySection>
-          <div id="patrocinar-edit">
-            <SponsorCTAEdit onUpdate={refreshData} />
-          </div>
-        </LazySection>
       </div>
       <LazySection>
         <Footer />
