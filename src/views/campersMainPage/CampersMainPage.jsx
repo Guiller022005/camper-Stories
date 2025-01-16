@@ -20,7 +20,7 @@ const CampersMainPage = () => {
       <section id="campersGrid">
         <CampersGrid />
       </section>
-      <section id="formSection">
+      <section>
         <FormSection />
       </section>
       <section id="footer">

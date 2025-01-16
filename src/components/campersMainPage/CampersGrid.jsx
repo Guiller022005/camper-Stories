@@ -27,6 +27,15 @@ const CampersGrid = () => {
     const mobileVisibleSkillsCount = 4;
     const desktopVisibleSkillsCount = predefinedSkills.length;
 
+    const handleLinkClick = (event) => {
+        
+        const targetElement = document.querySelector("#formsection");
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: "smooth" }); // Realiza un desplazamiento suave al elemento
+        }
+    };
+    
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -220,7 +229,12 @@ const CampersGrid = () => {
                                         >
                                             Mas Info
                                         </button>
-                                        <button className="sponsor-button">Patrocinar</button>
+                                        <button
+                                            className="sponsor-button"
+                                            onClick={handleLinkClick}
+                                        >
+                                            Patrocinar
+                                        </button>
                                     </div>
                                 </div>
                             </div>
