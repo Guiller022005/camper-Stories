@@ -8,6 +8,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/camperService";
 import styles from "./styles/Campers.module.css";
+import Loader from '@/components/common/Loader';
 
 const Campers = () => {
   const [slidesPerView, setSlidesPerView] = useState(6);
@@ -60,7 +61,7 @@ const Campers = () => {
     fetchData();
   }, []);
 
-  if (isLoading) return <div className={styles.loading}>Cargando...</div>;
+  if (isLoading) return <Loader/>;
   if (error) return <div className={styles.error}>{error}</div>;
 
   const getRandomMerit = (camperId) => {
