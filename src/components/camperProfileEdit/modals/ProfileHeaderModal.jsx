@@ -18,6 +18,7 @@ import { Input } from "../../ui/input";
 import { Edit } from "lucide-react";
 import { endpoints } from "@/services/apiConfig";
 import { useParams } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { editCamperInfo } from "@/services/camperService";
 
 const capitalizeWords = (str) => {
@@ -31,6 +32,8 @@ const capitalizeWords = (str) => {
 const ProfileHeaderModal = ({ initialData, onUpdate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [ciudadesColombia, setCiudadesColombia] = useState([]);
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     full_name: capitalizeWords(initialData.nombre),
     city_id: "",
@@ -38,6 +41,38 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
   });
 
   const { id } = useParams();
+
+  // Función de validación
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validación del nombre
+    if (!formData.full_name.trim()) {
+      newErrors.full_name = "El nombre es requerido";
+    } else if (formData.full_name.trim().length < 3) {
+      newErrors.full_name = "El nombre debe tener al menos 3 caracteres";
+    } else if (formData.full_name.trim().length > 35) {
+      newErrors.full_name = "El nombre no puede exceder los 35 caracteres";
+    }
+
+    // Validación de la ciudad
+    if (!formData.city_id) {
+      newErrors.city_id = "Debes seleccionar una ciudad";
+    }
+
+    // Validación de la imagen (si se ha seleccionado una nueva)
+    if (formData.profile_picture instanceof File) {
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!allowedTypes.includes(formData.profile_picture.type)) {
+        newErrors.profile_picture = "El archivo debe ser una imagen (JPEG, PNG o GIF)";
+      } else if (formData.profile_picture.size > 5 * 1024 * 1024) { // 5MB
+        newErrors.profile_picture = "La imagen no debe exceder 5MB";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -86,11 +121,29 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
       ...prev,
       [name]: name === 'full_name' ? capitalizeWords(value) : value,
     }));
+    // Limpiar el error del campo cuando el usuario comienza a escribir
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: undefined,
+      }));
+    }
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validar el archivo antes de establecerlo
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Por favor selecciona una imagen válida (JPEG, PNG o GIF)");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) { // 5MB
+        toast.error("La imagen no debe exceder 5MB");
+        return;
+      }
+
       const imageUrl = URL.createObjectURL(file);
       setFormData((prev) => ({
         ...prev,
@@ -102,14 +155,18 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      // Mostrar toast con el primer error encontrado
+      const firstError = Object.values(errors)[0];
+      toast.error(firstError);
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
-      console.log("profile data", initialData);
-      console.log("initial data", formData);
-
       const userData = new FormData();
-
-      // Añadir los campos al FormData
-      userData.append("full_name", formData.full_name);
+      userData.append("full_name", formData.full_name.trim());
       userData.append("city_id", formData.city_id);
 
       if (formData.profile_picture instanceof File) {
@@ -118,17 +175,18 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
         userData.append("profile_picture", formData.profile_picture);
       }
 
-      console.log("Ciudad camper", formData.city_id);
-
       const response = await editCamperInfo(id, userData);
 
       if (response) {
-        console.log("respuesta del servidor", response);
+        toast.success("¡Perfil actualizado exitosamente!");
         onUpdate();
         setIsOpen(false);
       }
     } catch (error) {
+      toast.error(error.response?.data?.message || "Error al actualizar el perfil");
       console.error("Error al actualizar el perfil:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -154,24 +212,25 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
               onChange={handleFileChange}
               className="cursor-pointer bg-blue-950/50 border-blue-500/30 text-blue-200 hover:bg-blue-900/30 transition-colors file:bg-blue-950/50 file:align-top file:text-blue-100 file:border-0 file:rounded-lg file:px-4 file:py-0.5file:mr-10  file:hover:bg-yellow-500 file:hover:text-black file:transition-colors file:duration-500"
             />
+            {errors.profile_picture && (
+              <p className="text-red-500 text-sm mt-1">{errors.profile_picture}</p>
+            )}
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1 text-blue-300">Nombre</label>
             <Input
               name="full_name"
-              className="text-gray-900 bg-gray-50"
+              className={`text-gray-900 bg-gray-50 ${errors.full_name ? 'border-red-500' : ''
+                }`}
               value={formData.full_name}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value.length <= 35) {
-                  // Ajusta el número 20 al límite que desees
-                  handleChange(e);
-                }
-              }}
+              onChange={handleChange}
               maxLength={35}
               placeholder="Tu nombre"
             />
+            {errors.full_name && (
+              <p className="text-red-500 text-sm mt-1">{errors.full_name}</p>
+            )}
           </div>
 
           <div>
@@ -180,11 +239,13 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
             </label>
             <Select
               value={formData.city_id}
-              onValueChange={(value) =>
-                setFormData((prev) => ({ ...prev, city_id: value }))
-              }
+              onValueChange={(value) => {
+                setFormData((prev) => ({ ...prev, city_id: value }));
+                setErrors((prev) => ({ ...prev, city_id: undefined }));
+              }}
             >
-              <SelectTrigger className="w-full bg-blue-950/50 border-blue-500/30 text-blue-200 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all">
+              <SelectTrigger className={`w-full bg-blue-950/50 border-blue-500/30 text-blue-200 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all ${errors.city_id ? 'border-red-500' : ''
+                }`}>
                 <SelectValue placeholder="Selecciona una ciudad" />
               </SelectTrigger>
               <SelectContent className="bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-200 z-[9999]">
@@ -203,14 +264,26 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
 
           <div className="flex justify-end space-x-2 pt-4">
             <DialogTrigger asChild>
-              <Button variant="outline" className="text-blue-600 hover:bg-blue-900/30 hover:text-blue-200 transition-all border-blue-500/30">Cancelar</Button>
+              <Button
+                variant="outline"
+                className="text-blue-600 hover:bg-blue-900/30 hover:text-blue-200 transition-all border-blue-500/30"
+                disabled={isSubmitting}
+              >
+                Cancelar
+              </Button>
             </DialogTrigger>
-            <Button type="submit" className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300">Guardar Cambios</Button>
+            <Button
+              type="submit"
+              className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Guardando..." : "Guardar Cambios"}
+            </Button>
           </div>
         </form>
       </DialogContent>
     </Dialog>
-);
+  );
 };
 
 export default ProfileHeaderModal;
