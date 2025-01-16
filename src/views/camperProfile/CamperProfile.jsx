@@ -8,8 +8,8 @@ import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
 import Loader from '@/components/common/Loader';
 import { fetchCamperById } from '../../services/camperService';
 import { fetchTikToksByCamperId } from '@/services/tiktokService';
-import { fetchMeritsByCamperId } from '@/services/meritsService';
-import FloatingActionMenu from '@/components/FloatingMenu/FloatingActionMenu';
+import { fetchMeritsByCamperId } from '@/services/meritsService';   
+import NoRecords from '@/components/common/NoRecords';
 
 // Lazy load components
 const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
@@ -20,7 +20,6 @@ const TrainingProcess = lazy(() => import('../../components/camperProfile/Traini
 const Proyects = lazy(() => import('@/components/camperProfile/Proyects'));
 const SponsorCTA = lazy(() => import('../../components/camperProfile/SponsorCTA'));
 const Footer = lazy(() => import('../../components/footer/Footer'));
-
 
 const CamperProfile = () => {
     const { id } = useParams(); // Obtenemos el id de la URL
@@ -75,6 +74,15 @@ const CamperProfile = () => {
         );
     }
 
+    const renderTrainingProcess = () => {
+        if (!camperTiktoksData || camperTiktoksData.length === 0) {
+            return <NoRecords title='Mi Proceso de Formacion'/>;
+        }
+        return (
+            <TrainingProcess videos={camperTiktoksData} />
+        );
+    };
+
     return (
         <div className={`${styles.camperProfileView} flex flex-col relative`}>
             <LazySection>
@@ -90,20 +98,26 @@ const CamperProfile = () => {
                     </div>
                 </LazySection>
 
-        <LazySection>
-          <AboutMe
-            videoUrl={camperData.main_video_url}
-            about={camperData.about}
-          />
-        </LazySection>
+                <LazySection>
+                    <div id="sobre-mi">
+                        <AboutMe
+                            videoUrl={camperData.main_video_url}
+                            about={camperData.about}
+                        />
+                    </div>
+                </LazySection>
 
-        <LazySection>
-          <Dreams />
-        </LazySection>
+                <LazySection>
+                    <div id="sueños-grid">
+                        <Dreams />
+                    </div>
+                </LazySection>
 
-        <LazySection>
-          <TrainingProcess videos={camperTiktoksData} />
-        </LazySection>
+                <LazySection>
+                    <div id="proceso-formacion">
+                        {renderTrainingProcess()}
+                    </div>
+                </LazySection>
 
                 <LazySection>
                     <div id="projects">
@@ -121,9 +135,6 @@ const CamperProfile = () => {
                 <Footer />
             </LazySection>
             
-            <Suspense fallback={null}>
-                <FloatingActionMenu />
-            </Suspense>
         </div>
     );
 };

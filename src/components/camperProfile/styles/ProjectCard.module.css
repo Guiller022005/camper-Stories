@@ -33,6 +33,7 @@
 }
 
 .projectCardBadge {
+  margin-top: 5px;
   background-color: #211e8b;
   color: #fff;
   padding: 3px 10px;
@@ -45,7 +46,7 @@
 }
 
 .editButton {
-  margin-top: 8px;
+  margin: 8px;
   width: 100%;
   padding: 8px;
   background-color: #211e8b;
@@ -60,52 +61,52 @@
   .projects {
     grid-template-columns: repeat(2, 1fr);
   }
- 
+
   .projectCard {
     flex: 1 1 calc(50% - 24px);
   }
 }
- 
+
 /* Media queries para móviles */
 @media (max-width: 768px) {
   .projects {
     grid-template-columns: 1fr;
     padding: 0 1rem;
   }
- 
+
   .projectCard {
     flex: 1 1 100%;
   }
- 
+
   .projectCardImg {
     height: 160px;
   }
- 
+
   .projectCardMeta {
     padding: 12px;
   }
- 
+
   .projectCardTechs {
     margin-top: 12px;
     gap: 6px;
   }
- 
+
   .projectCardBadge {
     font-size: 0.75rem;
     padding: 2px 8px;
   }
 }
- 
+
 /* Media query para móviles pequeños */
 @media (max-width: 480px) {
   .projectCardImg {
     height: 140px;
   }
- 
+
   .projectCardTitle {
     font-size: 1.1rem;
   }
- 
+
   .projectCardDescription {
     font-size: 0.8rem;
   }

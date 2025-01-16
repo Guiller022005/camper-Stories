@@ -6,8 +6,9 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { getTechnologyForProject } from "../../services/technologiesService";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
+function ProjectCardEdit({ id, title, description, image, code_url, onEdit }) {
   const [projectTechnologies, setProjectTechnologies] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Efecto para cargar las tecnologías específicas de este proyecto
   useEffect(() => {
@@ -15,7 +16,6 @@ function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
       try {
         setLoading(true);
         const response = await getTechnologyForProject(id);
-        console.log(response);
         const techNames = response.technologies.map((tech) => tech.name);
         setProjectTechnologies(techNames);
       } catch (error) {
@@ -28,6 +28,19 @@ function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
 
     loadProjectTechnologies();
   }, [id]);
+
+  const handleEdit = () => {
+    // Crear el objeto con todos los datos del proyecto
+    const projectData = {
+      id,
+      title,
+      description,
+      image,
+      code_url,
+      technologies: projectTechnologies // Usar las tecnologías cargadas
+    };
+    onEdit(projectData);
+  };
 
   return (
     <Card
@@ -46,7 +59,7 @@ function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
         description={description}
         className={styles.projectCardMeta}
       />
-      <div className={styles.projectCardTech}>
+      <div className={styles.projectCardTechs}>
         {projectTechnologies.map((tech, index) => (
           <Tag key={index} className={styles.projectCardBadge}>
             {tech}
@@ -54,20 +67,20 @@ function ProjectCardEdit({ id, title, description, image, codeUrl, onEdit }) {
         ))}
       </div>
 
-        <Button
-          href={codeUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.projectCardButton}
-          icon={<Code className={styles.projectCardIcon} />}
-          block
-        >
-          Ver Código
-        </Button>
+      <Button
+        href={code_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.projectCardButton}
+        icon={<Code />}
+        block
+      >
+        Ver Código
+      </Button>
 
-        <Button onClick={onEdit} className={styles.projectCardButton} block>
-          Editar
-        </Button>
+      <Button onClick={handleEdit} className={styles.projectCardButton} block>
+        Editar
+      </Button>
     </Card>
   );
 }

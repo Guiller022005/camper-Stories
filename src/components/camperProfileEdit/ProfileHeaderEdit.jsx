@@ -7,7 +7,7 @@ import MeritsModal from "../camperProfileEdit/modals/MeritsModal";
 import styles from "./styles/ProfileHeaderEdit.module.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-const ProfileHeaderEdit = ({ data, initialMerits }) => {
+const ProfileHeaderEdit = ({ data, initialMerits, onUpdate }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
@@ -15,7 +15,6 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
     setShowAllBadges((prev) => !prev);
   };
 
-  
 
   return (
     <motion.div
@@ -46,6 +45,8 @@ const ProfileHeaderEdit = ({ data, initialMerits }) => {
                     age: data.age,
                     mainImage: data.profile_picture,
                   }}
+                  onUpdate={onUpdate}
+              
                 />
               </p>
             </h1>

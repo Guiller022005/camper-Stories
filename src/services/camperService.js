@@ -23,6 +23,8 @@ const calculateAge = (birthDate) => {
 const normalizeCalperData = (data) => {
   if (!data) return DEFAULT_CAMPER_DATA;
 
+  console.log("Datos sin normalizar", data);
+
   return {
     profile_picture:
       data.profile_picture || DEFAULT_CAMPER_DATA.profile_picture,
@@ -43,6 +45,7 @@ const normalizeCalperData = (data) => {
 export const fetchCamperById = async (id) => {
   try {
     const response = await axios.get(`${endpoints.campers}/${id}`);
+    console.log("Profile picture: ", response.data);
     const normalizedData = normalizeCalperData(response.data);
     return normalizedData;
   } catch (error) {
@@ -110,53 +113,25 @@ export const fetchAllMerits = async () => {
   }
 };
 
-// Para obtener los campers egresados
-export const fetchCampersEgresados = async () => {
+export const editCamperInfo = async (camper_id, data) => {
   try {
-    const response = await axios.get(endpoints.egresados);
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    console.log("data del usuario a actualizar", data);
+
+    const url = `${endpoints.campers}/${camper_id}`;
+
+    const response = await axios.put(url, data, config);
+
     return response.data;
   } catch (error) {
-    console.error('Error fetching campers:', error);
+    console.error("error al enviar la data del camper", error);
     throw error;
   }
 };
-
-// Para obtener los campers en proceso de formacion
-export const fetchCampersFormacion = async () => {
-  try {
-    const response = await axios.get(endpoints.formados);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching campers:', error);
-    throw error;
-  }
-};
-
-// Para obtener los meritos de un camper
-export const fetchMeritsCamperById = async (id) => {
-  if (!id) {
-    console.error("ID inválido para merits API:", id); // Debug adicional
-    return [];
-  }
-
-  try {
-    const response = await axios.get(endpoints.meritsbyid.replace("{id}", id));
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching merits for camper ${id}:`, error);
-    return [];
-  }
-};
-
-export const fetchAllMerits = async () => {
-  try {
-    const response = await axios.get(endpoints.merits);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching campers:', error);
-    throw error;
-  }
-};
-
-// update Camper Profile
-

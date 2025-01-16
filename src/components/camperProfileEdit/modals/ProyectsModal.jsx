@@ -18,18 +18,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "boxicons";
+import { toast } from 'react-toastify';
 import { useState, useEffect } from "react";
 import AddItemButton from "../ui/AddItemButton";
 
 export function ProyectsModal({ onAddProject, technologies }) {
   // Añadimos validación inicial para technologies
+  const [isOpen, setIsOpen] = useState(false);
   const techArray = Array.isArray(technologies) ? technologies : [];
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     image: null,
-    code_url: "", // Changed from codeUrl to code_url to match API
+    code_url: "",
     technologyIds: [],
   });
 
@@ -94,48 +96,56 @@ export function ProyectsModal({ onAddProject, technologies }) {
     return technology?.name || "Unknown Technology";
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Validate required fields using the correct field name
     if (
       !formData.title.trim() ||
       !formData.description.trim() ||
       !formData.code_url.trim()
     ) {
-      alert("Por favor, completa todos los campos obligatorios.");
+      toast.error("Por favor, completa todos los campos obligatorios.");
       return;
     }
 
-    // Create FormData object
-    const projectData = new FormData();
+    try {
+      // Create FormData object
+      const projectData = new FormData();
+      const camper_id = localStorage.getItem('camper_id');
 
-    // Append all fields in the correct format
-    projectData.append("camper_id", 58);
-    projectData.append("title", formData.title.trim());
-    projectData.append("description", formData.description.trim());
-    projectData.append("code_url", formData.code_url.trim());
+      projectData.append("camper_id", camper_id);
+      projectData.append("title", formData.title.trim());
+      projectData.append("description", formData.description.trim());
+      projectData.append("code_url", formData.code_url.trim());
 
-    // Handle image if it exists
-    if (formData.image instanceof File) {
-      projectData.append("image", formData.image, formData.image.name);
+      if (formData.image instanceof File) {
+        projectData.append("image", formData.image, formData.image.name);
+      }
+
+      projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+
+      // Call the onAddProject function and await its response
+      await onAddProject(projectData);
+
+      // Show success toast
+      toast.success("¡Proyecto agregado exitosamente!");
+
+      // Reset form
+      setFormData({
+        title: "",
+        description: "",
+        image: null,
+        code_url: "",
+        technologyIds: [],
+      });
+
+      // Cerrar el modal
+      setIsOpen(false);
+
+    } catch (error) {
+      // Show error toast if something goes wrong
+      toast.error('Error al guardar el proyecto. Por favor intenta de nuevo.');
+      console.error('Error saving project:', error);
     }
-
-    // Append technology IDs in the format the API expects
-    projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
-
-    // Log the FormData contents for debugging
-    console.log(formData);
-    console.log(projectData);
-    // Send the FormData object instead of the formData state
-    onAddProject(projectData);
-
-    // Reset form with the correct field names
-    setFormData({
-      title: "",
-      description: "",
-      image: null,
-      code_url: "", // Match the field name we're using
-      technologyIds: [],
-    });
   };
 
   return (
@@ -144,44 +154,44 @@ export function ProyectsModal({ onAddProject, technologies }) {
         <div className="w-full h-full">
           <AddItemButton
             type="project"
-            className="w-full h-full bg-indigo-950/30 border-none"
+            className="w-full h-full bg-blue-950/30 hover:bg-blue-900/30 border-blue-500/30 text-blue-200 transition-all"
           />
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-white">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-gray-900">
+          <DialogTitle className="text-2xl font-bold text-blue-100">
             Añadir Proyecto
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
+          <DialogDescription className="text-blue-300">
             Añade tus proyectos aquí y presiona guardar cuando hayas terminado.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4 py-4 px-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="title" className="text-right text-gray-900">
+            <Label htmlFor="title" className="text-right text-blue-300">
               Título
             </Label>
             <Input
               id="title"
               value={formData.title}
               onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right text-gray-900">
+            <Label htmlFor="description" className="text-right text-blue-300">
               Descripción
             </Label>
             <Input
               id="description"
               value={formData.description}
               onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4 cursor-pointer">
-            <Label htmlFor="image" className="text-right text-gray-900">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="image" className="text-right text-blue-300">
               Imagen
             </Label>
             <Input
@@ -189,7 +199,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="col-span-3 text-gray-900 border-gray-300 cursor-pointer"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 cursor-pointer file:bg-blue-950/50 file:text-blue-100 file:border-0 file:rounded-lg file:px-4 file:py-0.5 file:hover:bg-yellow-500 file:hover:text-black file:transition-colors"
             />
           </div>
           {formData.imagePreview && (
@@ -204,30 +214,30 @@ export function ProyectsModal({ onAddProject, technologies }) {
             </div>
           )}
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="codeUrl" className="text-right text-gray-900">
+            <Label htmlFor="codeUrl" className="text-right text-blue-300">
               Link del Proyecto
             </Label>
             <Input
               id="code_url"
               value={formData.code_url}
               onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-900">
+            <label className="text-sm font-medium text-blue-300">
               Tecnologías
             </label>
             <Select onValueChange={(value) => handleSelectTechnology(value)}>
-              <SelectTrigger className="w-full text-gray-900 border-gray-300">
+              <SelectTrigger className="w-full bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all">
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-200">
                 {techArray.map((tech) => (
                   <SelectItem
                     key={tech.id}
                     value={tech.id.toString()}
-                    className="text-gray-900"
+                    className="hover:bg-blue-800/30 focus:bg-blue-800/50 cursor-pointer text-blue-200"
                   >
                     {tech.name}
                   </SelectItem>
@@ -238,11 +248,9 @@ export function ProyectsModal({ onAddProject, technologies }) {
               {formData.technologyIds.map((techId) => (
                 <li
                   key={techId}
-                  className="flex justify-between items-center px-3 py-1 bg-gray-100 rounded-md"
+                  className="flex justify-between items-center px-3 py-1 bg-blue-950/50 border border-blue-500/30 text-blue-200 rounded-md"
                 >
-                  <span className="text-sm text-gray-900">
-                    {getTechnologyName(techId)}
-                  </span>
+                  <span className="text-sm">{getTechnologyName(techId)}</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveTechnology(techId)}
@@ -255,11 +263,11 @@ export function ProyectsModal({ onAddProject, technologies }) {
             </ul>
           </div>
         </div>
-        <DialogFooter className="border-t pt-4">
+        <DialogFooter className="border-t border-blue-500/30 pt-4">
           <Button
             type="submit"
             onClick={handleSubmit}
-            className="bg-blue-600 text-white hover:bg-blue-700"
+            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
           >
             Guardar
           </Button>
@@ -267,4 +275,5 @@ export function ProyectsModal({ onAddProject, technologies }) {
       </DialogContent>
     </Dialog>
   );
+
 }

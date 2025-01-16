@@ -4,6 +4,7 @@ import ProjectCard from "./ProjectCard";
 import { getProjects } from "../../services/proyectsService";
 import { getTechnologyForProject } from "../../services/technologiesService";
 import styles from "./styles/Proyects.module.css";
+import NoRecords from "../common/NoRecords";
 
 const Proyects = () => {
   const [projects, setProjects] = useState([]);
@@ -28,7 +29,7 @@ const Proyects = () => {
 
         // After setting initial projects, fetch technologies for each project
         projectsData.forEach((project) => {
-          fetchTechnologyForProject(project.id);
+          getTechnologyForProject(project.id);
         });
       } catch (err) {
         setError(err.message);
@@ -40,6 +41,33 @@ const Proyects = () => {
 
     fetchProjects();
   }, []);
+
+  // Function to fetch technologies for a specific project
+  const fetchTechnologyForProject = async (projectId) => {
+    try {
+      const technologies = await getTechnologyForProject(projectId);
+
+      // Update the specific project with its technologies
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.id === projectId ? { ...project, technologies } : project
+        )
+      );
+    } catch (err) {
+      console.error(
+        `Error loading technologies for project ${projectId}:`,
+        err
+      );
+    }
+  };
+
+  if (loading) {
+    return null; // O un componente de loading si lo prefieres
+  }
+
+  if (!projects || projects.length === 0) {
+    return <NoRecords title="Mis Proyectos"  />;
+  }
 
   return (
     <section className={styles.tecInfo}>
