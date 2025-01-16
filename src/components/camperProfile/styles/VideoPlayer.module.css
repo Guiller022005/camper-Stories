@@ -1,13 +1,12 @@
-.video-container {
+.videoContainer {
   position: relative;
   width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: 10px;
+  padding-top: 56.25%;
   overflow: hidden;
-  background-color: #000;
+  border-radius: 10px;
 }
 
-.video-iframe {
+.videoIframe {
   position: absolute;
   top: 0;
   left: 0;

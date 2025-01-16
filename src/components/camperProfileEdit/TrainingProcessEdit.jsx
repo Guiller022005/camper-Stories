@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { Dialog } from "@/components/ui/dialog";
-import TikTokEmbedEdit from './TiktokEmbedEdit';
-import TikTokAddModal from './modals/TikTokAddModal';
-import AddItemButton from './ui/AddItemButton';
-import styles from './styles/TrainingProcessEdit.module.css';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Virtual } from 'swiper/modules'; // Cambiamos Lazy por Virtual
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/virtual'; // Cambiamos lazy por virtual
+import TikTokEmbedEdit from "./TiktokEmbedEdit";
+import TikTokAddModal from "./modals/TikTokAddModal";
+import AddItemButton from "./ui/AddItemButton";
+import styles from "./styles/TrainingProcessEdit.module.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Virtual } from "swiper/modules"; // Cambiamos Lazy por Virtual
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/virtual"; // Cambiamos lazy por virtual
 
 const TrainingProcessEdit = ({ videos: initialVideos }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -21,8 +21,8 @@ const TrainingProcessEdit = ({ videos: initialVideos }) => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -35,11 +35,14 @@ const TrainingProcessEdit = ({ videos: initialVideos }) => {
   const handleAddTiktok = async (newTiktokData) => {
     try {
       // La lógica de la petición está en el modal, aquí solo actualizamos el estado
-      setVideos(prevVideos => [...prevVideos, {
-        video_url: newTiktokData.url,
-        title: newTiktokData.title,
-        description: newTiktokData.description
-      }]);
+      setVideos((prevVideos) => [
+        ...prevVideos,
+        {
+          video_url: newTiktokData.url,
+          title: newTiktokData.title,
+          description: newTiktokData.description,
+        },
+      ]);
 
       // Actualizar el Swiper después de añadir el nuevo video
       if (swiperRef.current && swiperRef.current.swiper) {
@@ -50,8 +53,8 @@ const TrainingProcessEdit = ({ videos: initialVideos }) => {
 
       setIsModalOpen(false);
     } catch (error) {
-      toast.error('Error al actualizar la lista de videos');
-      console.error('Error updating videos list:', error);
+      toast.error("Error al actualizar la lista de videos");
+      console.error("Error updating videos list:", error);
     }
   };
 
@@ -64,7 +67,7 @@ const TrainingProcessEdit = ({ videos: initialVideos }) => {
       virtual={{
         enabled: true,
         addSlidesAfter: slidesPerView === 1 ? 1 : 2,
-        addSlidesBefore: slidesPerView === 1 ? 1 : 2
+        addSlidesBefore: slidesPerView === 1 ? 1 : 2,
       }}
       preloadImages={false}
       watchSlidesProgress={true}
@@ -72,24 +75,24 @@ const TrainingProcessEdit = ({ videos: initialVideos }) => {
         clickable: true,
         dynamicBullets: slidesPerView === 1,
       }}
-      className={`${styles.profileSwiper} ${slidesPerView === 1 ? styles.mobileSwiper : ''}`}
+      className={`${styles.profileSwiper} ${
+        slidesPerView === 1 ? styles.mobileSwiper : ""
+      }`}
     >
-      <SwiperSlide className={slidesPerView === 1 ? styles.swiperSlide : styles.videoItem}>
-        <AddItemButton
-          type="tiktok"
-          onClick={() => setIsModalOpen(true)}
-        />
+      <SwiperSlide
+        className={slidesPerView === 1 ? styles.swiperSlide : styles.videoItem}
+      >
+        <AddItemButton type="tiktok" onClick={() => setIsModalOpen(true)} />
       </SwiperSlide>
 
       {videos.map((video, index) => (
         <SwiperSlide
           key={video.id || index}
-          className={slidesPerView === 1 ? styles.swiperSlide : styles.videoItem}
+          className={
+            slidesPerView === 1 ? styles.swiperSlide : styles.videoItem
+          }
         >
-          <TikTokEmbedEdit
-            videoUrl={video.video_url}
-            title={video.title}
-          />
+          <TikTokEmbedEdit videoUrl={video.video_url} title={video.title} />
         </SwiperSlide>
       ))}
     </Swiper>

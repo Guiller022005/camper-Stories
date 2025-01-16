@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import { getDreams } from "../../services/dreamsService";
-import styles from './styles/DreamsGrid.module.css';
+import styles from "./styles/DreamsGrid.module.css";
 import NoRecords from "../common/NoRecords";
 
 const DreamsGrid = () => {
   const [dreams, setDreams] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { id } = useParams(); 
-  
+  const { id } = useParams();
+
   useEffect(() => {
     const fetchDreams = async () => {
       try {
         setIsLoading(true);
         const dreamsData = await getDreams(id);
-        const uniqueDreams = [...new Set(dreamsData.map(dream => dream.id))]
-          .map(id => dreamsData.find(dream => dream.id === id));
+        const uniqueDreams = [
+          ...new Set(dreamsData.map((dream) => dream.id)),
+        ].map((id) => dreamsData.find((dream) => dream.id === id));
         setDreams(uniqueDreams);
       } catch (err) {
         console.error("Error loading dreams: ", err);
@@ -42,13 +43,9 @@ const DreamsGrid = () => {
     <div className={styles.cardArea}>
       <div className={styles.wrapper}>
         <div className={styles.boxArea}>
-          {dreams.map(dream => (
+          {dreams.map((dream) => (
             <div key={dream.id} className={styles.box}>
-              <img 
-                src={dream.image} 
-                alt={dream.title}
-                loading="lazy"
-              />
+              <img src={dream.image_url} alt={dream.title} loading="lazy" />
               <div className={styles.overlay}>
                 <h3>{dream.title}</h3>
                 <p>{dream.description}</p>
