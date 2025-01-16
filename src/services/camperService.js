@@ -26,8 +26,7 @@ const normalizeCalperData = (data) => {
   console.log("Datos sin normalizar", data);
 
   return {
-    profile_picture:
-      data.profile_picture || DEFAULT_CAMPER_DATA.profile_picture,
+    profile_picture: data.profile_picture,
     full_name: data.full_name || DEFAULT_CAMPER_DATA.full_name,
     city: data.name || DEFAULT_CAMPER_DATA.city,
     age: calculateAge(data.birth_date) || DEFAULT_CAMPER_DATA.age,
@@ -47,6 +46,7 @@ export const fetchCamperById = async (id) => {
     const response = await axios.get(`${endpoints.campers}/${id}`);
     console.log("Profile picture: ", response.data);
     const normalizedData = normalizeCalperData(response.data);
+    console.log("Data normalizada", normalizedData);
     return normalizedData;
   } catch (error) {
     console.error(`Error fetching camper with id ${id}:`, error);
@@ -116,6 +116,7 @@ export const fetchAllMerits = async () => {
 export const editCamperInfo = async (camper_id, data) => {
   try {
     const token = localStorage.getItem("token");
+    console.log("data a enviar", data);
 
     const config = {
       headers: {

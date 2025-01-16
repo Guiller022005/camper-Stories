@@ -5,7 +5,6 @@ import styles from "./styles/AboutMeEdit.module.css";
 import AboutMeModal from "./modals/AboutMeModal";
 
 const AboutMeEdit = ({ videoUrl, about, camperInfoInitialData, onUpdate }) => {
-
   return (
     <section className={styles.about}>
       <div className={styles.aboutContent}>
@@ -21,7 +20,6 @@ const AboutMeEdit = ({ videoUrl, about, camperInfoInitialData, onUpdate }) => {
             />
           </h2>
           <p>{about}</p>
-          <button className={styles.btnPatrocinar}>Patrocinar</button>
         </div>
       </div>
     </section>
