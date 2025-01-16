@@ -20,11 +20,19 @@ import { endpoints } from "@/services/apiConfig";
 import { useParams } from "react-router-dom";
 import { editCamperInfo } from "@/services/camperService";
 
+const capitalizeWords = (str) => {
+  if (!str) return '';
+  return str
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 const ProfileHeaderModal = ({ initialData, onUpdate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [ciudadesColombia, setCiudadesColombia] = useState([]);
   const [formData, setFormData] = useState({
-    full_name: initialData.nombre,
+    full_name: capitalizeWords(initialData.nombre),
     city_id: "",
     profile_picture: initialData.profile_picture,
   });
@@ -76,7 +84,7 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'full_name' ? capitalizeWords(value) : value,
     }));
   };
 
