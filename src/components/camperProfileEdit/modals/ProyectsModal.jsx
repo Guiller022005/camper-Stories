@@ -61,12 +61,12 @@ export function ProyectsModal({ onAddProject, technologies }) {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    
-    if (id === 'code_url') {
+
+    if (id === "code_url") {
       const error = validateUrl(value);
       setUrlError(error);
     }
-    
+
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
@@ -97,7 +97,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
 
     setFormData((prev) => {
       const alreadySelected = prev.technologyIds.includes(numericId);
-      
+
       if (alreadySelected) {
         toast.info("Esta tecnología ya está seleccionada");
         return prev;
@@ -185,12 +185,15 @@ export function ProyectsModal({ onAddProject, technologies }) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => {
-      if (!isSubmitting) {
-        setIsOpen(open);
-        if (!open) resetForm();
-      }
-    }}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!isSubmitting) {
+          setIsOpen(open);
+          if (!open) resetForm();
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <div className="w-full h-full">
           <AddItemButton
@@ -200,7 +203,7 @@ export function ProyectsModal({ onAddProject, technologies }) {
           />
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-blue-950/20 [&::-webkit-scrollbar-thumb]:bg-blue-500/50 hover:[&::-webkit-scrollbar-thumb]:bg-blue-400/50 [&::-webkit-scrollbar-thumb]:rounded-full [scrollbar-width:thin] [scrollbar-color:rgba(10,15,42,0.98)_transparent]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-blue-100">
             Añadir Proyecto
@@ -268,12 +271,10 @@ export function ProyectsModal({ onAddProject, technologies }) {
                 onChange={handleChange}
                 placeholder="https://github.com/tu-usuario/tu-proyecto"
                 className={`bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all w-full ${
-                  urlError ? 'border-red-500' : ''
+                  urlError ? "border-red-500" : ""
                 }`}
               />
-              {urlError && (
-                <p className="text-sm text-red-500">{urlError}</p>
-              )}
+              {urlError && <p className="text-sm text-red-500">{urlError}</p>}
             </div>
           </div>
           <div className="space-y-2">

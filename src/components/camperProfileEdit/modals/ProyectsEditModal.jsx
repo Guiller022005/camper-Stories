@@ -110,7 +110,6 @@ export function ProyectsEditModal({
   );
 
   const handleSubmit = () => {
-    // Validaciones
     if (!formData.title.trim()) {
       toast.error("El título es requerido");
       return;
@@ -172,45 +171,45 @@ export function ProyectsEditModal({
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-white">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-[rgba(10,15,42,0.95)] [&::-webkit-scrollbar-thumb]:bg-[rgba(10,15,42,0.98)] hover:[&::-webkit-scrollbar-thumb]:bg-[rgba(10,15,42,0.90)] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border-2 [&::-webkit-scrollbar-thumb]:border-[rgba(59,130,246,0.2)] [scrollbar-width:thin] [scrollbar-color:rgba(10,15,42,0.98)_rgba(10,15,42,0.95)]">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-gray-900">
+          <DialogTitle className="text-2xl font-bold text-blue-100">
             Editar Proyecto
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
+          <DialogDescription className="text-blue-300">
             Modifica los detalles de tu proyecto aquí.
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="title" className="text-right text-gray-900">
+            <Label htmlFor="title" className="text-right text-blue-300">
               Título
             </Label>
             <Input
               id="title"
               value={formData.title}
               onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
               placeholder="Nombre del proyecto"
             />
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right text-gray-900">
+            <Label htmlFor="description" className="text-right text-blue-300">
               Descripción
             </Label>
             <Input
               id="description"
               value={formData.description}
               onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
               placeholder="Describe tu proyecto"
             />
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4 cursor-pointer">
-            <Label htmlFor="image" className="text-right text-gray-900">
+            <Label htmlFor="image" className="text-right text-blue-300">
               Imagen
             </Label>
             <Input
@@ -218,12 +217,12 @@ export function ProyectsEditModal({
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="col-span-3 text-gray-900 border-gray-300 cursor-pointer"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 cursor-pointer file:bg-blue-950/50 file:text-blue-100 file:border-0 file:rounded-lg file:px-4 file:py-0.5 file:hover:bg-yellow-500 file:hover:text-black file:transition-colors"
             />
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="code_url" className="text-right text-gray-900">
+            <Label htmlFor="code_url" className="text-right text-blue-300">
               Link del Proyecto
             </Label>
             <div className="col-span-3 space-y-1">
@@ -231,10 +230,10 @@ export function ProyectsEditModal({
                 id="code_url"
                 value={formData.code_url}
                 onChange={handleChange}
-                className={`text-gray-900 border-gray-300 w-full ${
+                placeholder="https://github.com/tu-usuario/tu-proyecto"
+                className={`bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all w-full ${
                   urlError ? 'border-red-500' : ''
                 }`}
-                placeholder="https://github.com/tu-usuario/tu-proyecto"
               />
               {urlError && (
                 <p className="text-sm text-red-500">{urlError}</p>
@@ -243,19 +242,19 @@ export function ProyectsEditModal({
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-900">
+            <Label className="text-sm font-medium text-blue-300">
               Tecnologías
             </Label>
             <Select onValueChange={handleSelectTechnology}>
-              <SelectTrigger className="w-full text-gray-900 border-gray-300">
+              <SelectTrigger className="w-full bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all">
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-200">
                 {availableTechnologies.map((tech) => (
                   <SelectItem
                     key={tech.id}
                     value={tech.id.toString()}
-                    className="text-gray-900"
+                    className="hover:bg-blue-800/30 focus:bg-blue-800/50 cursor-pointer text-blue-200"
                   >
                     {tech.name}
                   </SelectItem>
@@ -267,11 +266,9 @@ export function ProyectsEditModal({
               {formData.technologyIds.map((techId) => (
                 <li
                   key={techId}
-                  className="flex justify-between items-center px-3 py-1 bg-gray-100 rounded-md"
+                  className="flex justify-between items-center px-3 py-1 bg-blue-950/50 border border-blue-500/30 text-blue-200 rounded-md"
                 >
-                  <span className="text-sm text-gray-900">
-                    {getTechnologyName(techId)}
-                  </span>
+                  <span className="text-sm">{getTechnologyName(techId)}</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveTechnology(techId)}
@@ -285,12 +282,12 @@ export function ProyectsEditModal({
           </div>
         </div>
 
-        <DialogFooter className="border-t pt-4 space-x-2">
+        <DialogFooter className="border-t border-blue-500/30 pt-4 space-x-2">
           <Button
             type="button"
             onClick={onClose}
             variant="outline"
-            className="text-gray-700 hover:text-gray-900 border-gray-300"
+            className="border-blue-500/30 text-blue-200 hover:bg-blue-900/30"
           >
             Cancelar
           </Button>
@@ -298,7 +295,7 @@ export function ProyectsEditModal({
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting || !!urlError}
-            className="bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? "Guardando..." : "Guardar cambios"}
           </Button>
