@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { WindArrowDown } from "lucide-react";
+import { toast } from "react-toastify";
 
 export function ProyectsEditModal({
   project,
@@ -31,13 +31,13 @@ export function ProyectsEditModal({
     description: "",
     image: "",
     code_url: "",
-    technologyIds: [], // Este array ahora vendrá directamente de la API
+    technologyIds: [],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [urlError, setUrlError] = useState("");
 
   useEffect(() => {
     if (project) {
-      // Ahora project.technologyIds ya viene con los IDs correctos
       setFormData({
         project_id: project.id,
         title: project.title || "",
@@ -49,8 +49,22 @@ export function ProyectsEditModal({
     }
   }, [project]);
 
+  const validateUrl = (url) => {
+    if (!url) return "El link del proyecto es requerido";
+    if (!url.match(/^https?:\/\//)) {
+      return "El link debe comenzar con 'http://' o 'https://'";
+    }
+    return "";
+  };
+
   const handleChange = (e) => {
     const { id, value } = e.target;
+    
+    if (id === 'code_url') {
+      const error = validateUrl(value);
+      setUrlError(error);
+    }
+    
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
@@ -67,10 +81,14 @@ export function ProyectsEditModal({
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData((prev) => ({
-        ...prev,
-        image: file,
-      }));
+      if (file.type.startsWith('image/')) {
+        setFormData((prev) => ({
+          ...prev,
+          image: file,
+        }));
+      } else {
+        toast.error("Por favor, selecciona un archivo de imagen válido");
+      }
     }
   };
 
@@ -82,55 +100,79 @@ export function ProyectsEditModal({
     }));
   };
 
-  // Esta función ahora es más simple porque solo necesita buscar el nombre
   const getTechnologyName = (techId) => {
     const tech = technologies.find((t) => t.id === techId);
     return tech ? tech.name : `Technology ${techId}`;
   };
 
-  // Filtramos las tecnologías disponibles basándonos en los IDs
   const availableTechnologies = technologies.filter(
     (tech) => !formData.technologyIds.includes(tech.id)
   );
 
   const handleSubmit = () => {
-    if (!formData.title || !formData.description || !formData.code_url) {
-      alert("Por favor, completa todos los campos requeridos.");
+    // Validaciones
+    if (!formData.title.trim()) {
+      toast.error("El título es requerido");
       return;
     }
-    if (isSubmitting) return;
-
-    setIsSubmitting(true);
-
-    const projectData = new FormData();
-    projectData.append("project_id", formData.id);
-    projectData.append("title", formData.title.trim());
-    projectData.append("description", formData.description.trim());
-    projectData.append("code_url", formData.code_url.trim());
-
-    if (formData.image instanceof File) {
-      projectData.append("image", formData.image);
-    } else if (formData.image) {
-      projectData.append("image", formData.image);
+    if (!formData.description.trim()) {
+      toast.error("La descripción es requerida");
+      return;
+    }
+    if (!formData.code_url.trim()) {
+      toast.error("El link del proyecto es requerido");
+      return;
     }
 
-    // Los IDs de tecnología ahora son simplemente números
-    projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+    const urlError = validateUrl(formData.code_url);
+    if (urlError) {
+      toast.error(urlError);
+      return;
+    }
 
-    onUpdateProject({
-      ...formData,
-      id: project.id,
-    });
+    if (formData.technologyIds.length === 0) {
+      toast.error("Debes seleccionar al menos una tecnología");
+      return;
+    }
 
-    onClose();
-    localStorage.setItem("scrollPosition", window.scrollY);
-    window.location.reload();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    try {
+      const projectData = new FormData();
+      projectData.append("project_id", formData.id);
+      projectData.append("title", formData.title.trim());
+      projectData.append("description", formData.description.trim());
+      projectData.append("code_url", formData.code_url.trim());
+
+      if (formData.image instanceof File) {
+        projectData.append("image", formData.image);
+      } else if (formData.image) {
+        projectData.append("image", formData.image);
+      }
+
+      projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+
+      onUpdateProject({
+        ...formData,
+        id: project.id,
+      });
+
+      toast.success("Proyecto actualizado exitosamente");
+      onClose();
+      localStorage.setItem("scrollPosition", window.scrollY);
+      location.reload()
+    } catch (error) {
+      toast.error("Error al actualizar el proyecto");
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <Dialog open onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] bg-white">
-        {/* El resto del JSX permanece igual */}
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-gray-900">
             Editar Proyecto
@@ -141,7 +183,6 @@ export function ProyectsEditModal({
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
-          {/* Campos básicos */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="title" className="text-right text-gray-900">
               Título
@@ -151,6 +192,7 @@ export function ProyectsEditModal({
               value={formData.title}
               onChange={handleChange}
               className="col-span-3 text-gray-900 border-gray-300"
+              placeholder="Nombre del proyecto"
             />
           </div>
 
@@ -163,6 +205,7 @@ export function ProyectsEditModal({
               value={formData.description}
               onChange={handleChange}
               className="col-span-3 text-gray-900 border-gray-300"
+              placeholder="Describe tu proyecto"
             />
           </div>
 
@@ -183,15 +226,22 @@ export function ProyectsEditModal({
             <Label htmlFor="code_url" className="text-right text-gray-900">
               Link del Proyecto
             </Label>
-            <Input
-              id="code_url"
-              value={formData.code_url}
-              onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
-            />
+            <div className="col-span-3 space-y-1">
+              <Input
+                id="code_url"
+                value={formData.code_url}
+                onChange={handleChange}
+                className={`text-gray-900 border-gray-300 w-full ${
+                  urlError ? 'border-red-500' : ''
+                }`}
+                placeholder="https://github.com/tu-usuario/tu-proyecto"
+              />
+              {urlError && (
+                <p className="text-sm text-red-500">{urlError}</p>
+              )}
+            </div>
           </div>
 
-          {/* Sección de tecnologías */}
           <div className="space-y-2">
             <Label className="text-sm font-medium text-gray-900">
               Tecnologías
@@ -247,8 +297,8 @@ export function ProyectsEditModal({
           <Button
             type="button"
             onClick={handleSubmit}
-            disabled={isSubmitting}
-            className="bg-blue-600 text-white hover:bg-blue-700"
+            disabled={isSubmitting || !!urlError}
+            className="bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
           >
             {isSubmitting ? "Guardando..." : "Guardar cambios"}
           </Button>
