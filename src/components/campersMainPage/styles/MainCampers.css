@@ -385,7 +385,8 @@
   }
 
   .profile-card-signature p {
-    font-size: 2.5rem;
+    font-size: 4rem;
+    margin: 20px 0 25px
   }
 
   .pagination-dot {
