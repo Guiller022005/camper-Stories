@@ -18,13 +18,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "boxicons";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import AddItemButton from "../ui/AddItemButton";
 
 export function ProyectsModal({ onAddProject, technologies }) {
   // Añadimos validación inicial para technologies
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const techArray = Array.isArray(technologies) ? technologies : [];
 
   const [formData, setFormData] = useState({
@@ -107,10 +108,14 @@ export function ProyectsModal({ onAddProject, technologies }) {
       return;
     }
 
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     try {
       // Create FormData object
       const projectData = new FormData();
-      const camper_id = localStorage.getItem('camper_id');
+      const camper_id = localStorage.getItem("camper_id");
 
       projectData.append("camper_id", camper_id);
       projectData.append("title", formData.title.trim());
@@ -121,7 +126,10 @@ export function ProyectsModal({ onAddProject, technologies }) {
         projectData.append("image", formData.image, formData.image.name);
       }
 
-      projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+      projectData.append(
+        "technologyIds",
+        JSON.stringify(formData.technologyIds)
+      );
 
       // Call the onAddProject function and await its response
       await onAddProject(projectData);
@@ -140,21 +148,28 @@ export function ProyectsModal({ onAddProject, technologies }) {
 
       // Cerrar el modal
       setIsOpen(false);
-
     } catch (error) {
       // Show error toast if something goes wrong
-      toast.error('Error al guardar el proyecto. Por favor intenta de nuevo.');
-      console.error('Error saving project:', error);
+      toast.error("Error al guardar el proyecto. Por favor intenta de nuevo.");
+      console.error("Error saving project:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      if (!isSubmitting) {
+        setIsOpen(open);
+        if (!open) resetForm();
+      }
+    }}>
       <DialogTrigger asChild>
         <div className="w-full h-full">
           <AddItemButton
             type="project"
             className="w-full h-full bg-blue-950/30 hover:bg-blue-900/30 border-blue-500/30 text-blue-200 transition-all"
+            disabled={isSubmitting}
           />
         </div>
       </DialogTrigger>
@@ -267,13 +282,13 @@ export function ProyectsModal({ onAddProject, technologies }) {
           <Button
             type="submit"
             onClick={handleSubmit}
+            disabled={isSubmitting}
             className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
           >
-            Guardar
+            {isSubmitting ? "Guardando..." : "Guardar"}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-
 }

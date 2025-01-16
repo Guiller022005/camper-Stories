@@ -34,6 +34,7 @@
 
 .overlay {
   height: 0;
+  z-index: 1;
   width: 100%;
   background: linear-gradient(transparent, #141414c9 58%);
   border-radius: 10px;
@@ -55,7 +56,7 @@
   font-weight: 700;
   margin-bottom: 8px;
   margin-top: 75%;
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", sans-serif;
   font-size: 38px;
   letter-spacing: 2px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -66,10 +67,10 @@
 }
 
 .overlay p {
-  font-family: "Playfair Display", serif;
   font-weight: 400;
   font-size: 18px;
   line-height: 1.6;
+  font-family: "Poppins", sans-serif;
   color: #f0f0f0;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
   transform: translateY(20px);
@@ -90,7 +91,7 @@
 
 .deleteButton {
   position: absolute;
-  z-index: 99999;
+  z-index: 2;
   top: 10px;
   right: 10px;
   font-weight: bolder;

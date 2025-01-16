@@ -33,6 +33,7 @@ export function ProyectsEditModal({
     code_url: "",
     technologyIds: [], // Este array ahora vendrá directamente de la API
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (project) {
@@ -97,6 +98,9 @@ export function ProyectsEditModal({
       alert("Por favor, completa todos los campos requeridos.");
       return;
     }
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
 
     const projectData = new FormData();
     projectData.append("project_id", formData.id);
@@ -243,9 +247,10 @@ export function ProyectsEditModal({
           <Button
             type="button"
             onClick={handleSubmit}
+            disabled={isSubmitting}
             className="bg-blue-600 text-white hover:bg-blue-700"
           >
-            Guardar Cambios
+            {isSubmitting ? "Guardando..." : "Guardar cambios"}
           </Button>
         </DialogFooter>
       </DialogContent>
