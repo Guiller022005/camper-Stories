@@ -6,8 +6,10 @@ import "swiper/css/autoplay";
 import { Pagination, Autoplay } from "swiper/modules";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { useNavigate } from "react-router-dom";
 import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/camperService";
 import styles from "./styles/Campers.module.css";
+import Loader from '@/components/common/Loader';
 
 const Campers = () => {
   const [slidesPerView, setSlidesPerView] = useState(6);
@@ -15,6 +17,7 @@ const Campers = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [meritsData, setMeritsData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -60,7 +63,7 @@ const Campers = () => {
     fetchData();
   }, []);
 
-  if (isLoading) return <div className={styles.loading}>Cargando...</div>;
+  if (isLoading) return <Loader/>;
   if (error) return <div className={styles.error}>{error}</div>;
 
   const getRandomMerit = (camperId) => {
@@ -92,7 +95,7 @@ const Campers = () => {
             const randomMerit = getRandomMerit(camper.camper_id);
             return (
               <SwiperSlide key={`${index}-${camper.full_name}`} className={styles.swiperSlide}>
-                <div className={styles.card}>
+                <div className={styles.card} onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}>
                   <div className={styles.perfil}>
                     <LazyLoadImage
                       src={camper.profile_picture}

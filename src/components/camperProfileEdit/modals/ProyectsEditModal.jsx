@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { WindArrowDown } from "lucide-react";
+import { toast } from "react-toastify";
 
 export function ProyectsEditModal({
   project,
@@ -31,12 +31,13 @@ export function ProyectsEditModal({
     description: "",
     image: "",
     code_url: "",
-    technologyIds: [], // Este array ahora vendrá directamente de la API
+    technologyIds: [],
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [urlError, setUrlError] = useState("");
 
   useEffect(() => {
     if (project) {
-      // Ahora project.technologyIds ya viene con los IDs correctos
       setFormData({
         project_id: project.id,
         title: project.title || "",
@@ -48,8 +49,22 @@ export function ProyectsEditModal({
     }
   }, [project]);
 
+  const validateUrl = (url) => {
+    if (!url) return "El link del proyecto es requerido";
+    if (!url.match(/^https?:\/\//)) {
+      return "El link debe comenzar con 'http://' o 'https://'";
+    }
+    return "";
+  };
+
   const handleChange = (e) => {
     const { id, value } = e.target;
+    
+    if (id === 'code_url') {
+      const error = validateUrl(value);
+      setUrlError(error);
+    }
+    
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
@@ -66,10 +81,14 @@ export function ProyectsEditModal({
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData((prev) => ({
-        ...prev,
-        image: file,
-      }));
+      if (file.type.startsWith('image/')) {
+        setFormData((prev) => ({
+          ...prev,
+          image: file,
+        }));
+      } else {
+        toast.error("Por favor, selecciona un archivo de imagen válido");
+      }
     }
   };
 
@@ -81,89 +100,116 @@ export function ProyectsEditModal({
     }));
   };
 
-  // Esta función ahora es más simple porque solo necesita buscar el nombre
   const getTechnologyName = (techId) => {
     const tech = technologies.find((t) => t.id === techId);
     return tech ? tech.name : `Technology ${techId}`;
   };
 
-  // Filtramos las tecnologías disponibles basándonos en los IDs
   const availableTechnologies = technologies.filter(
     (tech) => !formData.technologyIds.includes(tech.id)
   );
 
   const handleSubmit = () => {
-    if (!formData.title || !formData.description || !formData.code_url) {
-      alert("Por favor, completa todos los campos requeridos.");
+    if (!formData.title.trim()) {
+      toast.error("El título es requerido");
+      return;
+    }
+    if (!formData.description.trim()) {
+      toast.error("La descripción es requerida");
+      return;
+    }
+    if (!formData.code_url.trim()) {
+      toast.error("El link del proyecto es requerido");
       return;
     }
 
-    const projectData = new FormData();
-    projectData.append("project_id", formData.id);
-    projectData.append("title", formData.title.trim());
-    projectData.append("description", formData.description.trim());
-    projectData.append("code_url", formData.code_url.trim());
-
-    if (formData.image instanceof File) {
-      projectData.append("image", formData.image);
-    } else if (formData.image) {
-      projectData.append("image", formData.image);
+    const urlError = validateUrl(formData.code_url);
+    if (urlError) {
+      toast.error(urlError);
+      return;
     }
 
-    // Los IDs de tecnología ahora son simplemente números
-    projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+    if (formData.technologyIds.length === 0) {
+      toast.error("Debes seleccionar al menos una tecnología");
+      return;
+    }
 
-    onUpdateProject({
-      ...formData,
-      id: project.id,
-    });
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
-    onClose();
-    localStorage.setItem("scrollPosition", window.scrollY);
-    window.location.reload();
+    try {
+      const projectData = new FormData();
+      projectData.append("project_id", formData.id);
+      projectData.append("title", formData.title.trim());
+      projectData.append("description", formData.description.trim());
+      projectData.append("code_url", formData.code_url.trim());
+
+      if (formData.image instanceof File) {
+        projectData.append("image", formData.image);
+      } else if (formData.image) {
+        projectData.append("image", formData.image);
+      }
+
+      projectData.append("technologyIds", JSON.stringify(formData.technologyIds));
+
+      onUpdateProject({
+        ...formData,
+        id: project.id,
+      });
+
+      toast.success("Proyecto actualizado exitosamente");
+      onClose();
+      localStorage.setItem("scrollPosition", window.scrollY);
+      location.reload()
+    } catch (error) {
+      toast.error("Error al actualizar el proyecto");
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-white">
-        {/* El resto del JSX permanece igual */}
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-[rgba(10,15,42,0.95)] [&::-webkit-scrollbar-thumb]:bg-[rgba(10,15,42,0.98)] hover:[&::-webkit-scrollbar-thumb]:bg-[rgba(10,15,42,0.90)] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border-2 [&::-webkit-scrollbar-thumb]:border-[rgba(59,130,246,0.2)] [scrollbar-width:thin] [scrollbar-color:rgba(10,15,42,0.98)_rgba(10,15,42,0.95)]">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-gray-900">
+          <DialogTitle className="text-2xl font-bold text-blue-100">
             Editar Proyecto
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
+          <DialogDescription className="text-blue-300">
             Modifica los detalles de tu proyecto aquí.
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
-          {/* Campos básicos */}
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="title" className="text-right text-gray-900">
+            <Label htmlFor="title" className="text-right text-blue-300">
               Título
             </Label>
             <Input
               id="title"
               value={formData.title}
               onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
+              placeholder="Nombre del proyecto"
             />
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right text-gray-900">
+            <Label htmlFor="description" className="text-right text-blue-300">
               Descripción
             </Label>
             <Input
               id="description"
               value={formData.description}
               onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all"
+              placeholder="Describe tu proyecto"
             />
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4 cursor-pointer">
-            <Label htmlFor="image" className="text-right text-gray-900">
+            <Label htmlFor="image" className="text-right text-blue-300">
               Imagen
             </Label>
             <Input
@@ -171,37 +217,44 @@ export function ProyectsEditModal({
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="col-span-3 text-gray-900 border-gray-300 cursor-pointer"
+              className="col-span-3 bg-blue-950/50 border-blue-500/30 text-blue-200 cursor-pointer file:bg-blue-950/50 file:text-blue-100 file:border-0 file:rounded-lg file:px-4 file:py-0.5 file:hover:bg-yellow-500 file:hover:text-black file:transition-colors"
             />
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="code_url" className="text-right text-gray-900">
+            <Label htmlFor="code_url" className="text-right text-blue-300">
               Link del Proyecto
             </Label>
-            <Input
-              id="code_url"
-              value={formData.code_url}
-              onChange={handleChange}
-              className="col-span-3 text-gray-900 border-gray-300"
-            />
+            <div className="col-span-3 space-y-1">
+              <Input
+                id="code_url"
+                value={formData.code_url}
+                onChange={handleChange}
+                placeholder="https://github.com/tu-usuario/tu-proyecto"
+                className={`bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:border-yellow-400/50 focus:ring-yellow-400/20 transition-all w-full ${
+                  urlError ? 'border-red-500' : ''
+                }`}
+              />
+              {urlError && (
+                <p className="text-sm text-red-500">{urlError}</p>
+              )}
+            </div>
           </div>
 
-          {/* Sección de tecnologías */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-900">
+            <Label className="text-sm font-medium text-blue-300">
               Tecnologías
             </Label>
             <Select onValueChange={handleSelectTechnology}>
-              <SelectTrigger className="w-full text-gray-900 border-gray-300">
+              <SelectTrigger className="w-full bg-blue-950/50 border-blue-500/30 text-blue-200 placeholder-blue-400/50 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all">
                 <SelectValue placeholder="Selecciona tecnologías" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-200">
                 {availableTechnologies.map((tech) => (
                   <SelectItem
                     key={tech.id}
                     value={tech.id.toString()}
-                    className="text-gray-900"
+                    className="hover:bg-blue-800/30 focus:bg-blue-800/50 cursor-pointer text-blue-200"
                   >
                     {tech.name}
                   </SelectItem>
@@ -213,11 +266,9 @@ export function ProyectsEditModal({
               {formData.technologyIds.map((techId) => (
                 <li
                   key={techId}
-                  className="flex justify-between items-center px-3 py-1 bg-gray-100 rounded-md"
+                  className="flex justify-between items-center px-3 py-1 bg-blue-950/50 border border-blue-500/30 text-blue-200 rounded-md"
                 >
-                  <span className="text-sm text-gray-900">
-                    {getTechnologyName(techId)}
-                  </span>
+                  <span className="text-sm">{getTechnologyName(techId)}</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveTechnology(techId)}
@@ -231,21 +282,22 @@ export function ProyectsEditModal({
           </div>
         </div>
 
-        <DialogFooter className="border-t pt-4 space-x-2">
+        <DialogFooter className="border-t border-blue-500/30 pt-4 space-x-2">
           <Button
             type="button"
             onClick={onClose}
             variant="outline"
-            className="text-gray-700 hover:text-gray-900 border-gray-300"
+            className="border-blue-500/30 text-blue-200 hover:bg-blue-900/30"
           >
             Cancelar
           </Button>
           <Button
             type="button"
             onClick={handleSubmit}
-            className="bg-blue-600 text-white hover:bg-blue-700"
+            disabled={isSubmitting || !!urlError}
+            className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Guardar Cambios
+            {isSubmitting ? "Guardando..." : "Guardar cambios"}
           </Button>
         </DialogFooter>
       </DialogContent>

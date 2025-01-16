@@ -13,6 +13,7 @@ import {
   getTechnology,
   getTechnologyForProject,
 } from "../../services/technologiesService";
+import { toast } from "react-toastify";
 
 const ProyectsEdit = () => {
   // Estados iniciales con valores por defecto seguros
@@ -131,8 +132,7 @@ const ProyectsEdit = () => {
         setSelectedProject(null);
       }
     } catch (error) {
-      console.error("Error al actualizar proyecto:", error);
-      alert("Error al actualizar el proyecto");
+      toast.error("error al actualizar el proyecto", error);
     } finally {
       setLoading(false);
     }
