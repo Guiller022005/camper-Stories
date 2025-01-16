@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import useScrollDirection from '../../hooks/useScrollDirection'; // Importa el hook
 import './styles/NavbarProfile.css';
 import campusLogo from '../../assets/campus.svg';
 import campusLogoCompleto from '../../assets/CampusLogo.png';
@@ -9,22 +10,23 @@ const NavbarProfile = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const { isInCampersSection } = useScrollDirection(); // Hook personalizado
+
   const handleSponsorClick = () => {
-    if (location.pathname === '/') {
-      // Si ya estás en la página de inicio, realiza el desplazamiento
+    const scrollToSponsor = () => {
       const section = document.getElementById('sponsro');
       if (section) {
         section.scrollIntoView({ behavior: 'smooth' });
       }
+    };
+
+    if (location.pathname === '/') {
+      // Si ya estamos en la página principal
+      scrollToSponsor();
     } else {
-      // Si no estás en la página de inicio, navega y luego desplázate
+      // Navegar primero y luego desplazarse
       navigate('/');
-      setTimeout(() => {
-        const section = document.getElementById('sponsro');
-        if (section) {
-          section.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 500); // Tiempo para asegurar que la página cargue
+      setTimeout(scrollToSponsor, 500); // Tiempo para que la página cargue
     }
   };
 
@@ -57,9 +59,9 @@ const NavbarProfile = () => {
         <button onClick={handleSponsorClick} className="nav-link">
           Patrocinar
         </button>
-        <a 
-          href="https://wa.me/+573123456789?text=Hola,%20me%20interesa%20obtener%20más%20información" 
-          target="_blank" 
+        <a
+          href="https://wa.me/+573123456789?text=Hola,%20me%20interesa%20obtener%20más%20información"
+          target="_blank"
           rel="noopener noreferrer"
           className="nav-link"
         >
@@ -74,8 +76,8 @@ const NavbarProfile = () => {
       <Link to="/" className="logo-link">
         <img src={campusLogoCompleto} alt="Campus Logo" className="mobile-logo-profile" />
       </Link>
-      <button 
-        className={`hamburger-menu-profile ${isMenuOpen ? 'is-active' : ''}`} 
+      <button
+        className={`hamburger-menu-profile ${isMenuOpen ? 'is-active' : ''}`}
         onClick={toggleMenu}
       >
         <span className="hamburger-icon-profile"></span>
@@ -98,7 +100,7 @@ const NavbarProfile = () => {
             <button onClick={handleSponsorClick} className="nav-link">
               Patrocinar
             </button>
-            <a 
+            <a
               href="https://wa.me/+573123456789?text=Hola,%20me%20interesa%20obtener%20más%20información"
               className="nav-link"
             >
