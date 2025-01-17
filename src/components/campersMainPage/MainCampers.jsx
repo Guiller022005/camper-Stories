@@ -62,45 +62,43 @@ const MainCampers = () => {
   }, [currentIndex, campers]);
 
   const badges = [
-    { text: "Nuevos horizontes", icon: <Rocket className="w-5 h-5" /> },
-    { text: "Primer programador", icon: <Code className="w-5 h-5" /> },
-    { text: "Gran jefe", icon: <Trophy className="w-5 h-5" /> },
-    { text: "Emprendedor", icon: <GraduationCap className="w-5 h-5" /> }
+    { text: "Nuevos horizontes", icon: <Rocket className="w-4 h-4 md:w-5 md:h-5" /> },
+    { text: "Primer programador", icon: <Code className="w-4 h-4 md:w-5 md:h-5" /> },
+    { text: "Gran jefe", icon: <Trophy className="w-4 h-4 md:w-5 md:h-5" /> },
+    { text: "Emprendedor", icon: <GraduationCap className="w-4 h-4 md:w-5 md:h-5" /> }
   ];
 
   return (
-    <div className="bg-[#131341] relative overflow-hidden flex flex-col items-center justify-center h-[90vh]">
+    <div className="bg-[#131341] relative overflow-hidden flex flex-col items-center justify-center min-h-[90vh] py-8 px-4">
       {/* Animated Background Gradient */}
-      <motion.div 
-        className="absolute inset-0 opacity-30"
-      />
+      <motion.div className="absolute inset-0 opacity-30" />
 
-      {/* Large Decorative Circles */}
-      <div className="absolute top-1/4 -left-64 w-128 h-128 bg-[#6366F1]/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 -right-64 w-128 h-128 bg-[#66E7F3]/10 rounded-full blur-3xl" />
+      {/* Large Decorative Circles - adjusted for responsive */}
+      <div className="absolute top-1/4 -left-32 md:-left-64 w-64 md:w-128 h-64 md:h-128 bg-[#6366F1]/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 -right-32 md:-right-64 w-64 md:w-128 h-64 md:h-128 bg-[#66E7F3]/10 rounded-full blur-3xl" />
 
       <div className="container mx-auto px-4 relative z-10">
         <AnimatePresence mode="wait">
           {campers.length > 0 && currentIndex < campers.length ? (
             <motion.div
-              key={campers[currentIndex].camper_id} // Clave única para animación al cambiar página
-              initial={{ opacity: 0, x: 100 }} // Posición inicial
-              animate={{ opacity: 1, x: 0 }} // Animación de entrada
-              exit={{ opacity: 0, x: -100 }} // Animación de salida
-              transition={{ duration: 0.6, ease: "easeInOut" }} // Duración y suavidad
-              className="grid lg:grid-cols-2 gap-16 items-center"
+              key={campers[currentIndex].camper_id}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="grid lg:grid-cols-2 gap-8 md:gap-16 items-center"
             >
-              {/* Columna de información */}
+              {/* Información Column */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="space-y-7"
+                className="space-y-4 md:space-y-7 order-2 lg:order-1"
               >
-                <div className="space-y-6">
+                <div className="space-y-4 md:space-y-6">
                   <motion.h1
-                    className="text-7xl font-bold leading-tight"
+                    className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
@@ -112,7 +110,7 @@ const MainCampers = () => {
                   </motion.h1>
 
                   <motion.div
-                    className="flex flex-wrap gap-4"
+                    className="flex flex-wrap gap-2 md:gap-4"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
@@ -121,16 +119,17 @@ const MainCampers = () => {
                     {badges.map(({ text, icon }) => (
                       <div
                         key={text}
-                        className="bg-white/10 hover:bg-white/20 text-white px-5 py-3 text-base flex items-center gap-3 backdrop-blur-sm transition-all hover:scale-105 rounded-full"
+                        className="bg-white/10 hover:bg-white/20 text-white px-3 md:px-5 py-2 md:py-3 text-sm md:text-base flex items-center gap-2 md:gap-3 backdrop-blur-sm transition-all hover:scale-105 rounded-full"
                       >
                         {icon}
-                        {text}
+                        <span className="hidden sm:inline">{text}</span>
                       </div>
                     ))}
                   </motion.div>
                 </div>
+                
                 <motion.p
-                  className="text-white/90 text-2xl leading-relaxed max-w-2xl"
+                  className="text-white/90 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-2xl"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -140,7 +139,7 @@ const MainCampers = () => {
                 </motion.p>
 
                 <motion.div 
-                  className="font-firma text-[#66E7F3] text-6xl italic"
+                  className="font-firma text-[#66E7F3] text-3xl md:text-5xl lg:text-6xl italic"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
@@ -150,7 +149,7 @@ const MainCampers = () => {
 
                 <motion.button
                   onClick={() => navigate(`/campers/profile/${campers[currentIndex].camper_id}`)}
-                  className="bg-[#6366F1] hover:bg-[#6366F1]/90 text-white px-5 py-4 text-xl mt-10 rounded-2xl
+                  className="w-full sm:w-auto bg-[#6366F1] hover:bg-[#6366F1]/90 text-white px-4 md:px-5 py-3 md:py-4 text-lg md:text-xl mt-6 md:mt-10 rounded-xl md:rounded-2xl
                             relative group overflow-hidden transition-all hover:shadow-lg hover:shadow-[#6366F1]/50"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -162,16 +161,16 @@ const MainCampers = () => {
                 </motion.button>
               </motion.div>
 
-              {/* Columna de video */}
+              {/* Video Column */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.6 }}
-                className="relative"
+                className="relative order-1 lg:order-2"
               >
-                <div className="relative overflow-hidden rounded-3xl">
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#66E7F3]/20 to-purple-500/20 rounded-3xl" />
+                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#66E7F3]/20 to-purple-500/20 rounded-2xl md:rounded-3xl" />
                   <motion.div
                     className="relative"
                     whileHover={{ scale: 1.03 }}
@@ -180,16 +179,15 @@ const MainCampers = () => {
                     <VideoPlayer
                       videoUrl={campers[currentIndex].main_video_url || "https://www.youtube.com/embed/OKMsheDmK8Q"}
                       title="Historia Camper"
-                      className="w-full rounded-3xl"
+                      className="w-full rounded-2xl md:rounded-3xl"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#18174f94] via-transparent to-transparent" />
                   </motion.div>
                 </div>
-                {/* Decorative elements */}
 
-                <div className="absolute -top-10 -left-10 w-20 h-20 bg-[#66E7F3]/30 rounded-full blur-xl" />
-
-                <div className="absolute -bottom-5 -right-5 w-16 h-16 bg-[#6366F1]/30 rounded-full blur-xl" />
+                {/* Decorative elements - adjusted sizes for mobile */}
+                <div className="absolute -top-5 md:-top-10 -left-5 md:-left-10 w-12 md:w-20 h-12 md:h-20 bg-[#66E7F3]/30 rounded-full blur-xl" />
+                <div className="absolute -bottom-3 md:-bottom-5 -right-3 md:-right-5 w-10 md:w-16 h-10 md:h-16 bg-[#6366F1]/30 rounded-full blur-xl" />
               </motion.div>
             </motion.div>
           ) : (
@@ -199,7 +197,7 @@ const MainCampers = () => {
 
         {/* Interactive Navigation Dots */}
         <motion.div 
-          className="flex justify-center gap-4 mt-24"
+          className="flex justify-center gap-2 md:gap-4 mt-12 md:mt-24"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.2 }}
@@ -209,7 +207,9 @@ const MainCampers = () => {
               key={i}
               onClick={() => setCurrentIndex(i)}
               className={`rounded-full transition-all duration-300 ${
-                i === currentIndex ? "bg-[#66E7F3] w-16 h-4" : "bg-white/20 hover:bg-white/40 w-4 h-4"
+                i === currentIndex 
+                  ? "bg-[#66E7F3] w-12 md:w-16 h-3 md:h-4" 
+                  : "bg-white/20 hover:bg-white/40 w-3 md:w-4 h-3 md:h-4"
               }`}
               whileHover={{ scale: 1.2 }}
               aria-label={`Go to slide ${i + 1}`}
