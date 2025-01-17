@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import useScrollDirection from '../../hooks/useScrollDirection'; // Importa el hook
 import './styles/NavbarProfile.css';
 import campusLogo from '../../assets/campus.svg';
 import campusLogoCompleto from '../../assets/CampusLogo.png';
@@ -8,55 +9,41 @@ const NavbarProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  
-  const whatsappUrl = "https://wa.me/+573123456789?text=Hola,%20me%20interesa%20obtener%20más%20información";
 
-  useEffect(() => {
-    setIsEditMode(location.pathname.includes('/edit'));
-  }, [location]);
+  const { isInCampersSection } = useScrollDirection(); // Hook personalizado
+
+  const handleSponsorClick = () => {
+    const scrollToSponsor = () => {
+      const section = document.getElementById('sponsro');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+    if (location.pathname === '/') {
+      // Si ya estamos en la página principal
+      scrollToSponsor();
+    } else {
+      // Navegar primero y luego desplazarse
+      navigate('/');
+      setTimeout(scrollToSponsor, 500); // Tiempo para que la página cargue
+    }
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleNavigateAndScroll = (sectionId) => {
-    // Extraer la ruta base actual (sin el hash)
-    const currentPath = location.pathname;
-    const baseUrl = isEditMode ? currentPath : currentPath.replace('/edit', '');
-    
-    // Si ya estamos en la página correcta, solo hacemos scroll
-    if ((isEditMode && currentPath.includes('/edit')) || (!isEditMode && !currentPath.includes('/edit'))) {
-      const targetElement = document.getElementById(sectionId + (isEditMode ? '-edit' : ''));
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      // Si necesitamos cambiar de página, primero navegamos y luego hacemos scroll
-      const newPath = `${baseUrl}${sectionId}`;
-      navigate(newPath);
-      // Esperamos a que la navegación se complete antes de hacer scroll
-      setTimeout(() => {
-        const targetElement = document.getElementById(sectionId + (isEditMode ? '-edit' : ''));
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    }
-    
-    setIsMenuOpen(false);
-  };
-
   const DesktopNav = () => (
     <div className="desktop-nav-profile">
       <div className="nav-links-profile left-group-profile">
-        <button onClick={() => handleNavigateAndScroll('sobre-mi')} className="nav-link">
+        <button onClick={() => navigate('/sobre-mi')} className="nav-link">
           Sobre mi
         </button>
-        <button onClick={() => handleNavigateAndScroll('proceso-formacion')} className="nav-link">
+        <button onClick={() => navigate('/proceso-formacion')} className="nav-link">
           Proceso
         </button>
-        <button onClick={() => handleNavigateAndScroll('sueños-grid')} className="nav-link">
+        <button onClick={() => navigate('/sueños-grid')} className="nav-link">
           Sueños
         </button>
       </div>
@@ -66,15 +53,15 @@ const NavbarProfile = () => {
         </Link>
       </div>
       <div className="nav-links-profile right-group-profile">
-        <button onClick={() => handleNavigateAndScroll('projects')} className="nav-link">
+        <button onClick={() => navigate('/projects')} className="nav-link">
           Proyectos
         </button>
-        <button onClick={() => handleNavigateAndScroll('patrocinar')} className="nav-link">
+        <button onClick={handleSponsorClick} className="nav-link">
           Patrocinar
         </button>
-        <a 
-          href={whatsappUrl} 
-          target="_blank" 
+        <a
+          href="https://wa.me/+573123456789?text=Hola,%20me%20interesa%20obtener%20más%20información"
+          target="_blank"
           rel="noopener noreferrer"
           className="nav-link"
         >
@@ -89,8 +76,8 @@ const NavbarProfile = () => {
       <Link to="/" className="logo-link">
         <img src={campusLogoCompleto} alt="Campus Logo" className="mobile-logo-profile" />
       </Link>
-      <button 
-        className={`hamburger-menu-profile ${isMenuOpen ? 'is-active' : ''}`} 
+      <button
+        className={`hamburger-menu-profile ${isMenuOpen ? 'is-active' : ''}`}
         onClick={toggleMenu}
       >
         <span className="hamburger-icon-profile"></span>
@@ -98,23 +85,23 @@ const NavbarProfile = () => {
       {isMenuOpen && (
         <div className="mobile-menu-profile">
           <div className="mobile-links-profile">
-            <button onClick={() => handleNavigateAndScroll('sobre-mi')} className="nav-link">
+            <button onClick={() => navigate('/sobre-mi')} className="nav-link">
               Sobre mi
             </button>
-            <button onClick={() => handleNavigateAndScroll('proceso-formacion')} className="nav-link">
+            <button onClick={() => navigate('/proceso-formacion')} className="nav-link">
               Proceso
             </button>
-            <button onClick={() => handleNavigateAndScroll('sueños-grid')} className="nav-link">
+            <button onClick={() => navigate('/sueños-grid')} className="nav-link">
               Sueños
             </button>
-            <button onClick={() => handleNavigateAndScroll('projects')} className="nav-link">
+            <button onClick={() => navigate('/projects')} className="nav-link">
               Proyectos
             </button>
-            <button onClick={() => handleNavigateAndScroll('patrocinar')} className="nav-link">
+            <button onClick={handleSponsorClick} className="nav-link">
               Patrocinar
             </button>
-            <a 
-              href={whatsappUrl}
+            <a
+              href="https://wa.me/+573123456789?text=Hola,%20me%20interesa%20obtener%20más%20información"
               className="nav-link"
             >
               Contactanos
@@ -124,7 +111,6 @@ const NavbarProfile = () => {
       )}
     </div>
   );
-  
 
   return (
     <nav className={`navbar-profile ${isMenuOpen ? 'menu-open' : ''}`}>

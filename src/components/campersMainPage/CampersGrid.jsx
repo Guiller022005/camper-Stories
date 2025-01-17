@@ -27,6 +27,27 @@ const CampersGrid = () => {
     const mobileVisibleSkillsCount = 4;
     const desktopVisibleSkillsCount = predefinedSkills.length;
 
+    const handleSponsorClick = () => {
+        if (location.pathname === '/') {
+          // Si ya estás en la página de inicio, realiza el desplazamiento
+          const section = document.getElementById('sponsro');
+          if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else {
+          // Si no estás en la página de inicio, navega y luego desplázate
+          navigate('/');
+          setTimeout(() => {
+            const section = document.getElementById('sponsro');
+            if (section) {
+              section.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 500); // Tiempo para asegurar que la página cargue
+        }
+      };
+    
+    
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -220,7 +241,12 @@ const CampersGrid = () => {
                                         >
                                             Mas Info
                                         </button>
-                                        <button className="sponsor-button">Patrocinar</button>
+                                        <button
+                                            className="sponsor-button"
+                                            onClick={handleSponsorClick}
+                                        >
+                                            Patrocinar
+                                        </button>
                                     </div>
                                 </div>
                             </div>

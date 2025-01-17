@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import "swiper/css";
 import "swiper/css/pagination";
 import "./styles/MainCampers.css";
-import VideoPlayer from "../../components/camperProfile/VIdeoPlayer";
+import VideoPlayer from "../../components/camperProfile/VIdeoPlayer"; // Arreglo ruta
 import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/camperService";
 
 const MainCampers = () => {

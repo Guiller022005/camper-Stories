@@ -13,7 +13,7 @@ const FormSection = () => {
                 <div className="form-container">
                     <DonationForm />
                 </div>
-                <div className="bot-text">
+                <div id="sponsro"  className="bot-text">
                     <p>Tu donación nos permite seguir <span>transformando vidas</span> y fortaleciendo el talento en tecnología.</p>
                     <p>Por cada aporte recibirás un certificado de donación.  <span>¡Gracias por contribuir a un futuro más prometedor!</span></p>
                 </div>
