@@ -204,7 +204,7 @@
    overflow-y: hidden;
  }
 
- span {
+ .viewMore {
    color: var(--color2);
  }
  

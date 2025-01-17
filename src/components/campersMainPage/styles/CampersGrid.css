@@ -384,12 +384,14 @@ button {
   .developer-card {
     width: 90%;
     min-height: 159px;
+    max-width: 500px;
     height: auto;
     margin: 0.5rem 0;
   }
 
   .dev-card-content {
     justify-content: center;
+    width: auto;
   }
 
   .technologies {
@@ -419,6 +421,16 @@ button {
   .camper-title,
   .technologies p {
     font-size: 14px;
+  }
+
+  .camper-image {
+    width: 128px;
+    height: 230px;
+  }
+
+  .camper-image img {
+    width: 128px;
+    height: 120px;
   }
 }
 
