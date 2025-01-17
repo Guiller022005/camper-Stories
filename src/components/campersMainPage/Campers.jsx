@@ -63,7 +63,7 @@ const Campers = () => {
     fetchData();
   }, []);
 
-  if (isLoading) return <Loader/>;
+  if (isLoading) return <Loader />;
   if (error) return <div className={styles.error}>{error}</div>;
 
   const getRandomMerit = (camperId) => {
@@ -106,7 +106,6 @@ const Campers = () => {
                   </div>
                   <div className={styles.cardContent}>
                     <h3>{camper.full_name}</h3>
-                    <p>{camper.about}</p>
                     {randomMerit ? (
                       <div className={styles.merit}>
                         <h4>
@@ -118,6 +117,7 @@ const Campers = () => {
                     ) : (
                       <p>Merito no Disponible.</p>
                     )}
+                    <p>{camper.about}</p>
                   </div>
                 </div>
               </SwiperSlide>
