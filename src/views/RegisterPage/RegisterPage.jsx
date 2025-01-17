@@ -245,7 +245,7 @@ export default function RegisterForm() {
                     id="documento"
                     name="documento"
                     required
-                    placeholder="Tu número"
+                    placeholder="Número de documento"
                     className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
                              focus:ring-2 focus:ring-[#7c3aed] border-none"
                   />

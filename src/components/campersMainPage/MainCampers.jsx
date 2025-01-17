@@ -1,25 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
-import "swiper/css";
-import "swiper/css/pagination";
-import "./styles/MainCampers.css";
-import VideoPlayer from "../../components/camperProfile/VIdeoPlayer"; // Arreglo ruta
+import { useNavigate } from "react-router-dom";
+import VideoPlayer from "../../components/camperProfile/VIdeoPlayer";
 import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/camperService";
+import { GraduationCap, Code, Rocket, Trophy } from 'lucide-react';
 
 const MainCampers = () => {
-  const [campers, setCampers] = useState([]); // Estado para los campers
-  const [currentIndex, setCurrentIndex] = useState(0); // Índice del camper actual
-  const [currentMerits, setCurrentMerits] = useState([]); // Méritos del camper actual
-  const [loadingMerits, setLoadingMerits] = useState(false); // Indicador de carga para los méritos
-  const navigate = useNavigate(); // Obtén la función navigate
+  const [campers, setCampers] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentMerits, setCurrentMerits] = useState([]);
+  const [loadingMerits, setLoadingMerits] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const navigate = useNavigate();
 
-  // Cargar los datos de los campers
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const campersData = await fetchCampersEgresados();
-        setCampers(campersData.slice(0, 5)); // Limitar a los primeros 5 campers
+        setCampers(campersData.slice(0, 5));
       } catch (error) {
         console.error("Error fetching campers:", error);
       }
@@ -27,7 +34,6 @@ const MainCampers = () => {
     fetchData();
   }, []);
 
-  // Cargar los méritos del camper actual cuando cambie `currentIndex`
   useEffect(() => {
     const fetchMerits = async () => {
       if (campers.length > 0) {
@@ -55,97 +61,161 @@ const MainCampers = () => {
     fetchMerits();
   }, [currentIndex, campers]);
 
-  // Renderizar el contenido del camper actual
-  const renderContent = (profile) => (
-    <div className="profile-content-wrapper">
-      <motion.div
-        className="camper-img-frame"
-        initial={{ rotate: 15, opacity: 0 }}
-        animate={{ rotate: 0, opacity: 1 }}
-        exit={{ rotate: -10, opacity: 0 }}
-        transition={{ duration: 1.2, ease: "easeInOut" }}
-      >
-        <VideoPlayer
-          videoUrl={profile.main_video_url || "https://www.youtube.com/embed/OKMsheDmK8Q"}
-          title="Historia Camper"
-        />
-      </motion.div>
-      <motion.div
-        className="profile-card-content"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -50 }}
-        transition={{ duration: 1.2, ease: "easeInOut" }}
-      >
-        <h2>{profile.full_name || "Sin nombre"}</h2>
-        <div className="merits-container wrapper">
-        {loadingMerits ? (
-          <p>Cargando méritos...</p>
-        ) : currentMerits.length > 0 ? (
-          currentMerits.slice(0, 4).map((merit, index) => (
-            <div className="merit-item icon badgeInfo" key={index}>
-              <div className="tooltip">{merit.description}</div>
-              {/* Mostrar el nombre del mérito */}
-              <span className="merit-name">{merit.name}</span>
-              {/* Mostrar el icono si está disponible */}
-              {merit.icon ? (
-                <span className="merit-icon">{merit.icon}</span>
-              ) : (
-                <span className="default-icon">🏅</span>
-              )}
-            </div>
-          ))
-        ) : (
-          <p>No hay méritos disponibles.</p>
-        )}
-      </div>
-
-        <p>{profile.about || "Sin descripción"}</p>
-        <div className="profile-card-signature">
-          <p>{profile.full_name || "Sin nombre"}</p>
-        </div>
-        <button 
-          className="profile-card-button" 
-          onClick={() => navigate(`/campers/profile/${profile.camper_id}`)}
-        >
-          Más Información
-        </button>
-      </motion.div>
-    </div>
-  );
-
-  // Renderizar la paginación
-  const renderPagination = () => (
-    <div className="custom-pagination">
-      {campers.map((_, index) => (
-        <button
-          key={index}
-          className={`pagination-dot ${index === currentIndex ? "active" : ""}`}
-          onClick={() => setCurrentIndex(index)}
-        />
-      ))}
-    </div>
-  );
+  const badges = [
+    { text: "Nuevos horizontes", icon: <Rocket className="w-5 h-5" /> },
+    { text: "Primer programador", icon: <Code className="w-5 h-5" /> },
+    { text: "Gran jefe", icon: <Trophy className="w-5 h-5" /> },
+    { text: "Emprendedor", icon: <GraduationCap className="w-5 h-5" /> }
+  ];
 
   return (
-    <div className="developer-profiles">
-      <div className="profile-card">
+    <div className="bg-[#131341] relative overflow-hidden flex flex-col items-center justify-center h-[90vh]">
+      {/* Animated Background Gradient */}
+      <motion.div 
+        className="absolute inset-0 opacity-30"
+      />
+
+      {/* Large Decorative Circles */}
+      <div className="absolute top-1/4 -left-64 w-128 h-128 bg-[#6366F1]/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 -right-64 w-128 h-128 bg-[#66E7F3]/10 rounded-full blur-3xl" />
+
+      <div className="container mx-auto px-4 relative z-10">
         <AnimatePresence mode="wait">
           {campers.length > 0 && currentIndex < campers.length ? (
             <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 1.2, ease: "easeInOut" }}
+              key={campers[currentIndex].camper_id} // Clave única para animación al cambiar página
+              initial={{ opacity: 0, x: 100 }} // Posición inicial
+              animate={{ opacity: 1, x: 0 }} // Animación de entrada
+              exit={{ opacity: 0, x: -100 }} // Animación de salida
+              transition={{ duration: 0.6, ease: "easeInOut" }} // Duración y suavidad
+              className="grid lg:grid-cols-2 gap-16 items-center"
             >
-              {renderContent(campers[currentIndex])}
+              {/* Columna de información */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="space-y-7"
+              >
+                <div className="space-y-6">
+                  <motion.h1
+                    className="text-7xl font-bold leading-tight"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <span className="bg-gradient-to-r from-[#66E7F3] via-blue-400 to-[#6366F1] text-transparent bg-clip-text">
+                      {campers[currentIndex].full_name}
+                    </span>
+                  </motion.h1>
+
+                  <motion.div
+                    className="flex flex-wrap gap-4"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    {badges.map(({ text, icon }) => (
+                      <div
+                        key={text}
+                        className="bg-white/10 hover:bg-white/20 text-white px-5 py-3 text-base flex items-center gap-3 backdrop-blur-sm transition-all hover:scale-105 rounded-full"
+                      >
+                        {icon}
+                        {text}
+                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+                <motion.p
+                  className="text-white/90 text-2xl leading-relaxed max-w-2xl"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  {campers[currentIndex].about}
+                </motion.p>
+
+                <motion.div 
+                  className="font-firma text-[#66E7F3] text-6xl italic"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  {campers[currentIndex].full_name}
+                </motion.div>
+
+                <motion.button
+                  onClick={() => navigate(`/campers/profile/${campers[currentIndex].camper_id}`)}
+                  className="bg-[#6366F1] hover:bg-[#6366F1]/90 text-white px-5 py-4 text-xl mt-10 rounded-2xl
+                            relative group overflow-hidden transition-all hover:shadow-lg hover:shadow-[#6366F1]/50"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1 }}
+                >
+                  <span className="relative z-10">Más Información</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#66E7F3] to-[#6366F1] opacity-0 
+                                group-hover:opacity-100 transition-opacity" />
+                </motion.button>
+              </motion.div>
+
+              {/* Columna de video */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.6 }}
+                className="relative"
+              >
+                <div className="relative overflow-hidden rounded-3xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#66E7F3]/20 to-purple-500/20 rounded-3xl" />
+                  <motion.div
+                    className="relative"
+                    whileHover={{ scale: 1.03 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <VideoPlayer
+                      videoUrl={campers[currentIndex].main_video_url || "https://www.youtube.com/embed/OKMsheDmK8Q"}
+                      title="Historia Camper"
+                      className="w-full rounded-3xl"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#18174f94] via-transparent to-transparent" />
+                  </motion.div>
+                </div>
+                {/* Decorative elements */}
+
+                <div className="absolute -top-10 -left-10 w-20 h-20 bg-[#66E7F3]/30 rounded-full blur-xl" />
+
+                <div className="absolute -bottom-5 -right-5 w-16 h-16 bg-[#6366F1]/30 rounded-full blur-xl" />
+              </motion.div>
             </motion.div>
           ) : (
-            <div>No hay información disponible.</div>
+            <div className="text-white text-center">No hay información disponible.</div>
           )}
         </AnimatePresence>
-        {renderPagination()}
+
+        {/* Interactive Navigation Dots */}
+        <motion.div 
+          className="flex justify-center gap-4 mt-24"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 1.2 }}
+        >
+          {campers.map((_, i) => (
+            <motion.button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`rounded-full transition-all duration-300 ${
+                i === currentIndex ? "bg-[#66E7F3] w-16 h-4" : "bg-white/20 hover:bg-white/40 w-4 h-4"
+              }`}
+              whileHover={{ scale: 1.2 }}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </motion.div>
       </div>
     </div>
   );

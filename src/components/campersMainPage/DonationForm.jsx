@@ -98,7 +98,7 @@ export default function DonationForm() {
                     </div>
                 </div>
 
-                <div className="donation-form-row">
+                {/* <div className="donation-form-row">
                     <div className="donation-form-group">
                         <label className="donation-form-label">
                             Tipo de Documento <span className="donation-required">*</span>
@@ -131,7 +131,7 @@ export default function DonationForm() {
                             required
                         />
                     </div>
-                </div>
+                </div> */}
 
                 <div className="donation-form-row">
                     <div className="donation-form-group">
