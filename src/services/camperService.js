@@ -44,9 +44,7 @@ const normalizeCalperData = (data) => {
 export const fetchCamperById = async (id) => {
   try {
     const response = await axios.get(`${endpoints.campers}/${id}`);
-    console.log("Profile picture: ", response.data);
     const normalizedData = normalizeCalperData(response.data);
-    console.log("Data normalizada", normalizedData);
     return normalizedData;
   } catch (error) {
     console.error(`Error fetching camper with id ${id}:`, error);
@@ -116,7 +114,6 @@ export const fetchAllMerits = async () => {
 export const editCamperInfo = async (camper_id, data) => {
   try {
     const token = localStorage.getItem("token");
-    console.log("data a enviar", data);
 
     const config = {
       headers: {
@@ -124,7 +121,6 @@ export const editCamperInfo = async (camper_id, data) => {
         "Content-Type": "multipart/form-data",
       },
     };
-    console.log("data del usuario a actualizar", data);
 
     const url = `${endpoints.campers}/${camper_id}`;
 
