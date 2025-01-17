@@ -9,10 +9,9 @@ import { fetchCamperById } from "@/services/camperService";
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
 import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
-import { CopySlash } from "lucide-react";
 
 // Lazy load components
-const NavbarProfile = lazy(() => import("@/components/navbar/NavbarProfile"));
+const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
 const ProfileHeaderEdit = lazy(() =>
   import("../../components/camperProfileEdit/ProfileHeaderEdit")
 );
@@ -137,7 +136,7 @@ const CamperProfileEdit = () => {
         </LazySection>
 
         <LazySection>
-          <div id="sobre-mi-edit">
+          <div id="sobre-mi">
             <AboutMeEdit
               videoUrl={camperData.main_video_url}
               about={camperData.about}
@@ -148,13 +147,13 @@ const CamperProfileEdit = () => {
         </LazySection>
 
         <LazySection>
-          <div id="sueños-grid-edit">
+          <div id="sueños-grid">
             <DreamsEdit onUpdate={refreshData} />
           </div>
         </LazySection>
 
         <LazySection>
-          <div id="proceso-formacion-edit">
+          <div id="proceso-formacion">
             <TrainingProcessEdit
               videos={camperTiktoksData}
               onUpdate={refreshData}
@@ -163,7 +162,7 @@ const CamperProfileEdit = () => {
         </LazySection>
 
         <LazySection>
-          <div id="projects-edit">
+          <div id="projects">
             <ProyectsEdit onUpdate={refreshData} />
           </div>
         </LazySection>

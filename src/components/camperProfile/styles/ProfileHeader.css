@@ -1,6 +1,6 @@
 /* Fondo y espaciado general */
 .profile-header {
-  padding: 2.5rem 0;
+  padding: 8rem 0 2.5rem 0;
   background: linear-gradient(
     180deg,
     rgba(52, 50, 100, 0.3) 0%,
@@ -278,7 +278,7 @@
 
 @media (max-width: 768px) {
   .profile-header {
-    padding: 2rem 1rem;
+    padding: 7rem 0 2.5rem 0;
   }
 
   .profile-container {
@@ -313,7 +313,7 @@
 
 @media (max-width: 480px) {
   .profile-header {
-    padding: 1.5rem 0.5rem;
+    padding: 6.5rem 0 2.5rem 0;
   }
 
   .profile-image {
