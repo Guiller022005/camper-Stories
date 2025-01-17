@@ -1,6 +1,6 @@
 // components/camperProfile/AboutMe.jsx
 import React, { useState } from "react";
-import VideoPlayerEdit from "./VideoPlayerEdit";
+import VideoPlayerEdit from "../camperProfile/VIdeoPlayer";
 import styles from "./styles/AboutMeEdit.module.css";
 import AboutMeModal from "./modals/AboutMeModal";
 
