@@ -11,8 +11,7 @@
     display: flex;
     flex-direction: column;
     width: 99.2vw;
-    margin: 0 auto;
-    background-color: #0C0C74;
+    margin: 0 auto; 
 }
 
 /* Estilos del título */

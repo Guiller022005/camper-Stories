@@ -27,6 +27,60 @@ const CampersGrid = () => {
     const mobileVisibleSkillsCount = 4;
     const desktopVisibleSkillsCount = predefinedSkills.length;
 
+    const generateCircuitLines = () => {
+        return Array(8).fill().map((_, i) => {
+            const style = {
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 4}s`,
+                transform: `rotate(${Math.random() * 45 - 22.5}deg)`,
+            };
+
+            return (
+                <div key={i} className="circuit-line" style={style}>
+                    <div className="circuit-dot"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            animationDelay: `${Math.random() * 2}s`
+                        }}
+                    />
+                </div>
+            );
+        });
+    };
+
+    const generateConnectionDots = () => {
+        return Array(30).fill().map((_, i) => (
+            <div
+                key={i}
+                className="connection-dot"
+                style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 2}s`
+                }}
+            />
+        ));
+    };
+
+    const handleSponsorClick = () => {
+        if (location.pathname === '/') {
+            // Si ya estás en la página de inicio, realiza el desplazamiento
+            const section = document.getElementById('sponsro');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        } else {
+            // Si no estás en la página de inicio, navega y luego desplázate
+            navigate('/');
+            setTimeout(() => {
+                const section = document.getElementById('sponsro');
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 500); // Tiempo para asegurar que la página cargue
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -103,17 +157,17 @@ const CampersGrid = () => {
 
     return (
         <section className="campersgrid">
+            {/* Líneas de circuito */}
+            <div className="circuit-lines">
+                {generateCircuitLines()}
+            </div>
+
+            {/* Puntos de conexión */}
+            <div className="connection-dots">
+                {generateConnectionDots()}
+            </div>
             <div className="badge-filters">
                 <h3>Busca a Tu Camper</h3>
-                {/* <div className="search-container">
-                    <input
-                        type="text"
-                        placeholder="Buscar por nombre"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="search-input"
-                    />
-                </div> */}
                 <div className="skill-filters wrapper-filter">
                     <div
                         className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}
@@ -220,7 +274,12 @@ const CampersGrid = () => {
                                         >
                                             Mas Info
                                         </button>
-                                        <button className="sponsor-button">Patrocinar</button>
+                                        <button
+                                            className="sponsor-button"
+                                            onClick={handleSponsorClick}
+                                        >
+                                            Patrocinar
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -271,7 +330,7 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
     };
 
     return (
-        <div className="flex items-center justify-center space-x-2 py-4">
+        <div className="flex z-10 items-center justify-center space-x-2 py-4">
             {getVisibleDots().map((dot, index) => (
                 <button
                     key={index}

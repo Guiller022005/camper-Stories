@@ -7,15 +7,8 @@ import {
   DialogTrigger,
   DialogDescription,
   DialogFooter,
-} from "../../ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "../../ui/button";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Edit } from "lucide-react";
 import {
@@ -23,7 +16,7 @@ import {
   updateCamperMerits,
   getMerits,
 } from "../../../services/meritsService";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const MeritsModal = ({ initialMerits }) => {
   const [selectedMerits, setSelectedMerits] = useState([]);
@@ -39,10 +32,8 @@ const MeritsModal = ({ initialMerits }) => {
 
   const loadInitialData = async () => {
     try {
-      // Fetch available merits
       const merits = await getMerits();
       setAvailableMerits(merits);
-
       setSelectedMerits(initialMerits);
       const camperMerits = await fetchMeritsByCamperId(id);
       setSelectedMerits(camperMerits);
@@ -51,25 +42,21 @@ const MeritsModal = ({ initialMerits }) => {
     }
   };
 
-  const handleAddMerit = (value) => {
-    const meritToAdd = availableMerits.find((merit) => merit.name === value);
-    if (meritToAdd && !selectedMerits.some((m) => m.id === meritToAdd.id)) {
-      setSelectedMerits([...selectedMerits, meritToAdd]);
-    }
-  };
-
-  const handleRemoveMerit = (meritId) => {
-    setSelectedMerits(selectedMerits.filter((merit) => merit.id !== meritId));
+  const handleMeritToggle = (merit) => {
+    setSelectedMerits((prev) => {
+      const isAlreadySelected = prev.some((m) => m.id === merit.id);
+      if (isAlreadySelected) {
+        return prev.filter((m) => m.id !== merit.id);
+      } else {
+        return [...prev, merit];
+      }
+    });
   };
 
   const handleSubmit = async () => {
     try {
-      // Extract only the IDs from the selected merits
       const meritIds = selectedMerits.map((merit) => merit.id);
-
-      // Call the updateCamperMerits service with the correct payload
       await updateCamperMerits(id, meritIds);
-      console.log("Méritos guardados:", meritIds);
       window.location.reload();
       setIsOpen(false);
     } catch (error) {
@@ -87,64 +74,83 @@ const MeritsModal = ({ initialMerits }) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold ">
+          <DialogTitle className="text-xl font-bold">
             Editar Méritos
           </DialogTitle>
           <DialogDescription className="text-blue-300">
             Selecciona los méritos que has obtenido durante tu formación.
           </DialogDescription>
         </DialogHeader>
+
         <div className="grid gap-4 py-4">
-          <div className="space-y-4">
+          <div className="flex flex-col space-y-4">
             <label className="text-sm font-medium text-blue-300">
-              Añadir Méritos
+              Seleccionar Méritos
             </label>
-            <Select onValueChange={handleAddMerit}>
-              <SelectTrigger className="w-full bg-blue-950/50 border-blue-500/30 text-blue-200 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all">
-                <SelectValue placeholder="Selecciona un mérito" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-200 z-[9999]">
-                {availableMerits.map((merit) => (
-                  <SelectItem
-                    key={merit.id}
-                    value={merit.name}
-                    disabled={selectedMerits.some((m) => m.id === merit.id)}
-                    className="hover:bg-blue-800/30 focus:bg-blue-800/50 cursor-pointer text-blue-200 disabled:text-blue-400/50"
-                  >
-                    {merit.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <div className="mt-4">
-              <label className="text-sm font-medium text-blue-300">
-                Méritos Seleccionados
-              </label>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {selectedMerits.map((merit) => (
-                  <Badge
-                    key={merit.id}
-                    variant="secondary"
-                    className="px-3 py-1 text-sm flex items-center gap-2 bg-blue-950/50 text-blue-200 border border-blue-500/30 hover:bg-blue-900/30 transition-all"
-                  >
-                    {merit.name}
+            <div className="flex flex-wrap gap-2">
+              {availableMerits.map((merit) => {
+                const isSelected = selectedMerits.some(
+                  (m) => m.id === merit.id
+                );
+                // return (
+                //   <button
+                //     key={merit.id}
+                //     onClick={() => handleMeritToggle(merit)}
+                //     className={`
+                //       relative flex items-center px-4 py-2 text-sm font-medium rounded-lg
+                //       transition-colors duration-150
+                //       ${
+                //         isSelected
+                //           ? "bg-blue-600 text-blue-200 border-yellow-400 border"
+                //           : "bg-blue-950/50 text-blue-200 border-blue-500/30 hover:bg-blue-900/30"
+                //       }
+                //     `}
+                //     aria-label={merit.description}
+                //   >
+                //     {merit.name}
+                //   </button>
+                // );
+                return (
+                  <div className="relative group">
                     <button
-                      onClick={() => handleRemoveMerit(merit.id)}
-                      className="text-xs hover:text-yellow-400 transition-colors"
+                      key={merit.id}
+                      onClick={() => handleMeritToggle(merit)}
+                      className={`
+                        relative flex items-center px-4 py-2 text-sm font-medium rounded-lg
+                        transition-colors duration-150
+                        ${
+                          isSelected
+                            ? "bg-gray-900 text-blue-200 border-yellow-400 border"
+                            : "bg-blue-950/50 text-blue-200 border-blue-400/30 hover:bg-gray-900/30"
+                        }
+                      `}
                     >
-                      ×
+                      {merit.name + " "}
+                      {merit.icon}
                     </button>
-                  </Badge>
-                ))}
-                {selectedMerits.length === 0 && (
-                  <p className="text-sm text-blue-400/50 italic">
-                    No hay méritos seleccionados
-                  </p>
-                )}
-              </div>
+                    {/* Tooltip */}
+                    <div
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2
+                      bg-gray-900 text-white text-sm rounded-lg 
+                      opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                      transition-all duration-300 z-50 text-center border 
+                      border-transparent group-hover:border-yellow-400 shadow-lg pointer-events-none
+                      w-48 min-h-[2rem] max-w-xs break-words"
+                    >
+                      {merit.description}
+                      {/* Flecha del tooltip */}
+                      <div
+                        className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 
+                        border-4 border-transparent border-t-gray-900"
+                      ></div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
+
         <DialogFooter className="flex justify-between border-t border-blue-500/30 pt-4">
           <Button
             variant="outline"

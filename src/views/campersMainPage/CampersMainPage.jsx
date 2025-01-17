@@ -9,7 +9,7 @@ import "./styles/CampersMainPage.css";
 
 const CampersMainPage = () => {
   return (
-    <div className="camper-success-view">
+    <div className="camper-success-view bg-[#12123f]">
       <Navbar />      
       <section id="mainCampers">
         <MainCampers />
@@ -20,7 +20,7 @@ const CampersMainPage = () => {
       <section id="campersGrid">
         <CampersGrid />
       </section>
-      <section id="formSection">
+      <section>
         <FormSection />
       </section>
       <section id="footer">
