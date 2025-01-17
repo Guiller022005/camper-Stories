@@ -34,7 +34,6 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
     const fetchCurrentImage = async () => {
       try {
         const camperData = await fetchCamperById(id);
-        console.log("Data recibida", camperData);
         setCurrentImage(camperData.profile_picture);
       } catch (error) {
         console.error("Error obteniendo imagen actual:", error);
@@ -62,19 +61,19 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
       userData.append("about", formData.about.trim());
       userData.append("main_video_url", formData.main_video_url.trim());
 
-      if (currentImage && typeof currentImage === 'string') {
-        try {
-            const response = await fetch(currentImage);
-            if (response.ok) {
-                const blob = await response.blob();
-                userData.append("profile_picture", blob, 'current_profile_picture.jpg');
-            }
-        } catch (error) {
-            console.error("Error al procesar la imagen actual:", error);
-        }
-    }
 
-      console.log("data a enviar a service", userData);
+      if (currentImage) {
+        try {
+          const response = await fetch(currentImage);
+          if (response.ok) {
+            const blob = await response.blob();
+            userData.append("profile_picture", blob);
+          }
+        } catch (error) {
+          console.error("Error al procesar la imagen actual:", error);
+          userData.append("profile_picture", currentImage);
+        }
+      }
 
       const response = await editCamperInfo(id, userData);
 
