@@ -76,6 +76,7 @@ const TikTokAddModal = ({ onAddTiktok, onClose }) => {
         if (response) {
           toast.success('¡TikTok agregado exitosamente!');
           onAddTiktok(response);
+          window.location.reload();
           setFormData({ title: '', video_url: '' });
           onClose();
         }
