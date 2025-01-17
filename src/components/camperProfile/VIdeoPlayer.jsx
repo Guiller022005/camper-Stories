@@ -1,6 +1,4 @@
-// VideoPlayer.jsx
 import React from "react";
-import styles from "./styles/VideoPlayer.module.css";
 
 const VideoPlayer = ({ videoUrl, title }) => {
   const getEmbedUrl = (url) => {
@@ -15,19 +13,21 @@ const VideoPlayer = ({ videoUrl, title }) => {
 
       return url;
     } catch (error) {
-      console.error("Error al procesar la URL del video:", error);
+      console.error("Error processing video URL:", error);
       return url;
     }
   };
 
   return (
-    <div className={styles.videoContainer}>
+    <div className="relative w-full pt-[56.25%] overflow-hidden rounded-lg">
       <iframe
-        src={`${getEmbedUrl(videoUrl)}?autoplay=1&mute=1&loop=1&playlist=${getEmbedUrl(videoUrl).split('/').pop()}`}
+        src={`${getEmbedUrl(videoUrl)}?autoplay=1&mute=1&loop=1&playlist=${getEmbedUrl(
+          videoUrl
+        ).split("/").pop()}`}
         title={title}
         allowFullScreen
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        className={styles.videoIframe}
+        className="absolute top-0 left-0 w-full h-full border-none"
       />
     </div>
   );
