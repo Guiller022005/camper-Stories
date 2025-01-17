@@ -1,10 +1,8 @@
 // VideoPlayer.jsx
-import React, { useState } from "react";
-import styles from "./styles/VideoPlayer.module.css"; // Cambia a .module.css
+import React from "react";
+import styles from "./styles/VideoPlayer.module.css";
 
 const VideoPlayer = ({ videoUrl, title }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   const getEmbedUrl = (url) => {
     try {
       const videoId = url.match(
@@ -23,13 +21,9 @@ const VideoPlayer = ({ videoUrl, title }) => {
   };
 
   return (
-    <div
-      className={styles.videoContainer}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(true)}
-    >
+    <div className={styles.videoContainer}>
       <iframe
-        src={`${getEmbedUrl(videoUrl)}${isHovered ? "?autoplay=1&mute=1" : ""}`}
+        src={`${getEmbedUrl(videoUrl)}?autoplay=1&mute=1&loop=1&playlist=${getEmbedUrl(videoUrl).split('/').pop()}`}
         title={title}
         allowFullScreen
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

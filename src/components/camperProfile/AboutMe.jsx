@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import VideoPlayer from './VideoPlayer';
+import VideoPlayer from './VIdeoPlayer';
 import styles from './styles/AboutMe.module.css';
 
 const AboutMe = ({ videoUrl, about }) => {
