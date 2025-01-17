@@ -18,10 +18,13 @@ module.exports = {
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
 			},
-			colors: {}
-		}
+			colors: {},
+			fontFamily: {
+				firma: ['firma', 'sans-serif'], // Agrega la fuente personalizada.
+			},
+		},
 	},
 	plugins: [require("tailwindcss-animate")],
 }

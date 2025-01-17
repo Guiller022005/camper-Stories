@@ -15,7 +15,7 @@ const Footer = () => {
         />
         <div className="line"></div>
         <div className="underline-content">
-          <p>© Campus 2024 - Todos los derechos Reservados</p>
+          <p>© Campus 2024 - Todos los derechos Reservados  |  <b>Camper Stories v0.4.3</b>   </p>
           <div className="social-logos">
             <a href="https://www.facebook.com/Campuslands/" target="_blank" rel="noopener noreferrer">
               <i className="fa fa-facebook" aria-hidden="true"></i>
@@ -31,6 +31,7 @@ const Footer = () => {
             </a>
           </div>
         </div>
+        
       </div>
     </footer>
   );
