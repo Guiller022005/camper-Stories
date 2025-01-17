@@ -17,7 +17,6 @@ const DreamsGridEdit = ({ onUpdate }) => {
         const uniqueDreams = [
           ...new Set(dreamsData.map((dream) => dream.id)),
         ].map((id) => dreamsData.find((dream) => dream.id === id));
-        console.log(uniqueDreams);
         setDreams(uniqueDreams);
       } catch (err) {
         console.error("Error loading dreams: ", err);
