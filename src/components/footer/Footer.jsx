@@ -8,14 +8,14 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <LazyLoadImage
-          src="src/assets/CampusLogo.png"
+          src="https://camper-stories.s3.us-east-2.amazonaws.com/CampusLogo.png"
           alt="Campuslands"
           effect="blur"
           className="footer-logo"
         />
         <div className="line"></div>
         <div className="underline-content">
-          <p>© Campus 2024 - Todos los derechos Reservados</p>
+          <p>© Campus 2024 - Todos los derechos Reservados  |  <b>Camper Stories v0.4.5</b>   </p>
           <div className="social-logos">
             <a href="https://www.facebook.com/Campuslands/" target="_blank" rel="noopener noreferrer">
               <i className="fa fa-facebook" aria-hidden="true"></i>
@@ -31,6 +31,7 @@ const Footer = () => {
             </a>
           </div>
         </div>
+        
       </div>
     </footer>
   );

@@ -1,6 +1,6 @@
 /* Fondo y espaciado general */
 .profileHeader {
-  padding: 2.5rem 0;
+  padding: 8rem 0 2.5rem 0;
   background: linear-gradient(
     180deg,
     rgba(52, 50, 100, 0.3) 0%,
@@ -71,7 +71,7 @@
 }
 
 .profileImageContent,
-.profileImage span{
+.profileImage span {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -117,6 +117,7 @@
 }
 
 .skillItem {
+  display: flex;
   background: rgba(107, 95, 253, 0.1);
   border: 1px solid rgba(107, 95, 253, 0.2);
   border-radius: 12px;
@@ -124,6 +125,8 @@
   color: #fff;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+  justify-content: center;
+  align-items: center;
 }
 
 .skillItem:hover {
@@ -279,7 +282,7 @@
 
 @media (max-width: 768px) {
   .profileHeader {
-    padding: 2rem 1rem;
+    padding: 7rem 0 2.5rem 0;
   }
 
   .profileContainer {
@@ -314,7 +317,7 @@
 
 @media (max-width: 480px) {
   .profileHeader {
-    padding: 1.5rem 0.5rem;
+    padding: 6.5rem 0 2.5rem 0;
   }
 
   .profileImage {

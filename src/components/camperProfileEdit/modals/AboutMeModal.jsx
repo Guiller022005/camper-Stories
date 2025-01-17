@@ -12,6 +12,7 @@ import { Textarea } from "../../ui/textarea";
 import { Edit } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { editCamperInfo, fetchCamperById } from "@/services/camperService";
+import camper from "@/data/camperProfilePage";
 
 const AboutMeModal = ({ initialData, onUpdate }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,10 +61,18 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
       userData.append("about", formData.about.trim());
       userData.append("main_video_url", formData.main_video_url.trim());
 
+
       if (currentImage) {
-        const response = await fetch(currentImage);
-        const blob = await response.blob();
-        userData.append("profile_picture", blob);
+        try {
+          const response = await fetch(currentImage);
+          if (response.ok) {
+            const blob = await response.blob();
+            userData.append("profile_picture", blob);
+          }
+        } catch (error) {
+          console.error("Error al procesar la imagen actual:", error);
+          userData.append("profile_picture", currentImage);
+        }
       }
 
       const response = await editCamperInfo(id, userData);
@@ -118,9 +127,9 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">
-            <Button 
-              type="button" 
-              variant="outline" 
+            <Button
+              type="button"
+              variant="outline"
               onClick={() => setIsOpen(false)}
             >
               Cancelar

@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@500;600;700&display=swap");
 
-/* Base Layout */
-
+/* Patrón tecnológico */
 .campersgrid {
   display: flex;
   flex-direction: column;
@@ -9,12 +8,76 @@
   width: 100%;
   min-height: 100vh;
   padding: 4rem 1rem;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   background: linear-gradient(180deg, #07073b 50%, #0a0a29 100%);
   position: relative;
   overflow: visible;
+  isolation: isolate;
+}
+
+/* Patrón de circuitos */
+.campersgrid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(102, 231, 243, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(102, 231, 243, 0.05) 1px, transparent 1px);
+  background-size: 35px 35px;
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  z-index: 0;
+}
+
+/* Líneas diagonales */
+.campersgrid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      rgba(130, 245, 255, 0.055) 0px,
+      rgba(102, 231, 243, 0.03) 1px,
+      transparent 1px,
+      transparent 35px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(99, 102, 241, 0.03) 0px,
+      rgba(99, 102, 241, 0.03) 1px,
+      transparent 1px,
+      transparent 35px
+    );
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  z-index: 0;
+}
+
+/* Puntos brillantes */
+.tech-dots {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(102, 231, 243, 0.4);
+  border-radius: 50%;
+  filter: blur(1px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes floatAnimation {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.tech-dots:nth-child(odd) {
+  animation: floatAnimation 4s ease-in-out infinite;
+}
+
+.tech-dots:nth-child(even) {
+  animation: floatAnimation 6s ease-in-out infinite reverse;
 }
 
 /* Grid Layout */
@@ -25,7 +88,7 @@
   justify-content: center;
   padding-top: 1rem;
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
 
 .badge-filters {
@@ -34,6 +97,7 @@
   margin-bottom: 1rem;
   background-color: #26235886;
   border-radius: 20px;
+  z-index: 10;
 }
 
 /* Developer Card */
@@ -48,6 +112,8 @@
   background-color: #2d2b54;
   color: #ffffff;
   border-radius: 10px;
+  position: relative;
+  z-index: 2;
 }
 
 .dev-card-content {
@@ -318,12 +384,14 @@ button {
   .developer-card {
     width: 90%;
     min-height: 159px;
+    max-width: 500px;
     height: auto;
     margin: 0.5rem 0;
   }
 
   .dev-card-content {
     justify-content: center;
+    width: auto;
   }
 
   .technologies {
@@ -353,6 +421,16 @@ button {
   .camper-title,
   .technologies p {
     font-size: 14px;
+  }
+
+  .camper-image {
+    width: 128px;
+    height: 230px;
+  }
+
+  .camper-image img {
+    width: 128px;
+    height: 120px;
   }
 }
 

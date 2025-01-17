@@ -1,10 +1,10 @@
 // ProfileHeader.jsx
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from 'lucide-react';
-import './styles/ProfileHeader.css';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from "lucide-react";
+import "./styles/ProfileHeader.css";
 
 const ProfileHeader = ({ data, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
@@ -70,20 +70,24 @@ const ProfileHeader = ({ data, initialMerits }) => {
             <p>Méritos</p>
           </div>
           <div className="badges-container wrapper">
-            {initialMerits.slice(0, showAllBadges ? initialMerits.length : maxVisibleBadges).map((merit, index) => (
-              <div key={index} className="skill-item">
-                <div className="tooltip icon badgeInfo">{merit.description}</div>
-                {merit.name}
-                {merit.icon}
-              </div>
-            ))}
+            {initialMerits
+              .slice(0, showAllBadges ? initialMerits.length : maxVisibleBadges)
+              .map((merit, index) => (
+                <div key={index} className="skill-item icon badgeInfo">
+                  <div className="tooltip">{merit.description}</div>
+                  {merit.name}
+                  {merit.icon}
+                </div>
+              ))}
           </div>
           {initialMerits.length > maxVisibleBadges && (
             <div className="toggle-badges-button" onClick={handleToggleBadges}>
               <span className="toggle-badges-content">
                 {showAllBadges ? "Ver menos" : "Ver más"}
                 <ChevronDown
-                  className={`ml-2 h-4 w-4 transition-transform ${showAllBadges ? "rotate-180" : ""}`}
+                  className={`ml-2 h-4 w-4 transition-transform ${
+                    showAllBadges ? "rotate-180" : ""
+                  }`}
                 />
               </span>
             </div>

@@ -156,7 +156,6 @@ const ProyectsEdit = () => {
     }
   };
 
-  console.log(projects);
 
   return (
     <section className={styles.tecInfo}>

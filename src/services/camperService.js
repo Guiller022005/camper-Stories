@@ -26,8 +26,7 @@ const normalizeCalperData = (data) => {
   console.log("Datos sin normalizar", data);
 
   return {
-    profile_picture:
-      data.profile_picture || DEFAULT_CAMPER_DATA.profile_picture,
+    profile_picture: data.profile_picture,
     full_name: data.full_name || DEFAULT_CAMPER_DATA.full_name,
     city: data.name || DEFAULT_CAMPER_DATA.city,
     age: calculateAge(data.birth_date) || DEFAULT_CAMPER_DATA.age,
@@ -45,7 +44,6 @@ const normalizeCalperData = (data) => {
 export const fetchCamperById = async (id) => {
   try {
     const response = await axios.get(`${endpoints.campers}/${id}`);
-    console.log("Profile picture: ", response.data);
     const normalizedData = normalizeCalperData(response.data);
     return normalizedData;
   } catch (error) {
@@ -123,7 +121,6 @@ export const editCamperInfo = async (camper_id, data) => {
         "Content-Type": "multipart/form-data",
       },
     };
-    console.log("data del usuario a actualizar", data);
 
     const url = `${endpoints.campers}/${camper_id}`;
 

@@ -61,10 +61,8 @@ const DreamsModal = ({ onAddDream, onUpdate }) => {
 
     onAddDream(newDream);
     try {
-      console.log(newDream);
       const response = await addDreams(id, newDream);
       onUpdate();
-      console.log("respuesta del servidor", response);
     } catch (error) {
       console.error("No fue posible enviar la informacion", error);
       throw error;
