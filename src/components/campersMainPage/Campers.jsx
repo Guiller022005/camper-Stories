@@ -19,6 +19,8 @@ const Campers = () => {
   const [meritsData, setMeritsData] = useState([]);
   const navigate = useNavigate();
 
+  const CHAR_LIMIT = 100; // Límite de caracteres para el about
+
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
@@ -93,10 +95,11 @@ const Campers = () => {
         >
           {campersData.map((camper, index) => {
             const randomMerit = getRandomMerit(camper.camper_id);
+            const isLongAbout = camper.about.length > CHAR_LIMIT;
             return (
               <SwiperSlide key={`${index}-${camper.full_name}`} className={styles.swiperSlide}>
-                <div className={styles.card} onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}>
-                  <div className={styles.perfil}>
+                <div className={styles.card}>
+                  <div className={styles.perfil} onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}>
                     <LazyLoadImage
                       src={camper.profile_picture}
                       alt={camper.full_name}
@@ -117,7 +120,21 @@ const Campers = () => {
                     ) : (
                       <p>Merito no Disponible.</p>
                     )}
-                    <p>{camper.about}</p>
+                    <p>
+                      {isLongAbout ? (
+                        <>
+                          {camper.about.substring(0, CHAR_LIMIT)}...
+                          <span
+                            className={styles.viewMore}
+                            onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
+                          >
+                            Ver más
+                          </span>
+                        </>
+                      ) : (
+                        camper.about
+                      )}
+                    </p>
                   </div>
                 </div>
               </SwiperSlide>

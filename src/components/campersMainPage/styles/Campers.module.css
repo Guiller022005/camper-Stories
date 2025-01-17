@@ -203,6 +203,10 @@
    overflow-x: hidden;
    overflow-y: hidden;
  }
+
+ span {
+   color: var(--color2);
+ }
  
 
 @media (hover: hover) and (pointer: fine) {
@@ -223,6 +227,10 @@
    .card:hover .cardContent h3,
    .card:hover .cardContent p {
        color: var(--color3);
+   }
+
+   .card:hover .cardContent span {
+      color: var(--color1);
    }
 }
 
