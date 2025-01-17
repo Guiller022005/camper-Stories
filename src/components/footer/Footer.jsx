@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <LazyLoadImage
-          src="src/assets/CampusLogo.png"
+          src="https://camper-stories.s3.us-east-2.amazonaws.com/CampusLogo.png"
           alt="Campuslands"
           effect="blur"
           className="footer-logo"
