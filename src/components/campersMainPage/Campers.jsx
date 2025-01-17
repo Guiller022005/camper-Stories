@@ -101,15 +101,12 @@ const Campers = () => {
             const randomMerit = getRandomMerit(camper.camper_id);
             const isLongAbout = camper.about.length > CHAR_LIMIT;
             return (
-              <SwiperSlide
-                key={`${index}-${camper.full_name}`}
-                className={styles.swiperSlide}
-              >
-                <div className={styles.card}>
-                  <div
-                    className={styles.perfil}
-                    onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
-                  >
+              <SwiperSlide key={`${index}-${camper.full_name}`} className={styles.swiperSlide}>
+                <div
+                  className={styles.card}
+                  onClick={() => navigate(`/campers/profile/${camper.camper_id}`)} // Redirigir a perfil desde toda la tarjeta
+                >
+                  <div className={styles.perfil}>
                     <LazyLoadImage
                       src={camper.profile_picture}
                       alt={camper.full_name}
@@ -140,7 +137,10 @@ const Campers = () => {
                           {camper.about.substring(0, CHAR_LIMIT)}...
                           <span
                             className="text-[var(--color2)] cursor-pointer hover:text-[var(--color1)]"
-                            onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
+                            onClick={(e) => {
+                              e.stopPropagation(); // Evita que el clic en "Ver más" dispare el clic en toda la tarjeta
+                              navigate(`/campers/profile/${camper.camper_id}`);
+                            }}
                           >
                             Ver más
                           </span>
