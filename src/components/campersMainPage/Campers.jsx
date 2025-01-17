@@ -19,7 +19,7 @@ const Campers = () => {
   const [meritsData, setMeritsData] = useState([]);
   const navigate = useNavigate();
 
-  const CHAR_LIMIT = 100; // Límite de caracteres para el about
+  const CHAR_LIMIT = 100;
 
   useEffect(() => {
     const handleResize = () => {
@@ -66,7 +66,7 @@ const Campers = () => {
   }, []);
 
   if (isLoading) return <Loader />;
-  if (error) return <div className={styles.error}>{error}</div>;
+  if (error) return <div className={`${styles.error} text-red-500`}>{error}</div>;
 
   const getRandomMerit = (camperId) => {
     const camperMerits = meritsData.find((merit) => merit.camperId === camperId);
@@ -80,8 +80,12 @@ const Campers = () => {
   return (
     <div className={styles.campersContainer}>
       <div className={styles.titleCampers}>
-        <h3>Campers</h3>
-        <h2>exitosos</h2>
+        <h3 className="font-bold text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color1)] skew-x-6">
+          Campers
+        </h3>
+        <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] shadow-[3px_3px_0px_rgba(0,0,0,0.2)] skew-x-[-6deg]">
+          exitosos
+        </h2>
       </div>
       <div className={styles.cardsContainerWrapper}>
         <Swiper
@@ -98,8 +102,11 @@ const Campers = () => {
             const isLongAbout = camper.about.length > CHAR_LIMIT;
             return (
               <SwiperSlide key={`${index}-${camper.full_name}`} className={styles.swiperSlide}>
-                <div className={styles.card}>
-                  <div className={styles.perfil} onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}>
+                <div
+                  className={styles.card}
+                  onClick={() => navigate(`/campers/profile/${camper.camper_id}`)} // Redirigir a perfil desde toda la tarjeta
+                >
+                  <div className={styles.perfil}>
                     <LazyLoadImage
                       src={camper.profile_picture}
                       alt={camper.full_name}
@@ -108,25 +115,32 @@ const Campers = () => {
                     />
                   </div>
                   <div className={styles.cardContent}>
-                    <h3>{camper.full_name}</h3>
+                    <h3 className="font-semibold text-[clamp(1.3rem,2vw,1.2rem)] text-[var(--color1)] mb-[clamp(0.3rem,1vw,0.5rem)] text-center">
+                      {camper.full_name}
+                    </h3>
                     {randomMerit ? (
                       <div className={styles.merit}>
-                        <h4>
-                          <span className={styles.meritIcon}>{randomMerit.icon}</span>
+                        <h4 className="font-medium text-[clamp(0.9rem,1.5vw,0.7rem)] text-[var(--color2)] mb-[clamp(0.5rem,1.5vw,0.8rem)] text-center">
+                          <span className="text-[var(--color2)]">{randomMerit.icon}</span>
                           {randomMerit.name}
-                          <span className={styles.meritIcon}>{randomMerit.icon}</span>
+                          <span className="text-[var(--color2)]">{randomMerit.icon}</span>
                         </h4>
                       </div>
                     ) : (
-                      <p>Merito no Disponible.</p>
+                      <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center">
+                        Merito no Disponible.
+                      </p>
                     )}
-                    <p>
+                    <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center">
                       {isLongAbout ? (
                         <>
                           {camper.about.substring(0, CHAR_LIMIT)}...
                           <span
-                            className={styles.viewMore}
-                            onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
+                            className="text-[var(--color2)] cursor-pointer hover:text-[var(--color1)]"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Evita que el clic en "Ver más" dispare el clic en toda la tarjeta
+                              navigate(`/campers/profile/${camper.camper_id}`);
+                            }}
                           >
                             Ver más
                           </span>
