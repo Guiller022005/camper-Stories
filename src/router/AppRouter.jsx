@@ -8,6 +8,7 @@ import LoginPage from '@/views/LoginPage/LoginPage';
 import Unauthorized from '@/views/Unauthorized/Unauthorized';
 import DynamicTitle from './DynamicTitle'; // Importa el componente
 import RegisterPage from '@/views/RegisterPage/RegisterPage';
+import ForgetPassword from '@/views/ForgetPasswordPage/forgetPasswordPage';
 
 const AppRouter = () => {
   return (
@@ -17,6 +18,7 @@ const AppRouter = () => {
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="/" element={<CampersMainPage />} />
         <Route path="/campers/login" element={<LoginPage />} />
+        <Route path="/campers/forgetPassword" element={<ForgetPassword />} />
         <Route path="/campers/register" element={<RegisterPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/campers/profile/:id/" element={<CamperProfile />} />
