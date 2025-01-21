@@ -39,20 +39,31 @@ export default function RegisterForm() {
     { id: '4', nombre: 'Pasaporte' }
   ];
 
+  const normalizeString = (str) => {
+    return str
+      .normalize("NFD") // Descompone caracteres acentuados en su forma base
+      .replace(/[\u0300-\u036f]/g, "") // Elimina los diacríticos (tildes)
+      .toLowerCase(); // Convierte a minúsculas
+  };
+
   const filterCities = (query) => {
     if (!query) {
       setFilteredCities([]);
       return;
     }
   
-    const words = query.toLowerCase().split(" ");
-    const filtered = ciudadesColombia.filter((ciudad) =>
-      words.every((word) => ciudad.name.toLowerCase().includes(word))
-    );
+    const normalizedQuery = normalizeString(query);
+    const words = normalizedQuery.split(" "); // Divide la consulta en palabras normalizadas
+  
+    const filtered = ciudadesColombia.filter((ciudad) => {
+      const normalizedCityName = normalizeString(ciudad.name);
+  
+      // Verifica que todas las palabras de la consulta estén presentes en el nombre de la ciudad
+      return words.every((word) => normalizedCityName.includes(word));
+    });
   
     setFilteredCities(filtered.slice(0, 5)); // Limitar a 5 resultados
-  };
-  
+  };  
 
   useEffect(() => {
     const fetchCities = async () => {
