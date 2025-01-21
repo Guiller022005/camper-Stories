@@ -26,7 +26,11 @@ const ProfileHeader = ({ data, initialMerits }) => {
         <div className="profile-content">
           <div className="profile-image">
             <LazyLoadImage
-              src={data.profile_picture}
+              src={
+                data.profile_picture && data.profile_picture.trim() !== ""
+                  ? data.profile_picture
+                  : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+              } 
               alt={`Perfil de ${data.full_name}`}
               effect="blur"
               className="profile-image-content"
@@ -85,9 +89,8 @@ const ProfileHeader = ({ data, initialMerits }) => {
               <span className="toggle-badges-content">
                 {showAllBadges ? "Ver menos" : "Ver más"}
                 <ChevronDown
-                  className={`ml-2 h-4 w-4 transition-transform ${
-                    showAllBadges ? "rotate-180" : ""
-                  }`}
+                  className={`ml-2 h-4 w-4 transition-transform ${showAllBadges ? "rotate-180" : ""
+                    }`}
                 />
               </span>
             </div>
