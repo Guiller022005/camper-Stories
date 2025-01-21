@@ -41,7 +41,7 @@ export default function RegisterForm() {
         const response = await fetch(endpoints.city);
         const text = await response.text(); // Obtener la respuesta como texto
         console.log("Respuesta de la API:", text); // Para depuración
-  
+
         // Verificar si la respuesta es JSON
         const contentType = response.headers.get("content-type");
         if (
@@ -52,7 +52,6 @@ export default function RegisterForm() {
           const data = JSON.parse(text); // Convertir a JSON
           console.log("Ciudades obtenidas:", data);
           setCiudadesColombia(data.data); // Accediendo a la propiedad 'data'
-          setFilteredCities(data.data); // Inicializa las ciudades filtradas
         } else {
           console.error(
             "Error: La respuesta no es un JSON válido o hubo un problema con la solicitud."
@@ -62,10 +61,9 @@ export default function RegisterForm() {
         console.error("Error de red:", error);
       }
     };
-  
+
     fetchCities();
   }, []);
-  
 
   const validatePasswords = () => {
     if (password !== confirmPassword) {
