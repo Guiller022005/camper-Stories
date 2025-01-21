@@ -162,20 +162,6 @@ const LoginPage = () => {
               >
                 ¿No tienes cuenta aún? Regístrate
               </button>
-              
-            </div>
-
-            {/* Forget Password */}
-            <div className="text-center mt-6">
-              <button
-                className="bg-transparent border-none text-white cursor-pointer 
-                       text-xs sm:text-sm hover:text-[#6d28d9] transition-colors 
-                       duration-200 hover:underline"
-                onClick={() => navigate('/campers/forgetPassword')}
-              >
-                ¿Olvidaste tu contraseña?
-              </button>
-              
             </div>
           </div>
         </div>
