@@ -1,16 +1,19 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { Lock, Mail } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import campushm from '/src/assets/Campushm.png';
 import { endpoints } from '../../services/apiConfig';
 import { CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const notify = () => toast("Wow so easy!");
+  const [showPassword, setShowPassword] = useState(false);
+
 
   useEffect(() => {
     if (token) {
@@ -128,7 +131,7 @@ const LoginPage = () => {
                     size={18} />
                   <input
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     className="w-full py-2.5 px-4 pl-9 bg-[#3a3a4e] rounded-lg text-white 
                            text-sm sm:text-base focus:outline-none focus:ring-2 
@@ -137,6 +140,13 @@ const LoginPage = () => {
                     placeholder="Contraseña"
                     required
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-opacity-70 hover:text-opacity-100"
+                  >
+                    {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+                  </button>
                 </div>
               </div>
 
@@ -162,6 +172,20 @@ const LoginPage = () => {
               >
                 ¿No tienes cuenta aún? Regístrate
               </button>
+
+            </div>
+
+            {/* Forget Password */}
+            <div className="text-center mt-6">
+              <button
+                className="bg-transparent border-none text-white cursor-pointer 
+                       text-xs sm:text-sm hover:text-[#6d28d9] transition-colors 
+                       duration-200 hover:underline"
+                onClick={() => navigate('/campers/forgetPassword')}
+              >
+                ¿Olvidaste tu contraseña?
+              </button>
+
             </div>
           </div>
         </div>
