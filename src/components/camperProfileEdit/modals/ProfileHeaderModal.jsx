@@ -6,16 +6,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../ui/select";
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
-import { Edit } from "lucide-react";
+import { Edit, MapPin } from "lucide-react";
 import { endpoints } from "@/services/apiConfig";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -35,6 +28,10 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
+  const [searchCity, setSearchCity] = useState("");
+  const [filteredCities, setFilteredCities] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
   const [formData, setFormData] = useState({
     full_name: capitalizeWords(initialData.nombre),
     city_id: "",
@@ -90,26 +87,59 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
           contentType.includes("application/json")
         ) {
           const data = JSON.parse(text);
+
+          // Verificar y asignar las ciudades
           setCiudadesColombia(data.data);
 
-          // Una vez que tenemos las ciudades, buscamos el ID correspondiente
+          // Buscar el ID de la ciudad seleccionada inicialmente
           const cityFound = data.data.find(
-            (city) => city.name === initialData.city
+            (city) => city.city === initialData.city
           );
+
           if (cityFound) {
             setFormData((prev) => ({
               ...prev,
-              city_id: cityFound.id.toString(),
+              city_id: cityFound.id.toString(), // Asegurarse de que sea un string
             }));
           }
+        } else {
+          console.error("La respuesta no es válida o no contiene JSON");
         }
       } catch (error) {
-        console.error("Error de red:", error);
+        console.error("Error al cargar las ciudades:", error);
       }
     };
 
     fetchCities();
   }, [initialData.city]);
+
+
+  const normalizeString = (str) => {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  };
+
+  const filterCities = (query) => {
+    const normalizedQuery = normalizeString(query);
+
+    // Si no hay texto, mostrar las primeras 5 ciudades
+    if (!query) {
+      setFilteredCities(ciudadesColombia.slice(0, 3));
+      return;
+    }
+
+    const words = normalizedQuery.split(" ");
+    const filtered = ciudadesColombia.filter((ciudad) => {
+      const normalizedCityName = normalizeString(ciudad.city);
+      return words.every((word) => normalizedCityName.includes(word));
+    });
+
+    setFilteredCities(filtered.slice(0, 5)); // Limitar a 5 resultados
+  };
+
+
 
   useEffect(() => {
     const navbar = document.querySelector(".navbar-profile");
@@ -191,15 +221,20 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
       if (formData.profile_picture instanceof File) {
         userData.append("profile_picture", formData.profile_picture);
       } else if (currentImage && typeof currentImage === 'string') {
-          try {
-              const response = await fetch(currentImage);
-              if (response.ok) {
-                  const blob = await response.blob();
-                  userData.append("profile_picture", blob, 'current_profile_picture.jpg');
-              }
-          } catch (error) {
-              console.error("Error al procesar la imagen actual:", error);
+        try {
+          const response = await fetch(currentImage);
+          if (response.ok) {
+            const blob = await response.blob();
+            userData.append("profile_picture", blob, 'current_profile_picture.jpg');
           }
+        } catch (error) {
+          console.error("Error al procesar la imagen actual:", error);
+        }
+      }
+
+      console.log("parametros editcamperinfo:", id);
+      for (const [key, value] of userData.entries()) {
+        console.log(key, value);
       }
 
       const response = await editCamperInfo(id, userData);
@@ -226,7 +261,7 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
           <Edit className="h-6 w-6 " />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto z-[9999] bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
+      <DialogContent className="sm:max-w-[425px] h-[450px] max-h-[90vh] overflow-y-auto z-[9999] bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-100 shadow-2xl shadow-blue-500/20 rounded-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold ">
             Editar Perfil
@@ -256,9 +291,8 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
             </label>
             <Input
               name="full_name"
-              className={`text-gray-900 bg-gray-50 ${
-                errors.full_name ? "border-red-500" : ""
-              }`}
+              className={`text-gray-900 bg-gray-50 ${errors.full_name ? "border-red-500" : ""
+                }`}
               value={formData.full_name}
               onChange={handleChange}
               maxLength={35}
@@ -269,36 +303,50 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
             )}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">
-              Ciudad
-            </label>
-            <Select
-              value={formData.city_id}
-              onValueChange={(value) => {
-                setFormData((prev) => ({ ...prev, city_id: value }));
-                setErrors((prev) => ({ ...prev, city_id: undefined }));
+          <div className="relative">
+            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <Input
+              id="city"
+              name="city"
+              type="text"
+              placeholder="Busca tu ciudad"
+              value={searchCity}
+              onFocus={() => {
+                setShowDropdown(true);
+                filterCities(""); // Filtrar sin texto inicial
               }}
-            >
-              <SelectTrigger
-                className={`w-full bg-blue-950/50 border-blue-500/30 text-blue-200 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all ${
-                  errors.city_id ? "border-red-500" : ""
-                }`}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+              onChange={(e) => {
+                const capitalizedValue = capitalizeWords(e.target.value);
+                setSearchCity(capitalizedValue);
+                filterCities(capitalizedValue);
+              }}
+              className="w-full pl-[38px] bg-blue-950/50 border-blue-500/30 text-blue-200 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all"
+            />
+            {showDropdown && filteredCities.length > 0 && (
+              <ul
+                className="absolute bg-blue-950 mt-1 rounded-lg shadow-lg max-h-40 overflow-auto z-50 hide-scrollbar"
+                style={{ maxHeight: "calc(2.5rem * 5)" }}
               >
-                <SelectValue placeholder="Selecciona una ciudad" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#0a0f2a]/95 border border-blue-500/30 backdrop-blur-lg text-blue-200 z-[9999]">
-                {ciudadesColombia.map((city) => (
-                  <SelectItem
-                    key={city.id}
-                    value={city.id.toString()}
-                    className="hover:bg-gray-100 cursor-pointer"
+                {filteredCities.map((ciudad) => (
+                  <li
+                    key={ciudad.id.toString()}
+                    className="px-4 py-2 text-blue-200 hover:bg-yellow-500 cursor-pointer"
+                    onClick={() => {
+                      setSearchCity(ciudad.city);
+                      setFormData((prev) => ({ ...prev, city_id: ciudad.id.toString() }));
+                      setFilteredCities([]);
+                      setShowDropdown(false);
+                    }}
                   >
-                    {city.name}
-                  </SelectItem>
+                    {ciudad.city}
+                  </li>
                 ))}
-              </SelectContent>
-            </Select>
+              </ul>
+            )}
+            {showDropdown && searchCity && filteredCities.length === 0 && (
+              <p className="text-yellow-400 text-sm mt-1">No hay resultados</p>
+            )}
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">
