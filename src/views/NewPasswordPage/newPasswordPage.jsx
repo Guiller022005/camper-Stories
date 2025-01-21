@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2, Eye, EyeOff } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Label } from "@/components/ui/label";
 import campushm from "/src/assets/Campushm.png";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ import { endpoints } from "../../services/apiConfig";
 
 export default function NewPasswordForm() {
   const navigate = useNavigate();
+  const { token } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -16,6 +17,14 @@ export default function NewPasswordForm() {
 
   // Expresión regular para validar contraseñas seguras
   const passwordValidationRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  useEffect(() => {
+    // Validar que existe un token
+    if (!token) {
+      toast.error("Token no válido");
+      navigate("/campers/login");
+    }
+  }, [token, navigate]);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -41,13 +50,15 @@ export default function NewPasswordForm() {
     setIsLoading(true);
 
     try {
-      // Enviar la solicitud para actualizar la contraseña al servidor
       const response = await fetch(endpoints.resetPassword, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ 
+          token: token,
+          newPassword: password
+        }),
       });
 
       if (response.ok) {
@@ -55,11 +66,9 @@ export default function NewPasswordForm() {
         navigate("/campers/login");
       } else {
         const responseData = await response.json();
-        const errorMessage = responseData.error || "Error al actualizar la contraseña. Intenta nuevamente.";
-        toast.error(errorMessage);
+        toast.error(responseData.message || "Error al actualizar la contraseña. Intenta nuevamente.");
       }
     } catch (err) {
-      // Manejo de errores de red
       toast.error("Error de red: No se pudo conectar con el servidor.");
       console.error("Error:", err);
     } finally {

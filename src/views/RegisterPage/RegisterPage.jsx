@@ -56,7 +56,7 @@ export default function RegisterForm() {
     const words = normalizedQuery.split(" "); // Divide la consulta en palabras normalizadas
   
     const filtered = ciudadesColombia.filter((ciudad) => {
-      const normalizedCityName = normalizeString(ciudad.name);
+      const normalizedCityName = normalizeString(ciudad.city);
   
       // Verifica que todas las palabras de la consulta estén presentes en el nombre de la ciudad
       return words.every((word) => normalizedCityName.includes(word));
@@ -406,13 +406,13 @@ export default function RegisterForm() {
                         key={ciudad.id}
                         className="px-4 py-2 text-white hover:bg-[#6d28d9] cursor-pointer"
                         onClick={() => {
-                          setSearchCity(ciudad.name); // Actualizar el campo con la ciudad seleccionada
+                          setSearchCity(ciudad.city); // Actualizar el campo con la ciudad seleccionada
                           setFormData((prev) => ({ ...prev, ciudad: ciudad.id })); // Guardar la ciudad seleccionada
                           setFilteredCities([]); // Limpiar resultados
                           setShowDropdown(false); // Cerrar desplegable
                         }}
                       >
-                        {ciudad.name}
+                        {ciudad.city}
                       </li>
                     ))}
                   </ul>
