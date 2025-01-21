@@ -20,7 +20,7 @@ const AppRouter = () => {
         <Route path="/" element={<CampersMainPage />} />
         <Route path="/campers/login" element={<LoginPage />} />
         <Route path="/campers/forgetPassword" element={<ForgetPassword />} />
-        <Route path="/campers/newPassword" element={<NewPassword />} />
+        <Route path="/campers/newPassword/:token" element={<NewPassword />} />
         <Route path="/campers/register" element={<RegisterPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/campers/profile/:id/" element={<CamperProfile />} />

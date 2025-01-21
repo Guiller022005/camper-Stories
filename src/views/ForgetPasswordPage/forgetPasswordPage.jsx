@@ -30,17 +30,20 @@ export default function PasswordRecoveryForm() {
         body: JSON.stringify({ email }),
       });
 
+      const responseData = await response.json();
+      console.log("Respuesta completa:", responseData);
+
       if (response.ok) {
-        toast.success("¡Enlace de recuperación enviado! Revisa tu correo electrónico.");
+        toast.success(responseData.message || "¡Enlace de recuperación enviado! Revisa tu correo electrónico.");
         navigate("/campers/login");
       } else {
-        const responseData = await response.json();
-        const errorMessage = responseData.error || "Error al enviar el enlace de recuperación. Intenta nuevamente.";
+        const errorMessage = responseData.message || "Error al enviar el enlace de recuperación. Intenta nuevamente.";
+        console.error("Error detallado:", responseData);
         toast.error(errorMessage);
       }
     } catch (err) {
+      console.error("Error completo:", err);
       toast.error("Error de red: No se pudo conectar con el servidor.");
-      console.error("Error:", err);
     } finally {
       setIsLoading(false);
     }
