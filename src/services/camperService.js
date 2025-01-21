@@ -28,7 +28,7 @@ const normalizeCalperData = (data) => {
   return {
     profile_picture: data.profile_picture,
     full_name: data.full_name || DEFAULT_CAMPER_DATA.full_name,
-    city: data.name || DEFAULT_CAMPER_DATA.city,
+    city: data.city || DEFAULT_CAMPER_DATA.city,
     age: calculateAge(data.birth_date) || DEFAULT_CAMPER_DATA.age,
     about: data.about || DEFAULT_CAMPER_DATA.about,
     processTikToks: Array.isArray(data.processTikToks)

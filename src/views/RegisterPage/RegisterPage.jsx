@@ -23,10 +23,14 @@ export default function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [ciudadesColombia, setCiudadesColombia] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
   });
+  const [searchCity, setSearchCity] = useState("");
+  const [filteredCities, setFilteredCities] = useState([]);
+
 
   const tiposDocumento = [
     { id: '1', nombre: 'Cédula de Ciudadanía' },
@@ -34,6 +38,32 @@ export default function RegisterForm() {
     { id: '3', nombre: 'Tarjeta de Identidad' },
     { id: '4', nombre: 'Pasaporte' }
   ];
+
+  const normalizeString = (str) => {
+    return str
+      .normalize("NFD") // Descompone caracteres acentuados en su forma base
+      .replace(/[\u0300-\u036f]/g, "") // Elimina los diacríticos (tildes)
+      .toLowerCase(); // Convierte a minúsculas
+  };
+
+  const filterCities = (query) => {
+    if (!query) {
+      setFilteredCities([]);
+      return;
+    }
+  
+    const normalizedQuery = normalizeString(query);
+    const words = normalizedQuery.split(" "); // Divide la consulta en palabras normalizadas
+  
+    const filtered = ciudadesColombia.filter((ciudad) => {
+      const normalizedCityName = normalizeString(ciudad.city);
+  
+      // Verifica que todas las palabras de la consulta estén presentes en el nombre de la ciudad
+      return words.every((word) => normalizedCityName.includes(word));
+    });
+  
+    setFilteredCities(filtered.slice(0, 5)); // Limitar a 5 resultados
+  };  
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -347,19 +377,46 @@ export default function RegisterForm() {
                 <Label htmlFor="ciudad" className="text-white text-sm">Ciudad</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                  <select
+                  <input
                     id="ciudad"
                     name="ciudad"
-                    required
-                    className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-gray-400 text-sm
-                             focus:ring-2 focus:ring-[#7c3aed] border-none appearance-none"
-                  >
-                    <option value="">Selecciona ciudad</option>
-                    {ciudadesColombia.map(ciudad => (
-                      <option key={ciudad.id} value={ciudad.id} className="text-white">{ciudad.name}</option>
-                    ))}
-                  </select>
+                    type="text"
+                    placeholder="Busca tu ciudad"
+                    value={searchCity}
+                    onFocus={() => setShowDropdown(true)} // Mostrar desplegable al hacer clic
+                    onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // Ocultar desplegable con retraso para permitir selección
+                    onChange={(e) => {
+                      setSearchCity(e.target.value);
+                      filterCities(e.target.value);
+                    }}
+                    className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
+                            focus:ring-2 focus:ring-[#7c3aed] border-none"
+                  />
                 </div>
+                {/* Mostrar resultados solo si `showDropdown` es true */}
+                {showDropdown && filteredCities.length > 0 ? (
+                  <ul
+                    className="absolute bg-[#3a3a4e] mt-1 rounded-lg shadow-lg max-h-40 overflow-auto z-50 hide-scrollbar"
+                    style={{ maxHeight: "calc(2.5rem * 5)" }} // Altura dinámica para 5 elementos
+                  >
+                    {filteredCities.map((ciudad) => (
+                      <li
+                        key={ciudad.id}
+                        className="px-4 py-2 text-white hover:bg-[#6d28d9] cursor-pointer"
+                        onClick={() => {
+                          setSearchCity(ciudad.city); // Actualizar el campo con la ciudad seleccionada
+                          setFormData((prev) => ({ ...prev, ciudad: ciudad.id })); // Guardar la ciudad seleccionada
+                          setFilteredCities([]); // Limpiar resultados
+                          setShowDropdown(false); // Cerrar desplegable
+                        }}
+                      >
+                        {ciudad.city}
+                      </li>
+                    ))}
+                  </ul>
+                ) : showDropdown && searchCity && (
+                  <p className="text-gray-400 text-sm mt-1">No hay resultados</p>
+                )}
               </div>
             </div>
 
