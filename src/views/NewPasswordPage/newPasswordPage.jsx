@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Label } from "@/components/ui/label";
 import campushm from "/src/assets/Campushm.png";
@@ -11,6 +11,8 @@ export default function NewPasswordForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Expresión regular para validar contraseñas seguras
   const passwordValidationRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -86,33 +88,51 @@ export default function NewPasswordForm() {
             {/* Campo para la nueva contraseña */}
             <div className="space-y-1.5">
               <Label htmlFor="password" className="text-white text-sm">Nueva Contraseña</Label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="********"
-                className="w-full h-11 pl-3 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                         focus:ring-2 focus:ring-[#7c3aed] border-none"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="********"
+                  className="w-full h-11 pl-3 pr-10 bg-[#3a3a4e] rounded-lg text-white text-sm
+                           focus:ring-2 focus:ring-[#7c3aed] border-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-opacity-70 hover:text-opacity-100"
+                >
+                  {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+                </button>
+              </div>
             </div>
 
             {/* Campo para confirmar la contraseña */}
             <div className="space-y-1.5">
               <Label htmlFor="confirm-password" className="text-white text-sm">Confirmar Contraseña</Label>
-              <input
-                id="confirm-password"
-                name="confirm-password"
-                type="password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="********"
-                className="w-full h-11 pl-3 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                         focus:ring-2 focus:ring-[#7c3aed] border-none"
-              />
+              <div className="relative">
+                <input
+                  id="confirm-password"
+                  name="confirm-password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="********"
+                  className="w-full h-11 pl-3 pr-10 bg-[#3a3a4e] rounded-lg text-white text-sm
+                           focus:ring-2 focus:ring-[#7c3aed] border-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-opacity-70 hover:text-opacity-100"
+                >
+                  {showConfirmPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+                </button>
+              </div>
             </div>
 
             {/* Botón para enviar el formulario */}
