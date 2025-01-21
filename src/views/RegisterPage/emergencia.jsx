@@ -16,6 +16,9 @@ export default function RegisterForm() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [searchCity, setSearchCity] = useState("");
+  const [filteredCities, setFilteredCities] = useState([]);
+
 
     // Datos de ejemplo - reemplazar con datos de la API
     const tiposDocumento = [
@@ -256,7 +259,7 @@ export default function RegisterForm() {
                     required
                     className="w-full py-3 px-4 pl-10 bg-[#3a3a4e] rounded-lg text-gray-400 text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:ring-offset-0 appearance-none"
                   >
-                    <option value="">Selecciona ciudad</option>
+                    <option value="">Busca tu ciudad</option>
                     {ciudadesColombia.map(ciudad => (
                       <option key={ciudad.id} value={ciudad.id}>{ciudad.nombre}</option>
                     ))}
