@@ -27,9 +27,6 @@ const TrainingProcessEdit = lazy(() =>
 const ProyectsEdit = lazy(() =>
   import("../../components/camperProfileEdit/ProyectsEdit")
 );
-const SponsorCTAEdit = lazy(() =>
-  import("@/components/camperProfileEdit/SponsorCTAEdit")
-);
 const Footer = lazy(() => import("../../components/footer/Footer"));
 
 const CamperProfileEdit = () => {
