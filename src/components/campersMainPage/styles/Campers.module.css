@@ -85,33 +85,33 @@
    display: flex;
    justify-content: center;
    gap: 10px; /* Espaciado entre los puntos */
-   margin-top: 2rem; /* Margen superior como Tailwind */
-}
-
-/* Estilo de las balas (dots) */
-:global(.swiper-pagination-bullet) {
-   background-color: rgba(255, 255, 255, 0.2); /* Color blanco con transparencia */
+   margin-top: 2rem; /* Margen superior */
+ }
+ 
+ /* Estilo de las balas (dots) */
+ :global(.swiper-pagination-bullet) {
+   background-color: var(--swiper-bullet-bg); /* Usar variable para el color base */
    width: 12px; /* Ancho inicial */
    height: 12px; /* Alto inicial */
    border-radius: 9999px; /* Redondeo total (círculo) */
    transition: all 0.3s ease;
-}
-
-:global(.swiper-pagination-bullet:hover) {
-   background-color: rgba(255, 255, 255, 0.4); /* Color al pasar el mouse */
+ }
+ 
+ :global(.swiper-pagination-bullet:hover) {
+   background-color: var(--swiper-bullet-hover-bg); /* Usar variable para el hover */
    transform: scale(1.2); /* Escala al hover */
-}
-
-/* Estilo de la bala activa */
-:global(.swiper-pagination-bullet-active) {
-   background-color: #66E7F3; /* Color activo (similar al Tailwind) */
+ }
+ 
+ /* Estilo de la bala activa */
+ :global(.swiper-pagination-bullet-active) {
+   background-color: var(--color2); /* Usar variable para el color activo */
    width: 48px; /* Ancho expandido para la bala activa */
    height: 12px; /* Altura constante */
    opacity: 1; /* Sin transparencia */
    transform: scale(1); /* Sin escala adicional */
    transition: all 0.3s ease;
-}
-
+ }
+ 
 
 .card {
    width: 300px;
