@@ -126,7 +126,7 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
 
     // Si no hay texto, mostrar las primeras 5 ciudades
     if (!query) {
-      setFilteredCities(ciudadesColombia.slice(0, 3));
+      setFilteredCities(ciudadesColombia.slice(0, 10));
       return;
     }
 
@@ -136,7 +136,7 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
       return words.every((word) => normalizedCityName.includes(word));
     });
 
-    setFilteredCities(filtered.slice(0, 5)); // Limitar a 5 resultados
+    setFilteredCities(filtered.slice(0, 3)); // Limitar a 5 resultados
   };
 
 
@@ -304,7 +304,10 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
           </div>
 
           <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <MapPin
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={18}
+            />
             <Input
               id="city"
               name="city"
@@ -322,32 +325,37 @@ const ProfileHeaderModal = ({ initialData, onUpdate }) => {
                 filterCities(capitalizedValue);
               }}
               className="w-full pl-[38px] bg-blue-950/50 border-blue-500/30 text-blue-200 focus:ring-yellow-400/20 hover:bg-blue-900/30 transition-all"
+              autoComplete="off"
             />
-            {showDropdown && filteredCities.length > 0 && (
+            {showDropdown && (
               <ul
-                className="absolute bg-blue-950 mt-1 rounded-lg shadow-lg max-h-40 overflow-auto z-50 hide-scrollbar"
-                style={{ maxHeight: "calc(2.5rem * 5)" }}
+                className="absolute bg-blue-950 mt-1 rounded-lg shadow-lg z-50 hide-scrollbar max-h-[128px] overflow-y-auto w-full border border-blue-500/30"
               >
-                {filteredCities.map((ciudad) => (
-                  <li
-                    key={ciudad.id.toString()}
-                    className="px-4 py-2 text-blue-200 hover:bg-yellow-500 cursor-pointer"
-                    onClick={() => {
-                      setSearchCity(ciudad.city);
-                      setFormData((prev) => ({ ...prev, city_id: ciudad.id.toString() }));
-                      setFilteredCities([]);
-                      setShowDropdown(false);
-                    }}
-                  >
-                    {ciudad.city}
-                  </li>
-                ))}
+                {filteredCities.length > 0 ? (
+                  filteredCities.map((ciudad) => (
+                    <li
+                      key={ciudad.id.toString()}
+                      className="px-4 py-2 text-blue-200 hover:bg-yellow-500 cursor-pointer"
+                      onClick={() => {
+                        setSearchCity(ciudad.city);
+                        setFormData((prev) => ({
+                          ...prev,
+                          city_id: ciudad.id.toString(),
+                        }));
+                        setFilteredCities([]);
+                        setShowDropdown(false);
+                      }}
+                    >
+                      {ciudad.city}
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-4 py-2 text-yellow-400">No hay resultados</li>
+                )}
               </ul>
             )}
-            {showDropdown && searchCity && filteredCities.length === 0 && (
-              <p className="text-yellow-400 text-sm mt-1">No hay resultados</p>
-            )}
           </div>
+
 
           <div className="flex justify-end space-x-2 pt-4">
             <DialogTrigger asChild>
