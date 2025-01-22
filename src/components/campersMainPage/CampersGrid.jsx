@@ -22,6 +22,7 @@ const CampersGrid = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [campersData, setCampersData] = useState([]);
+    const [filteredCampers, setFilteredCampers] = useState([]);
     const navigate = useNavigate();
 
     const mobileVisibleSkillsCount = 4;
@@ -64,20 +65,18 @@ const CampersGrid = () => {
 
     const handleSponsorClick = () => {
         if (location.pathname === '/') {
-            // Si ya estás en la página de inicio, realiza el desplazamiento
             const section = document.getElementById('sponsro');
             if (section) {
                 section.scrollIntoView({ behavior: 'smooth' });
             }
         } else {
-            // Si no estás en la página de inicio, navega y luego desplázate
             navigate('/');
             setTimeout(() => {
                 const section = document.getElementById('sponsro');
                 if (section) {
                     section.scrollIntoView({ behavior: 'smooth' });
                 }
-            }, 500); // Tiempo para asegurar que la página cargue
+            }, 500);
         }
     };
 
@@ -99,6 +98,7 @@ const CampersGrid = () => {
 
                 setpredefinedSkills(allMerits);
                 setCampersData(campersWithMerits);
+                setFilteredCampers(campersWithMerits);
                 setIsLoading(false);
             } catch (err) {
                 setError("Error al cargar los datos de los campers.");
@@ -121,30 +121,45 @@ const CampersGrid = () => {
         return () => window.removeEventListener("resize", updateDimensions);
     }, []);
 
+    // Filtrado por nombre
+    useEffect(() => {
+        if (searchTerm.trim() === "") {
+            setFilteredCampers(campersData);
+            return;
+        }
+
+        const filtered = campersData.filter((camper) =>
+            camper.full_name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredCampers(filtered);
+    }, [searchTerm, campersData]);
+
+    const handleSearchSubmit = (e) => {
+        if (e.key === "Enter") {
+            console.log("Búsqueda enviada:", searchTerm);
+        }
+    };
+
     const visibleSkills = isMobile
         ? isFilterExpanded
             ? predefinedSkills
             : predefinedSkills.slice(0, mobileVisibleSkillsCount)
         : predefinedSkills.slice(0, desktopVisibleSkillsCount);
 
-    const filteredCampers =
+    const filteredCampersBySkills =
         selectedSkills.length === 0
-            ? campersData
-            : campersData.filter((camper) =>
+            ? filteredCampers
+            : filteredCampers.filter((camper) =>
                 selectedSkills.every((skill) =>
                     camper.skills.some((camperSkill) => camperSkill.id === skill.id)
                 )
             );
 
     const startIndex = (currentPage - 1) * campersPerPage;
-    const currentCampers = filteredCampers.slice(
+    const currentCampers = filteredCampersBySkills.slice(
         startIndex,
         startIndex + campersPerPage
     );
-    console.log("currentCampers:", currentCampers)
-    console.log("CamperData: ", campersData)
-    console.log("predefinedStills", predefinedSkills)
-    console.log(selectedSkills)
 
     const handleSkillFilter = (skill) => {
         setSelectedSkills((prev) =>
@@ -157,21 +172,17 @@ const CampersGrid = () => {
 
     return (
         <section className="campersgrid">
-            {/* Líneas de circuito */}
             <div className="circuit-lines">
                 {generateCircuitLines()}
             </div>
 
-            {/* Puntos de conexión */}
             <div className="connection-dots">
                 {generateConnectionDots()}
             </div>
             <div className="badge-filters">
                 <h3>Busca a Tu Camper</h3>
                 <div className="skill-filters wrapper-filter">
-                    <div
-                        className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}
-                    >
+                    <div className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}>
                         <AnimatePresence>
                             {visibleSkills.map((skill) => (
                                 <motion.div
@@ -181,8 +192,7 @@ const CampersGrid = () => {
                                     exit={{ opacity: 0, scale: 0.8 }}
                                 >
                                     <Button
-                                        className={`skill-button icon-filter badgeInfo ${selectedSkills.some(selectedSkill => selectedSkill.id === skill.id) ? "selected" : "outline"
-                                            }`}
+                                        className={`skill-button icon-filter badgeInfo ${selectedSkills.some(selectedSkill => selectedSkill.id === skill.id) ? "selected" : "outline"}`}
                                         onClick={() => handleSkillFilter(skill)}
                                     >
                                         <div className="tooltip-filter">{skill.description}</div>
@@ -192,16 +202,27 @@ const CampersGrid = () => {
                             ))}
                         </AnimatePresence>
                     </div>
+
+                    {/* Campo de búsqueda */}
+                    <div className="search-container">
+                        <input
+                            type="text"
+                            placeholder="Buscar por nombre 🔍"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyDown={handleSearchSubmit}
+                            className="search-input"
+                        />
+                    </div>
+
                     {isMobile && predefinedSkills.length > mobileVisibleSkillsCount && (
                         <button
-                            className={`expand-filters-button ${isFilterExpanded ? "expanded" : ""
-                                }`}
+                            className={`expand-filters-button ${isFilterExpanded ? "expanded" : ""}`}
                             onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                         >
                             {isFilterExpanded ? "Ver menos" : "Ver más"}
                             <ChevronDown
-                                className={`ml-2 h-4 w-4 transition-transform ${isFilterExpanded ? "rotate-180" : ""
-                                    }`}
+                                className={`ml-2 h-4 w-4 transition-transform ${isFilterExpanded ? "rotate-180" : ""}`}
                             />
                         </button>
                     )}
@@ -217,25 +238,20 @@ const CampersGrid = () => {
                                         src={
                                             camper.profile_picture && camper.profile_picture.trim() !== ""
                                                 ? camper.profile_picture
-                                                : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+                                                : defaultProfileImage
                                         }
                                         alt={camper.full_name}
                                         effect="blur"
                                         className="w-full h-[300px] object-cover rounded-lg"
                                     />
-
                                 </div>
                                 <div className="camper-maininfo">
                                     <h3>{camper.full_name}</h3>
                                     <p>{camper.title}</p>
-
                                     <div className="technologies">
                                         <span className="tech-label">Méritos:</span>
                                         <div layout className="skills-wrapper wrapper">
-                                            <div
-                                                className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""
-                                                    }`}
-                                            >
+                                            <div className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""}`}>
                                                 <AnimatePresence>
                                                     {camper.skills.map((skill, index) => (
                                                         <motion.div
@@ -265,8 +281,7 @@ const CampersGrid = () => {
                                                 >
                                                     {expandedSkills[camper.camper_id] ? "Ver menos" : "Ver más"}
                                                     <ChevronDown
-                                                        className={`ml-2 h-4 w-4 transition-transform ${expandedSkills[camper.camper_id] ? "rotate-180" : ""
-                                                            }`}
+                                                        className={`ml-2 h-4 w-4 transition-transform ${expandedSkills[camper.camper_id] ? "rotate-180" : ""}`}
                                                     />
                                                 </button>
                                             )}
@@ -295,12 +310,11 @@ const CampersGrid = () => {
             <DotPagination
                 current={currentPage}
                 pageSize={campersPerPage}
-                total={filteredCampers.length}
+                total={filteredCampersBySkills.length}
                 onChange={setCurrentPage}
             />
         </section>
     );
-
 };
 
 const DotPagination = ({ current, total, pageSize, onChange }) => {
@@ -342,14 +356,14 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
                     onClick={() => dot !== "..." && onChange(dot)}
                     disabled={dot === "..."}
                     className={`
-            w-3 h-3 rounded-full transition-all duration-200 ease-in-out
-            ${dot === "..."
+                        w-3 h-3 rounded-full transition-all duration-200 ease-in-out
+                        ${dot === "..."
                             ? "w-6 bg-gray-300 cursor-default"
                             : dot === current
                                 ? "bg-blue-500 scale-110"
                                 : "bg-gray-300 hover:bg-gray-400"
                         }
-          `}
+                    `}
                     aria-label={dot === "..." ? "More pages" : `Page ${dot}`}
                 >
                     {dot === "..." && <span className="text-xs text-gray-600">•••</span>}
