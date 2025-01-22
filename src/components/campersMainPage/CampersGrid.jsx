@@ -167,7 +167,14 @@ const CampersGrid = () => {
                 {generateConnectionDots()}
             </div>
             <div className="badge-filters">
-                <h3>Busca a Tu Camper</h3>
+                <div class="titleSearch">
+                    <h3 class="font-bold text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color1)] skew-x-6">
+                        Busca a Tu
+                    </h3>
+                    <h2 class="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] shadow-[3px_3px_0px_rgba(0,0,0,0.2)] skew-x-[-6deg]">
+                        Camper
+                    </h2>
+                </div>
                 <div className="skill-filters wrapper-filter">
                     <div
                         className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}
@@ -353,7 +360,7 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
                 </button>
             ))}
         </div>
-
+        
     );
 };
 

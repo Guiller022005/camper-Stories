@@ -119,7 +119,7 @@
 .dev-card-content {
   display: flex;
   flex-direction: row;
-  width: 450px;
+  width: 430px;
   height: auto;
   padding: 20px 20px 20px 20px;
   gap: 8px;
@@ -137,8 +137,11 @@
 }
 
 .camper-maininfo h3 {
-  font-size: 1.3rem;
+  width: 253px;
+  height: 26px;
+  font-size: 1.1rem;
   font-weight: 700;
+  overflow-y: hidden;
 }
 
 .camper-image {
@@ -467,7 +470,25 @@ button {
   font-weight: 700;
   letter-spacing: 0.9px;
   text-transform: uppercase;
-  font-family: "Poppins", sans-serif;
+  font-family: 'titulo--exitosos';
+}
+.titleSearch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 0;
+}
+.badge-filters h2 {
+  display: flex;
+  flex-direction: column;
+  color: var(--color1);
+  font-size: 65px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  font-family: 'titulo--exitosos';
 }
 
 @media (max-width: 480px) {
@@ -569,8 +590,20 @@ button {
     width: 290px;
     flex-direction: column;
     line-height: 50px;
-    font-size: 45px;
+    font-size: 25px;
     padding-left: 5px;
+  }
+  .badge-filters h2 {
+    display: flex;
+    text-align: center;
+    width: 290px;
+    flex-direction: column;
+    line-height: 50px;
+    font-size: 25px;
+    padding-left: 5px;
+  }
+  .titleSearch {
+    margin-bottom: 2rem;
   }
 }
 
@@ -631,39 +664,3 @@ button {
   }
 
 /*End wrapper*/
-
-@media screen and (min-width: 1555px) {
-  :global(.swiper-horizontal > .swiper-pagination-bullets) {
-  --swiper-pagination-bottom: -49px; 
-  
-  }
-  .grid-container {
-    display: grid; /* Cambiado de flex a grid */
-    grid-template-columns: repeat(4, 1fr); /* 4 columnas iguales */
-    grid-auto-rows: auto; /* Asegura que las filas se ajusten automáticamente */
-    gap: 20px; /* Espacio entre las tarjetas */
-    justify-content: center;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    box-sizing: border-box;
-    padding-top: 1rem;
-    position: relative;
-    z-index: 10;
-  }
-  .developer-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: fit-content;
-    max-width: 450px;
-    height: fit-content;
-    background-color: #2d2b54;
-    color: #ffffff;
-    border-radius: 10px;
-    position: relative;
-    z-index: 2;
-  }
-}
-
