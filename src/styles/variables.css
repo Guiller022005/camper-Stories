@@ -11,7 +11,7 @@
     --main-text-color: rgba(255, 255, 255, 0.87);
 
     /* Color base de las balas */
-    --swiper-bullet-bg: rgb(255, 255, 255);
+    --swiper-bullet-bg: rgb(255, 255, 255, 0.2);
     /* Color de las balas al pasar el mouse */
     --swiper-bullet-hover-bg: rgba(255, 255, 255, 0.4);
 }
