@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@500;600;700&display=swap");
+@import url(./../../../styles/variables.css);
 
 /* Patrón tecnológico */
 .campersgrid {
@@ -110,7 +111,7 @@
   height: fit-content;
   margin-bottom: 20px;
   background-color: #2d2b54;
-  color: #ffffff;
+  color: var(--color1);
   border-radius: 10px;
   position: relative;
   z-index: 2;
@@ -173,7 +174,7 @@
 }
 
 .tech-label {
-  color: #f4b422;
+  color: var(--color2);
   font-size: clamp(13px, 1.5vw, 15px);
   font-weight: 500;
 }
@@ -209,10 +210,10 @@
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
-  color: #ffffff;
+  color: var(--color1);
   font-size: 20px;
   border: none;
-  background-color: #ffa500;
+  background-color: var(--color2);
   cursor: pointer;
   transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -297,7 +298,7 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1rem;
-  background-color: white;
+  background-color: var(--color1);
   color: #2d2b54;
   margin: 0.3rem;
   font-size: 0.9rem;
@@ -310,20 +311,20 @@
 }
 
 .skill-button.outline {
-  background-color: white;
+  background-color: var(--color1);
   color: #2d2b54;
   border: 1px solid #4a4a75;
 }
 
 .skill-button.selected {
   background-color: #6060d5;
-  color: white;
-  border-color: #f4b422;
+  color: var(--color1);
+  border-color: var(--color2);
 }
 
 .skill-button:hover {
   background-color: #2d2b54;
-  color: #f4b422;
+  color: var(--color2);
 }
 
 /* Buttons */
@@ -354,13 +355,13 @@ button {
 
 .info-button,
 .sponsor-button {
-  background-color: #f4b422;
+  background-color: var(--color2);
   color: #0d0d12;
 }
 
 .info-button:hover,
 .sponsor-button:hover {
-  background-color: #fdc347;
+  background-color: var(--color2-hover);
 }
 
 .expand-skills-button {
@@ -461,7 +462,7 @@ button {
 .badge-filters h3 {
   display: flex;
   flex-direction: column;
-  color: #ffa500;
+  color: var(--color2);
   font-size: 65px;
   font-weight: 700;
   letter-spacing: 0.9px;
@@ -551,10 +552,10 @@ button {
     display: flex;
     justify-content: center;
     padding: 0.5rem;
-    color: #ffffff;
+    color: var(--color1);
     font-size: 20px;
     border: none;
-    background-color: #ffa500;
+    background-color: var(--color2);
     cursor: pointer;
   }
 
@@ -591,7 +592,7 @@ button {
   position: absolute;
   bottom: 120%;
   font-size: 14px;
-  color: #ffffff;
+  color: var(--color1);
   z-index: 9999;
   font-size: small;
   padding: 8px 8px;
@@ -620,7 +621,7 @@ button {
 .wrapper-filter .badgeInfo:hover .tooltip-filter,
 .wrapper-filter .badgeInfo:hover .tooltip-filter::before {
   background: #1a1a1a;
-  border: 1px solid #fdc347;
+  border: 1px solid var(--color2-hover);
 }
 
 @media screen and (min-width: 1025px) {

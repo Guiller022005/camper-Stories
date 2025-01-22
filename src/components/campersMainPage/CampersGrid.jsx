@@ -349,27 +349,25 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
     };
 
     return (
-        <div className="flex z-10 items-center justify-center space-x-2 py-4">
+        <div className="flex justify-center gap-2 md:gap-4 mt-7 md:mt-8 z-10">
             {getVisibleDots().map((dot, index) => (
                 <button
                     key={index}
                     onClick={() => dot !== "..." && onChange(dot)}
                     disabled={dot === "..."}
-                    className={`
-                        w-3 h-3 rounded-full transition-all duration-200 ease-in-out
-                        ${dot === "..."
-                            ? "w-6 bg-gray-300 cursor-default"
+                    className={`rounded-full transition-all duration-300 ${dot === "..."
+                            ? "w-12 md:w-16 h-3 md:h-[12px] bg-gray-300 cursor-default"
                             : dot === current
-                                ? "bg-blue-500 scale-110"
-                                : "bg-gray-300 hover:bg-gray-400"
-                        }
-                    `}
+                                ? "bg-color2 w-12 md:w-16 h-3 md:h-[12px] scale-110"
+                                : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-2 md:w-[12px] h-3 md:h-[12px]"
+                        }`}
                     aria-label={dot === "..." ? "More pages" : `Page ${dot}`}
                 >
                     {dot === "..." && <span className="text-xs text-gray-600">•••</span>}
                 </button>
             ))}
         </div>
+
     );
 };
 
