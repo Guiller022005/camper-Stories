@@ -108,7 +108,6 @@
   width: fit-content;
   max-width: 600px;
   height: fit-content;
-  margin-bottom: 20px;
   background-color: #2d2b54;
   color: #ffffff;
   border-radius: 10px;
@@ -626,21 +625,44 @@ button {
 
 @media screen and (min-width: 1025px) {
   :global(.swiper-horizontal > .swiper-pagination-bullets) {
-  --swiper-pagination-bottom: -49px; /* Ajusta la posición para pantallas mayores a 1024px /
-  }
-  }
-  
-  
-  @media screen and (max-width: 720px) {
-  :global(.swiper-horizontal > .swiper-pagination-bullets) {
-  --swiper-pagination-bottom: -49px; / Ajusta la posición para pantallas mayores a 1024px /
-  }
-  }
-  
-  @media screen and (max-width: 768px) {
-  :global(.swiper-horizontal > .swiper-pagination-bullets) {
-  --swiper-pagination-bottom: -49px; / Ajusta la posición para pantallas mayores a 1024px */
+  --swiper-pagination-bottom: -49px; 
   }
   }
 
 /*End wrapper*/
+
+@media screen and (min-width: 1555px) {
+  :global(.swiper-horizontal > .swiper-pagination-bullets) {
+  --swiper-pagination-bottom: -49px; 
+  
+  }
+  .grid-container {
+    display: grid; /* Cambiado de flex a grid */
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas iguales */
+    grid-auto-rows: auto; /* Asegura que las filas se ajusten automáticamente */
+    gap: 20px; /* Espacio entre las tarjetas */
+    justify-content: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    box-sizing: border-box;
+    padding-top: 1rem;
+    position: relative;
+    z-index: 10;
+  }
+  .developer-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    max-width: 450px;
+    height: fit-content;
+    background-color: #2d2b54;
+    color: #ffffff;
+    border-radius: 10px;
+    position: relative;
+    z-index: 2;
+  }
+}
+
