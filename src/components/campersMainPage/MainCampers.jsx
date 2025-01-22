@@ -17,7 +17,7 @@ const MainCampers = () => {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
-    
+
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
@@ -119,15 +119,15 @@ const MainCampers = () => {
                     {badges.map(({ text, icon }) => (
                       <div
                         key={text}
-                        className="bg-white/10 hover:bg-white/20 text-white px-3 md:px-5 py-2 md:py-3 text-sm md:text-base flex items-center gap-2 md:gap-3 backdrop-blur-sm transition-all hover:scale-105 rounded-full"
+                        className="bg-white/10 hover:bg-white/20 text-color2 px-3 md:px-5 py-2 md:py-3 text-sm md:text-base flex items-center gap-2 md:gap-3 backdrop-blur-sm transition-all hover:scale-105 rounded-full"
                       >
                         {icon}
-                        <span className="hidden sm:inline">{text}</span>
+                        <span className="hidden sm:inline text-white">{text}</span>
                       </div>
                     ))}
                   </motion.div>
                 </div>
-                
+
                 <motion.p
                   className="text-white/90 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-2xl"
                   initial={{ opacity: 0, y: 10 }}
@@ -138,7 +138,7 @@ const MainCampers = () => {
                   {campers[currentIndex].about}
                 </motion.p>
 
-                <motion.div 
+                <motion.div
                   className="font-firma text-[#66E7F3] text-3xl md:text-5xl lg:text-6xl italic"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -196,7 +196,7 @@ const MainCampers = () => {
         </AnimatePresence>
 
         {/* Interactive Navigation Dots */}
-        <motion.div 
+        <motion.div
           className="flex justify-center gap-2 md:gap-4 mt-12 md:mt-24"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -206,16 +206,16 @@ const MainCampers = () => {
             <motion.button
               key={i}
               onClick={() => setCurrentIndex(i)}
-              className={`rounded-full transition-all duration-300 ${
-                i === currentIndex 
-                  ? "bg-[#66E7F3] w-12 md:w-16 h-3 md:h-4" 
-                  : "bg-white/20 hover:bg-white/40 w-3 md:w-4 h-3 md:h-4"
-              }`}
+              className={`rounded-full transition-all duration-300 ${i === currentIndex
+                ? "bg-color2 w-12 md:w-16 h-3 md:h-4" // Bala activa
+                : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-3 md:w-4 h-3 md:h-4" // Balas normales
+                }`}
               whileHover={{ scale: 1.2 }}
               aria-label={`Go to slide ${i + 1}`}
             />
           ))}
         </motion.div>
+
       </div>
     </div>
   );

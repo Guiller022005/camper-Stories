@@ -142,7 +142,7 @@ const Campers = () => {
                               navigate(`/campers/profile/${camper.camper_id}`);
                             }}
                           >
-                            Ver más
+                            <br/>Ver más
                           </span>
                         </>
                       ) : (
