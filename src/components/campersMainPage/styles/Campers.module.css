@@ -1,4 +1,3 @@
-@import '/src/styles/variables.css';
 
 .campersContainer {
    width: 100%;
@@ -91,8 +90,9 @@
  /* Estilo de las balas (dots) */
  :global(.swiper-pagination-bullet) {
    background-color: var(--swiper-bullet-bg); /* Usar variable para el color base */
-   width: 12px; /* Ancho inicial */
-   height: 12px; /* Alto inicial */
+   opacity: 100 !important;
+   width: 1rem; /* Ancho inicial */
+   height: 1rem; /* Alto inicial */
    border-radius: 9999px; /* Redondeo total (círculo) */
    transition: all 0.3s ease;
  }
@@ -106,7 +106,7 @@
  :global(.swiper-pagination-bullet-active) {
    background-color: var(--color2); /* Usar variable para el color activo */
    width: 48px; /* Ancho expandido para la bala activa */
-   height: 12px; /* Altura constante */
+   height: 1rem; /* Altura constante */
    opacity: 1; /* Sin transparencia */
    transform: scale(1); /* Sin escala adicional */
    transition: all 0.3s ease;
