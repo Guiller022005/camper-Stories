@@ -214,11 +214,16 @@ const CampersGrid = () => {
                             <div className="dev-card-content">
                                 <div className="camper-image">
                                     <LazyLoadImage
-                                        src={camper.profile_picture}
+                                        src={
+                                            camper.profile_picture && camper.profile_picture.trim() !== ""
+                                                ? camper.profile_picture
+                                                : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+                                        }
                                         alt={camper.full_name}
                                         effect="blur"
                                         className="w-full h-[300px] object-cover rounded-lg"
                                     />
+
                                 </div>
                                 <div className="camper-maininfo">
                                     <h3>{camper.full_name}</h3>

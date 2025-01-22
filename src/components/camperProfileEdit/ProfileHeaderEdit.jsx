@@ -28,7 +28,11 @@ const ProfileHeaderEdit = ({ data, initialMerits, onUpdate }) => {
         <div className={styles.profileContent}>
           <div className={styles.profileImage}>
             <LazyLoadImage
-              src={data.profile_picture}
+              src={
+                data.profile_picture && data.profile_picture.trim() !== ""
+                  ? data.profile_picture
+                  : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+              }
               alt={`Perfil de ${data.full_name}`}
               effect="blur"
               className={styles.profileImageContent}
@@ -46,7 +50,7 @@ const ProfileHeaderEdit = ({ data, initialMerits, onUpdate }) => {
                     mainImage: data.profile_picture,
                   }}
                   onUpdate={onUpdate}
-              
+
                 />
               </p>
             </h1>
@@ -106,9 +110,8 @@ const ProfileHeaderEdit = ({ data, initialMerits, onUpdate }) => {
               <span className={styles.toggleBadgesContent}>
                 {showAllBadges ? "Ver menos" : "Ver más"}
                 <ChevronDown
-                  className={`${styles.chevronIcon} ${
-                    showAllBadges ? styles.rotate180 : ""
-                  }`}
+                  className={`${styles.chevronIcon} ${showAllBadges ? styles.rotate180 : ""
+                    }`}
                 />
               </span>
             </div>
