@@ -1,5 +1,5 @@
 // TiktokEmbed.jsx
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import "./styles/TiktokEmbed.css";
 
 const TikTokEmbed = ({ videoUrl }) => {
@@ -82,24 +82,26 @@ const TikTokEmbed = ({ videoUrl }) => {
   }, []);
 
   return (
-    <div className="tiktok-embed-container">
-      <blockquote
-        className="tiktok-embed"
-        cite={videoUrl}
-        data-video-id={videoId}
-        style={{ maxWidth: "605px", minWidth: "325px" }}
-      >
-        <section>
-          <a 
-            target="_blank" 
-            href={videoUrl}
-            rel="noopener noreferrer"
-          >
-            {/* El reproductor se insertará aquí automáticamente */}
-          </a>
-        </section>
-      </blockquote>
-    </div>
+    <Fragment>
+      <div className="tiktok-embed-container">
+        <blockquote
+          className="tiktok-embed"
+          cite={videoUrl}
+          data-video-id={videoId}
+          style={{ maxWidth: "605px", minWidth: "325px" }}
+        >
+          <section>
+            <a 
+              target="_blank" 
+              href={videoUrl}
+              rel="noopener noreferrer"
+            >
+              {/* El reproductor se insertará aquí automáticamente */}
+            </a>
+          </section>
+        </blockquote>
+      </div>
+    </Fragment>
   );
 };
 
