@@ -15,7 +15,7 @@ const Footer = () => {
         <div className="w-full h-[2px] bg-white mb-[6px]"></div>
         <div className="flex justify-between items-center w-full">
           <p className="px-[1rem] pb-[0.5rem] text-[16px] font-[400] font-mono">
-            © Campus 2024 - Todos los derechos Reservados | <b>Camper Stories v0.4.5</b>
+            © Campus 2024 - Todos los derechos Reservados | <b>Camper Stories v0.5.0</b>
           </p>
           <div className="flex gap-[1.5rem] p-[0.7rem] text-[25px] sm:text-[20px]">
             <a href="https://www.facebook.com/Campuslands/" target="_blank" rel="noopener noreferrer" className="text-white transition-transform duration-200 hover:scale-[1.3]">
