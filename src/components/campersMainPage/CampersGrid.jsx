@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronLeft} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { fetchCampersFormacion, fetchMeritsCamperById, fetchAllMerits } from "../../services/camperService";
@@ -303,33 +303,84 @@ const CampersGrid = () => {
 
 };
 
-
 const DotPagination = ({ current, total, pageSize, onChange }) => {
-    const pageCount = Math.ceil(total / pageSize);
-  
-    return (
-      <motion.div
-        className="flex justify-center gap-2 md:gap-4 mt-12 md:mt-24 z-10"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.2 }}
-      >
-        {/* Generar botones para todas las páginas */}
-        {Array.from({ length: pageCount }, (_, i) => i + 1).map((page) => (
-          <motion.button
-            key={page}
-            onClick={() => onChange(page)}
-            className={`rounded-full transition-all duration-300 ${
-              page === current
-                ? "bg-color2 w-12 md:w-16 h-3 md:h-[12px] scale-110" // Botón activo
-                : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-3 md:w-[12px] h-3 md:h-[12px]" // Botones normales
-            }`}
-            whileHover={{ scale: 1.2 }}
-            aria-label={`Go to page ${page}`}
-          />
-        ))}
-      </motion.div>
-    );
+  const pageCount = Math.ceil(total / pageSize);
+
+  const handlePrev = () => {
+    if (current > 1) onChange(current - 1);
   };
+
+  const handleNext = () => {
+    if (current < pageCount) onChange(current + 1);
+  };
+
+  const getVisibleDots = () => {
+    const maxVisible = 5; // Máximo número de botones visibles
+    const dots = [];
+
+    if (pageCount <= maxVisible) {
+      for (let i = 1; i <= pageCount; i++) {
+        dots.push(i);
+      }
+    } else {
+      if (current <= 3) {
+        dots.push(1, 2, 3, 4, 5);
+      } else if (current >= pageCount - 2) {
+        dots.push(pageCount - 4, pageCount - 3, pageCount - 2, pageCount - 1, pageCount);
+      } else {
+        dots.push(current - 2, current - 1, current, current + 1, current + 2);
+      }
+    }
+
+    return dots;
+  };
+
+  return (
+    <motion.div
+      className="flex justify-center items-center gap-4 mt-12 md:mt-24 z-10"
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 1.2 }}
+    >
+      {/* Botón Prev */}
+      <button
+        onClick={handlePrev}
+        disabled={current === 1}
+        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
+        aria-label="Previous page"
+      >
+        <ChevronLeft className="w-4 h-4" /> {/* Tamaño reducido del ícono */}
+      </button>
+
+      {/* Botones de página */}
+      {getVisibleDots().map((page) => (
+        <motion.button
+          key={page}
+          onClick={() => onChange(page)}
+          className={`rounded-full transition-all duration-300 ${
+            page === current
+              ? "bg-color2 w-12 md:w-16 h-3 md:h-4 scale-110" // Botón activo
+              : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-3 md:w-4 h-3 md:h-4" // Botones normales
+          }`}
+          whileHover={{ scale: 1.2 }}
+          aria-label={`Go to page ${page}`}
+        >
+        </motion.button>
+      ))}
+
+      {/* Botón Next */}
+      <button
+        onClick={handleNext}
+        disabled={current === pageCount}
+        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
+        aria-label="Next page"
+      >
+        <ChevronRight className="w-4 h-4" /> {/* Tamaño reducido del ícono */}
+      </button>
+    </motion.div>
+  );
+};
+
+
 
 export default CampersGrid;
