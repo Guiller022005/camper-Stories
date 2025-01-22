@@ -1,7 +1,11 @@
 :root {
     --color1: #FFFFFF;
-    --color2: #FFA500;
+    --color2: #66E7F3;
     --color3: #030337;
+    --color4: #535bf2;
+    --color4-hover:#646cff;
+    --main-background-color: #242424;
+    --main-text-color: rgba(255, 255, 255, 0.87);
 }
 
 @font-face {
