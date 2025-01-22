@@ -303,58 +303,33 @@ const CampersGrid = () => {
 
 };
 
+
 const DotPagination = ({ current, total, pageSize, onChange }) => {
     const pageCount = Math.ceil(total / pageSize);
-
-    const getVisibleDots = () => {
-        let dots = [];
-        if (pageCount <= 7) {
-            for (let i = 1; i <= pageCount; i++) {
-                dots.push(i);
-            }
-            return dots;
-        }
-
-        if (current <= 4) {
-            dots = [1, 2, 3, 4, 5, "...", pageCount];
-        } else if (current >= pageCount - 3) {
-            dots = [
-                1,
-                "...",
-                pageCount - 4,
-                pageCount - 3,
-                pageCount - 2,
-                pageCount - 1,
-                pageCount,
-            ];
-        } else {
-            dots = [1, "...", current - 1, current, current + 1, "...", pageCount];
-        }
-
-        return dots;
-    };
-
+  
     return (
-        <div className="flex justify-center gap-2 md:gap-4 mt-7 md:mt-8 z-10">
-            {getVisibleDots().map((dot, index) => (
-                <button
-                    key={index}
-                    onClick={() => dot !== "..." && onChange(dot)}
-                    disabled={dot === "..."}
-                    className={`rounded-full transition-all duration-300 ${dot === "..."
-                            ? "w-12 md:w-16 h-3 md:h-[12px] bg-gray-300 cursor-default"
-                            : dot === current
-                                ? "bg-color2 w-12 md:w-16 h-3 md:h-[12px] scale-110"
-                                : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-2 md:w-[12px] h-3 md:h-[12px]"
-                        }`}
-                    aria-label={dot === "..." ? "More pages" : `Page ${dot}`}
-                >
-                    {dot === "..." && <span className="text-xs text-gray-600">•••</span>}
-                </button>
-            ))}
-        </div>
-
+      <motion.div
+        className="flex justify-center gap-2 md:gap-4 mt-12 md:mt-24 z-10"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1.2 }}
+      >
+        {/* Generar botones para todas las páginas */}
+        {Array.from({ length: pageCount }, (_, i) => i + 1).map((page) => (
+          <motion.button
+            key={page}
+            onClick={() => onChange(page)}
+            className={`rounded-full transition-all duration-300 ${
+              page === current
+                ? "bg-color2 w-12 md:w-16 h-3 md:h-[12px] scale-110" // Botón activo
+                : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-3 md:w-[12px] h-3 md:h-[12px]" // Botones normales
+            }`}
+            whileHover={{ scale: 1.2 }}
+            aria-label={`Go to page ${page}`}
+          />
+        ))}
+      </motion.div>
     );
-};
+  };
 
 export default CampersGrid;
