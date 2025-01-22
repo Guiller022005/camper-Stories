@@ -82,22 +82,36 @@
 
 /* Paginación de Swiper */
 :global(.swiper-pagination) {
-   text-align: center;
-}
-
-:global(.swiper-pagination-bullet) {
-   background-color: var(--color2);
-   opacity: 0.8;
-   width: 12px;
-   height: 12px;
-   transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-:global(.swiper-pagination-bullet-active) {
-   background-color: var(--color1);
-   opacity: 1;
-   transform: scale(1.2);
-}
+   display: flex;
+   justify-content: center;
+   gap: 10px; /* Espaciado entre los puntos */
+   margin-top: 2rem; /* Margen superior */
+ }
+ 
+ /* Estilo de las balas (dots) */
+ :global(.swiper-pagination-bullet) {
+   background-color: var(--swiper-bullet-bg); /* Usar variable para el color base */
+   width: 12px; /* Ancho inicial */
+   height: 12px; /* Alto inicial */
+   border-radius: 9999px; /* Redondeo total (círculo) */
+   transition: all 0.3s ease;
+ }
+ 
+ :global(.swiper-pagination-bullet:hover) {
+   background-color: var(--swiper-bullet-hover-bg); /* Usar variable para el hover */
+   transform: scale(1.2); /* Escala al hover */
+ }
+ 
+ /* Estilo de la bala activa */
+ :global(.swiper-pagination-bullet-active) {
+   background-color: var(--color2); /* Usar variable para el color activo */
+   width: 48px; /* Ancho expandido para la bala activa */
+   height: 12px; /* Altura constante */
+   opacity: 1; /* Sin transparencia */
+   transform: scale(1); /* Sin escala adicional */
+   transition: all 0.3s ease;
+ }
+ 
 
 .card {
    width: 300px;

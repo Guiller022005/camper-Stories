@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="text-center text-white text-[1rem] py-[5rem] px-[6rem] bg-[#0C0C74] relative z-10">
       <div className="flex flex-col items-start">
         <LazyLoadImage
-          src="https://camper-stories.s3.us-east-2.amazonaws.com/CampusLogo.png"
+          src="https://camper-stories.s3.us-east-2.amazonaws.com/assets/CampusLogo.png"
           alt="Campuslands"
           effect="blur"
           className="w-[15%] pb-[0.5rem]"
