@@ -12,7 +12,6 @@ import { Textarea } from "../../ui/textarea";
 import { Edit } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { editCamperInfo, fetchCamperById } from "@/services/camperService";
-import camper from "@/data/camperProfilePage";
 
 const AboutMeModal = ({ initialData, onUpdate }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +20,9 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
     main_video_url: initialData?.main_video_url || "",
   });
   const [currentImage, setCurrentImage] = useState(null);
+  const [charactersRemaining, setCharactersRemaining] = useState(
+    500 - initialData?.about?.length || 500
+  );
   const { id } = useParams();
 
   useEffect(() => {
@@ -51,16 +53,26 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
       ...prev,
       [name]: value,
     }));
+
+    // Actualizar el contador de caracteres restantes
+    if (name === "about") {
+      setCharactersRemaining(500 - value.length);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validar que el campo "about" tenga al menos 100 caracteres
+    if (formData.about.trim().length < 100) {
+      alert("El campo 'Sobre Mí' debe tener al menos 100 caracteres.");
+      return;
+    }
+
     try {
       const userData = new FormData();
-
       userData.append("about", formData.about.trim());
       userData.append("main_video_url", formData.main_video_url.trim());
-
 
       if (currentImage) {
         try {
@@ -110,6 +122,19 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
               placeholder="Cuéntanos sobre ti..."
               maxLength={500}
             />
+            {/* Contador de caracteres */}
+            <p
+              className={`text-sm mt-1 ${
+                charactersRemaining < 100 ? "text-red-500" : "text-gray-500"
+              }`}
+            >
+              {charactersRemaining} caracteres restantes.
+              {charactersRemaining < 100 && (
+                <span className="block text-red-500">
+                  Mínimo 100 caracteres requeridos.
+                </span>
+              )}
+            </p>
           </div>
 
           <div>

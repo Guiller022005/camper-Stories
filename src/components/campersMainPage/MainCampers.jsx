@@ -147,7 +147,9 @@ const MainCampers = () => {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                  {campers[currentIndex].about}
+                  {campers[currentIndex].about.length > 310
+                    ? `${campers[currentIndex].about.substring(0, 310)}...`
+                    : campers[currentIndex].about}
                 </motion.p>
 
                 <motion.div
