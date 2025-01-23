@@ -224,7 +224,35 @@
 .search-container {
   display: flex;
   justify-content: center;
-  margin-top: 0.4rem;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 10px 40px 10px 10px; /* Espacio para el emoji */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  width: 200px; /* Ancho del buscador */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-container::after {
+  content: "🔍"; /* Emoji de lupa */
+  position: absolute;
+  right: 10px; /* Posición del emoji */
+  pointer-events: none; /* Evita que el emoji interfiera con el campo */
+  font-size: 16px; /* Tamaño del emoji */
+}
+
+.search-input:focus {
+  border-color: #f4b422; /* Color del borde al enfocar */
+  box-shadow: 0 0 5px rgba(244, 180, 34, 0.5); /* Efecto de sombra al enfocar */
 }
 
 /* Input al hacer focus */

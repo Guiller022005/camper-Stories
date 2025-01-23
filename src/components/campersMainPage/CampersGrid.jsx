@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronRight, ChevronLeft} from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronLeft, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { fetchCampersFormacion, fetchMeritsCamperById, fetchAllMerits } from "../../services/camperService";
@@ -195,6 +195,17 @@ const CampersGrid = () => {
                 </div>
                 <div className="skill-filters wrapper-filter">
                     <div className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}>
+                        {/* Campo de búsqueda */}
+                        <div className="search-container">
+                            <input
+                                type="text"
+                                placeholder="Buscar por nombre"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={handleSearchSubmit}
+                                className="search-input"
+                            />
+                        </div>
                         <AnimatePresence>
                             {visibleSkills.map((skill) => (
                                 <motion.div
@@ -213,18 +224,6 @@ const CampersGrid = () => {
                                 </motion.div>
                             ))}
                         </AnimatePresence>
-                    </div>
-
-                    {/* Campo de búsqueda */}
-                    <div className="search-container">
-                        <input
-                            type="text"
-                            placeholder="Buscar por nombre 🔍"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            onKeyDown={handleSearchSubmit}
-                            className="search-input"
-                        />
                     </div>
 
                     {isMobile && predefinedSkills.length > mobileVisibleSkillsCount && (
