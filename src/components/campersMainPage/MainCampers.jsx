@@ -193,7 +193,7 @@ const MainCampers = () => {
                       title="Historia Camper"
                       className="w-full rounded-2xl md:rounded-3xl"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#18174f94] via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#18174f94] via-transparent to-transparent pointer-events-none" />
                   </motion.div>
                 </div>
 
