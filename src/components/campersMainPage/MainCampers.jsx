@@ -68,7 +68,7 @@ const MainCampers = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % campers.length);
-    }, 6000); // 6000 milisegundos = 6 segundos
+    }, 60000);
 
     return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
   }, [campers.length]);
