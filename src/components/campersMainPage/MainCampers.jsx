@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import VideoPlayer from "../../components/camperProfile/VIdeoPlayer";
-import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/camperService";
+import { fetchCampersFormacion, fetchMeritsCamperById } from "../../services/camperService";
 import { GraduationCap, Code, Rocket, Trophy } from 'lucide-react';
 
 const MainCampers = () => {
@@ -25,8 +25,11 @@ const MainCampers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const campersData = await fetchCampersEgresados();
-        setCampers(campersData.slice(0, 5));
+        const campersData = await fetchCampersFormacion();
+        // Ordena aleatoriamente los campers
+        const shuffledCampers = campersData.sort(() => Math.random() - 0.5);
+        // Muestra sólo un subconjunto si es necesario
+        setCampers(shuffledCampers.slice(0, 5));
       } catch (error) {
         console.error("Error fetching campers:", error);
       }
@@ -60,6 +63,15 @@ const MainCampers = () => {
     };
     fetchMerits();
   }, [currentIndex, campers]);
+
+  // Efecto para cambiar automáticamente el camper cada 6 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % campers.length);
+    }, 6000); // 6000 milisegundos = 6 segundos
+
+    return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
+  }, [campers.length]);
 
   const badges = [
     { text: "Nuevos horizontes", icon: <Rocket className="w-4 h-4 md:w-5 md:h-5" /> },
