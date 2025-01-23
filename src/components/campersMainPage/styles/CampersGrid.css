@@ -111,6 +111,7 @@
   background-color: #2d2b54;
   color: var(--color1);
   border-radius: 10px;
+  border: 1px solid var(--color2);
   position: relative;
   z-index: 2;
 }
@@ -201,6 +202,7 @@
 .filter-buttons {
   display: flex;
   flex-wrap: wrap;
+  width: 70%;
   gap: 10px;
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -238,7 +240,7 @@
   border-radius: 5px;
   font-size: 16px;
   outline: none;
-  width: 200px; /* Ancho del buscador */
+  width: 100px; /* Ancho del buscador */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
