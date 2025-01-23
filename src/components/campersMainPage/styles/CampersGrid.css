@@ -371,12 +371,12 @@ button {
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 25px 0 8px;
+  padding: 12px 0 8px;
   margin-top: -30px;
   border: none;
   position: relative;
   bottom: -20px;
-  background: linear-gradient(to top, rgba(243, 73, 73, 0.5), rgba(0, 0, 0, 0)); /* Cambia el color según lo necesites */
+  background: linear-gradient(to top, #2d2b54, rgba(0, 0, 0, 0)); /* Cambia el color según lo necesites */
 }
 
 .expand-skills-button:focus {
