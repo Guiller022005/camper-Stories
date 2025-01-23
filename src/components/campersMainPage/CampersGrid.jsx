@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronRight, ChevronLeft} from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronLeft, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { fetchCampersFormacion, fetchMeritsCamperById, fetchAllMerits } from "../../services/camperService";
@@ -48,6 +48,11 @@ const CampersGrid = () => {
             );
         });
     };
+
+    const limitNameToThreeWords = (fullName) => {
+        const words = fullName.split(" "); // Divide el nombre en palabras
+        return words.slice(0, 3).join(" "); // Toma las primeras 3 palabras y las une
+      };
 
     const generateConnectionDots = () => {
         return Array(30).fill().map((_, i) => (
@@ -190,6 +195,17 @@ const CampersGrid = () => {
                 </div>
                 <div className="skill-filters wrapper-filter">
                     <div className={`filter-buttons ${isFilterExpanded ? "expanded" : ""}`}>
+                        {/* Campo de búsqueda */}
+                        <div className="search-container">
+                            <input
+                                type="text"
+                                placeholder="Buscar por nombre"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={handleSearchSubmit}
+                                className="search-input"
+                            />
+                        </div>
                         <AnimatePresence>
                             {visibleSkills.map((skill) => (
                                 <motion.div
@@ -208,18 +224,6 @@ const CampersGrid = () => {
                                 </motion.div>
                             ))}
                         </AnimatePresence>
-                    </div>
-
-                    {/* Campo de búsqueda */}
-                    <div className="search-container">
-                        <input
-                            type="text"
-                            placeholder="Buscar por nombre 🔍"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            onKeyDown={handleSearchSubmit}
-                            className="search-input"
-                        />
                     </div>
 
                     {isMobile && predefinedSkills.length > mobileVisibleSkillsCount && (
@@ -253,62 +257,62 @@ const CampersGrid = () => {
                                     />
                                 </div>
                                 <div className="camper-maininfo">
-                                    <h3>{camper.full_name}</h3>
+                                    <h3>{limitNameToThreeWords(camper.full_name)}</h3> {/* Aplicar la función aquí */}
                                     <p>{camper.title}</p>
                                     <div className="technologies">
                                         <span className="tech-label">Méritos:</span>
                                         <div layout className="skills-wrapper wrapper">
-                                            <div className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""}`}>
-                                                <AnimatePresence>
-                                                    {camper.skills.map((skill, index) => (
-                                                        <motion.div
-                                                            key={skill.id}
-                                                            initial={{ opacity: 0, scale: 0.8 }}
-                                                            animate={{ opacity: 1, scale: 1 }}
-                                                            exit={{ opacity: 0, scale: 0.8 }}
-                                                            transition={{ delay: index * 0.1 }}
-                                                            className="skill-item-mp"
-                                                        >
-                                                            {skill.name + " "}{skill.icon}
-                                                        </motion.div>
-                                                    ))}
-                                                </AnimatePresence>
-                                            </div>
-                                            {camper.skills.length > 4 && (
-                                                <button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className="expand-skills-button"
-                                                    onClick={() =>
-                                                        setExpandedSkills((prev) => ({
-                                                            ...prev,
-                                                            [camper.camper_id]: !prev[camper.camper_id],
-                                                        }))
-                                                    }
+                                        <div className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""}`}>
+                                            <AnimatePresence>
+                                            {camper.skills.map((skill, index) => (
+                                                <motion.div
+                                                key={skill.id}
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.8 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                className="skill-item-mp"
                                                 >
-                                                    {expandedSkills[camper.camper_id] ? "Ver menos" : "Ver más"}
-                                                    <ChevronDown
-                                                        className={`ml-2 h-4 w-4 transition-transform ${expandedSkills[camper.camper_id] ? "rotate-180" : ""}`}
-                                                    />
-                                                </button>
-                                            )}
+                                                {skill.name + " "}{skill.icon}
+                                                </motion.div>
+                                            ))}
+                                            </AnimatePresence>
+                                        </div>
+                                        {camper.skills.length > 4 && (
+                                            <button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="expand-skills-button"
+                                            onClick={() =>
+                                                setExpandedSkills((prev) => ({
+                                                ...prev,
+                                                [camper.camper_id]: !prev[camper.camper_id],
+                                                }))
+                                            }
+                                            >
+                                            {expandedSkills[camper.camper_id] ? "Ver menos" : "Ver más"}
+                                            <ChevronDown
+                                                className={`ml-2 h-4 w-4 transition-transform ${expandedSkills[camper.camper_id] ? "rotate-180" : ""}`}
+                                            />
+                                            </button>
+                                        )}
                                         </div>
                                     </div>
                                     <div className="buttons">
                                         <button
-                                            className="info-button"
-                                            onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
+                                        className="info-button"
+                                        onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
                                         >
-                                            Mas Info
+                                        Mas Info
                                         </button>
                                         <button
-                                            className="sponsor-button"
-                                            onClick={handleSponsorClick}
+                                        className="sponsor-button"
+                                        onClick={handleSponsorClick}
                                         >
-                                            Patrocinar
+                                        Patrocinar
                                         </button>
                                     </div>
-                                </div>
+                                    </div>
                             </div>
                         </div>
                     ))}
@@ -367,7 +371,7 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
       <button
         onClick={handlePrev}
         disabled={current === 1}
-        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
+        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color2 hover:text-neutral-200 transition disabled:opacity-90"
         aria-label="Previous page"
       >
         <ChevronLeft className="w-4 h-4" /> {/* Tamaño reducido del ícono */}
@@ -393,7 +397,7 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
       <button
         onClick={handleNext}
         disabled={current === pageCount}
-        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
+        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color2 hover:text-neutral-200 transition disabled:opacity-90"
         aria-label="Next page"
       >
         <ChevronRight className="w-4 h-4" /> {/* Tamaño reducido del ícono */}
