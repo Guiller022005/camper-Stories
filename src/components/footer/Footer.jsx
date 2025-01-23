@@ -25,7 +25,7 @@ const Footer = () => {
               © Campus 2024 - Todos los derechos Reservados
             </p>
             <p className="hidden md:block">|</p>
-            <p><b>Camper Stories v0.5.0</b></p>
+            <p><b>Camper Stories v0.5.1</b></p>
           </div>
 
 
