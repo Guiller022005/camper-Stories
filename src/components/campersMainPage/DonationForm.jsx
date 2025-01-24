@@ -1,200 +1,180 @@
-import { useState } from 'react';
-import "./styles/DonationForm.css";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Rocket, Star, Sparkles, Heart, ArrowRight, DivideSquareIcon } from "lucide-react";
 
-export default function DonationForm() {
-    const documentTypes = [
-        { id: 'CC', name: 'Cédula de Ciudadanía' },
-        { id: 'CE', name: 'Cédula de Extranjería' },
-        { id: 'PS', name: 'Pasaporte' },
-        { id: 'NIT', name: 'NIT' }
-    ];
+const plans = [
+    {
+        name: "Apollo",
+        icon: <Rocket className="w-6 h-6" />,
+        price: { monthly: 5, yearly: 50 },
+        color: "from-[#66E7F3] to-[#6366F1]",
+        features: [
+            "Acceso básico a cursos cortos",
+            "2 horas de hubox al mes",
+            "Fee de contratación del 15%",
+            "Videos de agradecimiento",
+            "Pack básico de stickers",
+        ],
+        popular: false,
+    },
+    {
+        name: "Hubble",
+        icon: <Star className="w-6 h-6" />,
+        price: { monthly: 10, yearly: 100 },
+        color: "from-[#6366F1] to-[#845EF7]",
+        features: [
+            "Acceso completo a cursos cortos",
+            "4 horas de hubox al mes",
+            "Fee de contratación del 10%",
+            "Videos de agradecimiento personalizados",
+            "Pack premium de stickers",
+            "Soporte prioritario",
+        ],
+        popular: true,
+    },
+    {
+        name: "Starship",
+        icon: <Sparkles className="w-6 h-6" />,
+        price: { monthly: 20, yearly: 200 },
+        color: "from-[#845EF7] to-[#BE4BDB]",
+        features: [
+            "Acceso VIP a todos los cursos",
+            "6 horas de hubox al mes",
+            "Fee de contratación del 5%",
+            "Videos exclusivos y personalizados",
+            "Pack legendario de stickers",
+            "Soporte 24/7",
+            "Eventos exclusivos",
+        ],
+        popular: false,
+    },
+];
 
-    const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
-        email: '',
-        celular: '',
-        message: '',
-        contribution: '',
-        documentType: '',
-        documentNumber: ''
-    });
+const DonationForm = () => {
+    const [customAmount, setCustomAmount] = useState("");
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const contribution = parseFloat(formData.contribution);
-        if (isNaN(contribution) || contribution <= 0) {
-            alert('Por favor ingresa un valor válido para la donación.');
-            return;
-        }
-        setIsSubmitting(true);
-        try {
-            const response = await fetch(endpoints.sponsors, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-            if (response.ok) {
-                alert('¡Gracias por tu contribución!');
-                setFormData({
-                    first_name: '',
-                    last_name: '',
-                    email: '',
-                    celular: '',
-                    message: '',
-                    contribution: '',
-                    documentType: '',
-                    documentNumber: ''
-                });
-            } else {
-                const errorData = await response.json();
-                alert(`Error: ${errorData.message || 'Intenta nuevamente.'}`);
-            }
-        } catch (error) {
-            alert('Hubo un problema al enviar los datos. Por favor, verifica tu conexión.');
-        } finally {
-            setIsSubmitting(false);
+    const handleCustomAmount = (value) => {
+        const amount = parseFloat(value);
+        if (!isNaN(amount) && amount >= 0) {
+            setCustomAmount(amount);
+        } else {
+            setCustomAmount("");
         }
     };
 
     return (
-        <div className="donation-form-card">
-            <form onSubmit={handleSubmit} className="donation-form">
-                <div className="donation-form-row">
-                    <div className="donation-form-group">
-                        <label className="donation-form-label">
-                            Nombre <span className="donation-required">*</span>
-                        </label>
-                        <input
-                            className="donation-form-input"
-                            name="first_name"
-                            value={formData.first_name}
-                            onChange={handleChange}
-                            placeholder="Tu nombre"
-                            required
-                        />
+        <div className="donation-form-section space-y-12">
+            {/* Formulario */}
+            <div className="flex items-center justify-center">
+                <Card className="w-full max-w-md bg-[#12142B] border border-gray-600 rounded-xl text-white shadow-lg p-8">
+                    <div className="space-y-6 text-center mb-6">
+                        <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+                            ¿Cómo <span className="text-[#7C3AED]">APORTAR</span>?
+                        </h1>
+                        <p className="text-gray-400 text-lg font-poppins">Tu apoyo hace la diferencia en la educación</p>
                     </div>
-                    <div className="donation-form-group">
-                        <label className="donation-form-label">
-                            Apellido <span className="donation-required">*</span>
-                        </label>
-                        <input
-                            className="donation-form-input"
-                            name="last_name"
-                            value={formData.last_name}
-                            onChange={handleChange}
-                            placeholder="Tu apellido"
-                            required
-                        />
-                    </div>
-                </div>
-
-                {/* <div className="donation-form-row">
-                    <div className="donation-form-group">
-                        <label className="donation-form-label">
-                            Tipo de Documento <span className="donation-required">*</span>
-                        </label>
-                        <select
-                            className="donation-form-input"
-                            name="documentType"
-                            value={formData.documentType}
-                            onChange={handleChange}
-                            required
+                    <div className="space-y-6">
+                        {/* Input para monto */}
+                        <div className="space-y-2">
+                            <label htmlFor="amount" className="text-sm text-gray-400 font-poppins">
+                                Ingresa el monto a aportar
+                            </label>
+                            <div className="relative">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg font-poppins">$</span>
+                                <Input
+                                    id="amount"
+                                    type="number"
+                                    value={customAmount}
+                                    onChange={(e) => handleCustomAmount(e.target.value)}
+                                    className="pl-8 bg-[#1A1D2E] border border-gray-600 focus:border-[#7C3AED] h-12 rounded-md text-lg text-white placeholder-gray-500"
+                                    placeholder="0.00"
+                                />
+                            </div>
+                        </div>
+                        {/* Mensaje */}
+                        <div className="space-y-2">
+                            <label htmlFor="message" className="text-sm text-gray-400 font-poppins">
+                                Mensaje para los campers (opcional)
+                            </label>
+                            <Textarea
+                                id="message"
+                                className="bg-[#1A1D2E] border border-gray-600 focus:border-[#7C3AED] min-h-[100px] rounded-md text-white placeholder-gray-500"
+                                placeholder="¡Comparte un mensaje de apoyo!"
+                            />
+                        </div>
+                        {/* Botón */}
+                        <div
+                            className="w-full h-12 text-lg bg-[#7C3AED] hover:bg-[#6D31D5] flex items-center justify-center gap-2 text-white font-bold rounded-md shadow-lg"
+                            disabled={!customAmount}
                         >
-                            <option value="">Selecciona tipo de documento</option>
-                            {documentTypes.map(type => (
-                                <option key={type.id} value={type.id}>
-                                    {type.name}
-                                </option>
-                            ))}
-                        </select>
+                            <Heart className="h-5 w-5" />
+                            Aportar ahora
+                            <ArrowRight className="h-5 w-5" />
+                        </div>
+                        <p className="text-center text-sm text-gray-400 mt-4 font-poppins">
+                            🔒 Tu donación está protegida por un pago seguro
+                        </p>
                     </div>
-                    <div className="donation-form-group">
-                        <label className="donation-form-label">
-                            Número de Documento <span className="donation-required">*</span>
-                        </label>
-                        <input
-                            className="donation-form-input"
-                            name="documentNumber"
-                            value={formData.documentNumber}
-                            onChange={handleChange}
-                            placeholder="Ingresa tu número de documento"
-                            required
-                        />
-                    </div>
-                </div> */}
+                </Card>
+            </div>
 
-                <div className="donation-form-row">
-                    <div className="donation-form-group">
-                        <label className="donation-form-label">
-                            Correo Electrónico <span className="donation-required">*</span>
-                        </label>
-                        <input
-                            className="donation-form-input"
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="tu@email.com"
-                            required
-                        />
-                    </div>
-                    <div className="donation-form-group">
-                        <label className="donation-form-label">
-                            Celular <span className="donation-required">*</span>
-                        </label>
-                        <input
-                            className="donation-form-input"
-                            type="tel"
-                            name="celular"
-                            value={formData.celular}
-                            onChange={handleChange}
-                            placeholder="(321) 123-0203"
-                            required
-                        />
-                    </div>
+            {/* Pricing Cards */}
+            <div className="space-y-6">
+                <h2 className="text-2xl font-bold text-center text-[#FFFF]">Planes de Suscripción</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    {plans.map((plan, index) => (
+                        <motion.div
+                            key={plan.name}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                        >
+                            <Card
+                                className={`relative p-6 bg-[#6366F1]/10 border-[#6366F1]/20 backdrop-blur-xl hover:bg-[#6366F1]/20 transition-all duration-300 w-full ${
+                                    plan.popular ? "ring-2 ring-[#66E7F3]" : ""
+                                }`}
+                                style={{ maxWidth: "350px", margin: "0 auto" }}
+                            >
+                                {plan.popular && (
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#66E7F3] text-[#18174F] px-4 py-1 rounded-full font-bold flex items-center justify-center">
+                                        Más Popular
+                                    </div>
+                                )}
+                                <div className="flex items-center justify-between mb-6">
+                                    <div>
+                                        <h3 className="text-2xl font-bold mb-2 text-[#FFFF]">{plan.name}</h3>
+                                        <div className="flex items-baseline gap-2">
+                                            <span className="text-3xl font-bold text-[#FFFF]">${plan.price.monthly}</span>
+                                            <span className="text-white/60 font-poppins">/mes</span>
+                                        </div>
+                                        <div className="text-sm text-white/60 font-poppins">o ${plan.price.yearly}/año</div>
+                                    </div>
+                                    <div className={`bg-gradient-to-r ${plan.color} p-3 rounded-xl text-white`}>{plan.icon}</div>
+                                </div>
+                                <div className="space-y-4 mb-6">
+                                    {plan.features.map((feature, i) => (
+                                        <div key={i} className="flex items-center gap-3">
+                                            <span className="text-[#66E7F3]">✓</span>
+                                            <span className="text-white/80 font-poppins">{feature}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <Button
+                                    className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity font-bold`}
+                                >
+                                    Suscríbete ahora
+                                </Button>
+                            </Card>
+                        </motion.div>
+                    ))}
                 </div>
-
-                <div className="donation-form-group">
-                    <label className="donation-form-label">
-                        Valor de la Donación <span className="donation-required">*</span>
-                    </label>
-                    <input
-                        className="donation-form-input"
-                        type="number"
-                        name="contribution"
-                        value={formData.contribution}
-                        onChange={handleChange}
-                        placeholder="Ingresa el monto a donar"
-                        required
-                        disabled={isSubmitting}
-                    />
-                </div>
-
-                <div className="donation-form-group">
-                    <label className="donation-form-label">Tu Mensaje!</label>
-                    <textarea
-                        className="donation-form-textarea"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        placeholder="Deja un mensaje para los campers!"
-                    />
-                </div>
-
-                <button type="submit" className="donation-submit-button" disabled={isSubmitting}>
-                    {isSubmitting ? 'Enviando...' : 'PATROCINAR'}
-                </button>
-            </form>
+            </div>
         </div>
     );
-}
+};
+
+export default DonationForm;
