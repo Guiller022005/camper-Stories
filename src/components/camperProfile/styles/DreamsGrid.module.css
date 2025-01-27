@@ -1,5 +1,6 @@
 .wrapper {
   width: 100%;
+  padding: 1rem;
 }
 
 .cardArea {
@@ -10,7 +11,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  margin: 0;
+  margin: 0 auto;
   max-width: 1400px;
 }
 

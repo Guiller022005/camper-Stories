@@ -72,7 +72,7 @@ const DonationForm = () => {
             <div className="flex items-center justify-center">
                 <Card className="w-full max-w-md bg-[#12142B] border border-gray-600 rounded-xl text-white shadow-lg p-8">
                     <div className="space-y-6 text-center mb-6">
-                        <h2 className="text-4xl md:text-5xl font-poppins font-bold leading-tight">
+                        <h2 className="text-4xl md:text-5xl pt-2 font-poppins font-extrabold leading-tight">
                             ¿Cómo <span className="text-[#7C3AED]">APORTAR</span>?
                         </h2>
                         <p className="text-gray-400 text-lg font-poppins">Tu apoyo hace la diferencia en la educación</p>

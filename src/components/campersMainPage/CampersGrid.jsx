@@ -185,11 +185,11 @@ const CampersGrid = () => {
                 {generateConnectionDots()}
             </div>
             <div className="badge-filters">
-                <div className="titleSearch">
-                    <h3 className="font-bold text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color1)] skew-x-6">
+                <div class="titleSearch">
+                    <h3 class="font-bold text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color1)] skew-x-6">
                         Busca a Tu
                     </h3>
-                    <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] shadow-[3px_3px_0px_rgba(0,0,0,0.2)] skew-x-[-6deg]">
+                    <h2 class="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] shadow-[3px_3px_0px_rgba(0,0,0,0.2)] skew-x-[-6deg]">
                         Camper
                     </h2>
                 </div>
