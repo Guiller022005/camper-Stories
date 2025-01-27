@@ -35,9 +35,10 @@ module.exports = {
 				'swiper-bullet-hover-bg': 'var(--swiper-bullet-hover-bg)', // Color al pasar el mouse
 			},
 			fontFamily: {
-				firma: ['firma', 'sans-serif'], // Agrega la fuente personalizada.
+				firma: ['firma', 'sans-serif'],
+				poppins: ['Poppins', 'sans-serif'],
 			},
 		},
 	},
 	plugins: [require("tailwindcss-animate")],
-}
+};

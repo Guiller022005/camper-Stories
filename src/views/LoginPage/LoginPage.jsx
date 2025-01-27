@@ -191,7 +191,7 @@ const LoginPage = () => {
         </div>
       </div>
       <div className="absolute bottom-2 w-full text-center text-xs text-gray-400">
-    Camper Stories v0.5.1
+    Camper Stories v0.5.2
   </div>
     </div>
   );

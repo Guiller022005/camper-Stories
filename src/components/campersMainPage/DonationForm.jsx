@@ -11,7 +11,7 @@ const plans = [
         name: "Apollo",
         icon: <Rocket className="w-6 h-6" />,
         price: { monthly: 5, yearly: 50 },
-        color: "from-[#66E7F3] to-[#6366F1]",
+        color: "from-[#6366F1] to-[#6366F1]",
         features: [
             "Acceso básico a cursos cortos",
             "2 horas de hubox al mes",
@@ -72,9 +72,9 @@ const DonationForm = () => {
             <div className="flex items-center justify-center">
                 <Card className="w-full max-w-md bg-[#12142B] border border-gray-600 rounded-xl text-white shadow-lg p-8">
                     <div className="space-y-6 text-center mb-6">
-                        <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+                        <h2 className="text-4xl md:text-5xl font-poppins font-bold leading-tight">
                             ¿Cómo <span className="text-[#7C3AED]">APORTAR</span>?
-                        </h1>
+                        </h2>
                         <p className="text-gray-400 text-lg font-poppins">Tu apoyo hace la diferencia en la educación</p>
                     </div>
                     <div className="space-y-6">
@@ -124,7 +124,7 @@ const DonationForm = () => {
 
             {/* Pricing Cards */}
             <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-center text-[#FFFF]">Planes de Suscripción</h2>
+                <h2 className="text-2xl font-bold text-center text-[#FFFF] pb-7">Planes de Suscripción</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                     {plans.map((plan, index) => (
                         <motion.div
@@ -135,12 +135,12 @@ const DonationForm = () => {
                         >
                             <Card
                                 className={`relative p-6 bg-[#6366F1]/10 border-[#6366F1]/20 backdrop-blur-xl hover:bg-[#6366F1]/20 transition-all duration-300 w-full ${
-                                    plan.popular ? "ring-2 ring-[#66E7F3]" : ""
+                                    plan.popular ? "ring-2 ring-[--color2]" : ""
                                 }`}
                                 style={{ maxWidth: "350px", margin: "0 auto" }}
                             >
                                 {plan.popular && (
-                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#66E7F3] text-[#18174F] px-4 py-1 rounded-full font-bold flex items-center justify-center">
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[--color2] text-[#18174F] px-4 py-1 rounded-full font-bold flex items-center justify-center">
                                         Más Popular
                                     </div>
                                 )}

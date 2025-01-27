@@ -5,7 +5,7 @@ import DonationForm from "./DonationForm";
 
 const FormSection = () => {
     return (
-        <section className="form-section flex flex-col items-center pt-[130px] w-full min-h-screen bg-gradient-to-b from-[#0a0a29] via-[#03033D] to-[#0C0C74] pb-[100px] relative z-0">
+        <section className="form-section flex flex-col items-center pt-[50px] w-full min-h-screen bg-gradient-to-b from-[#0a0a29] via-[#03033D] to-[#0C0C74] pb-[80px] relative z-0">
             <div className="content mx-auto w-2/3 flex flex-col">
 
                 {/* Formulario */}
