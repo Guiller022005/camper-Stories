@@ -21,17 +21,6 @@ function polarToCartesian(progress) {
   return { x, y, rotation };
 }
 
-// Para el texto, usamos un radio mayor para que esté por fuera del círculo
-function polarToCartesianText(progress) {
-  const angle = (progress / 100) * 360;
-  const radian = (angle - 90) * (Math.PI / 180);
-  const radius = 100; // Ajusta este valor para separarlo más o menos
-  const center = 100;
-  const x = center + Math.cos(radian) * radius;
-  const y = center + Math.sin(radian) * radius;
-  return { x, y };
-}
-
 export function ProfileImage({ imageUrl, progress = 75 }) {
   const radius = 80;
   const fullCircumference = 2 * Math.PI * radius;
@@ -68,16 +57,13 @@ export function ProfileImage({ imageUrl, progress = 75 }) {
   const rocketY = useTransform(rocketProgress, (p) => polarToCartesian(p).y);
   const rocketRot = useTransform(rocketProgress, (p) => polarToCartesian(p).rotation);
 
-  // Transformaciones de rocketProgress => (x, y) para el texto (fuera del círculo)
-  const textX = useTransform(rocketProgress, (p) => polarToCartesianText(p).x);
-  const textY = useTransform(rocketProgress, (p) => polarToCartesianText(p).y);
-
   return (
-    <div className="relative w-64 h-64">
+    <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-80 lg:h-80">
       {/* SVG con el círculo de progreso */}
       <svg
         className="absolute inset-0 w-full h-full z-0"
         viewBox="0 0 200 200"
+        preserveAspectRatio="xMidYMid meet"
       >
         <defs>
           <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -110,16 +96,13 @@ export function ProfileImage({ imageUrl, progress = 75 }) {
           transition={{ duration: 2, ease: "easeInOut" }}
         />
 
-        {/* 
-          Círculo verde que aparece cuando progress=100
-          (Se "superpone" al gradiente con un fade-in)
-        */}
+        {/* Círculo verde que aparece cuando progress=100 */}
         <motion.circle
           cx="100"
           cy="100"
           r={radius}
           fill="none"
-          stroke="#33ff36"          // Verde
+          stroke="#33ff36" // Verde
           strokeWidth="10"
           strokeLinecap="round"
           filter="url(#glow)"
@@ -130,9 +113,7 @@ export function ProfileImage({ imageUrl, progress = 75 }) {
             opacity: 0,
           }}
           animate={{
-            // Mismo strokeDashoffset para "rellenar" al mismo nivel
             strokeDashoffset: fullCircumference - dashOffset,
-            // Sólo mostramos cuando progress==100
             opacity: progress === 100 ? 1 : 0,
           }}
           transition={{
@@ -143,7 +124,7 @@ export function ProfileImage({ imageUrl, progress = 75 }) {
       </svg>
 
       {/* Imagen de perfil */}
-      <div className="absolute inset-6 z-10">
+      <div className="absolute inset-6 sm:inset-8 md:inset-10 z-10">
         <div className="w-full h-full rounded-full overflow-hidden border-4 border-[#2A2B3F] relative">
           <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-blue-500/20 mix-blend-overlay" />
           <img
@@ -158,9 +139,9 @@ export function ProfileImage({ imageUrl, progress = 75 }) {
       <svg
         className="absolute inset-0 w-full h-full z-20 pointer-events-none"
         viewBox="0 0 200 200"
+        preserveAspectRatio="xMidYMid meet"
       >
         <motion.g style={{ x: rocketX, y: rocketY }}>
-          {/* Sub-grupo que rota el cohete y las llamas */}
           <motion.g style={{ rotate: rocketRot }}>
             {/* El cohete */}
             <text
@@ -212,17 +193,18 @@ export function ProfileImage({ imageUrl, progress = 75 }) {
         </motion.g>
       </svg>
 
-      {/* Texto del porcentaje, por fuera del círculo */}
+      {/* Texto del porcentaje */}
       <motion.div
         className="absolute z-30 pointer-events-none font-bold text-[#f7b500]"
         style={{
-          x: textX,
-          y: textY,
-          fontSize: "12px",
-          // Ajusta el ancho de trazo o usa sombras para mayor visibilidad si lo deseas
+          left: "50%",
+          top: 0,
+          transform: "translateX(-50%)",
         }}
       >
-        {progress}%
+        <span className="text-xs sm:text-sm md:text-base">
+          {progress}%
+        </span>
       </motion.div>
     </div>
   );
