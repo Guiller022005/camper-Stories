@@ -15,7 +15,7 @@ const plans = [
         features: [
             "Acceso básico a cursos cortos",
             "2 horas de hubox al mes",
-            "Fee de contratación del 15%",
+            "Fee de contratación del  5%",
             "Videos de agradecimiento",
             "Pack básico de stickers",
         ],
@@ -44,7 +44,7 @@ const plans = [
         features: [
             "Acceso VIP a todos los cursos",
             "6 horas de hubox al mes",
-            "Fee de contratación del 5%",
+            "Fee de contratación del 15%",
             "Videos exclusivos y personalizados",
             "Pack legendario de stickers",
             "Soporte 24/7",

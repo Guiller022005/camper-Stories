@@ -56,18 +56,10 @@
 /* Imagen del perfil */
 .profile-image {
   position: relative;
-  height: 250px;
-  width: 250px;
   border-radius: 50%;
-  border: 4px solid rgba(107, 95, 253, 0.3);
-  background: linear-gradient(145deg, #2d2b54, #1a1830);
-  box-shadow: 0 0 30px rgba(107, 95, 253, 0.2),
-    inset 0 0 20px rgba(107, 95, 253, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .profile-image:hover {
-  transform: translateY(-5px);
   box-shadow: 0 0 40px rgba(107, 95, 253, 0.3),
     inset 0 0 25px rgba(107, 95, 253, 0.2);
 }
@@ -119,50 +111,62 @@
   margin: 0;
 }
 
-/*WRAPPER BADGES*/
+/* WRAPPER BADGES */
 
-.wrapper .icon {
+/* Reutiliza estas clases del CampersGrid */
+.wrapper {
   position: relative;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.wrapper .tooltip {
-  position: fixed;
-  bottom: 120%;
+.badgeInfo {
+  position: relative;
+  cursor: pointer;
+}
+
+.badgeInfo .tooltip {
+  position: absolute;
+  bottom: 120%; /* Posiciona el tooltip encima del elemento */
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 14px;
-  background: #ffffff;
-  color: #ffffff;
+  color: #ffffff; /* Color del texto */
   z-index: 9999;
-  font-size: small;
-  padding: 8px 8px;
+  padding: 8px 12px;
   max-width: 300px;
+  line-height: 1.3; /* Reduce la altura de línea para compactar el texto */
   border-radius: 5px;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   white-space: normal;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  background: #1877f2; /* Color de fondo tooltip */
+  border: 1px solid #4a4a75; /* Borde del tooltip */
+  text-align: justify; /* Justifica el texto */
 }
 
-.wrapper .icon:hover .tooltip {
+/* Mostrar el tooltip al hacer hover */
+.badgeInfo:hover .tooltip {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
 
-.wrapper .icon:hover span,
-.wrapper .icon:hover .tooltip {
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
-}
-
-.wrapper .badgeInfo:hover,
-.wrapper .badgeInfo:hover .tooltip,
-.wrapper .badgeInfo:hover .tooltip::before {
-  background: #1877f2;
-  color: #ffffff;
+/* Flecha del Tooltip */
+.badgeInfo .tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* Posiciona la flecha en la parte inferior del tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #1877f2 transparent transparent transparent; /* Flecha hacia abajo */
 }
 
 /*End wrapper*/
@@ -259,7 +263,52 @@
   gap: 0.5rem; /* Espaciado entre texto e ícono */
 }
 
-/* responsive */
+/* Tooltip específico para la imagen de perfil */
+.profile-image .custom-tooltip {
+  position: absolute;
+  top: 50%; /* Centra verticalmente */
+  left: 110%; /* Posiciona a la derecha de la imagen */
+  transform: translateY(-50%);
+  font-size: 16px; /* Aumentado para mayor legibilidad */
+  color: #ffffff; /* Color del texto */
+  z-index: 9999;
+  padding: 12px 16px; /* Aumentado para un fondo más grande */
+  width: 15vw;
+  height: 10vh;
+  line-height: 1.4; /* Ligero aumento para mejor lectura */
+  border-radius: 8px; /* Bordes más suaves */
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  background: #1877f2; /* Color de fondo tooltip */
+  border: 1px solid #4a4a75; /* Borde del tooltip */
+  text-align: justify; /* Justifica el texto */
+}
+
+/* Mostrar el tooltip al hacer hover sobre la imagen de perfil */
+.profile-image:hover .custom-tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Flecha del Tooltip específico para la imagen de perfil */
+.profile-image .custom-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 50%; /* Centra verticalmente la flecha */
+  left: -10px; /* Posiciona la flecha a la izquierda del tooltip */
+  transform: translateY(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #1877f2 transparent transparent; /* Flecha hacia la izquierda */
+}
+
+/* Responsive */
 @media (max-width: 1200px) {
   .profile-container {
     padding: 0 1rem;
@@ -277,6 +326,42 @@
 }
 
 @media (max-width: 768px) {
+  .profile-image .custom-tooltip {
+    position: fixed; /* Fija el tooltip en el viewport */
+    bottom: 0; /* Lo coloca al fondo de la pantalla */
+    left: 50%; /* Lo centra horizontalmente */
+    transform: translateX(-50%); /* Ajusta el centro */
+    width: 300px; /* Asegura que cubra el ancho completo */
+    height: 100px; /* Ajusta su altura al contenido */
+    padding: 1rem; /* Espaciado interno */
+    background: rgba(24, 119, 242, 0.95); /* Fondo semitransparente */
+    color: #fff; /* Color del texto */
+    text-align: center; /* Centra el texto */
+    border-radius: 10px 10px 10px 10px; /* Bordes redondeados arriba */
+    border: none; /* Elimina bordes */
+    z-index: 9999; /* Asegura que esté encima de otros elementos */
+    opacity: 0; /* Oculto por defecto */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .profile-image:hover .custom-tooltip {
+    opacity: 1; /* Muestra el tooltip */
+    visibility: visible;
+  }
+
+  /* Flecha del Tooltip hacia arriba */
+  .profile-image .custom-tooltip::after {
+    content: "";
+    position: absolute;
+    top: -20px; /* Posiciona la flecha sobre el tooltip */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px; /* Tamaño de la flecha */
+    border-style: solid;
+    border-color: transparent transparent rgba(24, 119, 242, 0.95) transparent;
+  }
+  
   .profile-header {
     padding: 7rem 0 2.5rem 0;
   }
@@ -335,5 +420,17 @@
   .skill-item {
     font-size: 0.8rem;
     padding: 0.4rem 0.8rem;
+  }
+
+  /* Ajustes para el tooltip en pantallas pequeñas */
+  .profile-image .tooltip {
+    left: 120%; /* Aumenta la separación a la derecha */
+    max-width: 250px; /* Reduce el ancho para pantallas pequeñas */
+    font-size: 14px; /* Reduce el tamaño de fuente */
+    padding: 10px 14px; /* Ajusta el padding */
+  }
+
+  .profile-image .tooltip::after {
+    left: -8px; /* Ajusta la flecha */
   }
 }
