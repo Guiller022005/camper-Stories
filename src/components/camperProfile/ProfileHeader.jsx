@@ -1,10 +1,9 @@
 // ProfileHeader.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from "lucide-react";
 import "./styles/ProfileHeader.css";
+import { ProfileImage } from "./ProfileImage"; // Importa el componente ProfileImage
 
 const ProfileHeader = ({ data, initialMerits }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
@@ -24,18 +23,23 @@ const ProfileHeader = ({ data, initialMerits }) => {
     >
       <div className="profile-container">
         <div className="profile-content">
-          <div className="profile-image">
-            <LazyLoadImage
-              src={
+          {/* Envolvemos ProfileImage con .icon y .badgeInfo para el tooltip */}
+          <div className="icon badgeInfo profile-image">
+            {/* Usa el componente ProfileImage */}
+            <ProfileImage
+              imageUrl={
                 data.profile_picture && data.profile_picture.trim() !== ""
                   ? data.profile_picture
                   : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
-              } 
-              alt={`Perfil de ${data.full_name}`}
-              effect="blur"
-              className="profile-image-content"
+              }
+              progress={75} // Aquí puedes pasar el progreso dinámico
             />
+            {/* Tooltip Motivacional */}
+            <div className="custom-tooltip">
+              🌟 ¡Gran trabajo! Casi llegas a los 10M de patrocinio camper. 🏆 ¡No te detengas ahora! 🚀
+            </div>
           </div>
+
           <div className="profile-details">
             <h1 className="profile-name">
               <p>{data.full_name}</p>
@@ -79,8 +83,7 @@ const ProfileHeader = ({ data, initialMerits }) => {
               .map((merit, index) => (
                 <div key={index} className="skill-item icon badgeInfo">
                   <div className="tooltip">{merit.description}</div>
-                  {merit.name}
-                  {merit.icon}
+                  {merit.name} {merit.icon}
                 </div>
               ))}
           </div>
@@ -89,8 +92,9 @@ const ProfileHeader = ({ data, initialMerits }) => {
               <span className="toggle-badges-content">
                 {showAllBadges ? "Ver menos" : "Ver más"}
                 <ChevronDown
-                  className={`ml-2 h-4 w-4 transition-transform ${showAllBadges ? "rotate-180" : ""
-                    }`}
+                  className={`ml-2 h-4 w-4 transition-transform ${
+                    showAllBadges ? "rotate-180" : ""
+                  }`}
                 />
               </span>
             </div>
