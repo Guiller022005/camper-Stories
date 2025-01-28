@@ -22,7 +22,7 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
     main_video_url: initialData?.main_video_url || "",
   });
   const [currentImage, setCurrentImage] = useState(null);
-  const [charactersRemaining, setCharactersRemaining] = useState(
+  const [charactersWritten, setCharactersWritten] = useState(
     initialData?.about?.length || 0
   );
   const { id } = useParams();
@@ -58,7 +58,7 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
 
     // Actualizar el contador de caracteres escritos
     if (name === "about") {
-      setCharactersRemaining(value.length); // Cantidad actual de caracteres escritos
+      setCharactersWritten(value.length); // Actualizamos con la cantidad de caracteres escritos
     }
   };
 
@@ -133,12 +133,12 @@ const AboutMeModal = ({ initialData, onUpdate }) => {
               {/* Contador de caracteres */}
               <p
                 className={`text-sm mt-1 ${
-                  charactersRemaining < 100 || charactersRemaining > 500
+                  charactersWritten < 100 || charactersWritten > 500
                     ? "text-red-500"
                     : "text-green-500"
                 }`}
               >
-                {charactersRemaining}/500 caracteres
+                {Math.max(0, charactersWritten)}/500 caracteres
               </p>
             </div>
 
