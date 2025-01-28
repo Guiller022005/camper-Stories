@@ -13,7 +13,7 @@ import {
 function polarToCartesian(progress) {
   const angle = (progress / 100) * 360;
   const radian = (angle - 90) * (Math.PI / 180);
-  const radius = 85;
+  const radius = 80;
   const center = 100;
   const x = center + Math.cos(radian) * radius;
   const y = center + Math.sin(radian) * radius;
@@ -86,7 +86,7 @@ export function ProfileImage({ imageUrl, progress = 75 }) {
           r={radius}
           fill="none"
           stroke="url(#progressGradient)"
-          strokeWidth="10"
+          strokeWidth="5"
           strokeLinecap="round"
           filter="url(#glow)"
           strokeDasharray={fullCircumference}
