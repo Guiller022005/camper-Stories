@@ -1,47 +1,91 @@
-import React, { lazy, Suspense, useState, useEffect } from 'react';
-import Campers from "../../components/campersMainPage/Campers";
-import { fetchCamperById } from '../../services/camperService';  // Asegúrate de tener la ruta correcta
+import React, { lazy, Suspense, useState, useEffect } from "react"
+import { fetchCamperById } from "../../services/camperService"
+import styles from "./styles/SponsorDashboard.module.css"
+import LazySection from "../../components/common/LazySection"
+import Loader from "@/components/common/Loader"
 
-const NavbarProfile = lazy(() => import("../../components/navbar/Navbar"));
-const Footer = lazy(() => import('../../components/footer/Footer'));
-const SponsorProfileHeader = lazy(() => import('../../components/dashboardSponsor/sponsorProfile'));
+const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"))
+const Footer = lazy(() => import("../../components/footer/Footer"))
+const SponsorProfileHeader = lazy(() => import("../../components/dashboardSponsor/SponsorProfile"))
+const Campers = lazy(() => import("../../components/campersMainPage/Campers"))
+const VideoCarousel = lazy(() => import("../../components/dashboardSponsor/VideoCarrousel"))
 
 const SponsorDashboard = () => {
   const [camperData, setCamperData] = useState({
-    main_video_url: '',
-    about: '',
-    profile_picture: '',
-    full_name: '',
-    city: '',
+    main_video_url: "",
+    about: "",
+    profile_picture: "",
+    full_name: "",
+    city: "",
     age: 0,
-  });
+  })
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  const videos = [
+    { url: "https://www.youtube.com/watch?v=3NoKAOTE_ZI", title: "Video 1" },
+    {
+      url: "https://www.youtube.com/watch?v=7N-64Uzx2ac&pp=ygUac2hhZG93IHggc29uaWMgZ2VuZXJhdGlvbnM%3D",
+      title: "Video 2",
+    },
+    // ... más videos
+  ]
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Aquí debes especificar el ID del camper que quieres mostrar
-        const data = await fetchCamperById(1); // Por ejemplo, camper con ID 1
-        setCamperData(data);
+        setIsLoading(true)
+        const data = await fetchCamperById(1) // Por ejemplo, camper con ID 1
+        setCamperData(data)
       } catch (error) {
-        console.error("Error loading camper data:", error);
+        console.error("Error loading camper data:", error)
+        setError(error.message)
+      } finally {
+        setIsLoading(false)
       }
-    };
+    }
 
-    loadData();
-  }, []);
+    loadData()
+  }, [])
+
+  if (isLoading) {
+    return <Loader />
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>
+  }
 
   return (
-    <div className="sponsorDashboardView flex flex-col relative">
-      <NavbarProfile />
-      <div className="mainContent flex flex-col gap-4">
-        <SponsorProfileHeader data={camperData} initialMerits={[]} />
-        <Campers />
-      </div>
-      <Suspense fallback={<div>Cargando...</div>}>
-        <Footer />
-      </Suspense>
-    </div>
-  );
-};
+    <div className={`${styles.sponsorDashboardView} flex flex-col relative`}>
+      <LazySection>
+        <NavbarProfile />
+      </LazySection>
+      <div className={`${styles.dashboardMainContent} flex flex-col gap-4`}>
+        <LazySection>
+          <div id="sponsor-profile-header">
+            <SponsorProfileHeader data={camperData} initialMerits={[]} />
+          </div>
+        </LazySection>
 
-export default SponsorDashboard;
+        <LazySection>
+          <div id="campers-section">
+            <Campers />
+          </div>
+        </LazySection>
+
+        <LazySection>
+          <div id="video-carousel">
+            <VideoCarousel videos={videos} />
+          </div>
+        </LazySection>
+      </div>
+      <LazySection>
+        <Footer />
+      </LazySection>
+    </div>
+  )
+}
+
+export default SponsorDashboard
+

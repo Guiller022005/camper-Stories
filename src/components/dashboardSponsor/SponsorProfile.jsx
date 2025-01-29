@@ -17,6 +17,7 @@ const ProfileHeader = ({ data, initialMerits }) => {
   return (
     <motion.div
       className="profile-header"
+      style={{ backgroundColor: "#07072b" }} 
       initial={false}
       animate={{ height: "auto" }}
       transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
