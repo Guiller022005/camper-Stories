@@ -81,7 +81,7 @@ const MainCampers = () => {
   ];
 
   return (
-    <div className="bg-[#131341] relative overflow-hidden flex flex-col items-center justify-center min-h-[90vh] py-8 px-4">
+    <div className="bg-[#1e1b4b] relative overflow-hidden flex flex-col items-center justify-center min-h-[80vh] h-[90hv] py-8 px-4">
       {/* Animated Background Gradient */}
       <motion.div className="absolute inset-0 opacity-30" />
 

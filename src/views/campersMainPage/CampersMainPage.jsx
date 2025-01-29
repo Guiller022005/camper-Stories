@@ -6,14 +6,18 @@ import FormSection from '../../components/campersMainPage/FormSection';
 import Footer from '../../components/footer/Footer';
 import Navbar from '@/components/navbar/Navbar';
 import "./styles/CampersMainPage.css";
+import HeroSection from '@/components/campersMainPage/HeroSection';
 
 const CampersMainPage = () => {
   return (
-    <div className="camper-success-view bg-[#12123f]">
-      <Navbar />      
-      <section id="mainCampers">
-        <MainCampers />
+    <div className="camper-success-view">
+      <Navbar />
+      <section id="heroSection">
+        <HeroSection />  
       </section>      
+      {/* <section id="mainCampers">
+        <MainCampers />
+      </section>       */}
       <section id="campers">
         <Campers />
       </section>

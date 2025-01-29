@@ -3,7 +3,7 @@
    width: 100%;
    padding-top: 2rem;
    min-height: 100vh;
-   background: linear-gradient(180deg, #131341 0%, #07073b 100%);
+   background: linear-gradient(180deg, #1e1b4b 0%, #07073b 100%);
    display: flex;
    overflow-x: hidden;
    overflow-y: hidden;
@@ -19,27 +19,21 @@
    gap: 0;
 }
 
-.titleCampers h2 {
-   font-family: 'titulo--campersexitosos';
-   font-size: clamp(2rem, 5vw, 5rem);
-   line-height: 0.9;
-   margin: 0;
-   color: var(--color2);
-   text-transform: uppercase;
-   letter-spacing: -2px;
-   text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
-   transform: skew(-5deg);
+.titleCampers h4 {
+   font-family: 'P--Profile';
+   font-size: clamp(0.5rem, 4vw, 1.5rem);
+   margin-top: 1rem;
+   padding: 0 5rem;
+   font-weight: 400;
 }
 
 .titleCampers h3 {
-   font-family: 'titulo--exitosos';
-   font-size: clamp(2rem, 5vw, 5rem);
+   font-size: clamp(2rem, 4vw, 4.5rem);
    line-height: 0.9;
    margin: 0;
-   color: var(--color1);
-   font-weight: 800;
-   letter-spacing: 2px;
-   transform: skew(5deg);
+   color: rgb(243, 243, 250);
+   font-weight: 700;
+   letter-spacing: -2px;
 }
 
 .cardsContainerWrapper {
@@ -104,7 +98,7 @@
  
  /* Estilo de la bala activa */
  :global(.swiper-pagination-bullet-active) {
-   background-color: var(--color2); /* Usar variable para el color activo */
+   background-color: var(--color4); /* Usar variable para el color activo */
    width: 48px; /* Ancho expandido para la bala activa */
    height: 1rem; /* Altura constante */
    opacity: 1; /* Sin transparencia */
@@ -118,7 +112,7 @@
    height: auto;
    min-height: 450px;
    background: var(--color3);
-   border: 0.23rem solid var(--color2);
+   border: 0.16rem solid var(--color4);
    border-radius: 15px;
    padding: 8px;
    position: relative;
@@ -147,7 +141,7 @@
    height: 210px;
    margin-top: clamp(-9px, -1vw, -4px);
    z-index: 2;
-   background-color: var(--color3);
+   background-color: #0e0e4d;
    border-radius: 0 0 15px 15px;
    transition: background-color 0.3s ease, margin 0.3s ease;
 }
@@ -162,7 +156,7 @@
 
 .cardContent h4 {
    font-size: clamp(0.9rem, 1.5vw, 0.7rem);
-   color: var(--color2);
+   color: var(--color1);
    margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
    font-family: 'titulo--programador';
    text-align: center;
@@ -192,7 +186,7 @@
    left: 0;
    width: 100%;
    height: 60px;
-   background: var(--color3);
+   background-color: #0e0e4d;
    clip-path: polygon(0 100%, 100% 100%, 50% 0);
    z-index: 1;
    border-radius: 0 0 10px 10px;
@@ -200,7 +194,7 @@
 }
 
 .card:hover .perfil::after {
-   background: var(--color2);
+   background: #565de4;
 }
 
 .campersContainer {
@@ -230,17 +224,12 @@
    }
 
    .card:hover .cardContent {
-       background-color: var(--color2);
+       background-color: #565de4;
        margin-top: clamp(-13px, -1vw, -4px);
    }
 
    .card:hover .cardContent h4 {
        color: var(--color1);
-   }
-
-   .card:hover .cardContent h3,
-   .card:hover .cardContent p {
-       color: var(--color3);
    }
 
    .card:hover .cardContent span {
