@@ -4,12 +4,16 @@ import { fetchCamperById } from '../../services/camperService';  // Asegúrate d
 
 const NavbarProfile = lazy(() => import("../../components/navbar/Navbar"));
 const Footer = lazy(() => import('../../components/footer/Footer'));
-const AboutMe = lazy(() => import('../../components/camperProfile/AboutMe'));
+const SponsorProfileHeader = lazy(() => import('../../components/dashboardSponsor/sponsorProfile'));
 
 const SponsorDashboard = () => {
   const [camperData, setCamperData] = useState({
     main_video_url: '',
-    about: ''
+    about: '',
+    profile_picture: '',
+    full_name: '',
+    city: '',
+    age: 0,
   });
 
   useEffect(() => {
@@ -30,10 +34,7 @@ const SponsorDashboard = () => {
     <div className="sponsorDashboardView flex flex-col relative">
       <NavbarProfile />
       <div className="mainContent flex flex-col gap-4">
-        <AboutMe 
-          videoUrl={camperData.main_video_url}
-          about={camperData.about}
-        />
+        <SponsorProfileHeader data={camperData} initialMerits={[]} />
         <Campers />
       </div>
       <Suspense fallback={<div>Cargando...</div>}>
