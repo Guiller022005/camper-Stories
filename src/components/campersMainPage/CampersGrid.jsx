@@ -186,7 +186,7 @@ const CampersGrid = () => {
             </div>
             <div className="badge-filters">
                 <div className="titleSearch">
-                    <h3 className="font-bold text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color1)] skew-x-6">
+                    <h3 className="font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[0.9] skew-x-6 h-[4.5rem] text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
                         Busca a Tu
                     </h3>
                     <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] shadow-[3px_3px_0px_rgba(0,0,0,0.2)] skew-x-[-6deg]">
@@ -371,7 +371,7 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
       <button
         onClick={handlePrev}
         disabled={current === 1}
-        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color2 hover:text-neutral-200 transition disabled:opacity-90"
+        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
         aria-label="Previous page"
       >
         <ChevronLeft className="w-4 h-4" /> {/* Tamaño reducido del ícono */}
@@ -384,7 +384,7 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
           onClick={() => onChange(page)}
           className={`rounded-full transition-all duration-300 ${
             page === current
-              ? "bg-color2 w-12 md:w-16 h-3 md:h-4 scale-110" // Botón activo
+              ? "bg-color4 w-12 md:w-16 h-3 md:h-4 scale-110" // Botón activo
               : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-3 md:w-4 h-3 md:h-4" // Botones normales
           }`}
           whileHover={{ scale: 1.2 }}
@@ -397,7 +397,7 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
       <button
         onClick={handleNext}
         disabled={current === pageCount}
-        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color2 hover:text-neutral-200 transition disabled:opacity-90"
+        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
         aria-label="Next page"
       >
         <ChevronRight className="w-4 h-4" /> {/* Tamaño reducido del ícono */}

@@ -15,7 +15,7 @@ const plans = [
         features: [
             "Acceso básico a cursos cortos",
             "2 horas de hubox al mes",
-            "Fee de contratación del 15%",
+            "Fee de contratación del  5%",
             "Videos de agradecimiento",
             "Pack básico de stickers",
         ],
@@ -44,7 +44,7 @@ const plans = [
         features: [
             "Acceso VIP a todos los cursos",
             "6 horas de hubox al mes",
-            "Fee de contratación del 5%",
+            "Fee de contratación del 15%",
             "Videos exclusivos y personalizados",
             "Pack legendario de stickers",
             "Soporte 24/7",
@@ -70,10 +70,10 @@ const DonationForm = () => {
         <div className="donation-form-section space-y-12">
             {/* Formulario */}
             <div className="flex items-center justify-center">
-                <Card className="w-full max-w-md bg-[#12142B] border border-gray-600 rounded-xl text-white shadow-lg p-8">
+                <Card className="w-full max-w-md bg-[#0d1033] border border-gray-600 rounded-xl text-white shadow-lg p-8">
                     <div className="space-y-6 text-center mb-6">
                         <h2 className="text-4xl md:text-5xl pt-2 font-poppins font-extrabold leading-tight">
-                            ¿Cómo <span className="text-[#7C3AED]">APORTAR</span>?
+                            ¿Cómo <span className="text-[#5b62f1]">APORTAR</span>?
                         </h2>
                         <p className="text-gray-400 text-lg font-poppins">Tu apoyo hace la diferencia en la educación</p>
                     </div>
@@ -108,7 +108,7 @@ const DonationForm = () => {
                         </div>
                         {/* Botón */}
                         <div
-                            className="w-full h-12 text-lg bg-[#7C3AED] hover:bg-[#6D31D5] flex items-center justify-center gap-2 text-white font-bold rounded-md shadow-lg"
+                            className="w-full h-12 text-lg bg-[#494fd3] hover:bg-[#5b3aed] flex items-center justify-center gap-2 text-white font-bold rounded-md shadow-lg"
                             disabled={!customAmount}
                         >
                             <Heart className="h-5 w-5" />
@@ -116,7 +116,7 @@ const DonationForm = () => {
                             <ArrowRight className="h-5 w-5" />
                         </div>
                         <p className="text-center text-sm text-gray-400 mt-4 font-poppins">
-                            🔒 Tu donación está protegida por un pago seguro
+                            Tu donación está protegida con pago seguro.
                         </p>
                     </div>
                 </Card>
@@ -124,7 +124,7 @@ const DonationForm = () => {
 
             {/* Pricing Cards */}
             <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-center text-[#FFFF] pb-7">Planes de Suscripción</h2>
+                <h2 className="text-2xl font-bold text-center text-[#FFFF] py-5 mb-12">Planes de Suscripción</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                     {plans.map((plan, index) => (
                         <motion.div
@@ -135,12 +135,12 @@ const DonationForm = () => {
                         >
                             <Card
                                 className={`relative p-6 bg-[#6366F1]/10 border-[#6366F1]/20 backdrop-blur-xl hover:bg-[#6366F1]/20 transition-all duration-300 w-full ${
-                                    plan.popular ? "ring-2 ring-[--color2]" : ""
+                                    plan.popular ? "ring-2 ring-[#5737e6]" : ""
                                 }`}
                                 style={{ maxWidth: "350px", margin: "0 auto" }}
                             >
                                 {plan.popular && (
-                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[--color2] text-[#18174F] px-4 py-1 rounded-full font-bold flex items-center justify-center">
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[--color4] text-[#f0f0ff] px-4 py-1 rounded-full font-bold flex items-center justify-center">
                                         Más Popular
                                     </div>
                                 )}
