@@ -19,7 +19,7 @@ const TermsAndConditions = () => {
               <CardTitle className="text-2xl sm:text-3xl font-bold tracking-tight">
                 Términos y Condiciones de CamperStories
               </CardTitle>
-              <p className="text-sm sm:text-base opacity-70">Última actualización: [Fecha]</p>
+              <p className="text-sm sm:text-base opacity-70">Última actualización: 29/01/2025</p>
             </CardHeader>
 
             <div className="text-left text-sm sm:text-base space-y-4 leading-relaxed mt-6">
