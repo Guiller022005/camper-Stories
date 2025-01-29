@@ -23,9 +23,9 @@ const SponsorDashboard = () => {
   const [error, setError] = useState(null)
 
   const videos = [
-    { url: "https://www.youtube.com/watch?v=3NoKAOTE_ZI", title: "Video 1" },
+    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 1" },
     {
-      url: "https://www.youtube.com/watch?v=7N-64Uzx2ac&pp=ygUac2hhZG93IHggc29uaWMgZ2VuZXJhdGlvbnM%3D",
+      url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ",
       title: "Video 2",
     },
     // ... más videos

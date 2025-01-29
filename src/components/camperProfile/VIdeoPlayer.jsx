@@ -20,15 +20,22 @@ const VideoPlayer = ({ videoUrl, title }) => {
 
   return (
     <div className="relative w-full pt-[56.25%] overflow-hidden rounded-lg">
-      <iframe
-        src={`${getEmbedUrl(videoUrl)}?autoplay=1&mute=1&loop=1&playlist=${getEmbedUrl(
-          videoUrl
-        ).split("/").pop()}`}
-        title={title}
-        allowFullScreen
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        className="absolute top-0 left-0 w-full h-full border-none"
-      />
+      {videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be") ? (
+        <iframe
+          src={`${getEmbedUrl(videoUrl)}?autoplay=1&mute=1&loop=1&playlist=${getEmbedUrl(videoUrl).split("/").pop()}`}
+          title={title}
+          allowFullScreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          className="absolute top-0 left-0 w-full h-full border-none"
+        />
+      ) : (
+        <video
+          src={videoUrl}
+          className="w-full h-full object-cover"
+          controls
+          title={title}
+        />
+      )}
     </div>
   );
 };
