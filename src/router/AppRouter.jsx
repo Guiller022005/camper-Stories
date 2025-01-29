@@ -10,6 +10,8 @@ import DynamicTitle from './DynamicTitle'; // Importa el componente
 import RegisterPage from '@/views/RegisterPage/RegisterPage';
 import ForgetPassword from '@/views/ForgetPasswordPage/forgetPasswordPage';
 import NewPassword from '@/views/NewPasswordPage/newPasswordPage';
+import PrivacyPolicies from '@/views/PrivacyPolicies/PrivacyPoliciesPage';
+import TermsAndConditions from '@/views/termsConditions/termsAndCondicions';
 
 const AppRouter = () => {
   return (
@@ -24,6 +26,8 @@ const AppRouter = () => {
         <Route path="/campers/register" element={<RegisterPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/campers/profile/:id/" element={<CamperProfile />} />
+        <Route path='/politica-de-privacidad'element={<PrivacyPolicies/>}/>
+        <Route path='/terms-Conditions' element={<TermsAndConditions/>}/>
 
         <Route
           path="/campers/profile/:id/edit"
