@@ -434,6 +434,24 @@ export default function RegisterForm() {
               )}
             </button>
 
+            <div className="text-center mt-4">
+              <p className="text-gray-400 text-[10px] sm:text-xs px-4">
+                Al continuar o registrarte, aceptas nuestras{" "}
+                <a 
+                  href="/terms-Conditions" 
+                  className="hover:underline text-white transition-colors duration-200"
+                >
+                  Términos y Condiciones
+                </a> y nuestra{" "}
+                <a 
+                  href="/politica-de-privacidad" 
+                  className="hover:underline text-white transition-colors duration-200"
+                >
+                  Políticas de Privacidad
+                </a>.
+              </p>
+            </div>
+
             {/* Link de inicio de sesión */}
             <div className="text-center">
               <button
