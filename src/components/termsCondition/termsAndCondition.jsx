@@ -8,7 +8,7 @@ const TermsAndConditions = () => {
   return (
     <div
       className="min-h-screen w-full bg-[#1a1a2e] flex flex-col items-center justify-center p-4 md:p-6 lg:p-8"
-      style={{ background: 'linear-gradient(180deg, #070727 0%, #090955 70%, #0C0C74 100%)' }}
+      style={{ background: 'linear-gradient(180deg, #080831 0%, #0e0e61 70%, #27247a 100%)' }}
     >
       <div className="w-full max-w-3xl px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="w-full bg-[#2a2a3e] p-6 md:p-8 border border-[#6b5ffd] rounded-2xl shadow-[0_0_30px_-6px_#6b5ffd] text-center relative overflow-hidden">

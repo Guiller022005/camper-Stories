@@ -12,7 +12,7 @@
   flex-direction: column;
   width: 100%;  
   padding: 0 clamp(1rem, 10vw, 10rem) 2rem;
-  background: linear-gradient(180deg, #070727 0%, #090955 70%, #0C0C74 100%);
+  background: linear-gradient(180deg, #080831 0%, #0e0e61 70%, #27247a 100%);
 }
 
 @media (max-width: 768px) {
