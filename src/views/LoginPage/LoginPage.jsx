@@ -167,13 +167,13 @@ const LoginPage = () => {
               <p className="text-gray-400 text-[10px] sm:text-xs px-4">
                 Al continuar o iniciar sesión, confirmas que has leído y aceptas nuestros{" "}
                 <a 
-                  href="/terms-Conditions" 
+                  onClick={() => navigate("/terms-Conditions")}
                   className="hover:underline text-white transition-colors duration-200"
                 >
                   Términos y Condiciones
                 </a> y nuestra{" "}
                 <a 
-                  href="/politica-de-privacidad" 
+                  onClick={() => navigate("/politica-de-privacidad")}
                   className="hover:underline text-white transition-colors duration-200"
                 >
                   Políticas de Privacidad
