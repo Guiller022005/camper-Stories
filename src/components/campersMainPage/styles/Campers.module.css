@@ -248,6 +248,16 @@
    .card {
        max-width: 260px;
    }
+   .cardContent {
+      padding: 1rem;
+      position: relative;
+      height: 30vh;
+      margin-top: clamp(-9px, -1vw, -4px);
+      z-index: 2;
+      background-color: #0e0e4d;
+      border-radius: 0 0 15px 15px;
+      transition: background-color 0.3s ease, margin 0.3s ease;
+   }
 
 }
 
