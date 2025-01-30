@@ -13,6 +13,7 @@ import ForgetPassword from '@/views/ForgetPasswordPage/forgetPasswordPage';
 import NewPassword from '@/views/NewPasswordPage/newPasswordPage';
 import PrivacyPolicies from '@/views/PrivacyPolicies/PrivacyPoliciesPage';
 import TermsAndConditions from '@/views/termsConditions/termsAndCondicions';
+import SponsorLogin from '@/views/loginSponsor/LoginSponsor';
 
 const AppRouter = () => {
   return (
@@ -30,7 +31,7 @@ const AppRouter = () => {
         <Route path="/sponsors/" element={<Sponsors />} />
         <Route path='/politica-de-privacidad'element={<PrivacyPolicies/>}/>
         <Route path='/terms-Conditions' element={<TermsAndConditions/>}/>
-
+        <Route path="/sponsors/login" element={<SponsorLogin />} />
         <Route
           path="/campers/profile/:id/edit"
           element={
