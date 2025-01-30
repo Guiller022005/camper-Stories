@@ -80,12 +80,12 @@ const Campers = () => {
   return (
     <div className={styles.campersContainer}>
       <div className={styles.titleCampers}>
-        <h3 className="font-bold text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color1)] skew-x-6">
-          Campers
+        <h3 className="mt-10 mr-[7rem] text-4xl font-bold tracking-tight text-white sm:text-7xl6">
+          Campers Exitosos
         </h3>
-        <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] shadow-[3px_3px_0px_rgba(0,0,0,0.2)] skew-x-[-6deg]">
-          exitosos
-        </h2>
+        <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
+          Conoce a algunos de nuestros campers más destacados y cómo han transformado sus carreras!
+        </h4>
       </div>
       <div className={styles.cardsContainerWrapper}>
         <Swiper
@@ -136,13 +136,13 @@ const Campers = () => {
                         <>
                           {camper.about.substring(0, CHAR_LIMIT)}...
                           <span
-                            className="text-[var(--color2)] cursor-pointer hover:text-[var(--color1)]"
+                            className="text-[var(--color4)] cursor-pointer hover:text-[var(--color1)]"
                             onClick={(e) => {
                               e.stopPropagation(); // Evita que el clic en "Ver más" dispare el clic en toda la tarjeta
                               navigate(`/campers/profile/${camper.camper_id}`);
                             }}
                           >
-                            <br/>Ver más
+                            <br />Ver más
                           </span>
                         </>
                       ) : (

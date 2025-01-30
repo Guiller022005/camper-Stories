@@ -5,7 +5,7 @@ import DonationForm from "./DonationForm";
 
 const FormSection = () => {
     return (
-        <section className="form-section flex flex-col items-center pt-[50px] w-full min-h-screen bg-gradient-to-b from-[#0a0a29] via-[#03033D] to-[#0C0C74] pb-[80px] relative z-0">
+        <section className="form-section flex flex-col items-center pt-[50px] w-full min-h-screen bg-gradient-to-b from-[#0a0a29] via-[#03033D] to-[#27247a] pb-[80px] relative z-0">
             <div className="content mx-auto w-2/3 flex flex-col">
 
                 {/* Formulario */}
@@ -23,7 +23,7 @@ const FormSection = () => {
                 >
                     <div className="inline-flex items-center justify-center gap-2 mb-4">
                         <Crown className="w-6 h-6 text-[#66E7F3]" />
-                        <h2 className="text-2xl font-bold">¿Por qué ser patrocinador?</h2>
+                        <h2 className="text-2xl text-[#ffffff] font-bold">¿Por qué ser patrocinador?</h2>
                     </div>
                     <p className="text-white/60 max-w-2xl mx-auto font-bold">
                         Como patrocinador, no solo contribuyes al desarrollo de nuevo talento tech, también obtienes acceso
