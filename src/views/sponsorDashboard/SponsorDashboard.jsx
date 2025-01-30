@@ -7,7 +7,7 @@ const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile")
 const Footer = lazy(() => import("../../components/footer/Footer"))
 const SponsorProfileHeader = lazy(() => import("../../components/dashboardSponsor/SponsorProfile"))
 const Campers = lazy(() => import("../../components/campersMainPage/Campers"))
-const VideoCarousel = lazy(() => import("../../components/dashboardSponsor/VideoCarrousel"))
+const VideoPlaylist = lazy(() => import("../../components/dashboardSponsor/VideoPlaylist"))
 
 const SponsorDashboard = () => {
   const [camperData, setCamperData] = useState({
@@ -78,7 +78,7 @@ const SponsorDashboard = () => {
 
         <LazySection>
           <div id="video-carousel">
-            <VideoCarousel videos={videos} />
+            <VideoPlaylist videos={videos} />
           </div>
         </LazySection>
       </div>
