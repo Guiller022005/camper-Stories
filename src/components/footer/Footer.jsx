@@ -8,7 +8,7 @@ const Footer = () => {
   const navigate = useNavigate();
   
   return (
-    <footer className="text-center text-white text-[1rem] py-10 px-6 bg-[#0C0C74] relative z-10">
+    <footer className="text-center text-white text-[1rem] py-10 px-6 bg-[#27247a] relative z-10">
       <div className="flex flex-col items-center md:items-start">
         {/* Logo */}
         <LazyLoadImage
@@ -27,7 +27,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row text-white gap-4 text-[14px] sm:text-[16px] font-[400] font-mono text-center md:text-left">
             <p>© Campus 2024 - Todos los derechos Reservados</p>
             <p className="hidden md:block">|</p>
-            <p><b>Camper Stories v0.5.2</b></p>
+            <p><b>Camper Stories v0.6.0</b></p>
             <p className="hidden md:block">|</p>
             {/* Enlace a Política de Privacidad */}
             <span

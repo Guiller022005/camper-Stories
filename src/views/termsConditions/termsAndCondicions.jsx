@@ -5,7 +5,7 @@ import Navbar from '@/components/navbar/Navbar';
 
 const termsAndCondicions = () => {
   return (
-    <div className="camper-success-view bg-[#12123f]">
+    <div>
       <Navbar />      
       <section id="TermsConditions">
         <TermsConditions />
