@@ -11,7 +11,10 @@ import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/cam
 import styles from "./styles/Campers.module.css";
 import Loader from '@/components/common/Loader';
 
-const Campers = () => {
+const Campers = ({ 
+  title = "Campers Exitosos", 
+  subtitle = "Conoce a algunos de nuestros campers más destacados y cómo han transformado sus carreras!"
+}) => {
   const [slidesPerView, setSlidesPerView] = useState(6);
   const [campersData, setCampersData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -81,10 +84,10 @@ const Campers = () => {
     <div className={styles.campersContainer}>
       <div className={styles.titleCampers}>
         <h3 className="mt-10 mr-[7rem] text-4xl font-bold tracking-tight text-white sm:text-7xl6">
-          Campers Exitosos
+        {title}
         </h3>
         <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
-          Conoce a algunos de nuestros campers más destacados y cómo han transformado sus carreras!
+        {subtitle}
         </h4>
       </div>
       <div className={styles.cardsContainerWrapper}>

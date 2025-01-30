@@ -68,10 +68,13 @@ const SponsorDashboard = () => {
         </LazySection>
 
         <LazySection>
-          <div id="campers-section">
-            <Campers />
-          </div>
-        </LazySection>
+  <div id="campers-section">
+    <Campers 
+      title="Auspiciados!" 
+      subtitle="Gracias a ti ellos terminaron su formacion"
+    />
+  </div>
+</LazySection>
 
         <LazySection>
           <div id="video-carousel">
