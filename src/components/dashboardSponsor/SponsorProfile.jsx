@@ -24,13 +24,16 @@ const ProfileHeader = ({ data, initialMerits }) => {
         <div className="flex flex-col md:flex-row items-center gap-8 md:pr-8 h-full">
           {/* Profile Image */}
           <div className="relative group">
-            <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden transition-shadow duration-300 hover:shadow-lg hover:shadow-blue-500/30">
-              <LazyLoadImage
-                src={data.profile_picture?.trim() || "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"}
-                alt={`Perfil de ${data.full_name}`}
-                effect="blur"
-                className="w-full h-full object-cover rounded-full"
-              />
+            <div className="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden transition-shadow duration-300 hover:shadow-lg hover:shadow-blue-500/30 ring-2 ring-blue-500/20">
+              <div className="w-full h-full rounded-full overflow-hidden">
+                <LazyLoadImage
+                  src={data.profile_picture?.trim() || "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"}
+                  alt={`Perfil de ${data.full_name}`}
+                  effect="blur"
+                  className="w-full h-full object-cover"
+                  wrapperClassName="w-full h-full"
+                />
+              </div>
             </div>
           </div>
 
