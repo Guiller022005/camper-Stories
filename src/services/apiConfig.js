@@ -16,7 +16,8 @@ export const endpoints = {
   projects: `${API_BASE_URL}campers/{id}/proyects`,
   technologyProject: `${API_BASE_URL}projects/technologies`,
   addProjects: `${API_BASE_URL}projects`,
-  meritsbyid: `${API_BASE_URL}merits/{id}`, // Endpoint para obtener los meritos de un usuario
+  meritsbyid: `${API_BASE_URL}merits/{id}`,
+  sponsors: `${API_BASE_URL}sponsor{id}/`
 };
 
 export default API_BASE_URL;

@@ -19,7 +19,7 @@ const Dreams = lazy(() => import('../../components/camperProfile/Dreams'));
 const TrainingProcess = lazy(() => import('../../components/camperProfile/TrainingProcess'));
 const Proyects = lazy(() => import('@/components/camperProfile/Proyects'));
 const SponsorCTA = lazy(() => import('../../components/camperProfile/SponsorCTA'));
-const Footer = lazy(() => import('../../components/footer/Footer'));
+const Footer = lazy(() => import("../../components/footer/Footer"));
 
 const CamperProfile = () => {
     const { id } = useParams(); // Obtenemos el id de la URL

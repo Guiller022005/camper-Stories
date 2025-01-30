@@ -4,6 +4,7 @@ import ProtectedRoute from './ProtectedRoute';
 import CampersMainPage from '../views/campersMainPage/CampersMainPage';
 import CamperProfile from '../views/camperProfile/CamperProfile';
 import CamperProfileEdit from '../views/camperProfileEdit/CamperProfileEdit';
+import Sponsors from '../views/sponsorDashboard/SponsorDashboard';
 import LoginPage from '@/views/LoginPage/LoginPage';
 import Unauthorized from '@/views/Unauthorized/Unauthorized';
 import DynamicTitle from './DynamicTitle';
@@ -12,6 +13,7 @@ import ForgetPassword from '@/views/ForgetPasswordPage/forgetPasswordPage';
 import NewPassword from '@/views/NewPasswordPage/newPasswordPage';
 import PrivacyPolicies from '@/views/PrivacyPolicies/PrivacyPoliciesPage';
 import TermsAndConditions from '@/views/termsConditions/termsAndCondicions';
+import SponsorLogin from '@/views/loginSponsor/LoginSponsor';
 
 /**
  * Componente que resetea la vista y el scroll cuando cambia la ruta.
@@ -47,9 +49,10 @@ const AppRouter = () => {
         <Route path="/campers/register" element={<RegisterPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/campers/profile/:id/" element={<CamperProfile />} />
-        <Route path="/politica-de-privacidad" element={<PrivacyPolicies />} />
-        <Route path="/terms-Conditions" element={<TermsAndConditions />} />
-
+        <Route path="/sponsors/" element={<Sponsors />} />
+        <Route path='/politica-de-privacidad'element={<PrivacyPolicies/>}/>
+        <Route path='/terms-Conditions' element={<TermsAndConditions/>}/>
+        <Route path="/sponsors/login" element={<SponsorLogin />} />
         <Route
           path="/campers/profile/:id/edit"
           element={
