@@ -118,23 +118,23 @@ const Campers = ({
                     />
                   </div>
                   <div className={styles.cardContent}>
-                    <h3 className="font-semibold text-[clamp(1.3rem,2vw,1.2rem)] text-[var(--color1)] mb-[clamp(0.3rem,1vw,0.5rem)] text-center">
+                    <h3 className="font-semibold text-[clamp(1.3rem,2vw,1.2rem)] text-[var(--color1)] mb-[clamp(0.3rem,1vw,0.5rem)] text-center md:text-[clamp(1.2rem,2vw,1.1rem)]">
                       {camper.full_name}
                     </h3>
                     {randomMerit ? (
                       <div className={styles.merit}>
-                        <h4 className="font-medium text-[clamp(0.9rem,1.5vw,0.7rem)] text-[var(--color2)] mb-[clamp(0.5rem,1.5vw,0.8rem)] text-center">
+                        <h4 className="font-medium text-[clamp(0.9rem,1.5vw,0.7rem)] text-[var(--color2)] mb-[clamp(0.5rem,1.5vw,0.8rem)] text-center md:text-[clamp(0.9rem,1.5vw,0.8rem)]">
                           <span className="text-[var(--color2)]">{randomMerit.icon}</span>
                           {randomMerit.name}
                           <span className="text-[var(--color2)]">{randomMerit.icon}</span>
                         </h4>
                       </div>
                     ) : (
-                      <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center">
+                      <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center md:text-[clamp(0.8rem,1.5vw,0.75rem)]">
                         Merito no Disponible.
                       </p>
                     )}
-                    <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center">
+                    <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center md:text-[clamp(0.8rem,1.5vw,0.75rem)]">
                       {isLongAbout ? (
                         <>
                           {camper.about.substring(0, CHAR_LIMIT)}...
