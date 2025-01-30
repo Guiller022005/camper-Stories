@@ -56,11 +56,11 @@ const SponsorDashboard = () => {
   }
 
   return (
-    <div className="flex flex-col relative">
+    <div className="flex flex-col relative min-h-screen bg-[#07072b]">
       <LazySection>
         <NavbarProfile />
       </LazySection>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         <LazySection>
           <div id="sponsor-profile-header">
             <SponsorProfileHeader data={camperData} initialMerits={[]} />
