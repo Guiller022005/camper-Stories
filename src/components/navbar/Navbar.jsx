@@ -30,10 +30,10 @@ const Navbar = () => {
   }
 
   const links = [
-    { href: "/#mainCampers", label: "Inicio" },
-    { href: "/#campers", label: "Historias" },
-    { href: "/#campersGrid", label: "Campers" },
-    { href: "/#formSection", label: "Donar" }
+    { href: "/#inicio", label: "Inicio" },
+    { href: "/#campers-exitosos", label: "Historias" },
+    { href: "/#campers-formacion", label: "Campers" },
+    { href: "/#donar", label: "Donar" }
   ];
 
   // Navbar para Escritorio
