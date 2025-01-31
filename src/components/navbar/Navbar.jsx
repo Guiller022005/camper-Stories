@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import campusLogo from '../../assets/campus.svg';
 import campusLogoCompleto from '../../assets/CampusLogo.png';
 import useScrollDirection from '../../hooks/useScrollDirection';
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollDirection, isInCampersSection } = useScrollDirection();
 
@@ -17,6 +20,14 @@ const Navbar = () => {
     setIsMenuOpen(false);
     document.body.style.overflow = '';
   };
+
+  const handleLoginClick = () => {
+    navigate("/sponsors/login");
+  }
+
+  const handleRegisterClick = () => {
+    toast.info("Esta pagina se encuenta en desarrollo. Vuelve Pronto!")
+  }
 
   const links = [
     { href: "#mainCampers", label: "Inicio" },
@@ -41,10 +52,10 @@ const Navbar = () => {
         </nav>
       </div>
       <div className="flex items-center gap-5">
-        <Button size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]">
+        <Button onClick={handleRegisterClick} size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]">
           Registrate
         </Button>
-        <Button size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]">
+        <Button onClick={handleLoginClick} size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]">
           Inicia Sesión
         </Button>
       </div>
