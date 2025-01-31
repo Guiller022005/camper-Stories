@@ -27,6 +27,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "framer-motion": "^11.15.0",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.468.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",

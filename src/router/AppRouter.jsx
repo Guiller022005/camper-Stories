@@ -49,16 +49,23 @@ const AppRouter = () => {
         <Route path="/campers/register" element={<RegisterPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/campers/profile/:id/" element={<CamperProfile />} />
-        <Route path="/sponsors/" element={<Sponsors />} />
         <Route path='/politica-de-privacidad'element={<PrivacyPolicies/>}/>
         <Route path='/terms-Conditions' element={<TermsAndConditions/>}/>
         <Route path="/sponsors/login" element={<SponsorLogin />} />
+        <Route 
+          path="/sponsors/" 
+          element={
+            <ProtectedRoute allowedRoles={['admin', 'sponsor']}>
+              <Sponsors />
+            </ProtectedRoute> 
+          } 
+        />
         <Route
           path="/campers/profile/:id/edit"
           element={
             <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
               <CamperProfileEdit />
-            </ProtectedRoute>
+            </ProtectedRoute> 
           }
         />
       </Routes>

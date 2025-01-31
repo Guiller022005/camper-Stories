@@ -8,8 +8,6 @@ import './styles/base.css';
 function App() {
   return (
     <div className="App">
-      <AppRouter />
-      <FloatingActionMenu />
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -23,6 +21,8 @@ function App() {
         theme="colored"
         transition={Bounce}
       />
+      <AppRouter />
+      <FloatingActionMenu />
     </div>
   );
 }
