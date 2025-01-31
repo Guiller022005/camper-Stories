@@ -68,7 +68,7 @@ const LoginPage = () => {
             </CardHeader>
 
             <h2 className="text-white text-lg sm:text-xl mb-6 md:mb-7 text-center font-regular">
-              ¡Bienvenido de nuevo, Camper!
+              ¡Bienvenido de nuevo, Sponsor!
             </h2>
 
             {/* Login Form */}
@@ -167,13 +167,13 @@ const LoginPage = () => {
               <p className="text-gray-400 text-[10px] sm:text-xs px-4">
                 Al continuar o iniciar sesión, confirmas que has leído y aceptas nuestros{" "}
                 <a 
-                  onClick={() => navigate("/terms-Conditions")}
+                  href="/terms-Conditions" 
                   className="hover:underline text-white transition-colors duration-200"
                 >
                   Términos y Condiciones
                 </a> y nuestra{" "}
                 <a 
-                  onClick={() => navigate("/politica-de-privacidad")}
+                  href="/politica-de-privacidad" 
                   className="hover:underline text-white transition-colors duration-200"
                 >
                   Políticas de Privacidad

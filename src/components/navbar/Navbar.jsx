@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import campusLogo from '../../assets/campus.svg';
 import campusLogoCompleto from '../../assets/CampusLogo.png';
 import useScrollDirection from '../../hooks/useScrollDirection';
-import { GraduationCap, Users, Building2, Play, Rocket, Target, UserPlus, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollDirection, isInCampersSection } = useScrollDirection();
 
@@ -19,6 +21,14 @@ const Navbar = () => {
     document.body.style.overflow = '';
   };
 
+  const handleLoginClick = () => {
+    navigate("/sponsors/login");
+  }
+
+  const handleRegisterClick = () => {
+    toast.info("Esta pagina se encuenta en desarrollo. Vuelve Pronto!")
+  }
+
   const links = [
     { href: "#mainCampers", label: "Inicio" },
     { href: "#campers", label: "Historias" },
@@ -26,6 +36,7 @@ const Navbar = () => {
     { href: "#formSection", label: "Donar" }
   ];
 
+  // Navbar para Escritorio
   const DesktopNav = () => (
     <div className="max-w-[70vw] mx-auto flex justify-between items-center">
       <div className="flex items-center gap-10">
@@ -41,20 +52,21 @@ const Navbar = () => {
         </nav>
       </div>
       <div className="flex items-center gap-5">
-        <Button size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]">
+        <Button onClick={handleRegisterClick} size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]">
           Registrate
         </Button>
-        <Button size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]">
+        <Button onClick={handleLoginClick} size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]">
           Inicia Sesión
         </Button>
       </div>
     </div>
   );
 
+  // Navbar para Móviles (hasta `md`)
   const MobileNav = () => (
     <div className="flex justify-between items-center px-5">
       <a href="#mainCampers" onClick={handleLinkClick} aria-label="Inicio">
-        <img src={campusLogoCompleto} alt="Campus Logo" className="w-[180px] h-auto relative z-10" />
+        <img src={campusLogoCompleto} alt="Campus Logo" className="w-[150px] h-auto relative z-10" />
       </a>
       <button
         className="relative z-10 w-8 h-8 flex flex-col justify-center items-center focus:outline-none"
@@ -79,6 +91,31 @@ const Navbar = () => {
     </div>
   );
 
+  // Navbar para Tabletas (`md` a `lg`)
+  const TabletNav = () => (
+    <div className="flex justify-between items-center max-w-[90vw] mx-auto px-10">
+      {/* Logo con margen derecho para separarlo de los enlaces */}
+      <a href="#mainCampers" onClick={handleLinkClick} aria-label="Inicio" className="mr-14">
+        <img src={campusLogoCompleto} alt="Campus Logo" className="h-[70px] w-auto" />
+      </a>
+      {/* Sección de enlaces con más espacio */}
+      <nav className="flex gap-x-6 text-[18px]">
+        {links.map((link) => (
+          <a key={link.href} href={link.href} onClick={handleLinkClick} className="text-white hover:text-blue-400 transition-colors">
+            {link.label}
+          </a>
+        ))}
+      </nav>
+      <button onClick={toggleMenu} className="md:hidden block relative z-10 w-8 h-8">
+        <div className="w-6 h-5 flex flex-col justify-between">
+          <span className={`w-full h-0.5 bg-white transform transition ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+          <span className={`w-full h-0.5 bg-white transition ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+          <span className={`w-full h-0.5 bg-white transform transition ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+        </div>
+      </button>
+    </div>
+  );  
+
   return (
     <nav
       className={`text-white p-3 top-0 z-20 transition-transform duration-300 shadow-lg border-b bg-[#27247a] border-indigo-700/30 backdrop-filter
@@ -86,11 +123,14 @@ const Navbar = () => {
         ${isInCampersSection && scrollDirection === 'down' && !isMenuOpen ? '-translate-y-full' : ''} 
         w-full`}
     >
-      <div className="hidden md:block">
-        <DesktopNav />
-      </div>
       <div className="block md:hidden">
         <MobileNav />
+      </div>
+      <div className="hidden md:flex lg:hidden">
+        <TabletNav />
+      </div>
+      <div className="hidden lg:block">
+        <DesktopNav />
       </div>
     </nav>
   );

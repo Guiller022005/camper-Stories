@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom"; // Importar Link para navegación interna
+import { useNavigate } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const Footer = () => {
+  const navigate = useNavigate();
+  
   return (
     <footer className="text-center text-white text-[1rem] py-10 px-6 bg-[#27247a] relative z-10">
       <div className="flex flex-col items-center md:items-start">
@@ -24,23 +27,23 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row text-white gap-4 text-[14px] sm:text-[16px] font-[400] font-mono text-center md:text-left">
             <p>© Campus 2024 - Todos los derechos Reservados</p>
             <p className="hidden md:block">|</p>
-            <p><b>Camper Stories v0.6.0</b></p>
+            <p><b>Camper Stories v0.6.1</b></p>
             <p className="hidden md:block">|</p>
             {/* Enlace a Política de Privacidad */}
-            <Link 
-              to="/politica-de-privacidad" 
-              className="hover:underline text-white transition-colors duration-200"
+            <span
+              onClick={() => navigate("/politica-de-privacidad")}
+              className="hover:underline text-white transition-colors duration-200 cursor-pointer"
             >
               Política de privacidad
-            </Link>
+            </span>
             <p className="hidden md:block">|</p>
             {/* Enlace a Términos y Condiciones */}
-            <Link 
-              to="/terms-Conditions" 
-              className="hover:underline text-white transition-colors duration-200"
+            <span
+              onClick={() => navigate("/terms-Conditions")}
+              className="hover:underline text-white transition-colors duration-200 cursor-pointer"
             >
               Términos y Condiciones
-            </Link>
+            </span>
           </div>
 
           {/* Redes sociales */}

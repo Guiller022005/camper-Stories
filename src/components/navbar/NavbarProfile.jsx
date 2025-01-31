@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate, Link, useParams } from 'react-router-dom';
 import campusLogo from '../../assets/campus.svg';
 import campusLogoCompleto from '../../assets/CampusLogo.png';
-import { UserPlus, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 const NavbarProfile = () => {
   const location = useLocation();
@@ -32,6 +32,14 @@ const NavbarProfile = () => {
       }
     }, 300);
   };
+
+  const handleLoginClick = () => {
+    navigate("/sponsors/login");
+  }
+
+  const handleRegisterClick = () => {
+    toast.info("Esta pagina se encuenta en desarrollo. Vuelve Pronto!")
+  }
 
   const links = [
     { id: 'sobre-mi', label: "Sobre mi" },
@@ -64,11 +72,11 @@ const NavbarProfile = () => {
         </nav>
       </div>
       <div className="flex items-center gap-5">
-        <Button size="lg" className="bg-transparent ring-2 ring-[#e6e6ff] hover:bg-[#4c47b4]">
-          Registrate <UserPlus className="ml-2 h-4 w-4" />
+      <Button onClick={handleRegisterClick} size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]">
+          Registrate
         </Button>
-        <Button size="lg" className="bg-transparent ring-2 ring-[#e6e6ff] hover:bg-[#4c47b4]">
-          Inicia Sesión <LogIn className="ml-2 h-4 w-4" />
+        <Button onClick={handleLoginClick} size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]">
+          Inicia Sesión
         </Button>
       </div>
     </div>

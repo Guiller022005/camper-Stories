@@ -11,7 +11,10 @@ import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/cam
 import styles from "./styles/Campers.module.css";
 import Loader from '@/components/common/Loader';
 
-const Campers = () => {
+const Campers = ({ 
+  title = "Campers Exitosos", 
+  subtitle = "Conoce a algunos de nuestros campers más destacados y cómo han transformado sus carreras!"
+}) => {
   const [slidesPerView, setSlidesPerView] = useState(6);
   const [campersData, setCampersData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -81,10 +84,10 @@ const Campers = () => {
     <div className={styles.campersContainer}>
       <div className={styles.titleCampers}>
         <h3 className="mt-10 mr-[7rem] text-4xl font-bold tracking-tight text-white sm:text-7xl6">
-          Campers Exitosos
+        {title}
         </h3>
         <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
-          Conoce a algunos de nuestros campers más destacados y cómo han transformado sus carreras!
+        {subtitle}
         </h4>
       </div>
       <div className={styles.cardsContainerWrapper}>
@@ -115,23 +118,23 @@ const Campers = () => {
                     />
                   </div>
                   <div className={styles.cardContent}>
-                    <h3 className="font-semibold text-[clamp(1.3rem,2vw,1.2rem)] text-[var(--color1)] mb-[clamp(0.3rem,1vw,0.5rem)] text-center">
+                    <h3 className="font-semibold text-[clamp(1.3rem,2vw,1.2rem)] text-[var(--color1)] mb-[clamp(0.3rem,1vw,0.5rem)] text-center md:text-[clamp(1.2rem,2vw,1.1rem)]">
                       {camper.full_name}
                     </h3>
                     {randomMerit ? (
                       <div className={styles.merit}>
-                        <h4 className="font-medium text-[clamp(0.9rem,1.5vw,0.7rem)] text-[var(--color2)] mb-[clamp(0.5rem,1.5vw,0.8rem)] text-center">
+                        <h4 className="font-medium text-[clamp(0.9rem,1.5vw,0.7rem)] text-[var(--color2)] mb-[clamp(0.5rem,1.5vw,0.8rem)] text-center md:text-[clamp(0.9rem,1.5vw,0.8rem)]">
                           <span className="text-[var(--color2)]">{randomMerit.icon}</span>
                           {randomMerit.name}
                           <span className="text-[var(--color2)]">{randomMerit.icon}</span>
                         </h4>
                       </div>
                     ) : (
-                      <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center">
+                      <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center md:text-[clamp(0.8rem,1.5vw,0.75rem)]">
                         Merito no Disponible.
                       </p>
                     )}
-                    <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center">
+                    <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center md:text-[clamp(0.8rem,1.5vw,0.75rem)]">
                       {isLongAbout ? (
                         <>
                           {camper.about.substring(0, CHAR_LIMIT)}...

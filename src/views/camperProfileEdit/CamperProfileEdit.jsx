@@ -9,6 +9,7 @@ import { fetchCamperById } from "@/services/camperService";
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
 import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
+import { toast } from "react-toastify";
 
 // Lazy load components
 const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
@@ -43,9 +44,10 @@ const CamperProfileEdit = () => {
 
   // Validar acceso al perfil
   if (roleFromStorage === "camper" && parseInt(id) !== camperIdFromStorage) {
-    return <Navigate to="/unauthorized" replace />;
+    toast.error("No tienes permiso para acceder a esta página.");
+    return <Navigate to={`/campers/profile/${camperIdFromStorage}/edit`} replace />;
   }
-
+  
   // Fetch camper, tiktoks, and merits based on camper ID
   useEffect(() => {
     const loadCamperData = async () => {
