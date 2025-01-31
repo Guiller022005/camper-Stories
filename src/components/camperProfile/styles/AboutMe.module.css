@@ -35,15 +35,13 @@
   margin-bottom: 1rem;
 }
 
-.aboutText {
+.colInfo {
   flex: 1;
-  overflow-y: auto;
-  max-height: 300px;
+  max-height: 350px;
 }
 
-.aboutText p {
+.colInfo p {
   color: white;
-  line-height: 1.6;
   margin: 0;
 }
 

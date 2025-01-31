@@ -3,6 +3,7 @@ import { GraduationCap, Users, Building2, ArrowRight, Play, Rocket, Target } fro
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import VideoPlayer from "../camperProfile/VIdeoPlayer";
 
 const stats = [
     { label: "Campers Graduados", value: "500+", icon: GraduationCap },
@@ -95,17 +96,7 @@ const DesktopHero = ({ navigate }) => (
                         </Button>
                         <Dialog>
                             <DialogContent className="sm:max-w-[850px]">
-                                <div className="aspect-video">
-                                    <iframe
-                                        width="100%"
-                                        height="100%"
-                                        src="https://www.youtube.com/embed/OKMsheDmK8Q"
-                                        title="CamperStories Showcase"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                        className="rounded-lg"
-                                    />
-                                </div>
+                                    <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
                             </DialogContent>
                         </Dialog>
                     </motion.div>
@@ -125,15 +116,7 @@ const DesktopHero = ({ navigate }) => (
                             className="relative aspect-video w-full rounded-2xl overflow-hidden"
                         >
                             <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-                            <iframe
-                                width="100%"
-                                height="100%"
-                                src="https://www.youtube.com/embed/OKMsheDmK8Q"
-                                title="CamperStories Showcase"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                className="rounded-lg"
-                            />
+                            <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
                         </motion.div>
 
                         <motion.div
@@ -206,15 +189,7 @@ const TabletHero = ({ navigate }) => (
                     Historias reales de estudiantes que transformaron sus vidas con tecnología.
                 </p>
                 <div className="mt-8">
-                    <iframe
-                        width="100%"
-                        height="350"  // Se aumentó la altura del video
-                        src="https://www.youtube.com/embed/OKMsheDmK8Q"
-                        title="CamperStories Showcase"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="rounded-lg w-full"
-                    />
+                <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
                 </div>
             </motion.div>
         </div>
@@ -288,15 +263,7 @@ const MobileHero = ({ navigate }) => (
                     Inspírate con historias reales de transformación a través de la tecnología.
                 </p>
                 <div className="mt-6">
-                    <iframe
-                        width="100%"
-                        height="200"
-                        src="https://www.youtube.com/embed/OKMsheDmK8Q"
-                        title="CamperStories Showcase"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="rounded-lg w-full"
-                    />
+                    <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
                 </div>
             </motion.div>
 
@@ -304,7 +271,7 @@ const MobileHero = ({ navigate }) => (
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-3 sm:gap-6 justify-center items-center text-center"
+                className="mt-14 mb-2 flex flex-row gap-8 sm:mt-20 sm:gap-6 justify-center items-center text-center"
             >
                 {stats.map((stat, index) => (
                     <motion.div
@@ -315,10 +282,10 @@ const MobileHero = ({ navigate }) => (
                         className="flex flex-col gap-2 justify-center items-center text-center"
                     >
                         <dt className="text-base leading-7 text-gray-300 flex items-center gap-2">
-                            <stat.icon className="h-5 w-5 text-indigo-400" />
-                            {stat.label}
+                            <stat.icon className="h-7 w-7 text-indigo-400" />
+                            <p className="text-[12px] leading-3">{stat.label}</p>
                         </dt>
-                        <dd className="text-3xl font-bold leading-9 tracking-tight text-white">{stat.value}</dd>
+                        <dd className="text-2xl font-bold leading-9 tracking-tight text-white">{stat.value}</dd>
                     </motion.div>
                 ))}
             </motion.div>
