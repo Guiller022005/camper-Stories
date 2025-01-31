@@ -1,24 +1,21 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const useWompi = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
 
-    const [isLoaded, setIsLoaded] = useState(false);
+  useEffect(() => {
+    const checkWompiLoaded = () => {
+      if (window.WompiCheckoutWidget) {
+        setIsLoaded(true);
+      } else {
+        setTimeout(checkWompiLoaded, 500); // Vuelve a intentar después de 500ms
+      }
+    };
 
-    useEffect(() => {
-        if(document.getElementById("wompi-widget-script")) {
-            setIsLoaded(true);
-            return;
-        }
+    checkWompiLoaded();
+  }, []);
 
-        const script = document.createElement("script");
-        script.id = "wompi-widget-script";
-        script.src = "https://checkout.wompi.co/widget.js";
-        script.async = true;
-        script.onload = () => setIsLoaded(true);
-        document.body.appendChild(script); 
-    }, []);
-
-    return {isLoaded};
+  return { isLoaded };
 };
 
 export default useWompi;
