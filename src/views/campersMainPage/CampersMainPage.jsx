@@ -12,19 +12,19 @@ const CampersMainPage = () => {
   return (
     <div className="camper-success-view">
       <Navbar />
-      <section id="heroSection">
+      <section id="inicio">
         <HeroSection />  
       </section>      
       {/* <section id="mainCampers">
         <MainCampers />
       </section>       */}
-      <section id="campers">
+      <section id="campers-exitosos">
         <Campers />
       </section>
-      <section id="campersGrid">
+      <section id="campers-formacion">
         <CampersGrid />
       </section>
-      <section>
+      <section id="donar">
         <FormSection />
       </section>
       <section id="footer">

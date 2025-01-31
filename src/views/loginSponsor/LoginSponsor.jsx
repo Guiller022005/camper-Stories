@@ -145,7 +145,10 @@ const LoginPage = () => {
               <button
                 className="bg-transparent border-none text-[#7c3aed] cursor-pointer text-xs sm:text-sm 
                        hover:text-[#6d28d9] hover:underline transition-colors duration-200"
-                onClick={() => navigate('/campers/register')}
+                onClick={() => 
+                  // navigate('/campers/register'
+                  toast.info("Esta pagina se encuenta en desarrollo. Vuelve Pronto!")
+                  }
               >
                 ¿No tienes cuenta aún? Regístrate
               </button>
@@ -186,7 +189,7 @@ const LoginPage = () => {
 
       {/* Footer Version */}
       <div className="absolute bottom-2 w-full text-center text-xs text-gray-400">
-        Camper Stories v0.6.0
+        Camper Stories v0.6.1
       </div>
     </div>
   );

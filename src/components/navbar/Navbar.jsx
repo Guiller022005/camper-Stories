@@ -30,17 +30,17 @@ const Navbar = () => {
   }
 
   const links = [
-    { href: "#mainCampers", label: "Inicio" },
-    { href: "#campers", label: "Historias" },
-    { href: "#campersGrid", label: "Campers" },
-    { href: "#formSection", label: "Donar" }
+    { href: "/#inicio", label: "Inicio" },
+    { href: "/#campers-exitosos", label: "Historias" },
+    { href: "/#campers-formacion", label: "Campers" },
+    { href: "/#donar", label: "Donar" }
   ];
 
   // Navbar para Escritorio
   const DesktopNav = () => (
     <div className="max-w-[70vw] mx-auto flex justify-between items-center">
       <div className="flex items-center gap-10">
-        <a href="#mainCampers" onClick={handleLinkClick} aria-label="Inicio">
+        <a href="/" onClick={handleLinkClick} aria-label="Inicio">
           <img src={campusLogo} alt="Campus Logo" className="h-[85px] w-auto" />
         </a>
         <nav className="flex gap-10 text-[18px]">
