@@ -125,53 +125,51 @@ const DonationForm = () => {
             {/* Pricing Cards */}
             <div className="space-y-6">
                 <h2 className="text-2xl font-bold text-center text-[#FFFF] py-5 mb-12">Planes de Suscripción</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                    {plans.map((plan, index) => (
-                        <motion.div
-                            key={plan.name}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                        >
-                            <Card
-                                className={`relative p-6 bg-[#6366F1]/10 border-[#6366F1]/20 backdrop-blur-xl hover:bg-[#6366F1]/20 transition-all duration-300 w-full ${
-                                    plan.popular ? "ring-2 ring-[#5737e6]" : ""
-                                }`}
-                                style={{ maxWidth: "350px", margin: "0 auto" }}
-                            >
-                                {plan.popular && (
-                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[--color4] text-[#f0f0ff] px-4 py-1 rounded-full font-bold flex items-center justify-center">
-                                        Más Popular
-                                    </div>
-                                )}
-                                <div className="flex items-center justify-between mb-6">
-                                    <div>
-                                        <h3 className="text-2xl font-bold mb-2 text-[#FFFF]">{plan.name}</h3>
-                                        <div className="flex items-baseline gap-2">
-                                            <span className="text-3xl font-bold text-[#FFFF]">${plan.price.monthly}</span>
-                                            <span className="text-white/60 font-poppins">/mes</span>
-                                        </div>
-                                        <div className="text-sm text-white/60 font-poppins">o ${plan.price.yearly}/año</div>
-                                    </div>
-                                    <div className={`bg-gradient-to-r ${plan.color} p-3 rounded-xl text-white`}>{plan.icon}</div>
-                                </div>
-                                <div className="space-y-4 mb-6">
-                                    {plan.features.map((feature, i) => (
-                                        <div key={i} className="flex items-center gap-3">
-                                            <span className="text-[#66E7F3]">✓</span>
-                                            <span className="text-white/80 font-poppins">{feature}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                                <Button
-                                    className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity font-bold`}
-                                >
-                                    Suscríbete ahora
-                                </Button>
-                            </Card>
-                        </motion.div>
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-12">
+    {plans.map((plan, index) => (
+        <motion.div
+            key={plan.name}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+        >
+            <Card
+                className={`relative p-6 bg-[#6366F1]/10 border-[#6366F1]/20 backdrop-blur-xl hover:bg-[#6366F1]/20 transition-all duration-300 w-full md:w-4/5 lg:w-auto mx-auto ${
+                    plan.popular ? "ring-2 ring-[#5737e6]" : ""
+                }`}
+            >
+                {plan.popular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[--color4] text-[#f0f0ff] px-4 py-1 rounded-full font-bold flex items-center justify-center text-center">
+                    Más Popular
+                </div>                
+                )}
+                <div className="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 className="text-2xl font-bold mb-2 text-[#FFFF]">{plan.name}</h3>
+                        <div className="flex items-baseline gap-2">
+                            <span className="text-3xl font-bold text-[#FFFF]">${plan.price.monthly}</span>
+                            <span className="text-white/60 font-poppins">/mes</span>
+                        </div>
+                        <div className="text-sm text-white/60 font-poppins">o ${plan.price.yearly}/año</div>
+                    </div>
+                    <div className={`bg-gradient-to-r ${plan.color} p-3 rounded-xl text-white`}>{plan.icon}</div>
+                </div>
+                <div className="space-y-4 mb-6">
+                    {plan.features.map((feature, i) => (
+                        <div key={i} className="flex items-center gap-3">
+                            <span className="text-[#66E7F3]">✓</span>
+                            <span className="text-white/80 font-poppins">{feature}</span>
+                        </div>
                     ))}
                 </div>
+                <Button className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity font-bold`}>
+                    Suscríbete ahora
+                </Button>
+            </Card>
+        </motion.div>
+    ))}
+</div>
+
             </div>
         </div>
     );

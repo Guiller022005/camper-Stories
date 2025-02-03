@@ -575,7 +575,6 @@
     justify-content: center;
     width: 380px;
     min-height: 105px;
-    max-height: 105px;
     transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
