@@ -27,10 +27,25 @@ export default function RegisterForm() {
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
+    ciudad: '' // Este será el ID de la ciudad
   });
+  const [selectedCity, setSelectedCity] = useState("");
   const [searchCity, setSearchCity] = useState("");
   const [filteredCities, setFilteredCities] = useState([]);
+  const [emailError, setEmailError] = useState("");
 
+
+  const emailValidationRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  // Función para validar email
+  const validateEmail = (email) => {
+    if (!emailValidationRegex.test(email)) {
+      setEmailError("Por favor ingresa un correo electrónico válido");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
 
   const tiposDocumento = [
     { id: '1', nombre: 'Cédula de Ciudadanía' },
@@ -51,19 +66,19 @@ export default function RegisterForm() {
       setFilteredCities([]);
       return;
     }
-  
+
     const normalizedQuery = normalizeString(query);
     const words = normalizedQuery.split(" "); // Divide la consulta en palabras normalizadas
-  
+
     const filtered = ciudadesColombia.filter((ciudad) => {
       const normalizedCityName = normalizeString(ciudad.city);
-  
+
       // Verifica que todas las palabras de la consulta estén presentes en el nombre de la ciudad
       return words.every((word) => normalizedCityName.includes(word));
     });
-  
+
     setFilteredCities(filtered.slice(0, 5)); // Limitar a 5 resultados
-  };  
+  };
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -137,30 +152,35 @@ export default function RegisterForm() {
     setError("");
     setSuccess(false);
 
-    const formData = new FormData(event.target);
-    // const documentType = formData.get('document_type');
-    // const documentNumber = formData.get('documento');
+    const formDataObj = new FormData(event.target);
+    const email = formDataObj.get('email');
 
-    // Verificar si el documento está en la whitelist
-    // if (!isDocumentAllowed(documentType, documentNumber)) {
-    //   setError("Lo sentimos, este documento no está autorizado para registrarse.");
-    //   toast.error("Lo sentimos, este documento no está autorizado para registrarse.");
-    //   setIsLoading(false);
-    //   return;
-    // }
+    // Validar email y contraseña antes de continuar
+    if (!validateEmail(email) || !validatePasswords()) {
+      setIsLoading(false);
+      return;
+    }
+
+    // Validar que se haya seleccionado una ciudad
+    if (!formData.ciudad) {
+      setError("Por favor selecciona una ciudad");
+      toast.error("Por favor selecciona una ciudad");
+      setIsLoading(false);
+      return;
+    }
 
     const data = {
-      first_name: formData.get('first_name'),
-      last_name: formData.get('last_name'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      document_type: formData.get('document_type'),
-      document_number: formData.get('documento'),
-      birth_date: formData.get('edad'),
-      city: formData.get('ciudad')
+      first_name: formDataObj.get('first_name'),
+      last_name: formDataObj.get('last_name'),
+      email: formDataObj.get('email'),
+      password: formDataObj.get('password'),
+      document_type: formDataObj.get('document_type'),
+      document_number: formDataObj.get('documento'),
+      birth_date: formDataObj.get('edad'),
+      city: formData.ciudad // Usando el ID de la ciudad del estado formData
     };
 
-    console.log(data)
+    console.log("Datos a enviar:", data); // Para debugging
 
     try {
       const response = await fetch(endpoints.register, {
@@ -175,13 +195,13 @@ export default function RegisterForm() {
 
       if (response.ok) {
         setSuccess(true);
-        toast.success('¡Registro exitoso!');  
+        toast.success('¡Registro exitoso!');
         navigate('/campers/login');
-    } else {
+      } else {
         const errorMessage = responseData.error || responseData.message || "Error al registrarse. Intenta nuevamente.";
         setError(errorMessage);
         toast.error(errorMessage);
-    }
+      }
     } catch (err) {
       const errorMessage = "Error de red: No se pudo conectar con el servidor.";
       setError(errorMessage);
@@ -296,7 +316,9 @@ export default function RegisterForm() {
                   placeholder="tu@ejemplo.com"
                   className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
                            focus:ring-2 focus:ring-[#7c3aed] border-none"
+                  onChange={(e) => validateEmail(e.target.value)}
                 />
+
               </div>
             </div>
 
@@ -404,10 +426,13 @@ export default function RegisterForm() {
                         key={ciudad.id}
                         className="px-4 py-2 text-white hover:bg-[#6d28d9] cursor-pointer"
                         onClick={() => {
-                          setSearchCity(ciudad.city); // Actualizar el campo con la ciudad seleccionada
-                          setFormData((prev) => ({ ...prev, ciudad: ciudad.id })); // Guardar la ciudad seleccionada
-                          setFilteredCities([]); // Limpiar resultados
-                          setShowDropdown(false); // Cerrar desplegable
+                          setSearchCity(ciudad.city); // Para mostrar el nombre en el input
+                          setFormData(prev => ({
+                            ...prev,
+                            ciudad: ciudad.id // Guardamos el ID en el formData
+                          }));
+                          setFilteredCities([]);
+                          setShowDropdown(false);
                         }}
                       >
                         {ciudad.city}
@@ -437,13 +462,13 @@ export default function RegisterForm() {
             <div className="text-center mt-4">
               <p className="text-gray-400 text-[10px] sm:text-xs px-4">
                 Al continuar o registrarte, aceptas nuestras{" "}
-                <a 
+                <a
                   onClick={() => navigate("/terms-Conditions")}
                   className="hover:underline text-white transition-colors duration-200"
                 >
                   Términos y Condiciones
                 </a> y nuestra{" "}
-                <a 
+                <a
                   onClick={() => navigate("/politica-de-privacidad")}
                   className="hover:underline text-white transition-colors duration-200"
                 >

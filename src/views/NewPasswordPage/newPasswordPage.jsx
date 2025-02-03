@@ -15,8 +15,6 @@ export default function NewPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Expresión regular para validar contraseñas seguras
-  const passwordValidationRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   useEffect(() => {
     // Validar que existe un token
@@ -41,11 +39,40 @@ export default function NewPasswordForm() {
       return;
     }
 
+    const validatePassword = (password) => {
+      // Verificar longitud mínima
+      if (password.length < 8) {
+        toast.error("La contraseña debe tener al menos 8 caracteres");
+        return false;
+      }
+    
+      // Verificar si contiene al menos una mayúscula
+      if (!/[A-Z]/.test(password)) {
+        toast.error("La contraseña debe contener al menos una letra mayúscula");
+        return false;
+      }
+    
+      // Verificar si contiene al menos una minúscula
+      if (!/[a-z]/.test(password)) {
+        toast.error("La contraseña debe contener al menos una letra minúscula");
+        return false;
+      }
+    
+      // Verificar si contiene al menos un número
+      if (!/\d/.test(password)) {
+        toast.error("La contraseña debe contener al menos un número");
+        return false;
+      }
+    
+      return true;
+    };
+    
     // Validación: Asegurarse de que la contraseña cumple con las reglas de seguridad
-    if (!passwordValidationRegex.test(password)) {
-      toast.error("La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una letra minúscula, un número y un carácter especial.");
+    // Validar requisitos de la contraseña
+    if (!validatePassword(password)) {
       return;
     }
+
 
     setIsLoading(true);
 
@@ -55,7 +82,7 @@ export default function NewPasswordForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           token: token,
           newPassword: password
         }),
