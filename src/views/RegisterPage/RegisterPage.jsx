@@ -126,11 +126,9 @@ export default function RegisterForm() {
   const capitalizeWords = (str) => {
     if (!str) return '';
     return str
-      .trim()
       .toLowerCase()
       .split(' ')
-      .filter(word => word.length > 0)
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map(word => word ? word.charAt(0).toUpperCase() + word.slice(1) : '')
       .join(' ');
   };
 
