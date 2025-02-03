@@ -68,6 +68,12 @@ const DonationForm = () => {
         setCustomAmount(formatCurrency(value));
     };
 
+    const generateUniqueReference = () => {
+        const timestamp = Date.now().toString(36);
+        const randomStr = Math.random().toString(36).substring(2, 8);
+        return `don_${timestamp}_${randomStr}`;
+    };
+
     return (
         <div className="donation-form-section space-y-12">
             {/* Formulario */}
@@ -115,7 +121,7 @@ const DonationForm = () => {
                         {isValidAmount ? (
                             <WompiWidget
                                 amountInCents={parseFloat(customAmount.replace(/\./g, "")) * 100}
-                                reference={`DONATION_${Date.now()}`}
+                                reference={generateUniqueReference()}
                             />
                         ) : (
                             <button

@@ -1,27 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { getSignature } from '../../services/wompiService';
+import { toast } from 'react-toastify';
 
 const WompiWidget = ({ amountInCents, reference }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePayment = async () => {
+  const WOMPI_PUBLIC_KEY = import.meta.env.VITE_WOMPI_PUBLIC_KEY;
+
+
+  const initializePayment = async () => {
     try {
+
       setIsLoading(true);
-      
-      const cleanReference = reference.toString().trim();
-      const cleanAmount = parseInt(amountInCents, 10);
-      
-      const signature = await getSignature(cleanReference, cleanAmount, 'COP');
+
+
+      if (isNaN(amountInCents) || amountInCents <= 0) {
+        console.error("Error: El monto no es válido", amountInCents);
+        return;
+      }
+
+      const signature = await getSignature(reference, amountInCents, 'COP');
 
       const checkout = new window.WidgetCheckout({
         currency: 'COP',
-        amountInCents: cleanAmount,
-        reference: cleanReference,
-        publicKey: import.meta.env.VITE_WOMPI_PUBLIC_KEY,
+        amountInCents,
+        reference,
+        publicKey: WOMPI_PUBLIC_KEY,
         redirectUrl: `${window.location.origin}/success`,
-        signature: signature,
-        // Agregamos los callbacks necesarios
+        'signature:integrity': signature,
         onClose: () => {
           console.log('Widget cerrado');
         },
@@ -30,21 +37,32 @@ const WompiWidget = ({ amountInCents, reference }) => {
         },
         onError: (error) => {
           console.error('Error en el widget:', error);
-        },
-        onApproved: (transaction) => {
-          console.log('Transacción aprobada:', transaction);
-          // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
-        },
-        onRejected: (transaction) => {
-          console.log('Transacción rechazada:', transaction);
-          // Aquí puedes mostrar un mensaje de error o tomar otra acción
+          toast.error('Error en el proceso de pago');
         }
       });
 
-      checkout.open();
+      checkout.open((result) => {
+        if (!result || !result.transaction) {
+          console.error("Error: No se recibió una transacción válida", result);
+          toast.error("Error al procesar el pago");
+          return;
+        }
+
+        const transaction = result.transaction;
+        console.log("Transacción recibida:", transaction);
+
+        if (transaction.status === "APPROVED") {
+          toast.success("¡Pago exitoso!");
+        } else if (transaction.status === "DECLINED") {
+          toast.error("Pago rechazado.");
+        } else {
+          toast.warning("Pago pendiente.");
+        }
+      });
+
     } catch (error) {
       console.error('Error al iniciar el pago:', error);
-      alert('Hubo un error al iniciar el pago. Por favor, intenta de nuevo.');
+      toast.error('Error al iniciar el pago');
     } finally {
       setIsLoading(false);
     }
@@ -65,7 +83,7 @@ const WompiWidget = ({ amountInCents, reference }) => {
 
   return (
     <button
-      onClick={handlePayment}
+      onClick={initializePayment}
       disabled={isLoading}
       className="w-full p-3 rounded-md font-bold text-white text-lg bg-[#382394] hover:bg-[#2a1b6e] transition-colors"
     >
