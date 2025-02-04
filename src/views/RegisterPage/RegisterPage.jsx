@@ -27,7 +27,9 @@ export default function RegisterForm() {
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
+    ciudad: '' // Este será el ID de la ciudad
   });
+  const [selectedCity, setSelectedCity] = useState("");
   const [searchCity, setSearchCity] = useState("");
   const [filteredCities, setFilteredCities] = useState([]);
   const [emailError, setEmailError] = useState("");
@@ -124,11 +126,9 @@ export default function RegisterForm() {
   const capitalizeWords = (str) => {
     if (!str) return '';
     return str
-      .trim()
       .toLowerCase()
       .split(' ')
-      .filter(word => word.length > 0)
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map(word => word ? word.charAt(0).toUpperCase() + word.slice(1) : '')
       .join(' ');
   };
 
@@ -150,37 +150,35 @@ export default function RegisterForm() {
     setError("");
     setSuccess(false);
 
-    const formData = new FormData(event.target);
-    const email = formData.get('email');
+    const formDataObj = new FormData(event.target);
+    const email = formDataObj.get('email');
 
-    // Validar email antes de continuar
+    // Validar email y contraseña antes de continuar
     if (!validateEmail(email) || !validatePasswords()) {
+      setIsLoading(false);
       return;
     }
 
-    // const documentType = formData.get('document_type');
-    // const documentNumber = formData.get('documento');
-
-    // Verificar si el documento está en la whitelist
-    // if (!isDocumentAllowed(documentType, documentNumber)) {
-    //   setError("Lo sentimos, este documento no está autorizado para registrarse.");
-    //   toast.error("Lo sentimos, este documento no está autorizado para registrarse.");
-    //   setIsLoading(false);
-    //   return;
-    // }
+    // Validar que se haya seleccionado una ciudad
+    if (!formData.ciudad) {
+      setError("Por favor selecciona una ciudad");
+      toast.error("Por favor selecciona una ciudad");
+      setIsLoading(false);
+      return;
+    }
 
     const data = {
-      first_name: formData.get('first_name'),
-      last_name: formData.get('last_name'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      document_type: formData.get('document_type'),
-      document_number: formData.get('documento'),
-      birth_date: formData.get('edad'),
-      city: formData.get('ciudad')
+      first_name: formDataObj.get('first_name'),
+      last_name: formDataObj.get('last_name'),
+      email: formDataObj.get('email'),
+      password: formDataObj.get('password'),
+      document_type: formDataObj.get('document_type'),
+      document_number: formDataObj.get('documento'),
+      birth_date: formDataObj.get('edad'),
+      city: formData.ciudad // Usando el ID de la ciudad del estado formData
     };
 
-    console.log(data)
+    console.log("Datos a enviar:", data); // Para debugging
 
     try {
       const response = await fetch(endpoints.register, {
@@ -316,9 +314,9 @@ export default function RegisterForm() {
                   placeholder="tu@ejemplo.com"
                   className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
                            focus:ring-2 focus:ring-[#7c3aed] border-none"
-                           onChange={(e) => validateEmail(e.target.value)}
+                  onChange={(e) => validateEmail(e.target.value)}
                 />
-                
+
               </div>
             </div>
 
@@ -426,10 +424,13 @@ export default function RegisterForm() {
                         key={ciudad.id}
                         className="px-4 py-2 text-white hover:bg-[#6d28d9] cursor-pointer"
                         onClick={() => {
-                          setSearchCity(ciudad.city); // Actualizar el campo con la ciudad seleccionada
-                          setFormData((prev) => ({ ...prev, ciudad: ciudad.id })); // Guardar la ciudad seleccionada
-                          setFilteredCities([]); // Limpiar resultados
-                          setShowDropdown(false); // Cerrar desplegable
+                          setSearchCity(ciudad.city); // Para mostrar el nombre en el input
+                          setFormData(prev => ({
+                            ...prev,
+                            ciudad: ciudad.id // Guardamos el ID en el formData
+                          }));
+                          setFilteredCities([]);
+                          setShowDropdown(false);
                         }}
                       >
                         {ciudad.city}

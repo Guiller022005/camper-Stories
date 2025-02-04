@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import campusLogo from '../../assets/campus.svg';
 import campusLogoCompleto from '../../assets/CampusLogo.png';
-import useScrollDirection from '../../hooks/useScrollDirection';
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { scrollDirection, isInCampersSection } = useScrollDirection();
+
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -119,9 +118,7 @@ const Navbar = () => {
   return (
     <nav
       className={`text-white p-3 top-0 z-20 transition-transform duration-300 shadow-lg border-b bg-[#27247a] border-indigo-700/30 backdrop-filter
-        ${isMenuOpen ? 'fixed bg-[#27247a]' : 'bg-[#27247a] backdrop-blur-sm'} 
-        ${isInCampersSection && scrollDirection === 'down' && !isMenuOpen ? '-translate-y-full' : ''} 
-        w-full`}
+        ${isMenuOpen ? 'fixed bg-[#27247a]' : 'bg-[#27247a] backdrop-blur-sm'}  w-full`}
     >
       <div className="block md:hidden">
         <MobileNav />

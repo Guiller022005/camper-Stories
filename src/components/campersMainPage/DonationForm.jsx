@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Rocket, Star, Sparkles, Heart, ArrowRight, DivideSquareIcon } from "lucide-react";
+import WompiWidget from "../../components/campersMainPage/WompiWidget";
 
 const plans = [
     {
@@ -56,14 +57,21 @@ const plans = [
 
 const DonationForm = () => {
     const [customAmount, setCustomAmount] = useState("");
+    const isValidAmount = customAmount && parseFloat(customAmount.replace(/\./g, "")) >= 5000;
+
+    const formatCurrency = (value) => {
+        const numericValue = value.replace(/\D/g, ""); // Remueve todo excepto números
+        return new Intl.NumberFormat("es-CO").format(numericValue);
+    };
 
     const handleCustomAmount = (value) => {
-        const amount = parseFloat(value);
-        if (!isNaN(amount) && amount >= 0) {
-            setCustomAmount(amount);
-        } else {
-            setCustomAmount("");
-        }
+        setCustomAmount(formatCurrency(value));
+    };
+
+    const generateUniqueReference = () => {
+        const timestamp = Date.now().toString(36);
+        const randomStr = Math.random().toString(36).substring(2, 8);
+        return `don_${timestamp}_${randomStr}`;
     };
 
     return (
@@ -87,13 +95,16 @@ const DonationForm = () => {
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg font-poppins">$</span>
                                 <Input
                                     id="amount"
-                                    type="number"
+                                    type="text"
                                     value={customAmount}
                                     onChange={(e) => handleCustomAmount(e.target.value)}
                                     className="pl-8 bg-[#1A1D2E] border border-gray-600 focus:border-[#7C3AED] h-12 rounded-md text-lg text-white placeholder-gray-500"
-                                    placeholder="0.00"
+                                    placeholder="5.000"
                                 />
                             </div>
+                            {customAmount && !isValidAmount && (
+                                <p className="text-[#5e14d6] text-sm">El monto mínimo es de $5.000 COP.</p>
+                            )}
                         </div>
                         {/* Mensaje */}
                         <div className="space-y-2">
@@ -107,17 +118,19 @@ const DonationForm = () => {
                             />
                         </div>
                         {/* Botón */}
-                        <div
-                            className="w-full h-12 text-lg bg-[#494fd3] hover:bg-[#5b3aed] flex items-center justify-center gap-2 text-white font-bold rounded-md shadow-lg"
-                            disabled={!customAmount}
-                        >
-                            <Heart className="h-5 w-5" />
-                            Aportar ahora
-                            <ArrowRight className="h-5 w-5" />
-                        </div>
-                        <p className="text-center text-sm text-gray-400 mt-4 font-poppins">
-                            Tu donación está protegida con pago seguro.
-                        </p>
+                        {isValidAmount ? (
+                            <WompiWidget
+                                amountInCents={parseFloat(customAmount.replace(/\./g, "")) * 100}
+                                reference={generateUniqueReference()}
+                            />
+                        ) : (
+                            <button
+                                className="w-full p-3 rounded-md font-bold text-white text-lg bg-[#382394] cursor-not-allowed"
+                                disabled
+                            >
+                                Paga Ahora con Wompi <ArrowRight className="h-5 w-5 inline pb-[2px]" />
+                            </button>
+                        )}
                     </div>
                 </Card>
             </div>
@@ -125,51 +138,52 @@ const DonationForm = () => {
             {/* Pricing Cards */}
             <div className="space-y-6">
                 <h2 className="text-2xl font-bold text-center text-[#FFFF] py-5 mb-12">Planes de Suscripción</h2>
-                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-12">
-    {plans.map((plan, index) => (
-        <motion.div
-            key={plan.name}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-        >
-            <Card
-                className={`relative p-6 bg-[#6366F1]/10 border-[#6366F1]/20 backdrop-blur-xl hover:bg-[#6366F1]/20 transition-all duration-300 w-full md:w-4/5 lg:w-auto mx-auto ${
-                    plan.popular ? "ring-2 ring-[#5737e6]" : ""
-                }`}
-            >
-                {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[--color4] text-[#f0f0ff] px-4 py-1 rounded-full font-bold flex items-center justify-center text-center">
-                    Más Popular
-                </div>                
-                )}
-                <div className="flex items-center justify-between mb-6">
-                    <div>
-                        <h3 className="text-2xl font-bold mb-2 text-[#FFFF]">{plan.name}</h3>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-3xl font-bold text-[#FFFF]">${plan.price.monthly}</span>
-                            <span className="text-white/60 font-poppins">/mes</span>
-                        </div>
-                        <div className="text-sm text-white/60 font-poppins">o ${plan.price.yearly}/año</div>
-                    </div>
-                    <div className={`bg-gradient-to-r ${plan.color} p-3 rounded-xl text-white`}>{plan.icon}</div>
-                </div>
-                <div className="space-y-4 mb-6">
-                    {plan.features.map((feature, i) => (
-                        <div key={i} className="flex items-center gap-3">
-                            <span className="text-[#66E7F3]">✓</span>
-                            <span className="text-white/80 font-poppins">{feature}</span>
-                        </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    {plans.map((plan, index) => (
+                        <motion.div
+                            key={plan.name}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                        >
+                            <Card
+                                className={`relative p-6 bg-[#6366F1]/10 border-[#6366F1]/20 backdrop-blur-xl hover:bg-[#6366F1]/20 transition-all duration-300 w-full ${plan.popular ? "ring-2 ring-[#5737e6]" : ""
+                                    }`}
+                                style={{ maxWidth: "350px", margin: "0 auto" }}
+                            >
+                                {plan.popular && (
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[--color4] text-[#f0f0ff] px-4 py-1 rounded-full font-bold flex items-center justify-center">
+                                        Más Popular
+                                    </div>
+                                )}
+                                <div className="flex items-center justify-between mb-6">
+                                    <div>
+                                        <h3 className="text-2xl font-bold mb-2 text-[#FFFF]">{plan.name}</h3>
+                                        <div className="flex items-baseline gap-2">
+                                            <span className="text-3xl font-bold text-[#FFFF]">${plan.price.monthly}</span>
+                                            <span className="text-white/60 font-poppins">/mes</span>
+                                        </div>
+                                        <div className="text-sm text-white/60 font-poppins">o ${plan.price.yearly}/año</div>
+                                    </div>
+                                    <div className={`bg-gradient-to-r ${plan.color} p-3 rounded-xl text-white`}>{plan.icon}</div>
+                                </div>
+                                <div className="space-y-4 mb-6">
+                                    {plan.features.map((feature, i) => (
+                                        <div key={i} className="flex items-center gap-3">
+                                            <span className="text-[#66E7F3]">✓</span>
+                                            <span className="text-white/80 font-poppins">{feature}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <Button
+                                    className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity font-bold`}
+                                >
+                                    Suscríbete ahora
+                                </Button>
+                            </Card>
+                        </motion.div>
                     ))}
                 </div>
-                <Button className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity font-bold`}>
-                    Suscríbete ahora
-                </Button>
-            </Card>
-        </motion.div>
-    ))}
-</div>
-
             </div>
         </div>
     );
