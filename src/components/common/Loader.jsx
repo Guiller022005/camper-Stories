@@ -7,7 +7,7 @@ const Loader = () => {
           <div className="w-16 h-16 rounded-full absolute
                         border-4 border-solid border-[#1E213D]"></div>
           <div className="w-16 h-16 rounded-full animate-spin absolute
-                        border-4 border-solid border-[#FFB800] border-t-transparent
+                        border-4 border-solid border-indigo-600 border-t-transparent
                         shadow-lg"></div>
           <div className="mt-24 text-white text-center">
             Cargando...

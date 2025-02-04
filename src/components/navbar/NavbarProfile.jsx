@@ -34,11 +34,11 @@ const NavbarProfile = () => {
   };
 
   const handleLoginClick = () => {
-    navigate("/sponsors/login");
+    navigate("/login");
   }
 
   const handleRegisterClick = () => {
-    toast.info("Esta pagina se encuenta en desarrollo. Vuelve Pronto!")
+    navigate("/register");
   }
 
   const links = [

@@ -27,7 +27,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row text-white gap-4 text-[14px] sm:text-[16px] font-[400] font-mono text-center md:text-left">
             <p>© Campus 2024 - Todos los derechos Reservados</p>
             <p className="hidden md:block">|</p>
-            <p><b>Camper Stories v0.6.1</b></p>
+            <p><b>Camper Stories v0.6.2</b></p>
             <p className="hidden md:block">|</p>
             {/* Enlace a Política de Privacidad */}
             <span

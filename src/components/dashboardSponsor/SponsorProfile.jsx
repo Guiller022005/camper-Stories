@@ -14,7 +14,7 @@ const ProfileHeader = ({ data, initialMerits }) => {
 
   return (
     <motion.div
-      className="py-32 pb-10 bg-[#07072b] rounded-2xl overflow-hidden"
+      className="py-32 pb-10 bg-gradient-to-b from-[#07073b] to-[#1d1a4b] rounded-2xl overflow-hidden"
       initial={false}
       animate={{ height: "auto" }}
       transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
