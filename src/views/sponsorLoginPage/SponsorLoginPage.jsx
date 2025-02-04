@@ -2,12 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Label } from "@/components/ui/label";
 import campushm from '/src/assets/Campushm.png';
 import { endpoints } from '../../services/apiConfig';
 import { CardHeader, CardTitle } from "@/components/ui/card";
 
-const LoginPage = () => {
+// Función para generar estrellas
+const generateStars = (count) => {
+    return Array.from({ length: count }).map((_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        duration: Math.random() * 5 + 5,
+        size: Math.random() * 2 + 1,
+    }));
+};
+
+const stars = generateStars(50);
+
+const SponsorLoginPage = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const [showPassword, setShowPassword] = useState(false);
@@ -47,11 +61,37 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#1a1a2e] flex flex-col items-center justify-center p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#1a1b2b] to-[#1e203a] flex flex-col items-center justify-center p-4 md:p-6 lg:p-8 relative overflow-hidden">
+      {/* Stars Animation */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {stars.map((star) => (
+          <motion.div
+            key={star.id}
+            className="absolute bg-white rounded-full opacity-75"
+            style={{
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              left: `${star.x}%`,
+              top: `-${star.size}px`,
+            }}
+            animate={{
+              y: ['-10vh', '110vh'],
+              opacity: [0, 1, 0.5, 1, 0],
+            }}
+            transition={{
+              duration: star.duration,
+              repeat: Infinity,
+              ease: 'linear',
+              delay: Math.random() * 3,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Main Container */}
-      <div className="w-full max-w-md lg:max-w-lg px-4 sm:px-6 md:px-8 lg:px-10">
+      <div className="w-full max-w-md lg:max-w-lg px-4 sm:px-6 md:px-8 lg:px-10 relative z-10">
         {/* Form Panel */}
-        <div className="w-full bg-[#2a2a3e] p-6 md:p-8 border border-[#6b5ffd] rounded-2xl shadow-[0_0_30px_-6px_#6b5ffd] text-center relative overflow-hidden">
+        <div className="w-full bg-[#2a2b3d] p-6 md:p-8 border border-[#594ed3] rounded-2xl text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-[#6b5ffd20] to-[#6b5ffd10] opacity-50"></div>
 
           <div className="relative z-10">
@@ -68,7 +108,7 @@ const LoginPage = () => {
             </CardHeader>
 
             <h2 className="text-white text-lg sm:text-xl mb-6 md:mb-7 text-center font-regular">
-              ¡Bienvenido de nuevo, Camper!
+              ¡Bienvenido de nuevo, Sponsor!
             </h2>
 
             {/* Login Form */}
@@ -79,10 +119,9 @@ const LoginPage = () => {
                 const password = e.target.password.value;
                 handleLogin(email, password);
               }}
-              className="space-y-4"
             >
               {/* Email Input */}
-              <div className="space-y-2">
+              <div className="space-y-2 mb-4">
                 <Label htmlFor="email" className="text-white text-left block text-sm sm:text-base">
                   Correo electrónico
                 </Label>
@@ -103,7 +142,7 @@ const LoginPage = () => {
               </div>
 
               {/* Password Input */}
-              <div className="space-y-2">
+              <div className="space-y-2 mb-4">
                 <Label htmlFor="password" className="text-white text-left block text-sm sm:text-base">
                   Contraseña
                 </Label>
@@ -130,35 +169,38 @@ const LoginPage = () => {
                 </div>
               </div>
 
+              {/* Forget Password */}
+              <div className="text-center my-[1.5rem]">
+                <button
+                  className="bg-transparent border-none text-white cursor-pointer text-xs sm:text-sm 
+                       hover:text-[#6d28d9] hover:underline transition-colors duration-200"
+                  onClick={() => navigate('/forgetPassword')}
+                >
+                  ¿Olvidaste tu contraseña?
+                </button>
+              </div>
+
               {/* Submit Button */}
               <button
                 type="submit"
                 className="w-full py-2.5 sm:py-3 px-4 rounded-lg text-sm sm:text-base bg-[#6C3AFF] text-white 
-                       hover:bg-[#6d28d9] mt-6 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg"
+                hover:bg-[#6d28d9] transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg"
               >
                 Iniciar Sesión
               </button>
             </form>
 
             {/* Register Link */}
-            <div className="text-center mt-6">
+            <div className="text-center my-[1.2rem]">
               <button
                 className="bg-transparent border-none text-[#7c3aed] cursor-pointer text-xs sm:text-sm 
                        hover:text-[#6d28d9] hover:underline transition-colors duration-200"
-                onClick={() => navigate('/campers/register')}
+                onClick={() =>
+                  // navigate('/register/sponsor'
+                  toast.info("Esta pagina se encuenta en desarrollo. Vuelve Pronto!")
+                }
               >
                 ¿No tienes cuenta aún? Regístrate
-              </button>
-            </div>
-
-            {/* Forget Password */}
-            <div className="text-center mt-6">
-              <button
-                className="bg-transparent border-none text-white cursor-pointer text-xs sm:text-sm 
-                       hover:text-[#6d28d9] hover:underline transition-colors duration-200"
-                onClick={() => navigate('/campers/forgetPassword')}
-              >
-                ¿Olvidaste tu contraseña?
               </button>
             </div>
 
@@ -166,15 +208,15 @@ const LoginPage = () => {
             <div className="text-center mt-4">
               <p className="text-gray-400 text-[10px] sm:text-xs px-4">
                 Al continuar o iniciar sesión, confirmas que has leído y aceptas nuestros{" "}
-                <a 
-                  onClick={() => navigate("/terms-Conditions")}
-                  className="hover:underline text-white transition-colors duration-200"
+                <a
+                  href="/terminos-y-condiciones"
+                  className="hover:underline text-white transition-colors duration-200 cursor-pointer"
                 >
                   Términos y Condiciones
                 </a> y nuestra{" "}
-                <a 
-                  onClick={() => navigate("/politica-de-privacidad")}
-                  className="hover:underline text-white transition-colors duration-200"
+                <a
+                  href="/politica-de-privacidad"
+                  className="hover:underline text-white transition-colors duration-200 cursor-pointer"
                 >
                   Políticas de Privacidad
                 </a>.
@@ -192,4 +234,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SponsorLoginPage;

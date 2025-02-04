@@ -5,7 +5,7 @@ import CampersMainPage from '../views/campersMainPage/CampersMainPage';
 import CamperProfile from '../views/camperProfile/CamperProfile';
 import CamperProfileEdit from '../views/camperProfileEdit/CamperProfileEdit';
 import Sponsors from '../views/sponsorDashboard/SponsorDashboard';
-import LoginPage from '@/views/LoginPage/LoginPage';
+import CamperLoginPage from '@/views/camperLoginPage/CamperLoginPage';
 import Unauthorized from '@/views/Unauthorized/Unauthorized';
 import DynamicTitle from './DynamicTitle';
 import RegisterPage from '@/views/RegisterPage/RegisterPage';
@@ -13,7 +13,9 @@ import ForgetPassword from '@/views/ForgetPasswordPage/forgetPasswordPage';
 import NewPassword from '@/views/NewPasswordPage/newPasswordPage';
 import PrivacyPolicies from '@/views/PrivacyPolicies/PrivacyPoliciesPage';
 import TermsAndConditions from '@/views/termsConditions/termsAndCondicions';
-import SponsorLogin from '@/views/loginSponsor/LoginSponsor';
+import SponsorLoginPage from '@/views/sponsorLoginPage/SponsorLoginPage';
+import LoginRoleSelection from '@/views/roleSelection/LoginRoleSelection';
+import RegisterRoleSelection from '@/views/roleSelection/RegisterRoleSelection';
 
 /**
  * Componente que resetea la vista y el scroll cuando cambia la ruta.
@@ -43,17 +45,21 @@ const AppRouter = () => {
       <Routes key={location.pathname}>
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="/" element={<CampersMainPage />} />
-        <Route path="/campers/login" element={<LoginPage />} />
-        <Route path="/campers/forgetPassword" element={<ForgetPassword />} />
+        <Route path="/login" element={<LoginRoleSelection />} />
+        <Route path="/login/camper" element={<CamperLoginPage />} />
+        <Route path="/login/sponsor" element={<SponsorLoginPage />} />
+        <Route path="/register" element={<RegisterRoleSelection />} />
+        <Route path="/register/camper" element={<RegisterPage />} />
+        <Route path="/register/sponsor" element={<Unauthorized />} />
+        <Route path="/forgetPassword" element={<ForgetPassword />} />
         <Route path="/campers/newPassword/:token" element={<NewPassword />} />
-        <Route path="/campers/register" element={<RegisterPage />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/campers/profile/:id/" element={<CamperProfile />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path='/politica-de-privacidad'element={<PrivacyPolicies/>}/>
-        <Route path='/terms-Conditions' element={<TermsAndConditions/>}/>
-        <Route path="/sponsors/login" element={<SponsorLogin />} />
+        <Route path='/terminos-y-condiciones' element={<TermsAndConditions/>}/>
+
         <Route 
-          path="/sponsors/" 
+          path="/sponsor" 
           element={
             <ProtectedRoute allowedRoles={['admin', 'sponsor']}>
               <Sponsors />
