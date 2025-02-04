@@ -261,7 +261,7 @@ const CampersGrid = () => {
                                     <p>{camper.title}</p>
                                     <div className="technologies">
                                         <span className="tech-label">Méritos:</span>
-                                        <div layout className="skills-wrapper wrapper">
+                                        <div className="skills-wrapper wrapper">
                                         <div className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""}`}>
                                             <AnimatePresence>
                                             {camper.skills.map((skill, index) => (
