@@ -1,142 +1,169 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
-import { useParams } from 'react-router-dom';
-
-import styles from './styles/CamperProfile.module.css';
-import LazySection from '../../components/common/LazySection';
-import { DEFAULT_CAMPER_DATA } from '@/data/dataDefault';
-
-import Loader from '@/components/common/Loader';
-import { fetchCamperById } from '../../services/camperService';
-import { fetchTikToksByCamperId } from '@/services/tiktokService';
-import { fetchMeritsByCamperId } from '@/services/meritsService';   
-import NoRecords from '@/components/common/NoRecords';
+import React, { useEffect, useState, lazy, Suspense } from "react";
+import { useParams, Navigate } from "react-router-dom";
+import styles from "./styles/CamperProfile.module.css";
+import ErrorPage from "../ErrorPage/ErrorPage";
+import Loader from "@/components/common/Loader";
+import LazySection from "@/components/common/LazySection";
+import FloatingActionMenu from "@/components/FloatingMenu/FloatingActionMenu";
+import { fetchCamperById } from "@/services/camperService";
+import { fetchTikToksByCamperId } from "@/services/tiktokService";
+import { fetchMeritsByCamperId } from "@/services/meritsService";
+import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
+import { toast } from "react-toastify";
 
 // Lazy load components
 const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
 const ProfileHeader = lazy(() => import("../../components/camperProfile/ProfileHeader"));
-const AboutMe = lazy(() => import('../../components/camperProfile/AboutMe'));
-const Dreams = lazy(() => import('../../components/camperProfile/Dreams'));
-const TrainingProcess = lazy(() => import('../../components/camperProfile/TrainingProcess'));
-const Proyects = lazy(() => import('@/components/camperProfile/Proyects'));
-const SponsorCTA = lazy(() => import('../../components/camperProfile/SponsorCTA'));
+const ProfileHeaderEdit = lazy(() => import("../../components/camperProfileEdit/ProfileHeaderEdit"));
+const AboutMe = lazy(() => import("../../components/camperProfile/AboutMe"));
+const AboutMeEdit = lazy(() => import("../../components/camperProfileEdit/AboutMeEdit"));
+const Dreams = lazy(() => import("../../components/camperProfile/Dreams"));
+const TrainingProcess = lazy(() => import("../../components/camperProfile/TrainingProcess"));
+const TrainingProcessEdit = lazy(() => import("../../components/camperProfileEdit/TrainingProcessEdit"));
+const Proyects = lazy(() => import("../../components/camperProfile/Proyects"));
+const ProyectsEdit = lazy(() => import("../../components/camperProfileEdit/ProyectsEdit"));
+const SponsorCTA = lazy(() => import("../../components/camperProfile/SponsorCTA"));
 const Footer = lazy(() => import("../../components/footer/Footer"));
 
-const CamperProfile = () => {
-    const { id } = useParams(); // Obtenemos el id de la URL
+const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
+    const { id } = useParams();
     const [camperData, setCamperData] = useState(DEFAULT_CAMPER_DATA);
-    const [camperTiktoksData, setCamperTiktoksData] = useState([]); 
+    const [camperTiktoksData, setCamperTiktoksData] = useState([]);
     const [camperMerits, setCamperMerits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Modificamos el useEffect para usar el id de la URL
+    // Obtener `camper_id` y `role` desde localStorage
+    const camperIdFromStorage = parseInt(localStorage.getItem("camper_id"));
+    const roleFromStorage = localStorage.getItem("role");
+
+    // Si el usuario intenta editar un perfil que no le pertenece, lo redirige
+    if (isEditable && roleFromStorage === "camper" && parseInt(id) !== camperIdFromStorage) {
+        toast.error("No tienes permiso para acceder a esta página.");
+        return <Navigate to={`/campers/profile/${camperIdFromStorage}/edit`} replace />;
+    }
+
     useEffect(() => {
         const loadCamperData = async () => {
             try {
                 setIsLoading(true);
                 const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
-                    fetchCamperById(Number(id)), // Convertimos el id a número
-                    fetchTikToksByCamperId(Number(id)), // Usamos el mismo id para tiktoks
-                    fetchMeritsByCamperId(Number(id)) // Y para méritos
+                    fetchCamperById(id),
+                    fetchTikToksByCamperId(id),
+                    fetchMeritsByCamperId(id),
                 ]);
 
-        setCamperData(data_infoCamper);
-        setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
-        setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
-      } catch (err) {
-        setError(err.message);
-        console.error("Error cargando datos:", err);
-        // Establecer datos por defecto en caso de error
-        setCamperData(DEFAULT_CAMPER_DATA);
-        setCamperTiktoksData([]);
-        setCamperMerits([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+                setCamperData(data_infoCamper);
+                setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
+                setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
 
-        if (id) { // Solo cargar si hay un id
+                const scrollPosition = localStorage.getItem("scrollPosition");
+                if (scrollPosition) {
+                    window.scrollTo(0, parseInt(scrollPosition));
+                    localStorage.removeItem("scrollPosition");
+                }
+            } catch (err) {
+                setError(err.message);
+                console.error("Error cargando datos:", err);
+                setCamperData(DEFAULT_CAMPER_DATA);
+                setCamperTiktoksData([]);
+                setCamperMerits([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (id) {
             loadCamperData();
         }
     }, [id]);
 
-    if (isLoading) {
-        return <Loader />; 
-    }
+    const refreshData = async () => {
+        try {
+            setIsLoading(true);
+            const [data_infoCamper, data_tiktoks, data_merits] = await Promise.all([
+                fetchCamperById(id),
+                fetchTikToksByCamperId(id),
+                fetchMeritsByCamperId(id),
+            ]);
 
-    if (error) {
-        return (
-            <ErrorPage 
-                title="Error al cargar el perfil"
-                message={`No pudimos cargar la información del camper. ${error}`}
-                error="404" // O podrías usar un código de error específico según el tipo de error
-            />
-        );
-    }
-
-    const renderTrainingProcess = () => {
-        if (!camperTiktoksData || camperTiktoksData.length === 0) {
-            return <NoRecords title='Mi Proceso de Formacion'/>;
+            setCamperData(data_infoCamper);
+            setCamperTiktoksData(Array.isArray(data_tiktoks) ? data_tiktoks : []);
+            setCamperMerits(Array.isArray(data_merits) ? data_merits : []);
+        } catch (err) {
+            setError(err.message);
+            console.error("Error recargando datos:", err);
+        } finally {
+            setIsLoading(false);
         }
-        return (
-            <TrainingProcess videos={camperTiktoksData} />
-        );
     };
 
+    if (isLoading) return <Loader />;
+    if (error) {
+        return <ErrorPage title="Error al cargar el perfil" message={`No pudimos cargar la información del camper. ${error}`} error="404" />;
+    }
+
     return (
-        <div className={`${styles.camperProfileView} flex flex-col relative`}>
+        <div className={styles.camperProfileView}>
             <LazySection>
                 <NavbarProfile />
             </LazySection>
-            <div className={`${styles.profileMainContent} flex flex-col gap-4`}>
+            <div className={styles.profileMainContent}>
                 <LazySection>
-                    <div id="profile-header">
-                        <ProfileHeader 
-                            data={camperData}
-                            initialMerits={camperMerits}
-                        />
-                    </div>
+                    {isEditable ? (
+                        <ProfileHeaderEdit data={camperData} initialMerits={camperMerits} onUpdate={refreshData} />
+                    ) : (
+                        <ProfileHeader data={camperData} initialMerits={camperMerits} />
+                    )}
                 </LazySection>
 
                 <LazySection>
                     <div id="sobre-mi">
-                        <AboutMe
-                            videoUrl={camperData.main_video_url}
-                            about={camperData.about}
-                        />
+                        {isEditable ? (
+                            <AboutMeEdit videoUrl={camperData.main_video_url} about={camperData.about} onUpdate={refreshData} />
+                        ) : (
+                            <AboutMe videoUrl={camperData.main_video_url} about={camperData.about} />
+                        )}
                     </div>
                 </LazySection>
 
                 <LazySection>
                     <div id="sueños-grid">
-                        <Dreams />
+                        <Dreams isEditable={isEditable} onUpdate={refreshData} />
                     </div>
                 </LazySection>
 
                 <LazySection>
                     <div id="proceso-formacion">
-                        {renderTrainingProcess()}
+                        {isEditable ? <TrainingProcessEdit videos={camperTiktoksData} onUpdate={refreshData} /> : <TrainingProcess videos={camperTiktoksData} />}
                     </div>
                 </LazySection>
 
                 <LazySection>
                     <div id="projects">
-                        <Proyects />
+                        {isEditable ? <ProyectsEdit onUpdate={refreshData} /> : <Proyects />}
                     </div>
                 </LazySection>
-
+                
                 <LazySection>
                     <div id="patrocinar">
                         <SponsorCTA />
                     </div>
                 </LazySection>
             </div>
+
             <LazySection>
                 <Footer />
             </LazySection>
-            
+
+            {isEditable && (
+                <Suspense fallback={null}>
+                    <FloatingActionMenu />
+                </Suspense>
+            )}
         </div>
     );
 };
 
 export default CamperProfile;
+
