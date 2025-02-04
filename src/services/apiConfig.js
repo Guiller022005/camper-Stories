@@ -17,7 +17,8 @@ export const endpoints = {
   technologyProject: `${API_BASE_URL}projects/technologies`,
   addProjects: `${API_BASE_URL}projects`,
   meritsbyid: `${API_BASE_URL}merits/{id}`,
-  sponsors: `${API_BASE_URL}sponsor{id}/`
+  sponsors: `${API_BASE_URL}sponsor{id}/`,
+  payments: `${API_BASE_URL}payments`
 };
 
 export default API_BASE_URL;

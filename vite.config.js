@@ -10,6 +10,9 @@ export default defineConfig({
     },
   },
   server: {
+    headers: {
+      "Content-Security-Policy": "img-src 'self' data: *"
+    },
     proxy: {
       '/api': {
         target: process.env.VITE_API_BASE_URL || 'http://localhost:3000', // Usa un valor predeterminado si no está definido
@@ -17,5 +20,5 @@ export default defineConfig({
         secure: false,
       },
     },
-  },
+  },  
 });
