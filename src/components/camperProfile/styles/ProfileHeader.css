@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 3rem;
+  gap: 1rem;
   padding: 0 2rem 0 0;
   height: 100%;
 }
@@ -308,24 +308,49 @@
   border-color: transparent #1877f2 transparent transparent; /* Flecha hacia la izquierda */
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
+@media (min-width: 1024px) and (max-width: 1439px) {
   .profile-container {
-    padding: 0 1rem;
-    gap: 1.5rem;
+    flex-direction: column; /* Columna entre 1024px y 1439px */
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1023px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-content {
+    padding: 0 2rem;
+    gap: 4rem;
   }
 
   .profile-image {
     width: 200px;
     height: 200px;
   }
+  .profile-badges-box{
+    margin-top: 4rem;
+  }
+}
 
-  .profile-name {
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
+
+@media (min-width: 1440px) {
+  .profile-container {
+    flex-direction: row; /* Fila en 1440px o más */
   }
 }
 
 @media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+  }
+  .profile-badges-box{
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 428px) {
   .profile-image .custom-tooltip {
     position: fixed; /* Fija el tooltip en el viewport */
     bottom: 0; /* Lo coloca al fondo de la pantalla */
