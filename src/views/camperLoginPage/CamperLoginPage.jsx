@@ -225,7 +225,7 @@ const CamperLoginPage = () => {
 
       {/* Footer Version */}
       <div className="absolute bottom-2 w-full text-center text-xs text-gray-400">
-        Camper Stories v0.6.1
+        Camper Stories v0.6.2
       </div>
     </div>
   );
