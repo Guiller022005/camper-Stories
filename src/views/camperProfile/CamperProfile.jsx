@@ -1,6 +1,5 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import styles from "./styles/CamperProfile.module.css";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import Loader from "@/components/common/Loader";
 import LazySection from "@/components/common/LazySection";
@@ -16,7 +15,6 @@ const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile")
 const ProfileHeader = lazy(() => import("../../components/camperProfile/ProfileHeader"));
 const ProfileHeaderEdit = lazy(() => import("../../components/camperProfileEdit/ProfileHeaderEdit"));
 const AboutMe = lazy(() => import("../../components/camperProfile/AboutMe"));
-const AboutMeEdit = lazy(() => import("../../components/camperProfileEdit/AboutMeEdit"));
 const Dreams = lazy(() => import("../../components/camperProfile/Dreams"));
 const TrainingProcess = lazy(() => import("../../components/camperProfile/TrainingProcess"));
 const TrainingProcessEdit = lazy(() => import("../../components/camperProfileEdit/TrainingProcessEdit"));
@@ -104,26 +102,24 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
     }
 
     return (
-        <div className={styles.camperProfileView}>
+        <div className="w-full font-inter bg-[#070727] max-w-full overflow-x-hidden">
             <LazySection>
                 <NavbarProfile />
             </LazySection>
-            <div className={styles.profileMainContent}>
+
+            <div className="flex flex-col w-full py-0 px-[clamp(1rem,10vw,10rem)] pb-8 bg-gradient-to-b from-[#080831] via-[#0e0e61] to-[#27247a]">
                 <LazySection>
-                    {isEditable ? (
-                        <ProfileHeaderEdit data={camperData} initialMerits={camperMerits} onUpdate={refreshData} />
-                    ) : (
-                        <ProfileHeader data={camperData} initialMerits={camperMerits} />
-                    )}
+                        <ProfileHeader data={camperData} initialMerits={camperMerits} isEditable={isEditable}  onUpdate={refreshData}/>
                 </LazySection>
 
                 <LazySection>
                     <div id="sobre-mi">
-                        {isEditable ? (
-                            <AboutMeEdit videoUrl={camperData.main_video_url} about={camperData.about} onUpdate={refreshData} />
-                        ) : (
-                            <AboutMe videoUrl={camperData.main_video_url} about={camperData.about} />
-                        )}
+                        <AboutMe
+                            isEditable={isEditable}
+                            onUpdate={refreshData}
+                            videoUrl={camperData.main_video_url}
+                            about={camperData.about}
+                        />
                     </div>
                 </LazySection>
 
@@ -144,7 +140,7 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
                         {isEditable ? <ProyectsEdit onUpdate={refreshData} /> : <Proyects />}
                     </div>
                 </LazySection>
-                
+
                 <LazySection>
                     <div id="patrocinar">
                         <SponsorCTA />
