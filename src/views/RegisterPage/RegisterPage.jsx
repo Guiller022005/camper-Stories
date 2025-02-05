@@ -509,7 +509,7 @@ export default function RegisterForm() {
             <div className="text-center">
               <button
                 type="button"
-                onClick={() => navigate("/campers/login")}
+                onClick={() => navigate("/login/camper")}
                 className="text-[#7c3aed] text-sm hover:text-[#6d28d9] transition-colors duration-200"
               >
                 ¿Ya tienes una cuenta? Inicia sesión
