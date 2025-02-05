@@ -19,6 +19,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+input:focus,
+select:focus {
+  @apply ring-2 ring-[#7c3aed] outline-none;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
