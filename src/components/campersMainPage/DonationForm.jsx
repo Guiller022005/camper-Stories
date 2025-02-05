@@ -138,7 +138,7 @@ const DonationForm = () => {
             {/* Pricing Cards */}
             <div className="space-y-6">
                 <h2 className="text-2xl font-bold text-center text-[#FFFF] py-5 mb-12">Planes de Suscripción</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-12">
                     {plans.map((plan, index) => (
                         <motion.div
                             key={plan.name}
