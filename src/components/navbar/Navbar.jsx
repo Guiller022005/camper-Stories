@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import campusLogo from '../../assets/campus.svg';
 import campusLogoCompleto from '../../assets/CampusLogo.png';
 import { Button } from "@/components/ui/button";
-import { toast } from "react-toastify";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -21,11 +20,11 @@ const Navbar = () => {
   };
 
   const handleLoginClick = () => {
-    navigate("/sponsors/login");
+    navigate("/login");
   }
 
   const handleRegisterClick = () => {
-    toast.info("Esta pagina se encuenta en desarrollo. Vuelve Pronto!")
+    navigate("/register");
   }
 
   const links = [

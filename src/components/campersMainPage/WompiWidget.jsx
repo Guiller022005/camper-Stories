@@ -8,6 +8,9 @@ const WompiWidget = ({ amountInCents, reference }) => {
 
   const WOMPI_PUBLIC_KEY = import.meta.env.VITE_WOMPI_PUBLIC_KEY;
 
+  const handleClickOnDev = () => {
+    toast.info("Esta opcion aun se encuenta en desarrollo. Vuelve Pronto!")
+  };
 
   const initializePayment = async () => {
     try {
@@ -83,7 +86,8 @@ const WompiWidget = ({ amountInCents, reference }) => {
 
   return (
     <button
-      onClick={initializePayment}
+      // onClick={initializePayment} se puso un toast mientras termino de pulir todo
+      onClick={handleClickOnDev}
       disabled={isLoading}
       className="w-full p-3 rounded-md font-bold text-white text-lg bg-[#382394] hover:bg-[#2a1b6e] transition-colors"
     >
