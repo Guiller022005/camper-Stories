@@ -46,7 +46,7 @@ const ProfileHeader = ({ data, initialMerits, onUpdate, isEditable }) => {
               </div>
             </div>
           ) : (
-            <div className="relative h-[250px] w-[250px] rounded-full border-4 border-[rgba(107,95,253,0.3)] bg-gradient-to-r from-[#2d2b54] to-[#1a1830] shadow-lg hover:shadow-xl transition-transform transform hover:-translate-y-1">
+            <div className="profileImage">
               <LazyLoadImage
                 src={
                   data.profile_picture && data.profile_picture.trim() !== ""
@@ -55,7 +55,7 @@ const ProfileHeader = ({ data, initialMerits, onUpdate, isEditable }) => {
                 }
                 alt={`Perfil de ${data.full_name}`}
                 effect="blur"
-                className="w-full h-full object-cover rounded-full"
+                className="profileImageContent"
               />
             </div>
           )}

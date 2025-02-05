@@ -101,12 +101,12 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
     }
 
     return (
-        <div className="w-full font-inter bg-[#070727] max-w-full overflow-x-hidden">
+        <div className="w-full font-mono bg-[#070727] max-w-full overflow-x-hidden">
             <LazySection>
                 <NavbarProfile />
             </LazySection>
 
-            <div className="flex flex-col w-full py-0 px-[clamp(1rem,10vw,10rem)] pb-8 bg-gradient-to-b from-[#080831] via-[#0e0e61] to-[#27247a]">
+            <div className="flex flex-col w-full py-0 px-[clamp(1rem,10vw,10rem)] pb-8 bg-gradient-to-b from-[#080831] via-[#0e0e61] to-[#27247a] md:px-6 md:pb-4">
                 <LazySection> 
                         <ProfileHeader data={camperData} initialMerits={camperMerits} onUpdate={refreshData} isEditable={isEditable}/>
                 </LazySection>
