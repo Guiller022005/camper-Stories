@@ -135,7 +135,8 @@ const DonationForm = () => {
                 </Card>
             </div>
 
-            {/* Pricing Cards */}
+            {/* Pricing Cards (OCULTO TEMPORALMENTE) */}
+            {/* 
             <div className="space-y-6">
                 <h2 className="text-2xl font-bold text-center text-[#FFFF] py-5 mb-12">Planes de Suscripción</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -184,7 +185,8 @@ const DonationForm = () => {
                         </motion.div>
                     ))}
                 </div>
-            </div>
+            </div> 
+            */}
         </div>
     );
 };
