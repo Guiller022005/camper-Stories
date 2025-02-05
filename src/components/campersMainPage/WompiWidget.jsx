@@ -86,8 +86,8 @@ const WompiWidget = ({ amountInCents, reference }) => {
 
   return (
     <button
-      // onClick={initializePayment} se puso un toast mientras termino de pulir todo
-      onClick={handleClickOnDev}
+      onClick={initializePayment}
+      // onClick={handleClickOnDev} onClick para DESACTIVAR PAGOS EN PRODUCCION
       disabled={isLoading}
       className="w-full p-3 rounded-md font-bold text-white text-lg bg-[#382394] hover:bg-[#2a1b6e] transition-colors"
     >
