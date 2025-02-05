@@ -9,7 +9,7 @@ import MeritsModal from "../camperProfileEdit/modals/MeritsModal";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
-const ProfileHeader = ({ data, initialMerits, onUpdate }) => {
+const ProfileHeader = ({ data, initialMerits, onUpdate, isEditable }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
@@ -19,34 +19,64 @@ const ProfileHeader = ({ data, initialMerits, onUpdate }) => {
 
   return (
     <motion.div
-      className="profile-header"
+      className="py-[8rem] pb-[2.5rem] bg-gradient-to-b from-[rgba(52,50,100,0.3)] to-transparent rounded-2xl overflow-hidden 
+      sm:py-[7rem] md:py-[6.5rem] lg:py-[8rem]"
       initial={false}
       animate={{ height: "auto" }}
       transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
       layout
     >
-      <div className="profile-container">
-        <div className="profile-content">
+      <div className="flex flex-row items-center justify-between w-full h-full max-w-[1400px] mx-auto px-8">
+        <div className="flex flex-row items-center gap-4 px-8 h-full">
           {/* Envolvemos ProfileImage con .icon y .badgeInfo para el tooltip */}
-          <div className="icon badgeInfo profile-image">
-            {/* Usa el componente ProfileImage */}
-            <ProfileImage
-              imageUrl={
-                data.profile_picture && data.profile_picture.trim() !== ""
-                  ? data.profile_picture
-                  : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
-              }
-              progress={75} // Aquí puedes pasar el progreso dinámico
-            />
-            {/* Tooltip Motivacional */}
-            <div className="custom-tooltip">
-              🌟 ¡Gran trabajo! Casi llegas a los 10M de patrocinio camper. 🏆 ¡No te detengas ahora! 🚀
+          {!isEditable ? (
+            <div className="icon badgeInfo profile-image">
+              {/* Usa el componente ProfileImage */}
+              <ProfileImage
+                imageUrl={
+                  data.profile_picture && data.profile_picture.trim() !== ""
+                    ? data.profile_picture
+                    : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+                }
+                progress={75} // Aquí puedes pasar el progreso dinámico
+              />
+              {/* Tooltip Motivacional */}
+              <div className="custom-tooltip">
+                🌟 ¡Gran trabajo! Casi llegas a los 10M de patrocinio camper. 🏆 ¡No te detengas ahora! 🚀
+              </div>
             </div>
-          </div>
-
+          ) : (
+            <div className="relative h-[250px] w-[250px] rounded-full border-4 border-[rgba(107,95,253,0.3)] bg-gradient-to-r from-[#2d2b54] to-[#1a1830] shadow-lg hover:shadow-xl transition-transform transform hover:-translate-y-1">
+              <LazyLoadImage
+                src={
+                  data.profile_picture && data.profile_picture.trim() !== ""
+                    ? data.profile_picture
+                    : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+                }
+                alt={`Perfil de ${data.full_name}`}
+                effect="blur"
+                className="w-full h-full object-cover rounded-full"
+              />
+            </div>
+          )}
           <div className="profile-details">
             <h1 className="profile-name">
-              <p>{data.full_name}</p>
+              {isEditable ? (
+                <p>
+                  {data.full_name}
+                  <ProfileHeaderModal
+                    initialData={{
+                      nombre: data.full_name,
+                      city: data.city,
+                      age: data.age,
+                      mainImage: data.profile_picture,
+                    }}
+                    onUpdate={onUpdate}
+                  />
+                </p>
+              ) : (
+                <p>{data.full_name}</p>
+              )}
             </h1>
             <div className="camper-details">
               <div className="profile-city">
@@ -80,6 +110,9 @@ const ProfileHeader = ({ data, initialMerits, onUpdate }) => {
           <div className="badges-title">
             <Trophy />
             <p>Méritos</p>
+            {isEditable && (
+              <MeritsModal initialMerits={initialMerits} />
+            )}
           </div>
           <div className="badges-container wrapper">
             {initialMerits
@@ -96,9 +129,8 @@ const ProfileHeader = ({ data, initialMerits, onUpdate }) => {
               <span className="toggle-badges-content">
                 {showAllBadges ? "Ver menos" : "Ver más"}
                 <ChevronDown
-                  className={`ml-2 h-4 w-4 transition-transform ${
-                    showAllBadges ? "rotate-180" : ""
-                  }`}
+                  className={`ml-2 h-4 w-4 transition-transform ${showAllBadges ? "rotate-180" : ""
+                    }`}
                 />
               </span>
             </div>

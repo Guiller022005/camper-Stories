@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 // Lazy load components
 const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
 const ProfileHeader = lazy(() => import("../../components/camperProfile/ProfileHeader"));
-const ProfileHeaderEdit = lazy(() => import("../../components/camperProfileEdit/ProfileHeaderEdit"));
 const AboutMe = lazy(() => import("../../components/camperProfile/AboutMe"));
 const Dreams = lazy(() => import("../../components/camperProfile/Dreams"));
 const TrainingProcess = lazy(() => import("../../components/camperProfile/TrainingProcess"));
@@ -108,8 +107,8 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
             </LazySection>
 
             <div className="flex flex-col w-full py-0 px-[clamp(1rem,10vw,10rem)] pb-8 bg-gradient-to-b from-[#080831] via-[#0e0e61] to-[#27247a]">
-                <LazySection>
-                        <ProfileHeader data={camperData} initialMerits={camperMerits} isEditable={isEditable}  onUpdate={refreshData}/>
+                <LazySection> 
+                        <ProfileHeader data={camperData} initialMerits={camperMerits} onUpdate={refreshData} isEditable={isEditable}/>
                 </LazySection>
 
                 <LazySection>

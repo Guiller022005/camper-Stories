@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import VideoPlayer from './VIdeoPlayer';
 import AboutMeModal from '../camperProfileEdit/modals/AboutMeModal';
 
 const AboutMe = ({ isEditable, videoUrl, about, camperInfoInitialData, onUpdate }) => {
-  const [editableAbout, setEditableAbout] = useState(about);
   const navigate = useNavigate();
 
   const handleSponsorClick = () => {
@@ -26,15 +25,6 @@ const AboutMe = ({ isEditable, videoUrl, about, camperInfoInitialData, onUpdate 
     }
   };
 
-  const handleAboutChange = (e) => {
-    setEditableAbout(e.target.value);
-  };
-
-  const handleSave = () => {
-    // Aquí llamas a la función de actualización, pasando el nuevo "about"
-    onUpdate(editableAbout);
-  };
-
   return (
     <section className="py-8 w-full">
       <div className="grid grid-cols-[minmax(300px,60%),minmax(250px,40%)] gap-8 w-full max-w-screen-xl mx-auto">
@@ -51,13 +41,9 @@ const AboutMe = ({ isEditable, videoUrl, about, camperInfoInitialData, onUpdate 
               />
             )}
           </h2>
-          {isEditable ? (
-            <div>
-              <button onClick={handleSave}>Cuéntanos sobre ti...</button>
-            </div>
-          ) : (
-            <p>{about}</p>
-          )}
+          {/* Trae la informacion SI tiene de About Me */}
+              <p>{about}</p> 
+          {/* Si no es editable carga el boton de patrocinar */}
           {!isEditable && (
             <button className="self-start bg-[#f7b500] text-black font-poppins font-semibold uppercase rounded-2xl py-3 px-8 border-0 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-[#f0a500]" onClick={handleSponsorClick}>
               Patrocinar
