@@ -1,5 +1,4 @@
 import React from 'react';
-import DreamsGridEdit from '../camperProfileEdit/DreamsGridEdit';
 import DreamsGrid from './DreamsGrid';
 
 const Dreams = ({ isEditable, onUpdate }) => {
@@ -10,7 +9,7 @@ const Dreams = ({ isEditable, onUpdate }) => {
         <span className="text-[#FACC15] font-bold">&lt;/</span> Mis Sueños
       </h2>
       <div className="w-full">
-        {isEditable ? <DreamsGridEdit onUpdate={onUpdate} /> : <DreamsGrid />}
+        <DreamsGrid onUpdate={onUpdate} isEditable={isEditable} />
       </div>
     </section>
   );

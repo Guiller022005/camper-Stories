@@ -6,24 +6,15 @@ import { Code } from "lucide-react";
 import { getTechnologyForProject } from "../../services/technologiesService";
 import styles from "./styles/ProjectCard.module.css";
 
-function ProjectCard({
-  id,
-  title,
-  description,
-  image, 
-  codeUrl,
-  onEdit,
-}) {
+function ProjectCard({ id, title, description, image, code_url, onEdit, isEditable }) {
   const [projectTechnologies, setProjectTechnologies] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Efecto para cargar las tecnologías específicas de este proyecto
   useEffect(() => {
     const loadProjectTechnologies = async () => {
       try {
         setLoading(true);
         const response = await getTechnologyForProject(id);
-        console.log(response);
         const techNames = response.technologies.map((tech) => tech.name);
         setProjectTechnologies(techNames);
       } catch (error) {
@@ -37,6 +28,18 @@ function ProjectCard({
     loadProjectTechnologies();
   }, [id]);
 
+  const handleEdit = () => {
+    const projectData = {
+      id,
+      title,
+      description,
+      image,
+      code_url,
+      technologies: projectTechnologies
+    };
+    onEdit(projectData);
+  };
+  
   return (
     <Card
       className={styles.projectCard}
@@ -55,19 +58,20 @@ function ProjectCard({
         description={description}
         className={styles.projectCardMeta}
       />
-      {/* Only render technologies section if there are technologies */}
+      {/* Only render technologies section if there are technologies */} 
       {Array.isArray(projectTechnologies) && projectTechnologies.length > 0 && (
         <div className={styles.projectCardTechs}>
-          {projectTechnologies.map((tech) => (
-            <Tag key={tech} color="default" className={styles.projectCardBadge}>
+          {projectTechnologies.map((tech, index) => (
+            <Tag key={index} className={styles.projectCardBadge}>
               {tech}
             </Tag>
           ))}
         </div>
       )}
+
       <Button
         icon={<Code />}
-        href={codeUrl}
+        href={code_url}
         target="_blank"
         rel="noopener noreferrer"
         className={styles.projectCardButton}
@@ -75,6 +79,12 @@ function ProjectCard({
       >
         Ver Código
       </Button>
+
+      {isEditable && (
+        <Button onClick={handleEdit} className={styles.projectCardButton} block>
+          Editar
+        </Button>
+      )}
     </Card>
   );
 }

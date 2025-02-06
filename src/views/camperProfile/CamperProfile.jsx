@@ -9,6 +9,7 @@ import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
 import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
 import { toast } from "react-toastify";
+import NoRecords from '@/components/common/NoRecords';
 
 // Lazy load components
 const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
@@ -16,9 +17,7 @@ const ProfileHeader = lazy(() => import("../../components/camperProfile/ProfileH
 const AboutMe = lazy(() => import("../../components/camperProfile/AboutMe"));
 const Dreams = lazy(() => import("../../components/camperProfile/Dreams"));
 const TrainingProcess = lazy(() => import("../../components/camperProfile/TrainingProcess"));
-const TrainingProcessEdit = lazy(() => import("../../components/camperProfileEdit/TrainingProcessEdit"));
 const Proyects = lazy(() => import("../../components/camperProfile/Proyects"));
-const ProyectsEdit = lazy(() => import("../../components/camperProfileEdit/ProyectsEdit"));
 const SponsorCTA = lazy(() => import("../../components/camperProfile/SponsorCTA"));
 const Footer = lazy(() => import("../../components/footer/Footer"));
 
@@ -100,6 +99,15 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
         return <ErrorPage title="Error al cargar el perfil" message={`No pudimos cargar la información del camper. ${error}`} error="404" />;
     }
 
+    const renderTrainingProcess = () => {
+        if (!camperTiktoksData || camperTiktoksData.length === 0) {
+            return <NoRecords title='Mi Proceso de Formacion'/>;
+        }
+        return (
+            <TrainingProcess videos={camperTiktoksData} isEditable={isEditable} onUpdate={refreshData}/>
+        );
+    };
+
     return (
         <div className="w-full font-mono bg-[#070727] max-w-full overflow-x-hidden">
             <LazySection>
@@ -130,13 +138,13 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
 
                 <LazySection>
                     <div id="proceso-formacion">
-                        {isEditable ? <TrainingProcessEdit videos={camperTiktoksData} onUpdate={refreshData} /> : <TrainingProcess videos={camperTiktoksData} />}
+                        {renderTrainingProcess()}
                     </div>
                 </LazySection>
 
                 <LazySection>
                     <div id="projects">
-                        {isEditable ? <ProyectsEdit onUpdate={refreshData} /> : <Proyects />}
+                        <Proyects onUpdate={refreshData} isEditable={isEditable}/>
                     </div>
                 </LazySection>
 

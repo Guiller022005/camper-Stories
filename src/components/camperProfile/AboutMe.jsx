@@ -27,7 +27,7 @@ const AboutMe = ({ isEditable, videoUrl, about, camperInfoInitialData, onUpdate 
 
   return (
     <section className="py-8 w-full">
-      <div className="grid xl:grid-cols-1 gap-8 w-full max-w-[1400px] mx-auto xl:grid-cols-[minmax(300px,_60%)_minmax(250px,_40%)]">
+      <div className="grid gap-8 w-full max-w-[1400px] mx-auto xl:grid-cols-[minmax(300px,_60%)_minmax(250px,_40%)]">
         <div className="w-full min-w-[300px] max-w-[800px]">
           <VideoPlayer videoUrl={videoUrl} title="Historia Camper" />
         </div>
