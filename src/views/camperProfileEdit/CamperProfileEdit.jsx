@@ -12,7 +12,7 @@ import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
 import { toast } from "react-toastify";
 
 // Lazy load components
-const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
+import Navbar from "../../components/navbar/Navbar";
 const ProfileHeaderEdit = lazy(() =>
   import("../../components/camperProfileEdit/ProfileHeaderEdit")
 );
@@ -29,6 +29,21 @@ const ProyectsEdit = lazy(() =>
   import("../../components/camperProfileEdit/ProyectsEdit")
 );
 const Footer = lazy(() => import("../../components/footer/Footer"));
+
+const navigateToSection = (sectionId) => {
+  const basePath = isEditPage
+    ? `/campers/profile/${id}/edit`
+    : `/campers/profile/${id}`;
+
+  navigate(basePath);
+
+  setTimeout(() => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  }, 300);
+};
 
 const CamperProfileEdit = () => {
   const { id } = useParams(); // Obtén el ID desde la URL
@@ -123,7 +138,16 @@ const CamperProfileEdit = () => {
   return (
     <div className={styles.camperProfileView}>
       <LazySection>
-        <NavbarProfile />
+        <Navbar
+            viewType="profile"
+            links={[
+                { id: "sobre-mi", label: "Sobre mí" },
+                { id: "proceso-formacion", label: "Proceso" },
+                { id: "sueños-grid", label: "Sueños" },
+                { id: "projects", label: "Proyectos" }
+            ]}
+            onLinkClick={navigateToSection}
+        />
       </LazySection>
       <div className={styles.profileMainContent}>
         <LazySection>
