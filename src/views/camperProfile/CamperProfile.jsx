@@ -12,7 +12,7 @@ import { fetchMeritsByCamperId } from '@/services/meritsService';
 import NoRecords from '@/components/common/NoRecords';
 
 // Lazy load components
-const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
+import Navbar from "../../components/navbar/Navbar";
 const ProfileHeader = lazy(() => import("../../components/camperProfile/ProfileHeader"));
 const AboutMe = lazy(() => import('../../components/camperProfile/AboutMe'));
 const Dreams = lazy(() => import('../../components/camperProfile/Dreams'));
@@ -28,6 +28,21 @@ const CamperProfile = () => {
     const [camperMerits, setCamperMerits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const navigateToSection = (sectionId) => {
+        const basePath = isEditPage
+          ? `/campers/profile/${id}/edit`
+          : `/campers/profile/${id}`;
+    
+        navigate(basePath);
+    
+        setTimeout(() => {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 300);
+      };
 
     // Modificamos el useEffect para usar el id de la URL
     useEffect(() => {
@@ -86,7 +101,16 @@ const CamperProfile = () => {
     return (
         <div className={`${styles.camperProfileView} flex flex-col relative`}>
             <LazySection>
-                <NavbarProfile />
+                <Navbar
+                    viewType="profile"
+                    links={[
+                        { id: "sobre-mi", label: "Sobre mí" },
+                        { id: "proceso-formacion", label: "Proceso" },
+                        { id: "sueños-grid", label: "Sueños" },
+                        { id: "projects", label: "Proyectos" }
+                    ]}
+                    onLinkClick={navigateToSection}
+                />
             </LazySection>
             <div className={`${styles.profileMainContent} flex flex-col gap-4`}>
                 <LazySection>

@@ -39,7 +39,7 @@ const Footer = () => {
             <p className="hidden md:block">|</p>
             {/* Enlace a Términos y Condiciones */}
             <span
-              onClick={() => navigate("/terms-Conditions")}
+              onClick={() => navigate("terminos-y-condiciones")}
               className="hover:underline text-white transition-colors duration-200 cursor-pointer"
             >
               Términos y Condiciones

@@ -171,13 +171,14 @@ const CamperLoginPage = () => {
               
               {/* Forget Password */}
               <div className="text-center my-[1.5rem]">
-                <button
-                  className="bg-transparent border-none text-[#FFFFFF] cursor-pointer text-xs sm:text-sm 
-                       hover:text-[#6d28d9] hover:underline transition-colors duration-200"
-                  onClick={() => navigate('/forgetPassword')}
-                >
-                  ¿Olvidaste tu contraseña?
-                </button>
+              <button
+                type="button" // Agrega este tipo para evitar el envío del formulario
+                className="bg-transparent border-none text-[#FFFFFF] cursor-pointer text-xs sm:text-sm 
+                    hover:text-[#6d28d9] hover:underline transition-colors duration-200"
+                onClick={() => navigate('/forgetPassword')}
+              >
+                ¿Olvidaste tu contraseña?
+              </button>
               </div>
 
               {/* Submit Button */}

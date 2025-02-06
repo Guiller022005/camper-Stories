@@ -172,6 +172,7 @@ const SponsorLoginPage = () => {
               {/* Forget Password */}
               <div className="text-center my-[1.5rem]">
                 <button
+                  type='button'
                   className="bg-transparent border-none text-white cursor-pointer text-xs sm:text-sm 
                        hover:text-[#6d28d9] hover:underline transition-colors duration-200"
                   onClick={() => navigate('/forgetPassword')}

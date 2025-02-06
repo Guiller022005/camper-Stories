@@ -9,9 +9,32 @@ import "./styles/CampersMainPage.css";
 import HeroSection from '@/components/campersMainPage/HeroSection';
 
 const CampersMainPage = () => {
+  const navigateToSection = (sectionId) => {
+    const basePath = isEditPage
+      ? `/campers/profile/${id}/edit`
+      : `/campers/profile/${id}`;
+
+    navigate(basePath);
+
+    setTimeout(() => {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 300);
+  };
   return (
     <div className="camper-success-view">
-      <Navbar />
+      <Navbar 
+        viewType="landing"
+        links={[
+          { href: "/#inicio", label: "Inicio" },
+          { href: "/#campers-exitosos", label: "Historias" },
+          { href: "/#campers-formacion", label: "Campers" },
+          { href: "/#donar", label: "Donar" }
+        ]}
+        onLinkClick={navigateToSection}
+      />
       <section id="inicio">
         <HeroSection />  
       </section>      
