@@ -131,6 +131,13 @@ const DonationForm = () => {
                                 Paga Ahora con Wompi <ArrowRight className="h-5 w-5 inline pb-[2px]" />
                             </button>
                         )}
+                        {/* Enlace a certificado */}
+                        <div className="text-center mt-4">
+                            <p className="text-gray-400">¿Deseas obtener un certificado de donación?</p>
+                            <button onClick={() => navigate("/certificado")} className="text-[#5b62f1] underline">
+                                Solicitar certificado
+                            </button>
+                        </div>
                     </div>
                 </Card>
             </div>

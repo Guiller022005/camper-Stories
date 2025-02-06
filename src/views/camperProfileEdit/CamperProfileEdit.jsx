@@ -4,7 +4,6 @@ import styles from "./styles/CamperProfileEdit.module.css";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import Loader from "@/components/common/Loader";
 import LazySection from "@/components/common/LazySection";
-import FloatingActionMenu from "@/components/FloatingMenu/FloatingActionMenu";
 import { fetchCamperById } from "@/services/camperService";
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
@@ -193,10 +192,6 @@ const CamperProfileEdit = () => {
       <LazySection>
         <Footer />
       </LazySection>
-
-      <Suspense fallback={null}>
-        <FloatingActionMenu />
-      </Suspense>
     </div>
   );
 };
