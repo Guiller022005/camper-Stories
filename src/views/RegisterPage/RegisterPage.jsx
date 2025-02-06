@@ -7,6 +7,7 @@ import {
   MapPin,
   FileText,
   Calendar,
+  Building2,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Label } from "@/components/ui/label";
@@ -27,9 +28,9 @@ export default function RegisterForm() {
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
-    ciudad: '' // Este será el ID de la ciudad
+    ciudad: '',
+    campus: ''
   });
-  const [selectedCity, setSelectedCity] = useState("");
   const [searchCity, setSearchCity] = useState("");
   const [filteredCities, setFilteredCities] = useState([]);
   const [emailError, setEmailError] = useState("");
@@ -52,6 +53,15 @@ export default function RegisterForm() {
     { id: '2', nombre: 'Cédula de Extranjería' },
     { id: '3', nombre: 'Tarjeta de Identidad' },
     { id: '4', nombre: 'Pasaporte' }
+  ];
+
+  const campusList = [
+    { id: '1', nombre: 'Campus Bucaramanga' },
+    { id: '2', nombre: 'Campus Bogotá' },
+    { id: '3', nombre: 'Campus Cúcuta' },
+    { id: '4', nombre: 'Campus Tibú' },
+    { id: '5', nombre: 'Campus Yopal' },
+    { id: '6', nombre: 'Campus Villavicencio' }
   ];
 
   const normalizeString = (str) => {
@@ -175,7 +185,8 @@ export default function RegisterForm() {
       document_type: formDataObj.get('document_type'),
       document_number: formDataObj.get('documento'),
       birth_date: formDataObj.get('edad'),
-      city: formData.ciudad // Usando el ID de la ciudad del estado formData
+      city: formData.ciudad,
+      campus_id: formData.campus
     };
 
     console.log("Datos a enviar:", data); // Para debugging
@@ -242,8 +253,7 @@ export default function RegisterForm() {
                     value={formData.first_name}
                     onChange={handleChange}
                     placeholder="Tu nombre"
-                    className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                             focus:ring-2 focus:ring-[#7c3aed] border-none"
+                    className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm focus:ring-2 focus:ring-[#7c3aed]"
                   />
                 </div>
               </div>
@@ -259,7 +269,7 @@ export default function RegisterForm() {
                     onChange={handleChange}
                     placeholder="Tu apellido"
                     className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                             focus:ring-2 focus:ring-[#7c3aed] border-none"
+                             focus:ring-2 focus:ring-[#7c3aed]"
                   />
                 </div>
               </div>
@@ -276,7 +286,7 @@ export default function RegisterForm() {
                     name="document_type"
                     required
                     className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-gray-400 text-sm
-                             focus:ring-2 focus:ring-[#7c3aed] border-none appearance-none"
+                             focus:ring-2 focus:ring-[#7c3aed] appearance-none"
                   >
                     <option value="">Selecciona tipo</option>
                     {tiposDocumento.map((tipo) => (
@@ -295,7 +305,7 @@ export default function RegisterForm() {
                     required
                     placeholder="Número de documento"
                     className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                             focus:ring-2 focus:ring-[#7c3aed] border-none"
+                             focus:ring-2 focus:ring-[#7c3aed]"
                   />
                 </div>
               </div>
@@ -313,7 +323,7 @@ export default function RegisterForm() {
                   required
                   placeholder="tu@ejemplo.com"
                   className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                           focus:ring-2 focus:ring-[#7c3aed] border-none"
+                           focus:ring-2 focus:ring-[#7c3aed]"
                   onChange={(e) => validateEmail(e.target.value)}
                 />
 
@@ -333,7 +343,7 @@ export default function RegisterForm() {
                     required
                     placeholder="••••••••"
                     className={`w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                   focus:ring-2 focus:ring-[#7c3aed] border-none
+                   focus:ring-2 focus:ring-[#7c3aed]
                    ${passwordError ? 'ring-2 ring-red-500' : ''}`} // Añadido feedback visual
                     value={password}
                     onChange={(e) => {
@@ -354,7 +364,7 @@ export default function RegisterForm() {
                     required
                     placeholder="••••••••"
                     className={`w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                   focus:ring-2 focus:ring-[#7c3aed] border-none
+                   focus:ring-2 focus:ring-[#7c3aed]
                    ${passwordError ? 'ring-2 ring-red-500' : ''}`} // Añadido feedback visual
                     value={confirmPassword}
                     onChange={(e) => {
@@ -389,12 +399,12 @@ export default function RegisterForm() {
                     type="date"
                     required
                     className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                             focus:ring-2 focus:ring-[#7c3aed] border-none"
+                             focus:ring-2 focus:ring-[#7c3aed]"
                   />
                 </div>
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="ciudad" className="text-white text-sm">Ciudad</Label>
+                <Label htmlFor="ciudad" className="text-white text-sm">Ciudad de Nacimiento</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                   <input
@@ -409,8 +419,7 @@ export default function RegisterForm() {
                       setSearchCity(e.target.value);
                       filterCities(e.target.value);
                     }}
-                    className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm
-                            focus:ring-2 focus:ring-[#7c3aed] border-none"
+                    className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm focus:ring-2 focus:ring-[#7c3aed]"
                   />
                 </div>
                 {/* Mostrar resultados solo si `showDropdown` es true */}
@@ -443,6 +452,27 @@ export default function RegisterForm() {
               </div>
             </div>
 
+            {/* Campo de Selección de Campus */}
+            <div className="space-y-1.5">
+              <Label htmlFor="campus" className="text-white text-sm">¿A qué campus perteneces?</Label>
+              <div className="relative">
+                <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                <select
+                  id="campus"
+                  name="campus"
+                  required
+                  value={formData.campus}
+                  onChange={handleChange}
+                  className="w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm focus:ring-2 focus:ring-[#7c3aed]"
+                >
+                  <option value="">Selecciona tu campus</option>
+                  {campusList.map((campus) => (
+                    <option key={campus.id} value={campus.id}>{campus.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              </div>
+
             {/* Botón de registro */}
             <button
               type="submit"
@@ -459,13 +489,13 @@ export default function RegisterForm() {
 
             <div className="text-center mt-4">
               <p className="text-gray-400 text-[10px] sm:text-xs px-4">
-                Al continuar o registrarte, aceptas nuestras{" "}
+                Al registrarte, aceptas nuestros{" "}
                 <a
                   onClick={() => navigate("/terms-Conditions")}
                   className="hover:underline text-white transition-colors duration-200"
                 >
                   Términos y Condiciones
-                </a> y nuestra{" "}
+                </a> y nuestras{" "}
                 <a
                   onClick={() => navigate("/politica-de-privacidad")}
                   className="hover:underline text-white transition-colors duration-200"
@@ -479,7 +509,7 @@ export default function RegisterForm() {
             <div className="text-center">
               <button
                 type="button"
-                onClick={() => navigate("/campers/login")}
+                onClick={() => navigate("/login/camper")}
                 className="text-[#7c3aed] text-sm hover:text-[#6d28d9] transition-colors duration-200"
               >
                 ¿Ya tienes una cuenta? Inicia sesión
