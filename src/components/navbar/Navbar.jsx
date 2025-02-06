@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import campusLogo from "../../assets/campus.svg";
+import campusLogoCompleto from "../../assets/CampusLogo.png";
 import { toast } from "react-toastify";
 
 const Navbar = ({ viewType, links, onLinkClick }) => {
@@ -127,7 +128,7 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
       {/* Navbar Móvil & Tablet */}
       <div className="flex lg:hidden justify-between items-center px-5">
         <Link to="/">
-          <img src={campusLogo} alt="Campus Logo" className="h-[85px] w-auto" />
+          <img src={campusLogoCompleto} alt="Campus Logo Completo" className="h-[55px] w-auto" />
         </Link>
         <button
           className="relative z-[1001] w-8 h-8 flex flex-col justify-center items-center focus:outline-none"
@@ -145,27 +146,27 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
       {/* Menú Móvil Expandido */}
       {isMenuOpen && (
         <div className="fixed inset-0 bg-[#0C0C74] flex flex-col justify-center items-center z-[999]">
-          <NavLinks links={links} />
-          {!isLoggedIn ? (
-            <>
-              <Button size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]" onClick={() => navigate("/register")}>
-                Registrate
-              </Button>
-              <Button size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]" onClick={() => navigate("/login")}>
-                Inicia Sesión
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]" onClick={handleToggleProfile}>
-                Ver Perfil
-              </Button>
-              <Button size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]" onClick={handleLogout}>
-                Cerrar Sesión
-              </Button>
-            </>
-          )}
-        </div>
+        <NavLinks links={links} />
+        {!isLoggedIn ? (
+          <div className="flex flex-col gap-4"> {/* Agrega un gap de 4 unidades (1rem) entre los botones */}
+            <Button size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]" onClick={() => navigate("/register")}>
+              Registrate
+            </Button>
+            <Button size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]" onClick={() => navigate("/login")}>
+              Inicia Sesión
+            </Button>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4"> {/* Agrega un gap de 4 unidades (1rem) entre los botones */}
+            <Button size="lg" className="text-lg bg-transparent" onClick={handleToggleProfile}>
+              Ver Perfil
+            </Button>
+            <Button size="lg" className="text-lg bg-red-500" onClick={handleLogout}>
+              Cerrar Sesión
+            </Button>
+          </div>
+        )}
+      </div>
       )}
     </nav>
   );
