@@ -14,6 +14,7 @@ import NewPassword from '@/views/NewPasswordPage/newPasswordPage';
 import PrivacyPolicies from '@/views/PrivacyPolicies/PrivacyPoliciesPage';
 import TermsAndConditions from '@/views/termsConditions/termsAndCondicions';
 import SponsorLoginPage from '@/views/sponsorLoginPage/SponsorLoginPage';
+import SponsorRegister from '@/views/sponsorRegisterPage/RegisterSponsor';
 import LoginRoleSelection from '@/views/roleSelection/LoginRoleSelection';
 import RegisterRoleSelection from '@/views/roleSelection/RegisterRoleSelection';
 
@@ -50,7 +51,7 @@ const AppRouter = () => {
         <Route path="/login/sponsor" element={<SponsorLoginPage />} />
         <Route path="/register" element={<RegisterRoleSelection />} />
         <Route path="/register/camper" element={<RegisterPage />} />
-        <Route path="/register/sponsor" element={<Unauthorized />} />
+        <Route path="/register/sponsor" element={<SponsorRegister />} />
         <Route path="/forgetPassword" element={<ForgetPassword />} />
         <Route path="/campers/newPassword/:token" element={<NewPassword />} />
         <Route path="/campers/profile/:id/" element={<CamperProfile />} />
