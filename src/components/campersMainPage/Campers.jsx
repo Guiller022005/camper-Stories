@@ -8,14 +8,15 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useNavigate } from "react-router-dom";
 import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/camperService";
-import { useLocation } from "react-router-dom";
+import { useCampus } from "../../components/campersMainPage/context/CampusContext"; // Importa el contexto
 import styles from "./styles/Campers.module.css";
 import Loader from '@/components/common/Loader';
 
-const Campers = ({ 
-  title = "Campers Exitosos", 
+const Campers = ({
+  title = "Campers Exitosos",
   subtitle = "Conoce a algunos de nuestros campers más destacados y cómo han transformado sus carreras!"
 }) => {
+  const { currentCampusId } = useCampus(); // Obtener el estado del campus desde el contexto
   const [slidesPerView, setSlidesPerView] = useState(6);
   const [campersData, setCampersData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,8 +26,7 @@ const Campers = ({
 
   const CHAR_LIMIT = 100;
 
-  const location = useLocation();
-  const campus_id = location.pathname.split("/").pop();
+  console.log("🔄 Renderizando Campers: currentCampusId =", currentCampusId);
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,27 +50,27 @@ const Campers = ({
   }, []);
 
   useEffect(() => {
+    console.log("📡 Se ejecutó useEffect en Campers. currentCampusId actual:", currentCampusId);
+    if (!currentCampusId) return; // Evitar ejecución si es null/undefined
+
     const fetchData = async () => {
       try {
-        const campers = await fetchCampersEgresados(selectedCampus);
+        console.log("📡 Fetching campers for campus:", currentCampusId);
+        const campersResponse = await fetchCampersEgresados(currentCampusId);
+        const campers = campersResponse.data;
+        console.log("✅ Campers fetched successfully:", campers);
         setCampersData(campers);
-
-        const meritsPromises = campers.map(async (camper) => {
-          const merits = await fetchMeritsCamperById(camper.camper_id);
-          return { camperId: camper.camper_id, merits };
-        });
-
-        const meritsResults = await Promise.all(meritsPromises);
-        setMeritsData(meritsResults);
-        setIsLoading(false);
       } catch (err) {
+        console.error("❌ Error fetching campers:", err);
         setError("Error al cargar los datos de los campers.");
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [selectedCampus]);
+  }, [currentCampusId]);
+
 
   if (isLoading) return <Loader />;
   if (error) return <div className={`${styles.error} text-red-500`}>{error}</div>;
@@ -88,10 +88,10 @@ const Campers = ({
     <div className={styles.campersContainer}>
       <div className={styles.titleCampers}>
         <h3 className="mt-10 mr-[7rem] text-4xl font-bold tracking-tight text-white sm:text-7xl6">
-        {title}
+          {title}
         </h3>
         <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
-        {subtitle}
+          {subtitle}
         </h4>
       </div>
       <div className={styles.cardsContainerWrapper}>
@@ -111,7 +111,7 @@ const Campers = ({
               <SwiperSlide key={`${index}-${camper.full_name}`} className={styles.swiperSlide}>
                 <div
                   className={styles.card}
-                  onClick={() => navigate(`/campers/profile/${camper.camper_id}`)} // Redirigir a perfil desde toda la tarjeta
+                  onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
                 >
                   <div className={styles.perfil}>
                     <LazyLoadImage
@@ -135,7 +135,7 @@ const Campers = ({
                       </div>
                     ) : (
                       <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center md:text-[clamp(0.8rem,1.5vw,0.75rem)]">
-                        Merito no Disponible.
+                        Mérito no Disponible.
                       </p>
                     )}
                     <p className="font-light text-[clamp(0.8rem,1.5vw,0.7rem)] text-[var(--color1)] leading-[1.3] text-center md:text-[clamp(0.8rem,1.5vw,0.75rem)]">

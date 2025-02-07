@@ -1,18 +1,17 @@
 import { motion } from "framer-motion";
-import { GraduationCap, Users, Building2, ArrowRight, Play, Rocket, Target } from "lucide-react";
+import { GraduationCap, Users, Building2, ArrowRight, Rocket, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import VideoPlayer from "../camperProfile/VIdeoPlayer";
-import { useState } from "react";
+import { useCampus } from '../../components/campersMainPage/context/CampusContext'; 
+import { useEffect, useState } from "react";
 
 const stats = [
     { label: "Campers Graduados", value: "500+", icon: GraduationCap },
     { label: "Empresas Aliadas", value: "50+", icon: Building2 },
     { label: "Comunidad Activa", value: "1000+", icon: Users }
 ];
-
-window.selectedCampus = 1;
 
 const campus = [{
     id: 1,
@@ -27,14 +26,31 @@ const campus = [{
 
 export default function HeroSection() {
     const navigate = useNavigate();
-    const [currentCampusId, setCurrentCampusId] = useState(1);
+    const { currentCampusId, updateCampus } = useCampus();
     
+    window.CampusState = currentCampusId;   
+
     const handleCampusClick = (campusId) => {
-        setCurrentCampusId(campusId);
-        console.log('Campus seleccionado:', campusId);
-        window.selectedCampus = campusId;
-        console.log(currentCampusId);
+        console.log("🔄 Cambiando campus a:", campusId);
+        updateCampus(campusId); // Usa el método del contexto en lugar de `setState`
     };
+
+    useEffect(() => {
+        console.log("🚀 Estado actual de currentCampusId en HeroSection:", currentCampusId);
+    }, [currentCampusId]);    
+
+    useEffect(() => {
+        const handleCampusChange = (event) => {
+            console.log("Evento campusChanged detectado:", event.detail);
+            setCurrentCampusId(event.detail);
+        };
+
+        window.addEventListener('campusChanged', handleCampusChange);
+
+        return () => {
+            window.removeEventListener('campusChanged', handleCampusChange);
+        };
+    }, []);
 
     return (
         <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#27247a] to-indigo-950 min-h-[80vh] flex flex-col items-center">
@@ -73,8 +89,8 @@ export default function HeroSection() {
                                                 key={campusItem.id}
                                                 onClick={() => handleCampusClick(campusItem.id)}
                                                 className={`rounded-full px-3 py-1 text-sm font-semibold leading-6 transition-colors duration-200 ${currentCampusId === campusItem.id
-                                                        ? 'bg-indigo-500 text-white'
-                                                        : 'bg-indigo-500/10 text-indigo-400 ring-1 ring-inset ring-indigo-500/20 hover:bg-indigo-500/20'
+                                                    ? 'bg-indigo-500 text-white'
+                                                    : 'bg-indigo-500/10 text-indigo-400 ring-1 ring-inset ring-indigo-500/20 hover:bg-indigo-500/20'
                                                     }`}
                                             >
                                                 {campusItem.name}

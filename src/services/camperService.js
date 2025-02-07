@@ -67,6 +67,9 @@ export const fetchCampers = async (campus_id) => {
 // Para obtener los campers egresados
 export const fetchCampersEgresados = async (campus_id) => {
   try {
+    console.log(campus_id);
+    console.log("Fetching from:", `${endpoints.egresados}/${campus_id}`);
+    
     const response = await axios.get(`${endpoints.egresados}/${campus_id}`);
     return response.data;
   } catch (error) {
@@ -78,6 +81,9 @@ export const fetchCampersEgresados = async (campus_id) => {
 // Para obtener los campers en proceso de formacion
 export const fetchCampersFormacion = async (campus_id) => {
   try {
+    console.log(campus_id);
+    console.log("Fetching from:", `${endpoints.formados}/${campus_id}`);
+
     const response = await axios.get(`${endpoints.formados}/${campus_id}`);
     return response.data;
   } catch (error) {

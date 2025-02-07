@@ -5,24 +5,22 @@ import CampersGrid from '../../components/campersMainPage/CampersGrid';
 import FormSection from '../../components/campersMainPage/FormSection';
 import Footer from '../../components/footer/Footer';
 import Navbar from '@/components/navbar/Navbar';
-import "./styles/CampersMainPage.css";
 import HeroSection from '@/components/campersMainPage/HeroSection';
+import { useCampus } from '../../components/campersMainPage/context/CampusContext'; // Importa el hook del contexto
+import "./styles/CampersMainPage.css";
 
 const CampersMainPage = () => {
-  const navigateToSection = (sectionId) => {
-    const basePath = isEditPage
-      ? `/campers/profile/${id}/edit`
-      : `/campers/profile/${id}`;
-    navigate(basePath);
+  const { currentCampusId } = useCampus(); // Obtiene el estado del campus desde el contexto
 
-    setTimeout(() => {
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 300);
+  const navigateToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
   };
-  console.log(selectedCampus);
+
+  console.log("Campus Seleccionado:", currentCampusId); // Para verificar que el estado cambia correctamente
+
   return (
     <div className="camper-success-view">
       <Navbar 
@@ -38,9 +36,6 @@ const CampersMainPage = () => {
       <section id="inicio">
         <HeroSection />  
       </section>      
-      {/* <section id="mainCampers">
-        <MainCampers />
-      </section>       */}
       <section id="campers-exitosos">
         <Campers />
       </section>
