@@ -52,7 +52,7 @@ const Campers = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const campers = await fetchCampersEgresados(campus_id);
+        const campers = await fetchCampersEgresados(selectedCampus);
         setCampersData(campers);
 
         const meritsPromises = campers.map(async (camper) => {
@@ -70,7 +70,7 @@ const Campers = ({
     };
 
     fetchData();
-  }, [campus_id]);
+  }, [selectedCampus]);
 
   if (isLoading) return <Loader />;
   if (error) return <div className={`${styles.error} text-red-500`}>{error}</div>;

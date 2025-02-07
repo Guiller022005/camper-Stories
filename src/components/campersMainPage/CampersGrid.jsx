@@ -88,7 +88,7 @@ const CampersGrid = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const campers = await fetchCampersFormacion();
+                const campers = await fetchCampersFormacion(selectedCampus);
                 const allMerits = await fetchAllMerits();
 
                 const campersWithMeritsPromises = campers.map(async (camper) => {
@@ -112,7 +112,7 @@ const CampersGrid = () => {
         };
 
         fetchData();
-    }, []);
+    }, [selectedCampus]);
 
     useEffect(() => {
         const updateDimensions = () => {

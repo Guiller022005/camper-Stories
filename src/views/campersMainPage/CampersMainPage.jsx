@@ -13,7 +13,6 @@ const CampersMainPage = () => {
     const basePath = isEditPage
       ? `/campers/profile/${id}/edit`
       : `/campers/profile/${id}`;
-
     navigate(basePath);
 
     setTimeout(() => {
@@ -23,6 +22,7 @@ const CampersMainPage = () => {
       }
     }, 300);
   };
+  console.log(selectedCampus);
   return (
     <div className="camper-success-view">
       <Navbar 

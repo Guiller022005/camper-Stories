@@ -1,9 +1,10 @@
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { GraduationCap, Users, Building2, ArrowRight, Play, Rocket, Target } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import VideoPlayer from "../camperProfile/VIdeoPlayer";
+import { useState } from "react";
 
 const stats = [
     { label: "Campers Graduados", value: "500+", icon: GraduationCap },
@@ -11,36 +12,33 @@ const stats = [
     { label: "Comunidad Activa", value: "1000+", icon: Users }
 ];
 
-const cityButtons = [
-    { id: 1, name: 'Bucaramanga' },
-    { id: 2, name: 'Bogotá' },
-    { id: 3, name: 'Tibú' }
-];
+window.selectedCampus = 1;
 
-const handleCityClick = (campus_id) => {
-    setSelectedCityId(campus_id); // Actualizar el id cuando el usuario hace clic
-    navigate(`/historias?city=${campus_id}`); // Navegar con el id
-};
-
-const renderCityButtons = () => (
-    <div className="relative flex gap-4">
-        {cityButtons.map(campus_id => (
-            <button
-                key={campus_id.id}
-                onClick={() => handleCityClick(campus_id.id)}
-                className="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-400 ring-1 ring-inset ring-indigo-500/20"
-            >
-                {campus_id.name}
-            </button>
-        ))}
-    </div>
-);
+const campus = [{
+    id: 1,
+    name: 'Bucaramanga'
+}, {
+    id: 2,
+    name: 'Bogota'
+}, {
+    id: 3,
+    name: 'Tibu'
+}];
 
 export default function HeroSection() {
     const navigate = useNavigate();
+    const [currentCampusId, setCurrentCampusId] = useState(1);
+    
+    const handleCampusClick = (campusId) => {
+        setCurrentCampusId(campusId);
+        console.log('Campus seleccionado:', campusId);
+        window.selectedCampus = campusId;
+        console.log(currentCampusId);
+    };
 
     return (
         <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#27247a] to-indigo-950 min-h-[80vh] flex flex-col items-center">
+            {/* Background decoration */}
             <div
                 className="absolute left-[calc(50%-4rem)] top-10 -z-10 transform-gpu blur-3xl sm:left-[calc(50%-18rem)] lg:left-48 lg:top-[calc(50%-30rem)] xl:left-[calc(50%-24rem)]"
                 aria-hidden="true"
@@ -54,261 +52,164 @@ export default function HeroSection() {
                 />
             </div>
 
-            {/* HERO PARA ESCRITORIO (Sin modificaciones) */}
-            <div className="hidden lg:block">
-                <DesktopHero navigate={navigate} />
-            </div>
+            {/* Main content */}
+            <div className="flex flex-col px-4 py-8 md:px-6 md:py-16 lg:py-24">
+                <div className="mx-auto max-w-[90vw] md:max-w-[85vw] lg:max-w-[70vw]">
+                    {/* Hero content */}
+                    <div className="flex flex-col lg:flex-row items-center lg:gap-[20px]">
+                        {/* Left column */}
+                        <div className="flex-shrink-0 lg:w-1/2 lg:pr-8 text-center lg:text-left">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5 }}
+                                className="relative hidden lg:block"
+                            >
+                                <div className="absolute -top-4 -left-4 bg-blue-500/10 w-16 h-16 rounded-full blur-xl" />
+                                <div className="relative">
+                                    <div className="flex justify-start gap-2">
+                                        {campus.map((campusItem) => (
+                                            <button
+                                                key={campusItem.id}
+                                                onClick={() => handleCampusClick(campusItem.id)}
+                                                className={`rounded-full px-3 py-1 text-sm font-semibold leading-6 transition-colors duration-200 ${currentCampusId === campusItem.id
+                                                        ? 'bg-indigo-500 text-white'
+                                                        : 'bg-indigo-500/10 text-indigo-400 ring-1 ring-inset ring-indigo-500/20 hover:bg-indigo-500/20'
+                                                    }`}
+                                            >
+                                                {campusItem.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </motion.div>
 
-            {/* HERO PARA TABLETAS (Con video más alto) */}
-            <div className="hidden md:flex lg:hidden">
-                <TabletHero navigate={navigate} />
-            </div>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.1 }}
+                            >
+                                <h1 className="mt-10 text-2xl md:text-5xl lg:text-7xl font-bold tracking-tight text-white lg:mr-[7rem]">
+                                    Descubre el Impacto de la{" "}
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+                                        Formación Tecnológica
+                                    </span>
+                                </h1>
+                                <p className="mt-3 md:mt-4 lg:mt-6 text-sm md:text-lg leading-6 md:leading-7 lg:leading-8 text-gray-300">
+                                    {/* Responsive text content */}
+                                    <span className="hidden lg:inline">
+                                        CamperStories reúne las historias más inspiradoras de estudiantes que han transformado sus vidas a través
+                                        de la programación y la tecnología.
+                                    </span>
+                                    <span className="md:hidden">
+                                        Inspírate con historias reales de transformación a través de la tecnología.
+                                    </span>
+                                    <span className="hidden md:inline lg:hidden">
+                                        Historias reales de estudiantes que transformaron sus vidas con tecnología.
+                                    </span>
+                                </p>
+                            </motion.div>
 
-            {/* HERO PARA MÓVILES */}
-            <div className="block md:hidden">
-                <MobileHero navigate={navigate}  />
+                            {/* Desktop CTA */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
+                                className="mt-10 hidden lg:flex items-center gap-x-6"
+                            >
+                                <Button
+                                    onClick={() => navigate('/historias')}
+                                    size="lg"
+                                    className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600"
+                                >
+                                    Explorar Historias
+                                    <ArrowRight className="ml-2 h-4 w-4" />
+                                </Button>
+                                <Dialog>
+                                    <DialogContent className="sm:max-w-[850px]">
+                                        <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
+                                    </DialogContent>
+                                </Dialog>
+                            </motion.div>
+                        </div>
+
+                        {/* Right column / Video section */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                            className="mt-6 md:mt-8 lg:mt-0 lg:w-1/2 w-full"
+                        >
+                            <div className="w-full space-y-8">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.5, delay: 0.6 }}
+                                    className="relative aspect-video w-full rounded-2xl overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+                                    <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
+                                </motion.div>
+
+                                {/* Stats cards - Only visible on tablet and desktop */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: 0.7 }}
+                                    className="hidden md:grid grid-cols-2 gap-4 sm:gap-6"
+                                >
+                                    <div className="rounded-lg bg-white/5 p-6 ring-1 ring-inset ring-white/10">
+                                        <h3 className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                                            <Rocket className="h-5 w-5 text-indigo-400" />
+                                            Crecimiento Profesional
+                                        </h3>
+                                        <p className="mt-2">
+                                            <span className="text-4xl font-bold tracking-tight text-white">85%</span>
+                                            <span className="text-sm text-gray-300 ml-2">ascensos en 2 años</span>
+                                        </p>
+                                    </div>
+                                    <div className="rounded-lg bg-white/5 p-6 ring-1 ring-inset ring-white/10">
+                                        <h3 className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                                            <Target className="h-5 w-5 text-indigo-400" />
+                                            Proyectos Exitosos
+                                        </h3>
+                                        <p className="mt-2">
+                                            <span className="text-4xl font-bold tracking-tight text-white">1000+</span>
+                                            <span className="text-sm text-gray-300 ml-2">completados</span>
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </motion.div>
+                    </div>
+
+                    {/* Bottom stats section */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        className="mt-14 md:mt-16 lg:mt-20 grid grid-cols-3 gap-8 justify-center items-center text-center"
+                    >
+                        {stats.map((stat, index) => (
+                            <motion.div
+                                key={stat.label}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                                className="flex flex-col gap-2 justify-center items-center text-center"
+                            >
+                                <dt className="text-base leading-7 text-gray-300 flex items-center gap-2">
+                                    <stat.icon className="h-7 w-7 md:h-5 md:w-5 text-indigo-400" />
+                                    <p className="text-[12px] md:text-base">{stat.label}</p>
+                                </dt>
+                                <dd className="text-2xl md:text-3xl font-bold leading-9 tracking-tight text-white">
+                                    {stat.value}
+                                </dd>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </div>
             </div>
         </div>
     );
 }
-
-/* ===== HERO PARA ESCRITORIO (Versión Original Sin Modificaciones) ===== */
-const DesktopHero = ({ navigate}) => (
-    <div className="flex flex-col px-4 py-12 lg:py-24">
-            <div className="mx-auto max-w-[70vw] gap-[20px] flex flex-col lg:flex-row items-center">
-                <div className="flex-shrink-0 lg:w-1/2 lg:pr-8">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                        <div className="relative">
-                            <div className="absolute -top-4 -left-4 bg-blue-500/10 w-16 h-16 rounded-full blur-xl" />
-                            {renderCityButtons()}
-                        </div>
-                    </motion.div>
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
-                    >
-                        <h1 className="mt-10 mr-[7rem] text-4xl font-bold tracking-tight text-white sm:text-7xl">
-                            Descubre el Impacto de la{" "}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-                                Formación Tecnológica
-                            </span>
-                        </h1>
-                        <p className="mt-6 text-lg leading-8 text-gray-300">
-                            CamperStories reúne las historias más inspiradoras de estudiantes que han transformado sus vidas a través
-                            de la programación y la tecnología.
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                        className="mt-10 flex items-center gap-x-6"
-                    >
-                        <Button
-                            onClick={() => navigate('/historias')}
-                            size="lg"
-                            className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600"
-                        >
-                            Explorar Historias
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                        <Dialog>
-                            <DialogContent className="sm:max-w-[850px]">
-                                    <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
-                            </DialogContent>
-                        </Dialog>
-                    </motion.div>
-                </div>
-
-                <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    className="mt-16 lg:mt-0 lg:w-1/2 flex h-full"
-                >
-                    <div className="max-w-3xl w-full space-y-8">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.5, delay: 0.6 }}
-                            className="relative aspect-video w-full rounded-2xl overflow-hidden"
-                        >
-                            <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-                            <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.7 }}
-                            className="grid grid-cols-2 gap-4 sm:gap-6"
-                        >
-                            <div className="rounded-lg bg-white/5 p-6 ring-1 ring-inset ring-white/10">
-                                <h3 className="text-sm font-medium text-gray-300 flex items-center gap-2">
-                                    <Rocket className="h-5 w-5 text-indigo-400" />
-                                    Crecimiento Profesional
-                                </h3>
-                                <p className="mt-2">
-                                    <span className="text-4xl font-bold tracking-tight text-white">85%</span>
-                                    <span className="text-sm text-gray-300 ml-2">ascensos en 2 años</span>
-                                </p>
-                            </div>
-                            <div className="rounded-lg bg-white/5 p-6 ring-1 ring-inset ring-white/10">
-                                <h3 className="text-sm font-medium text-gray-300 flex items-center gap-2">
-                                    <Target className="h-5 w-5 text-indigo-400" />
-                                    Proyectos Exitosos
-                                </h3>
-                                <p className="mt-2">
-                                    <span className="text-4xl font-bold tracking-tight text-white">1000+</span>
-                                    <span className="text-sm text-gray-300 ml-2">completados</span>
-                                </p>
-                            </div>
-                        </motion.div>
-                    </div>
-                </motion.div>
-            </div>
-            <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-3 sm:gap-6 justify-center items-center text-center"
-                >
-                    {stats.map((stat, index) => (
-                        <motion.div
-                            key={stat.label}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                            className="flex flex-col gap-2 justify-center items-center text-center"
-                        >
-                            <dt className="text-base leading-7 text-gray-300 flex items-center gap-2">
-                                <stat.icon className="h-5 w-5 text-indigo-400" />
-                                {stat.label}
-                            </dt>
-                            <dd className="text-3xl font-bold leading-9 tracking-tight text-white">{stat.value}</dd>
-                        </motion.div>
-                    ))}
-                </motion.div>
-        </div>
-);
-
-/* ===== HERO PARA TABLETAS (Video más alto) ===== */
-const TabletHero = ({ navigate }) => (
-    <div className="flex flex-col px-6 py-10 md:py-16">
-        <div className="mx-auto max-w-[85vw] flex flex-col md:flex-row items-center md:items-start md:gap-12">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                <h1 className="mt-10 text-3xl font-bold tracking-tight text-white md:text-5xl md:text-left">
-                    Descubre el Impacto de la{" "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-                        Formación Tecnológica
-                    </span>
-                </h1>
-                <p className="mt-4 text-md leading-7 text-gray-300 md:text-lg md:text-left">
-                    Historias reales de estudiantes que transformaron sus vidas con tecnología.
-                </p>
-                <div className="mt-8">
-                <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
-                </div>
-            </motion.div>
-        </div>
-
-        {/* SECCIÓN DE ESTADÍSTICAS */}
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            className="grid grid-cols-2 gap-4 sm:gap-6 mt-10"
-        >
-            <div className="rounded-lg bg-white/5 p-6 ring-1 ring-inset ring-white/10">
-                <h3 className="text-sm font-medium text-gray-300 flex items-center gap-2">
-                    <Rocket className="h-5 w-5 text-indigo-400" />
-                    Crecimiento Profesional
-                </h3>
-                <p className="mt-2">
-                    <span className="text-4xl font-bold tracking-tight text-white">85%</span>
-                    <span className="text-sm text-gray-300 ml-2">ascensos en 2 años</span>
-                </p>
-            </div>
-            <div className="rounded-lg bg-white/5 p-6 ring-1 ring-inset ring-white/10">
-                <h3 className="text-sm font-medium text-gray-300 flex items-center gap-2">
-                    <Target className="h-5 w-5 text-indigo-400" />
-                    Proyectos Exitosos
-                </h3>
-                <p className="mt-2">
-                    <span className="text-4xl font-bold tracking-tight text-white">1000+</span>
-                    <span className="text-sm text-gray-300 ml-2">completados</span>
-                </p>
-            </div>
-        </motion.div>
-
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-3 sm:gap-6 justify-center items-center text-center"
-        >
-            {stats.map((stat, index) => (
-                <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                    className="flex flex-col gap-2 justify-center items-center text-center"
-                >
-                    <dt className="text-base leading-7 text-gray-300 flex items-center gap-2">
-                        <stat.icon className="h-5 w-5 text-indigo-400" />
-                        {stat.label}
-                    </dt>
-                    <dd className="text-3xl font-bold leading-9 tracking-tight text-white">{stat.value}</dd>
-                </motion.div>
-            ))}
-        </motion.div>
-    </div>
-);
-
-/* ===== HERO PARA MÓVILES ===== */
-const MobileHero = ({ navigate }) => (
-    <div className="flex flex-col px-4 py-8">
-        <div className="mx-auto max-w-[90vw] text-center">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                <h1 className="text-2xl font-bold tracking-tight text-white">
-                    Descubre el Impacto de la{" "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-                        Formación Tecnológica
-                    </span>
-                </h1>
-                <p className="mt-3 text-sm leading-6 text-gray-300">
-                    Inspírate con historias reales de transformación a través de la tecnología.
-                </p>
-                <div className="mt-6">
-                    <VideoPlayer videoUrl={"https://www.youtube.com/embed/OKMsheDmK8Q"} title="Historia Camper" />
-                </div>
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-14 mb-2 flex flex-row gap-8 sm:mt-20 sm:gap-6 justify-center items-center text-center"
-            >
-                {stats.map((stat, index) => (
-                    <motion.div
-                        key={stat.label}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                        className="flex flex-col gap-2 justify-center items-center text-center"
-                    >
-                        <dt className="text-base leading-7 text-gray-300 flex items-center gap-2">
-                            <stat.icon className="h-7 w-7 text-indigo-400" />
-                            <p className="text-[12px] leading-3">{stat.label}</p>
-                        </dt>
-                        <dd className="text-2xl font-bold leading-9 tracking-tight text-white">{stat.value}</dd>
-                    </motion.div>
-                ))}
-            </motion.div>
-        </div>
-    </div>
-);
