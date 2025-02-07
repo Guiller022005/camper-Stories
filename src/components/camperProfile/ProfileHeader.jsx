@@ -19,15 +19,14 @@ const ProfileHeader = ({ data, initialMerits, onUpdate, isEditable }) => {
 
   return (
     <motion.div
-      className="py-[8rem] pb-[2.5rem] bg-gradient-to-b from-[rgba(52,50,100,0.3)] to-transparent rounded-2xl overflow-hidden 
-      sm:py-[7rem] md:py-[6.5rem] lg:py-[8rem]"
+      className="profile-header"
       initial={false}
       animate={{ height: "auto" }}
       transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
       layout
     >
-      <div className="flex flex-row items-center justify-between w-full h-full max-w-[1400px] mx-auto px-8">
-        <div className="flex flex-row items-center gap-4 px-8 h-full">
+      <div className="profile-container">
+        <div className="profile-content">
           {/* Envolvemos ProfileImage con .icon y .badgeInfo para el tooltip */}
           {!isEditable ? (
             <div className="icon badgeInfo profile-image">

@@ -1,0 +1,22 @@
+/* CamperProfile.module.css */
+.camperProfileView {
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #070727;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+.profileMainContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 clamp(1rem, 10vw, 10rem) 2rem;
+    background: linear-gradient(180deg, #080831 0%, #0e0e61 70%, #27247a 100%);
+}
+
+@media (max-width: 768px) {
+    .profileMainContent {
+        padding: 0 1.5rem 1rem;
+    }
+}

@@ -10,6 +10,7 @@ import { fetchMeritsByCamperId } from "@/services/meritsService";
 import { DEFAULT_CAMPER_DATA } from "@/data/dataDefault";
 import { toast } from "react-toastify";
 import NoRecords from '@/components/common/NoRecords';
+import styles from './styles/CamperProfile.module.css'
 
 // Lazy load components
 const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
@@ -109,12 +110,12 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
     };
 
     return (
-        <div className="w-full font-mono bg-[#070727] max-w-full overflow-x-hidden">
+        <div className={`${styles.camperProfileView} flex flex-col relative`}>
             <LazySection>
                 <NavbarProfile />
             </LazySection>
 
-            <div className="flex flex-col w-full py-0 px-[clamp(1rem,10vw,10rem)] pb-8 bg-gradient-to-b from-[#080831] via-[#0e0e61] to-[#27247a] md:px-6 md:pb-4">
+            <div className={`${styles.profileMainContent} flex flex-col gap-4`}>
                 <LazySection> 
                         <ProfileHeader data={camperData} initialMerits={camperMerits} onUpdate={refreshData} isEditable={isEditable}/>
                 </LazySection>
