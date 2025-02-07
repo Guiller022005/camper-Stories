@@ -8,6 +8,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useNavigate } from "react-router-dom";
 import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/camperService";
+import { useLocation } from "react-router-dom";
 import styles from "./styles/Campers.module.css";
 import Loader from '@/components/common/Loader';
 
@@ -23,6 +24,9 @@ const Campers = ({
   const navigate = useNavigate();
 
   const CHAR_LIMIT = 100;
+
+  const location = useLocation();
+  const campus_id = location.pathname.split("/").pop();
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,7 +52,7 @@ const Campers = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const campers = await fetchCampersEgresados();
+        const campers = await fetchCampersEgresados(campus_id);
         setCampersData(campers);
 
         const meritsPromises = campers.map(async (camper) => {
@@ -66,7 +70,7 @@ const Campers = ({
     };
 
     fetchData();
-  }, []);
+  }, [campus_id]);
 
   if (isLoading) return <Loader />;
   if (error) return <div className={`${styles.error} text-red-500`}>{error}</div>;

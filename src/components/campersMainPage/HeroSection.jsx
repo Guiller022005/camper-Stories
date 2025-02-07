@@ -1,6 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { GraduationCap, Users, Building2, ArrowRight, Play, Rocket, Target } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import VideoPlayer from "../camperProfile/VIdeoPlayer";
@@ -10,6 +10,31 @@ const stats = [
     { label: "Empresas Aliadas", value: "50+", icon: Building2 },
     { label: "Comunidad Activa", value: "1000+", icon: Users }
 ];
+
+const cityButtons = [
+    { id: 1, name: 'Bucaramanga' },
+    { id: 2, name: 'Bogotá' },
+    { id: 3, name: 'Tibú' }
+];
+
+const handleCityClick = (campus_id) => {
+    setSelectedCityId(campus_id); // Actualizar el id cuando el usuario hace clic
+    navigate(`/historias?city=${campus_id}`); // Navegar con el id
+};
+
+const renderCityButtons = () => (
+    <div className="relative flex gap-4">
+        {cityButtons.map(campus_id => (
+            <button
+                key={campus_id.id}
+                onClick={() => handleCityClick(campus_id.id)}
+                className="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-400 ring-1 ring-inset ring-indigo-500/20"
+            >
+                {campus_id.name}
+            </button>
+        ))}
+    </div>
+);
 
 export default function HeroSection() {
     const navigate = useNavigate();
@@ -41,28 +66,23 @@ export default function HeroSection() {
 
             {/* HERO PARA MÓVILES */}
             <div className="block md:hidden">
-                <MobileHero navigate={navigate} />
+                <MobileHero navigate={navigate}  />
             </div>
         </div>
     );
 }
 
 /* ===== HERO PARA ESCRITORIO (Versión Original Sin Modificaciones) ===== */
-const DesktopHero = ({ navigate }) => (
+const DesktopHero = ({ navigate}) => (
     <div className="flex flex-col px-4 py-12 lg:py-24">
             <div className="mx-auto max-w-[70vw] gap-[20px] flex flex-col lg:flex-row items-center">
                 <div className="flex-shrink-0 lg:w-1/2 lg:pr-8">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                         <div className="relative">
                             <div className="absolute -top-4 -left-4 bg-blue-500/10 w-16 h-16 rounded-full blur-xl" />
-                            <div className="relative">
-                                <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-400 ring-1 ring-inset ring-indigo-500/20">
-                                    Historias que Inspiran
-                                </span>
-                            </div>
+                            {renderCityButtons()}
                         </div>
                     </motion.div>
-
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
