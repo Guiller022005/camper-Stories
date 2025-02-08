@@ -13,29 +13,34 @@ const CampersMainPage = () => {
   const { currentCampusId } = useCampus(); // Obtiene el estado del campus desde el contexto
 
   const navigateToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+    setTimeout(() => {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100); // Pequeño delay para asegurar el renderizado
   };
+
 
   console.log("Campus Seleccionado:", currentCampusId); // Para verificar que el estado cambia correctamente
 
   return (
     <div className="camper-success-view">
-      <Navbar 
+      <Navbar
         viewType="landing"
         links={[
-          { href: "/#inicio", label: "Inicio" },
-          { href: "/#campers-exitosos", label: "Historias" },
-          { href: "/#campers-formacion", label: "Campers" },
-          { href: "/#donar", label: "Donar" }
+          { href: "#inicio", label: "Inicio" },
+          { href: "#campers-exitosos", label: "Historias" },
+          { href: "#campers-formacion", label: "Campers" },
+          { href: "#donar", label: "Donar" }
         ]}
         onLinkClick={navigateToSection}
       />
+
+
       <section id="inicio">
-        <HeroSection />  
-      </section>      
+        <HeroSection />
+      </section>
       <section id="campers-exitosos">
         <Campers />
       </section>

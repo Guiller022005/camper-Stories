@@ -9,6 +9,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { useNavigate } from "react-router-dom";
 import { fetchCampersEgresados, fetchMeritsCamperById } from "../../services/camperService";
 import { useCampus } from "../../components/campersMainPage/context/CampusContext"; // Importa el contexto
+import NoRecords from "../common/NoRecords";
 import styles from "./styles/Campers.module.css";
 import Loader from '@/components/common/Loader';
 
@@ -50,7 +51,6 @@ const Campers = ({
   }, []);
 
   useEffect(() => {
-    console.log("📡 Se ejecutó useEffect en Campers. currentCampusId actual:", currentCampusId);
     if (!currentCampusId) return; // Evitar ejecución si es null/undefined
 
     const fetchData = async () => {
@@ -58,7 +58,7 @@ const Campers = ({
         console.log("📡 Fetching campers for campus:", currentCampusId);
         const campersResponse = await fetchCampersEgresados(currentCampusId);
         const campers = campersResponse.data;
-        console.log("✅ Campers fetched successfully:", campers);
+        console.log("✅ Campers fetched successfully");
         setCampersData(campers);
       } catch (err) {
         console.error("❌ Error fetching campers:", err);
@@ -84,13 +84,29 @@ const Campers = ({
     return null;
   };
 
+  if (!campersData || campersData.length === 0) {
+    return (
+      <div className={styles.noregsContainer}>
+        <div className={styles.titleCampers}>
+          <h3 className="mt-10 mr-[7rem] text-4xl font-bold tracking-tight text-white sm:text-7xl6">
+            {title}
+          </h3>
+          <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
+            {subtitle}
+          </h4>
+        </div>
+        <NoRecords showTitle={false} />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.campersContainer}>
       <div className={styles.titleCampers}>
         <h3 className="mt-10 mr-[7rem] text-4xl font-bold tracking-tight text-white sm:text-7xl6">
           {title}
         </h3>
-        <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
+        <h4 className="text-transparent bg-clip-text text-center bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
           {subtitle}
         </h4>
       </div>

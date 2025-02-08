@@ -8,7 +8,7 @@ const NoRecords = ({ title = "", showTitle = true }) => {
                     <span className="text-yellow-400 font-bold">&lt;/</span> {title}
                 </h2>
             )}
-            <div className="flex justify-center items-center min-h-[200px] bg-[#090955] rounded-lg my-5">
+            <div className="flex justify-center items-center shadow-xl min-h-[300px] min-w-[70vw] bg-[#10104d] rounded-lg my-5">
                 <div className="text-center text-white">
                     <svg
                         className="w-12 h-12 mx-auto mb-4 text-gray-600"

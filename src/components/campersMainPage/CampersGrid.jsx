@@ -8,6 +8,7 @@ import { useCampus } from "../../components/campersMainPage/context/CampusContex
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "./styles/CampersGrid.css";
 import { useNavigate } from "react-router-dom";
+import NoRecords from "../common/NoRecords";
 
 const defaultProfileImage = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";
 
@@ -88,7 +89,6 @@ const CampersGrid = () => {
     };
 
     useEffect(() => {
-        console.log("📡 Se ejecutó useEffect en CampersGrid. currentCampusId actual:", currentCampusId);
         if (!currentCampusId) return; // Evitar ejecución si es null/undefined
 
         const fetchData = async () => {
@@ -182,6 +182,25 @@ const CampersGrid = () => {
         setCurrentPage(1);
     };
 
+
+    if (!campersData || campersData.length === 0) {
+        return (
+            <div className="campersgrid min-h-[90vh]">
+                <div className="badge-filters">
+                    <div className="titleSearch pb-[2rem]">
+                        <h3 className="font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[0.9] skew-x-6 text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
+                            Busca a Tu
+                        </h3>
+                        <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] skew-x-[-6deg]">
+                            Camper
+                        </h2>
+                    </div>
+                </div>
+                <NoRecords showTitle={false} />
+            </div>  
+        );
+    }
+
     return (
         <section className="campersgrid">
             <div className="circuit-lines">
@@ -196,7 +215,7 @@ const CampersGrid = () => {
                     <h3 className="font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[0.9] skew-x-6 h-[4.5rem] text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
                         Busca a Tu
                     </h3>
-                    <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] shadow-[3px_3px_0px_rgba(0,0,0,0.2)] skew-x-[-6deg]">
+                    <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] skew-x-[-6deg]">
                         Camper
                     </h2>
                 </div>
@@ -390,8 +409,8 @@ const DotPagination = ({ current, total, pageSize, onChange }) => {
                     key={page}
                     onClick={() => onChange(page)}
                     className={`rounded-full transition-all duration-300 ${page === current
-                            ? "bg-color4 w-12 md:w-16 h-3 md:h-4 scale-110" // Botón activo
-                            : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-3 md:w-4 h-3 md:h-4" // Botones normales
+                        ? "bg-color4 w-12 md:w-16 h-3 md:h-4 scale-110" // Botón activo
+                        : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-3 md:w-4 h-3 md:h-4" // Botones normales
                         }`}
                     whileHover={{ scale: 1.2 }}
                     aria-label={`Go to page ${page}`}

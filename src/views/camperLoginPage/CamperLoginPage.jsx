@@ -36,7 +36,6 @@ const CamperLoginPage = () => {
 
   const handleLogin = async (email, password) => {
     try {
-      console.log("Iniciando sesión con:", email);
       const response = await fetch(endpoints.login, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,7 +49,7 @@ const CamperLoginPage = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.user.role);
         localStorage.setItem('camper_id', data.user.camper_id);
-        console.log("Inicio de sesión exitoso. Token recibido:", data);
+
         navigate(`/campers/profile/${data.user.camper_id}/edit`);
       } else {
         toast.error("Error de autenticación. Credenciales incorrectas.");

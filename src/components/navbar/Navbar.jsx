@@ -28,12 +28,15 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
   };
 
   const handleLinkClick = (link) => {
-    if (onLinkClick) {
-      onLinkClick(link.id || link.href);
+    if (onLinkClick && link.href.startsWith("#")) {
+      onLinkClick(link.href.substring(1)); // Remueve '#' y hace scroll
+    } else {
+      navigate(link.href); // Navegar si es una URL normal
     }
     setIsMenuOpen(false);
     document.body.style.overflow = "";
   };
+
 
   const handleLogout = () => {
     const logoutUrl = `${import.meta.env.VITE_API_BASE_URL}users/logout`;
@@ -66,12 +69,10 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
     location.pathname !== "/terminos-y-condiciones";
 
   const navbarStyles = isLanding
-    ? `text-white p-3 top-0 z-20 transition-transform duration-300 shadow-lg border-b bg-[#27247a] border-indigo-700/30 backdrop-filter ${
-        isMenuOpen ? "fixed bg-[#27247a]" : "bg-[#27247a] backdrop-blur-sm"
-      } w-full`
-    : `text-white p-3 fixed top-0 left-0 right-0 z-[1000] w-full font-inter ${
-        isMenuOpen ? "bg-[#070727]" : "bg-[#070727]/20 backdrop-blur-md"
-      } shadow-lg transition-colors duration-300 ease-in-out`;
+    ? `text-white p-3 top-0 z-20 transition-transform duration-300 shadow-lg border-b bg-[#27247a] border-indigo-700/30 backdrop-filter ${isMenuOpen ? "fixed bg-[#27247a]" : "bg-[#27247a] backdrop-blur-sm"
+    } w-full`
+    : `text-white p-3 fixed top-0 left-0 right-0 z-[1000] w-full font-inter ${isMenuOpen ? "bg-[#070727]" : "bg-[#070727]/20 backdrop-blur-md"
+    } shadow-lg transition-colors duration-300 ease-in-out`;
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -80,15 +81,16 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
 
   const NavLinks = ({ links }) =>
     links.map((link) => (
-      <Link
+      <button
         key={link.href || link.id}
-        to={link.href || `#${link.id}`}
         onClick={() => handleLinkClick(link)}
         className="text-white text-lg py-3 hover:text-blue-400 transition"
       >
         {link.label}
-      </Link>
-    ));
+      </button>
+    )
+  );
+
 
   return (
     <nav className={navbarStyles}>
@@ -105,19 +107,53 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
         <div className="flex items-center gap-5">
           {isLoggedIn ? (
             <>
-              <Button onClick={handleToggleProfile} size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]">
-                Ver Perfil
-              </Button>
-              <Button onClick={handleLogout} size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]">
+              {location.pathname.startsWith(`/campers/profile/${camperIdFromStorage}/edit`) ? (
+                <Button
+                  onClick={() => navigate(`/campers/profile/${camperIdFromStorage}`)}
+                  size="lg"
+                  className="text-lg bg-transparent hover:bg-[#4c47b4]"
+                >
+                  Ver Perfil
+                </Button>
+              ) : location.pathname.startsWith(`/campers/profile/${camperIdFromStorage}`) ? (
+                <Button
+                  onClick={() => navigate(`/campers/profile/${camperIdFromStorage}/edit`)}
+                  size="lg"
+                  className="text-lg bg-transparent hover:bg-[#4c47b4]"
+                >
+                  Editar Perfil
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate(`/campers/profile/${camperIdFromStorage}`)}
+                  size="lg"
+                  className="text-lg bg-transparent hover:bg-[#4c47b4]"
+                >
+                  Ver Perfil
+                </Button>
+              )}
+              <Button
+                onClick={handleLogout}
+                size="lg"
+                className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]"
+              >
                 Cerrar Sesión
               </Button>
             </>
           ) : (
             <>
-              <Button onClick={() => navigate("/register")} size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]">
-                Registrate
+              <Button
+                onClick={() => navigate("/register")}
+                size="lg"
+                className="text-lg bg-transparent hover:bg-[#4c47b4]"
+              >
+                Regístrate
               </Button>
-              <Button onClick={() => navigate("/login")} size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]">
+              <Button
+                onClick={() => navigate("/login")}
+                size="lg"
+                className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]"
+              >
                 Inicia Sesión
               </Button>
             </>
@@ -146,27 +182,27 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
       {/* Menú Móvil Expandido */}
       {isMenuOpen && (
         <div className="fixed inset-0 bg-[#0C0C74] flex flex-col justify-center items-center z-[999]">
-        <NavLinks links={links} />
-        {!isLoggedIn ? (
-          <div className="flex flex-col gap-4"> {/* Agrega un gap de 4 unidades (1rem) entre los botones */}
-            <Button size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]" onClick={() => navigate("/register")}>
-              Registrate
-            </Button>
-            <Button size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]" onClick={() => navigate("/login")}>
-              Inicia Sesión
-            </Button>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4"> {/* Agrega un gap de 4 unidades (1rem) entre los botones */}
-            <Button size="lg" className="text-lg bg-transparent" onClick={handleToggleProfile}>
-              Ver Perfil
-            </Button>
-            <Button size="lg" className="text-lg bg-red-500" onClick={handleLogout}>
-              Cerrar Sesión
-            </Button>
-          </div>
-        )}
-      </div>
+          <NavLinks links={links} />
+          {!isLoggedIn ? (
+            <div className="flex flex-col gap-4"> {/* Agrega un gap de 4 unidades (1rem) entre los botones */}
+              <Button size="lg" className="text-lg bg-transparent hover:bg-[#4c47b4]" onClick={() => navigate("/register")}>
+                Registrate
+              </Button>
+              <Button size="lg" className="text-lg bg-[#4c47b4] hover:bg-[#615cc2]" onClick={() => navigate("/login")}>
+                Inicia Sesión
+              </Button>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4"> {/* Agrega un gap de 4 unidades (1rem) entre los botones */}
+              <Button size="lg" className="text-lg bg-transparent" onClick={handleToggleProfile}>
+                Ver Perfil
+              </Button>
+              <Button size="lg" className="text-lg bg-red-500" onClick={handleLogout}>
+                Cerrar Sesión
+              </Button>
+            </div>
+          )}
+        </div>
       )}
     </nav>
   );

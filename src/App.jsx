@@ -8,7 +8,7 @@ import './styles/base.css';
 function App() {
   return (
     <CampusProvider>
-      <div className="App">
+      <div className="App bg-gradient-to-b from-[#1a1b2b] to-[#1e203a]">
         <ToastContainer
           position="top-right"
           autoClose={3000}

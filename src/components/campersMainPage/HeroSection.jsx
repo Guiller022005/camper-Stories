@@ -13,16 +13,21 @@ const stats = [
     { label: "Comunidad Activa", value: "1000+", icon: Users }
 ];
 
-const campus = [{
-    id: 1,
-    name: 'Bucaramanga'
-}, {
-    id: 2,
-    name: 'Bogota'
-}, {
-    id: 3,
-    name: 'Tibu'
-}];
+const campus = [
+    {
+      id: 1,
+      name: 'Bucaramanga'
+    },
+    {
+      id: 2,
+      name: 'Bogotá'
+    },
+    {
+      id: 3,
+      name: 'Tibú'
+    }
+  ];
+  
 
 export default function HeroSection() {
     const navigate = useNavigate();
@@ -35,9 +40,14 @@ export default function HeroSection() {
         updateCampus(campusId); // Usa el método del contexto en lugar de `setState`
     };
 
-    useEffect(() => {
-        console.log("🚀 Estado actual de currentCampusId en HeroSection:", currentCampusId);
-    }, [currentCampusId]);    
+    const navigateToCampers = () => {
+        setTimeout(() => {
+            const section = document.getElementById("campers-formacion");
+            if (section) {
+              section.scrollIntoView({ behavior: "smooth" });
+            }
+          }, 100);
+    }
 
     useEffect(() => {
         const handleCampusChange = (event) => {
@@ -79,7 +89,7 @@ export default function HeroSection() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5 }}
-                                className="relative hidden lg:block"
+                                className="relative lg:block"
                             >
                                 <div className="absolute -top-4 -left-4 bg-blue-500/10 w-16 h-16 rounded-full blur-xl" />
                                 <div className="relative">
@@ -134,7 +144,7 @@ export default function HeroSection() {
                                 className="mt-10 hidden lg:flex items-center gap-x-6"
                             >
                                 <Button
-                                    onClick={() => navigate('/historias')}
+                                    onClick={navigateToCampers}
                                     size="lg"
                                     className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600"
                                 >
