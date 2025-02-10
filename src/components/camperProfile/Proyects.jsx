@@ -4,8 +4,8 @@ import ProjectCard from "./ProjectCard";
 import { getProjects, addProjects, updateProject } from "../../services/proyectsService";
 import { getTechnology, getTechnologyForProject } from "../../services/technologiesService";
 import NoRecords from "../common/NoRecords";
-import { ProyectsModal } from "../camperProfileEdit/modals/ProyectsModal";
-import { ProyectsEditModal } from "../camperProfileEdit/modals/ProyectsEditModal";
+import { ProyectsModal } from "./modals/ProyectsModal";
+import { ProyectsEditModal } from "./modals/ProyectsEditModal";
 import { toast } from "react-toastify";
 import styles from "./styles/Proyects.module.css";
 

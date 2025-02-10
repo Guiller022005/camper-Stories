@@ -37,10 +37,6 @@ module.exports = {
 			fontFamily: {
 				firma: ['firma', 'sans-serif'],
 				poppins: ['Poppins', 'sans-serif'],
-			},
-			screens: {
-				'xs': '428px', // Definir el punto de ruptura para 428px
-        		'sm': '480px', // Definir el punto de ruptura para 480px
 			}
 		},
 	},

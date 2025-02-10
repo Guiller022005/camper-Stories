@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import VideoPlayer from "./VIdeoPlayer"
-import AboutMeModal from "../camperProfileEdit/modals/AboutMeModal"
+import AboutMeModal from "./modals/AboutMeModal"
 
 const AboutMe = ({ isEditable, videoUrl, about, camperInfoInitialData, onUpdate }) => {
   const navigate = useNavigate()

@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import VideoPlayer from "../camperProfile/VIdeoPlayer";
-import { useCampus } from '../../components/campersMainPage/context/CampusContext'; 
+import { useCampus } from '../../components/campersMainPage/context/CampusContext';
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const stats = [
     { label: "Campers Graduados", value: "500+", icon: GraduationCap },
@@ -15,38 +16,44 @@ const stats = [
 
 const campus = [
     {
-      id: 1,
-      name: 'Bucaramanga'
+        id: 1,
+        name: 'Bucaramanga'
     },
     {
-      id: 2,
-      name: 'Bogotá'
+        id: 2,
+        name: 'Bogotá'
     },
     {
-      id: 3,
-      name: 'Tibú'
+        id: 3,
+        name: 'Tibú'
     }
-  ];
-  
+];
+
 
 export default function HeroSection() {
     const navigate = useNavigate();
     const { currentCampusId, updateCampus } = useCampus();
-    
-    window.CampusState = currentCampusId;   
+
+    window.CampusState = currentCampusId;
 
     const handleCampusClick = (campusId) => {
         console.log("🔄 Cambiando campus a:", campusId);
         updateCampus(campusId); // Usa el método del contexto en lugar de `setState`
+        if (currentCampusId === campusId) {
+            return;
+        }
+        const selectedCampus = campus.find((c) => c.id === campusId); // Busca el campus por ID metodo find
+        const campusName = selectedCampus ? selectedCampus.name : "Campus desconocido"; // Guarda el nombre del campus o deja un mensaje en default
+        toast.info(`Campus seleccionado: ${campusName}`)
     };
 
     const navigateToCampers = () => {
         setTimeout(() => {
             const section = document.getElementById("campers-formacion");
             if (section) {
-              section.scrollIntoView({ behavior: "smooth" });
+                section.scrollIntoView({ behavior: "smooth" });
             }
-          }, 100);
+        }, 100);
     }
 
     useEffect(() => {
@@ -93,14 +100,15 @@ export default function HeroSection() {
                             >
                                 <div className="absolute -top-4 -left-4 bg-blue-500/10 w-16 h-16 rounded-full blur-xl" />
                                 <div className="relative">
-                                    <div className="flex justify-start gap-2">
+                                    <h3 className="text-xl font-medium tracking-tight text-white pb-4">Red Campus</h3>
+                                    <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                                         {campus.map((campusItem) => (
                                             <button
                                                 key={campusItem.id}
                                                 onClick={() => handleCampusClick(campusItem.id)}
-                                                className={`rounded-full px-3 py-1 text-sm font-semibold leading-6 transition-colors duration-200 ${currentCampusId === campusItem.id
-                                                    ? 'bg-indigo-500 text-white'
-                                                    : 'bg-indigo-500/10 text-indigo-400 ring-1 ring-inset ring-indigo-500/20 hover:bg-indigo-500/20'
+                                                className={`rounded-full px-5 py-2 text-base font-semibold leading-6 transition-all duration-300 ${currentCampusId === campusItem.id
+                                                        ? 'bg-indigo-500 text-white shadow-lg'
+                                                        : 'bg-indigo-500/10 text-indigo-400 ring-2 ring-inset ring-indigo-500/20 hover:bg-indigo-500/20'
                                                     }`}
                                             >
                                                 {campusItem.name}

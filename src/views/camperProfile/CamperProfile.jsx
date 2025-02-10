@@ -31,18 +31,18 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
 
     const navigateToSection = (sectionId) => {
         const basePath = isEditPage
-          ? `/campers/profile/${id}/edit`
-          : `/campers/profile/${id}`;
-    
+            ? `/campers/profile/${id}/edit`
+            : `/campers/profile/${id}`;
+
         navigate(basePath);
-    
+
         setTimeout(() => {
-          const section = document.getElementById(sectionId);
-          if (section) {
-            section.scrollIntoView({ behavior: "smooth" });
-          }
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: "smooth" });
+            }
         }, 300);
-      };
+    };
 
     // Obtener `camper_id` y `role` desde localStorage
     const camperIdFromStorage = parseInt(localStorage.getItem("camper_id"));
@@ -116,10 +116,10 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
 
     const renderTrainingProcess = () => {
         if (!camperTiktoksData || camperTiktoksData.length === 0) {
-            return <NoRecords title='Mi Proceso de Formacion'/>;
+            return <NoRecords title='Mi Proceso de Formacion' />;
         }
         return (
-            <TrainingProcess videos={camperTiktoksData} isEditable={isEditable} onUpdate={refreshData}/>
+            <TrainingProcess videos={camperTiktoksData} isEditable={isEditable} onUpdate={refreshData} />
         );
     };
 
@@ -139,8 +139,8 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
             </LazySection>
 
             <div className={`${styles.profileMainContent} flex flex-col gap-4`}>
-                <LazySection> 
-                        <ProfileHeader data={camperData} initialMerits={camperMerits} onUpdate={refreshData} isEditable={isEditable}/>
+                <LazySection>
+                    <ProfileHeader data={camperData} initialMerits={camperMerits} onUpdate={refreshData} isEditable={isEditable} />
                 </LazySection>
 
                 <LazySection>
@@ -168,7 +168,7 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
 
                 <LazySection>
                     <div id="projects">
-                        <Proyects onUpdate={refreshData} isEditable={isEditable}/>
+                        <Proyects onUpdate={refreshData} isEditable={isEditable} />
                     </div>
                 </LazySection>
 

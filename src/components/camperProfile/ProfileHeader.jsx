@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from "lucide-react";
 import "./styles/ProfileHeader.css";
 import { ProfileImage } from "./ProfileImage"; // Importa el componente ProfileImage
-import ProfileHeaderModal from "../camperProfileEdit/modals/ProfileHeaderModal";
-import MeritsModal from "../camperProfileEdit/modals/MeritsModal";
+import ProfileHeaderModal from "./modals/ProfileHeaderModal";
+import MeritsModal from "./modals/MeritsModal";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
