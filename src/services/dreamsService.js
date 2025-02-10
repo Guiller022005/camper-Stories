@@ -4,23 +4,22 @@ import API_BASE_URL, { endpoints } from "./apiConfig";
 
 export const getDreams = async (camperId) => {
   try {
-    const token = localStorage.getItem("token");
- // if (!token) {
-    //   throw new Error("No se encontro un token, porfavor inicia sesion");
-    // }
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
     const url = `${endpoints.campers}/${camperId}/dreams`;
-    const response = await axios.get(url, config);
+    const response = await axios.get(url);
+
+    if (!response.data || response.data.length === 0) {
+      // console.warn(`El camper con id ${camperId} no tiene sueños registrados.`);
+      return [];
+    }
 
     return response.data;
   } catch (error) {
-    console.error("Error fetching the data", error);
+    if (error.response && error.response.status === 404) {
+      // console.warn(`No se encontraron sueños para el camper con id ${camperId}.`);
+      return [];
+    }
+    
+    console.error("Error fetching the data:", error);
     throw error;
   }
 };
