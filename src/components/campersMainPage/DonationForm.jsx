@@ -131,6 +131,13 @@ const DonationForm = () => {
                                 Paga Ahora con Wompi <ArrowRight className="h-5 w-5 inline pb-[2px]" />
                             </button>
                         )}
+                        {/* Enlace a certificado */}
+                        <div className="text-center mt-4">
+                            <p className="text-gray-400">¿Deseas obtener un certificado de donación?</p>
+                            <button onClick={() => navigate("/certificado")} className="text-[#5b62f1] underline">
+                                Solicitar certificado
+                            </button>
+                        </div>
                     </div>
                 </Card>
             </div>
@@ -139,7 +146,7 @@ const DonationForm = () => {
             {/* 
             <div className="space-y-6">
                 <h2 className="text-2xl font-bold text-center text-[#FFFF] py-5 mb-12">Planes de Suscripción</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-12">
                     {plans.map((plan, index) => (
                         <motion.div
                             key={plan.name}
