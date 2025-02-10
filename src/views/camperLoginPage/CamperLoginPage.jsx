@@ -36,7 +36,6 @@ const CamperLoginPage = () => {
 
   const handleLogin = async (email, password) => {
     try {
-      console.log("Iniciando sesión con:", email);
       const response = await fetch(endpoints.login, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,7 +49,7 @@ const CamperLoginPage = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.user.role);
         localStorage.setItem('camper_id', data.user.camper_id);
-        console.log("Inicio de sesión exitoso. Token recibido:", data);
+
         navigate(`/campers/profile/${data.user.camper_id}/edit`);
       } else {
         toast.error("Error de autenticación. Credenciales incorrectas.");
@@ -171,13 +170,14 @@ const CamperLoginPage = () => {
               
               {/* Forget Password */}
               <div className="text-center my-[1.5rem]">
-                <button
-                  className="bg-transparent border-none text-[#FFFFFF] cursor-pointer text-xs sm:text-sm 
-                       hover:text-[#6d28d9] hover:underline transition-colors duration-200"
-                  onClick={() => navigate('/forgetPassword')}
-                >
-                  ¿Olvidaste tu contraseña?
-                </button>
+              <button
+                type="button" // Agrega este tipo para evitar el envío del formulario
+                className="bg-transparent border-none text-[#FFFFFF] cursor-pointer text-xs sm:text-sm 
+                    hover:text-[#6d28d9] hover:underline transition-colors duration-200"
+                onClick={() => navigate('/forgetPassword')}
+              >
+                ¿Olvidaste tu contraseña?
+              </button>
               </div>
 
               {/* Submit Button */}
@@ -225,7 +225,7 @@ const CamperLoginPage = () => {
 
       {/* Footer Version */}
       <div className="absolute bottom-2 w-full text-center text-xs text-gray-400">
-        Camper Stories v0.6.2
+        Camper Stories v0.6.3 Beta
       </div>
     </div>
   );

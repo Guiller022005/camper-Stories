@@ -4,13 +4,16 @@ import { ChevronDown, ChevronRight, ChevronLeft, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { fetchCampersFormacion, fetchMeritsCamperById, fetchAllMerits } from "../../services/camperService";
+import { useCampus } from "../../components/campersMainPage/context/CampusContext"; // Importa el contexto
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "./styles/CampersGrid.css";
 import { useNavigate } from "react-router-dom";
+import NoRecords from "../common/NoRecords";
 
 const defaultProfileImage = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";
 
 const CampersGrid = () => {
+    const { currentCampusId } = useCampus();
     const [currentPage, setCurrentPage] = useState(1);
     const [campersPerPage, setCampersPerPage] = useState(8);
     const [expandedSkills, setExpandedSkills] = useState({});
@@ -52,7 +55,7 @@ const CampersGrid = () => {
     const limitNameToThreeWords = (fullName) => {
         const words = fullName.split(" "); // Divide el nombre en palabras
         return words.slice(0, 3).join(" "); // Toma las primeras 3 palabras y las une
-      };
+    };
 
     const generateConnectionDots = () => {
         return Array(30).fill().map((_, i) => (
@@ -86,9 +89,12 @@ const CampersGrid = () => {
     };
 
     useEffect(() => {
+        if (!currentCampusId) return; // Evitar ejecución si es null/undefined
+
         const fetchData = async () => {
             try {
-                const campers = await fetchCampersFormacion();
+                console.log("📡 Fetching campers for campus:", currentCampusId);
+                const campers = await fetchCampersFormacion(currentCampusId);
                 const allMerits = await fetchAllMerits();
 
                 const campersWithMeritsPromises = campers.map(async (camper) => {
@@ -106,13 +112,14 @@ const CampersGrid = () => {
                 setFilteredCampers(campersWithMerits);
                 setIsLoading(false);
             } catch (err) {
+                console.error("❌ Error fetching campers:", err);
                 setError("Error al cargar los datos de los campers.");
                 setIsLoading(false);
             }
         };
 
         fetchData();
-    }, []);
+    }, [currentCampusId]); // 🔥 Se ejecuta cuando cambia el campus
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -175,6 +182,25 @@ const CampersGrid = () => {
         setCurrentPage(1);
     };
 
+
+    if (!campersData || campersData.length === 0) {
+        return (
+            <div className="campersgrid min-h-[90vh]">
+                <div className="badge-filters">
+                    <div className="titleSearch pb-[2rem]">
+                        <h3 className="font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[0.9] skew-x-6 text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
+                            Busca a Tu
+                        </h3>
+                        <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] skew-x-[-6deg]">
+                            Camper
+                        </h2>
+                    </div>
+                </div>
+                <NoRecords showTitle={false} />
+            </div>  
+        );
+    }
+
     return (
         <section className="campersgrid">
             <div className="circuit-lines">
@@ -189,7 +215,7 @@ const CampersGrid = () => {
                     <h3 className="font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[0.9] skew-x-6 h-[4.5rem] text-transparent bg-clip-text bg-gradient-to-r from-[#80caff] to-[#4f46e5]">
                         Busca a Tu
                     </h3>
-                    <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] shadow-[3px_3px_0px_rgba(0,0,0,0.2)] skew-x-[-6deg]">
+                    <h2 className="font-extrabold uppercase text-[clamp(2rem,5vw,5rem)] leading-[0.9] text-[var(--color2)] tracking-[-2px] skew-x-[-6deg]">
                         Camper
                     </h2>
                 </div>
@@ -262,57 +288,57 @@ const CampersGrid = () => {
                                     <div className="technologies">
                                         <span className="tech-label">Méritos:</span>
                                         <div className="skills-wrapper wrapper">
-                                        <div className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""}`}>
-                                            <AnimatePresence>
-                                            {camper.skills.map((skill, index) => (
-                                                <motion.div
-                                                key={skill.id}
-                                                initial={{ opacity: 0, scale: 0.8 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                exit={{ opacity: 0, scale: 0.8 }}
-                                                transition={{ delay: index * 0.1 }}
-                                                className="skill-item-mp"
+                                            <div className={`skills-container ${expandedSkills[camper.camper_id] ? "expanded" : ""}`}>
+                                                <AnimatePresence>
+                                                    {camper.skills.map((skill, index) => (
+                                                        <motion.div
+                                                            key={skill.id}
+                                                            initial={{ opacity: 0, scale: 0.8 }}
+                                                            animate={{ opacity: 1, scale: 1 }}
+                                                            exit={{ opacity: 0, scale: 0.8 }}
+                                                            transition={{ delay: index * 0.1 }}
+                                                            className="skill-item-mp"
+                                                        >
+                                                            {skill.name + " "}{skill.icon}
+                                                        </motion.div>
+                                                    ))}
+                                                </AnimatePresence>
+                                            </div>
+                                            {camper.skills.length > 4 && (
+                                                <button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="expand-skills-button"
+                                                    onClick={() =>
+                                                        setExpandedSkills((prev) => ({
+                                                            ...prev,
+                                                            [camper.camper_id]: !prev[camper.camper_id],
+                                                        }))
+                                                    }
                                                 >
-                                                {skill.name + " "}{skill.icon}
-                                                </motion.div>
-                                            ))}
-                                            </AnimatePresence>
-                                        </div>
-                                        {camper.skills.length > 4 && (
-                                            <button
-                                            variant="ghost"
-                                            size="sm"
-                                            className="expand-skills-button"
-                                            onClick={() =>
-                                                setExpandedSkills((prev) => ({
-                                                ...prev,
-                                                [camper.camper_id]: !prev[camper.camper_id],
-                                                }))
-                                            }
-                                            >
-                                            {expandedSkills[camper.camper_id] ? "Ver menos" : "Ver más"}
-                                            <ChevronDown
-                                                className={`ml-2 h-4 w-4 transition-transform ${expandedSkills[camper.camper_id] ? "rotate-180" : ""}`}
-                                            />
-                                            </button>
-                                        )}
+                                                    {expandedSkills[camper.camper_id] ? "Ver menos" : "Ver más"}
+                                                    <ChevronDown
+                                                        className={`ml-2 h-4 w-4 transition-transform ${expandedSkills[camper.camper_id] ? "rotate-180" : ""}`}
+                                                    />
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="buttons">
                                         <button
-                                        className="info-button"
-                                        onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
+                                            className="info-button"
+                                            onClick={() => navigate(`/campers/profile/${camper.camper_id}`)}
                                         >
-                                        Mas Info
+                                            Mas Info
                                         </button>
                                         <button
-                                        className="sponsor-button"
-                                        onClick={handleSponsorClick}
+                                            className="sponsor-button"
+                                            onClick={handleSponsorClick}
                                         >
-                                        Patrocinar
+                                            Patrocinar
                                         </button>
                                     </div>
-                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))}
@@ -329,81 +355,80 @@ const CampersGrid = () => {
 };
 
 const DotPagination = ({ current, total, pageSize, onChange }) => {
-  const pageCount = Math.ceil(total / pageSize);
+    const pageCount = Math.ceil(total / pageSize);
 
-  const handlePrev = () => {
-    if (current > 1) onChange(current - 1);
-  };
+    const handlePrev = () => {
+        if (current > 1) onChange(current - 1);
+    };
 
-  const handleNext = () => {
-    if (current < pageCount) onChange(current + 1);
-  };
+    const handleNext = () => {
+        if (current < pageCount) onChange(current + 1);
+    };
 
-  const getVisibleDots = () => {
-    const maxVisible = 5; // Máximo número de botones visibles
-    const dots = [];
+    const getVisibleDots = () => {
+        const maxVisible = 5; // Máximo número de botones visibles
+        const dots = [];
 
-    if (pageCount <= maxVisible) {
-      for (let i = 1; i <= pageCount; i++) {
-        dots.push(i);
-      }
-    } else {
-      if (current <= 3) {
-        dots.push(1, 2, 3, 4, 5);
-      } else if (current >= pageCount - 2) {
-        dots.push(pageCount - 4, pageCount - 3, pageCount - 2, pageCount - 1, pageCount);
-      } else {
-        dots.push(current - 2, current - 1, current, current + 1, current + 2);
-      }
-    }
+        if (pageCount <= maxVisible) {
+            for (let i = 1; i <= pageCount; i++) {
+                dots.push(i);
+            }
+        } else {
+            if (current <= 3) {
+                dots.push(1, 2, 3, 4, 5);
+            } else if (current >= pageCount - 2) {
+                dots.push(pageCount - 4, pageCount - 3, pageCount - 2, pageCount - 1, pageCount);
+            } else {
+                dots.push(current - 2, current - 1, current, current + 1, current + 2);
+            }
+        }
 
-    return dots;
-  };
+        return dots;
+    };
 
-  return (
-    <motion.div
-      className="flex justify-center items-center gap-4 mt-12 md:mt-24 z-10"
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1.2 }}
-    >
-      {/* Botón Prev */}
-      <button
-        onClick={handlePrev}
-        disabled={current === 1}
-        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
-        aria-label="Previous page"
-      >
-        <ChevronLeft className="w-4 h-4" /> {/* Tamaño reducido del ícono */}
-      </button>
-
-      {/* Botones de página */}
-      {getVisibleDots().map((page) => (
-        <motion.button
-          key={page}
-          onClick={() => onChange(page)}
-          className={`rounded-full transition-all duration-300 ${
-            page === current
-              ? "bg-color4 w-12 md:w-16 h-3 md:h-4 scale-110" // Botón activo
-              : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-3 md:w-4 h-3 md:h-4" // Botones normales
-          }`}
-          whileHover={{ scale: 1.2 }}
-          aria-label={`Go to page ${page}`}
+    return (
+        <motion.div
+            className="flex justify-center items-center gap-4 mt-12 md:mt-24 z-10"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.2 }}
         >
-        </motion.button>
-      ))}
+            {/* Botón Prev */}
+            <button
+                onClick={handlePrev}
+                disabled={current === 1}
+                className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
+                aria-label="Previous page"
+            >
+                <ChevronLeft className="w-4 h-4" /> {/* Tamaño reducido del ícono */}
+            </button>
 
-      {/* Botón Next */}
-      <button
-        onClick={handleNext}
-        disabled={current === pageCount}
-        className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
-        aria-label="Next page"
-      >
-        <ChevronRight className="w-4 h-4" /> {/* Tamaño reducido del ícono */}
-      </button>
-    </motion.div>
-  );
+            {/* Botones de página */}
+            {getVisibleDots().map((page) => (
+                <motion.button
+                    key={page}
+                    onClick={() => onChange(page)}
+                    className={`rounded-full transition-all duration-300 ${page === current
+                        ? "bg-color4 w-12 md:w-16 h-3 md:h-4 scale-110" // Botón activo
+                        : "bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg w-3 md:w-4 h-3 md:h-4" // Botones normales
+                        }`}
+                    whileHover={{ scale: 1.2 }}
+                    aria-label={`Go to page ${page}`}
+                >
+                </motion.button>
+            ))}
+
+            {/* Botón Next */}
+            <button
+                onClick={handleNext}
+                disabled={current === pageCount}
+                className="w-4 h-4 bg-swiper-bullet-bg hover:bg-swiper-bullet-hover-bg rounded-full flex justify-center items-center text-color4 hover:text-neutral-200 transition disabled:opacity-90"
+                aria-label="Next page"
+            >
+                <ChevronRight className="w-4 h-4" /> {/* Tamaño reducido del ícono */}
+            </button>
+        </motion.div>
+    );
 };
 
 

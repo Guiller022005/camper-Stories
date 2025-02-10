@@ -8,7 +8,6 @@ import NoRecords from "../common/NoRecords";
 
 const Proyects = () => {
   const [projects, setProjects] = useState([]);
-  const [techProject, setTechProject] = useState();
   const [loading, setLoading] = useState(false); // Añadir esto
   const [error, setError] = useState(null);
   const { id } = useParams(); 
@@ -41,25 +40,6 @@ const Proyects = () => {
 
     fetchProjects();
   }, []);
-
-  // Function to fetch technologies for a specific project
-  const fetchTechnologyForProject = async (projectId) => {
-    try {
-      const technologies = await getTechnologyForProject(projectId);
-
-      // Update the specific project with its technologies
-      setProjects((prevProjects) =>
-        prevProjects.map((project) =>
-          project.id === projectId ? { ...project, technologies } : project
-        )
-      );
-    } catch (err) {
-      console.error(
-        `Error loading technologies for project ${projectId}:`,
-        err
-      );
-    }
-  };
 
   if (loading) {
     return null; // O un componente de loading si lo prefieres

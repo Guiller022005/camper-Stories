@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from "lucide-react";
+import { Share2, Mail, MapPin, Cake, Trophy } from "lucide-react";
 
-const ProfileHeader = ({ data, initialMerits }) => {
-  const [showAllBadges, setShowAllBadges] = useState(false);
-  const maxVisibleBadges = 6;
-
-  const handleToggleBadges = () => {
-    setShowAllBadges((prev) => !prev);
+const ProfileHeader = ({ data }) => {
+  const calculateAge = (birthDate) => {
+    const birth = new Date(birthDate);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
   };
+
+  const fullName = `${data.first_name} ${data.last_name}`;
+
+  const medals = [
+    { color: "gold", title: "Patrocinador Gold" },
+    { color: "silver", title: "1 Año de Apoyo" },
+    { color: "bronze", title: "5 Campers Apoyados" }
+  ];
 
   return (
     <motion.div
@@ -27,8 +39,8 @@ const ProfileHeader = ({ data, initialMerits }) => {
             <div className="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden transition-shadow duration-300 hover:shadow-lg hover:shadow-blue-500/30 ring-2 ring-blue-500/20">
               <div className="w-full h-full rounded-full overflow-hidden">
                 <LazyLoadImage
-                  src={data.profile_picture?.trim() || "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"}
-                  alt={`Perfil de ${data.full_name}`}
+                  src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+                  alt={`Perfil de ${fullName}`}
                   effect="blur"
                   className="w-full h-full object-cover"
                   wrapperClassName="w-full h-full"
@@ -40,7 +52,7 @@ const ProfileHeader = ({ data, initialMerits }) => {
           {/* Profile Details */}
           <div className="flex-1">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center md:text-left">
-              {data.full_name}
+              {fullName}
             </h1>
             
             <div className="flex flex-col items-center md:items-start gap-2">
@@ -50,7 +62,11 @@ const ProfileHeader = ({ data, initialMerits }) => {
               </div>
               <div className="flex items-center gap-3 text-gray-200">
                 <Cake className="w-5 h-5" />
-                <p>{`${data.age} Años`}</p>
+                <p>{`${calculateAge(data.birth_date)} Años`}</p>
+              </div>
+              <div className="flex items-center gap-3 text-gray-200">
+                <Mail className="w-5 h-5" />
+                <p>{data.email}</p>
               </div>
             </div>
 
@@ -68,52 +84,34 @@ const ProfileHeader = ({ data, initialMerits }) => {
           </div>
         </div>
 
-        {/* Badges Section */}
+        {/* Medals Section */}
         <motion.div
           className="mt-8 md:mt-0 w-full md:max-w-lg bg-gray-800/60 backdrop-blur-lg border border-blue-500/20 rounded-2xl p-6"
           layout
-          initial={false}
-          animate={{ height: "auto" }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <div className="flex items-center gap-3 text-white mb-2">
+          <div className="flex items-center gap-3 text-white mb-4">
             <Trophy className="w-5 h-5" />
-            <p className="text-lg font-semibold">Méritos</p>
+            <p className="text-lg font-semibold">Medallas</p>
           </div>
 
-          <div className="flex flex-wrap gap-2 mt-4">
-            {initialMerits
-              .slice(0, showAllBadges ? initialMerits.length : maxVisibleBadges)
-              .map((merit, index) => (
-                <div 
-                  key={index}
-                  className="group relative flex items-center bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 rounded-xl px-4 py-2 text-white text-sm transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  <span>{merit.name}</span>
-                  {merit.icon}
-                  
-                  {/* Tooltip */}
-                  <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg transition-all duration-300 w-48 text-center z-50">
-                    {merit.description}
-                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-blue-600 rotate-45" />
-                  </div>
-                </div>
-              ))}
+          <div className="flex flex-wrap gap-3">
+            {medals.map((medal, index) => (
+              <div
+                key={index}
+                className="group relative flex items-center gap-2 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 rounded-xl px-4 py-2 text-white text-sm transition-all duration-300 hover:-translate-y-0.5"
+              >
+                <Trophy 
+                  className="w-4 h-4" 
+                  style={{ 
+                    color: medal.color === 'gold' ? '#FFD700' : 
+                           medal.color === 'silver' ? '#C0C0C0' : 
+                           '#CD7F32' 
+                  }} 
+                />
+                <span>{medal.title}</span>
+              </div>
+            ))}
           </div>
-
-          {initialMerits.length > maxVisibleBadges && (
-            <button
-              onClick={handleToggleBadges}
-              className="flex items-center justify-center gap-2 text-white mt-4 mx-auto hover:underline"
-            >
-              {showAllBadges ? "Ver menos" : "Ver más"}
-              <ChevronDown
-                className={`w-4 h-4 transition-transform duration-300 ${
-                  showAllBadges ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          )}
         </motion.div>
       </div>
     </motion.div>

@@ -4,19 +4,19 @@ import API_BASE_URL, { endpoints } from "./apiConfig";
 
 export const getTechnology = async () => {
   try {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    if (!token) {
-      throw new Error("No se encontro un token, porfavor inicia sesion");
-    }
+    // if (!token) {
+    //   throw new Error("No se encontro un token, porfavor inicia sesion");
+    // }
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
 
-    const response = await axios.get(endpoints.technology, config);
+    const response = await axios.get(endpoints.technology);
 
     return response.data;
   } catch (error) {
@@ -27,20 +27,20 @@ export const getTechnology = async () => {
 
 export const getTechnologyForProject = async (projectId) => {
   try {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    if (!token) {
-      throw new Error("No se encontro un token, porfavor inicia sesion");
-    }
+    // if (!token) {
+    //   throw new Error("No se encontro un token, porfavor inicia sesion");
+    // }
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
 
     const url = `${endpoints.technologyProject}/${projectId}`;
-    const response = await axios.get(url, config);
+    const response = await axios.get(url);
 
     return response.data;
   } catch (error) {

@@ -23,8 +23,6 @@ const calculateAge = (birthDate) => {
 const normalizeCalperData = (data) => {
   if (!data) return DEFAULT_CAMPER_DATA;
 
-  console.log("Datos sin normalizar", data);
-
   return {
     profile_picture: data.profile_picture,
     full_name: data.full_name || DEFAULT_CAMPER_DATA.full_name,
@@ -53,20 +51,21 @@ export const fetchCamperById = async (id) => {
 };
 
 // Para obtener todos los campers
-export const fetchCampers = async () => {
+export const fetchCampers = async (campus_id) => {
   try {
-    const response = await axios.get(endpoints.campers);
+    const response = await axios.get(`${endpoints.campers}/${campus_id}`); 
     return response.data;
   } catch (error) {
-    console.error("Error fetching campers:", error);
+    console.error(`Error fetching campers with cityId ${campus_id}`, error);
     throw error;
   }
 };
 
+
 // Para obtener los campers egresados
-export const fetchCampersEgresados = async () => {
-  try {
-    const response = await axios.get(endpoints.egresados);
+export const fetchCampersEgresados = async (campus_id) => {
+  try {  
+    const response = await axios.get(`${endpoints.egresados}/${campus_id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching campers:", error);
@@ -75,9 +74,9 @@ export const fetchCampersEgresados = async () => {
 };
 
 // Para obtener los campers en proceso de formacion
-export const fetchCampersFormacion = async () => {
+export const fetchCampersFormacion = async (campus_id) => {
   try {
-    const response = await axios.get(endpoints.formados);
+    const response = await axios.get(`${endpoints.formados}/${campus_id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching campers:", error);
