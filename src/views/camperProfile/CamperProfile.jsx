@@ -3,7 +3,6 @@ import { useParams, Navigate } from "react-router-dom";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import Loader from "@/components/common/Loader";
 import LazySection from "@/components/common/LazySection";
-import FloatingActionMenu from "@/components/FloatingMenu/FloatingActionMenu";
 import { fetchCamperById } from "@/services/camperService";
 import { fetchTikToksByCamperId } from "@/services/tiktokService";
 import { fetchMeritsByCamperId } from "@/services/meritsService";
@@ -13,7 +12,7 @@ import NoRecords from '@/components/common/NoRecords';
 import styles from './styles/CamperProfile.module.css'
 
 // Lazy load components
-const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"));
+import Navbar from "../../components/navbar/Navbar";
 const ProfileHeader = lazy(() => import("../../components/camperProfile/ProfileHeader"));
 const AboutMe = lazy(() => import("../../components/camperProfile/AboutMe"));
 const Dreams = lazy(() => import("../../components/camperProfile/Dreams"));
@@ -29,6 +28,21 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
     const [camperMerits, setCamperMerits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const navigateToSection = (sectionId) => {
+        const basePath = isEditPage
+          ? `/campers/profile/${id}/edit`
+          : `/campers/profile/${id}`;
+    
+        navigate(basePath);
+    
+        setTimeout(() => {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 300);
+      };
 
     // Obtener `camper_id` y `role` desde localStorage
     const camperIdFromStorage = parseInt(localStorage.getItem("camper_id"));
@@ -112,7 +126,16 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
     return (
         <div className={`${styles.camperProfileView} flex flex-col relative`}>
             <LazySection>
-                <NavbarProfile />
+                <Navbar
+                    viewType="profile"
+                    links={[
+                        { id: "sobre-mi", label: "Sobre mí" },
+                        { id: "proceso-formacion", label: "Proceso" },
+                        { id: "sueños-grid", label: "Sueños" },
+                        { id: "projects", label: "Proyectos" }
+                    ]}
+                    onLinkClick={navigateToSection}
+                />
             </LazySection>
 
             <div className={`${styles.profileMainContent} flex flex-col gap-4`}>
@@ -160,11 +183,11 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
                 <Footer />
             </LazySection>
 
-            {isEditable && (
+            {/* {isEditable && (
                 <Suspense fallback={null}>
                     <FloatingActionMenu />
                 </Suspense>
-            )}
+            )} */}
         </div>
     );
 };

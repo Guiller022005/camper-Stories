@@ -4,12 +4,22 @@ import { endpoints } from './apiConfig';
 export const fetchTikToksByCamperId = async (id) => {
     try {
         const response = await axios.get(`${endpoints.campers}/${id}/videos`);
-        return response.data || []; // Retornar solo los datos
+
+        if (!response.data || response.data.length === 0) {
+            // console.warn(`El camper con id ${id} no tiene TikToks.`);
+            return [];
+        }
+
+        return response.data;
     } catch (error) {
-        console.error(`Error fetching camper tik toks with id ${id}:`, error);
-        return []; // Retornar array vacío en caso de error
+        if (error.response && error.response.status === 404) {
+            // console.warn(`No se encontraron TikToks para el camper con id ${id}.`);
+            return [];
+        }
+        // console.error(`Error al obtener TikToks del camper con id ${id}:`, error);
+        return [];
     }
-}
+};
 
 export const addTikTok = async (tiktokData, camper_id) => {
     console.log(tiktokData);

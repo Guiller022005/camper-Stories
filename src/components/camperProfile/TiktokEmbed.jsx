@@ -20,8 +20,6 @@ const ErrorCard = ({ message }) => (
 
 const TikTokEmbed = ({ videoUrl }) => {
 
-  console.log(videoUrl);
-
   // Validar que videoUrl exista y sea string
   if (!videoUrl || typeof videoUrl !== 'string') {
     console.log('Error: URL no válida o no es string');
@@ -36,12 +34,12 @@ const TikTokEmbed = ({ videoUrl }) => {
         // Para URLs como: "https://www.tiktok.com/@username/video/1234567890"
         const match = url.match(/\/video\/(\d+)/);
         const id = match ? match[1] : null;
-        console.log('ID extraído de URL directa:', id);
+
         return id;
       } else if (url.includes('embed')) {
         // Para URLs de embed: "https://www.tiktok.com/embed/1234567890"
         const id = url.split('/').pop();
-        console.log('ID extraído de URL embed:', id);
+
         return id;
       }
       console.log('No se pudo extraer ID, formato no reconocido');

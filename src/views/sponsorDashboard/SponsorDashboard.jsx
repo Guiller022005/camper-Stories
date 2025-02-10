@@ -3,7 +3,7 @@ import { fetchCamperById } from "../../services/camperService"
 import LazySection from "../../components/common/LazySection"
 import Loader from "@/components/common/Loader"
 
-const NavbarProfile = lazy(() => import("../../components/navbar/NavbarProfile"))
+const NavbarProfile = lazy(() => import("../../components/navbar/Navbar"))
 const Footer = lazy(() => import("../../components/footer/Footer"))
 const SponsorProfileHeader = lazy(() => import("../../components/dashboardSponsor/SponsorProfile"))
 const Campers = lazy(() => import("../../components/campersMainPage/Campers"))
@@ -20,6 +20,21 @@ const SponsorDashboard = () => {
   })
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  const navigateToSection = (sectionId) => {
+    const basePath = isEditPage
+      ? `/campers/profile/${id}/edit`
+      : `/campers/profile/${id}`;
+
+    navigate(basePath);
+
+    setTimeout(() => {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 300);
+  };
 
   const videos = [
     { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 1" },
@@ -58,7 +73,16 @@ const SponsorDashboard = () => {
   return (
     <div className="flex flex-col relative min-h-screen bg-[#07072b]">
       <LazySection>
-        <NavbarProfile />
+      <NavbarProfile
+            viewType="profile"
+            links={[
+                { id: "sobre-mi", label: "Sobre mí" },
+                { id: "proceso-formacion", label: "Proceso" },
+                { id: "sueños-grid", label: "Sueños" },
+                { id: "projects", label: "Proyectos" }
+            ]}
+            onLinkClick={navigateToSection}
+        />
       </LazySection>
       <div className="flex flex-col">
         <LazySection>

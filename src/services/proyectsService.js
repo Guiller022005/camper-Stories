@@ -4,20 +4,20 @@ import API_BASE_URL, { endpoints } from "./apiConfig";
 
 export const getProjects = async (camperId) => {
   try {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    if (!token) {
-      throw new Error("No se encontro un token, porfavor inicia sesion");
-    }
+    // if (!token) {
+    //   throw new Error("No se encontro un token, porfavor inicia sesion");
+    // }
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
 
     const url = `${endpoints.campers}/${camperId}/proyects`;
-    const response = await axios.get(url, config);
+    const response = await axios.get(url);
 
     return response.data;
   } catch (error) {

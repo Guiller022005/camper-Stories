@@ -15,6 +15,7 @@ function ProjectCard({ id, title, description, image, code_url, onEdit, isEditab
       try {
         setLoading(true);
         const response = await getTechnologyForProject(id);
+        // console.log(response);
         const techNames = response.technologies.map((tech) => tech.name);
         setProjectTechnologies(techNames);
       } catch (error) {

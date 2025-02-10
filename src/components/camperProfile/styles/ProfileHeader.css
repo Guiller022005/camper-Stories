@@ -429,47 +429,15 @@
   .profile-badges-box{
     margin-top: 1rem;
   }
-}
-
-@media (max-width: 428px) {
   .profile-image .custom-tooltip {
-    position: fixed; /* Fija el tooltip en el viewport */
-    bottom: 0; /* Lo coloca al fondo de la pantalla */
-    left: 50%; /* Lo centra horizontalmente */
-    transform: translateX(-50%); /* Ajusta el centro */
-    width: 300px; /* Asegura que cubra el ancho completo */
-    height: 100px; /* Ajusta su altura al contenido */
-    padding: 1rem; /* Espaciado interno */
-    background: rgba(24, 119, 242, 0.95); /* Fondo semitransparente */
-    color: #fff; /* Color del texto */
-    text-align: center; /* Centra el texto */
-    border-radius: 10px 10px 10px 10px; /* Bordes redondeados arriba */
-    border: none; /* Elimina bordes */
-    z-index: 9999; /* Asegura que esté encima de otros elementos */
-    opacity: 0; /* Oculto por defecto */
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
-
-  .profile-image:hover .custom-tooltip {
-    opacity: 1; /* Muestra el tooltip */
-    visibility: visible;
-  }
-
-  /* Flecha del Tooltip hacia arriba */
-  .profile-image .custom-tooltip::after {
-    content: "";
-    position: absolute;
-    top: -20px; /* Posiciona la flecha sobre el tooltip */
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 10px; /* Tamaño de la flecha */
-    border-style: solid;
-    border-color: transparent transparent rgba(24, 119, 242, 0.95) transparent;
+    width: 250px;
   }
   
+}
+
+@media (max-width: 678px) {
   .profile-header {
-    padding: 7rem 0 2.5rem 0;
+    padding: 6.5rem 0 2.5rem 0;
   }
 
   .profile-container {
@@ -484,32 +452,8 @@
   }
 
   .profile-image {
-    width: 180px;
-    height: 180px;
-  }
-
-  .camper-details {
-    align-items: center;
-  }
-
-  .profile-badges-box {
-    max-width: none;
-    padding: 1.2rem;
-  }
-
-  .badges-container {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .profile-header {
-    padding: 6.5rem 0 2.5rem 0;
-  }
-
-  .profile-image {
-    width: 150px;
-    height: 150px;
+    width: 10rem;
+    height: 18vh;
   }
 
   .profile-buttons {
@@ -528,12 +472,21 @@
     padding: 0.4rem 0.8rem;
   }
 
+  .profile-badges-box {
+    max-width: none;
+    padding: 1.2rem;
+  }
+
+  .badges-container {
+    justify-content: center;
+  }
+
   /* Ajustes para el tooltip en pantallas pequeñas */
   .profile-image .tooltip {
-    left: 120%; /* Aumenta la separación a la derecha */
-    max-width: 250px; /* Reduce el ancho para pantallas pequeñas */
-    font-size: 14px; /* Reduce el tamaño de fuente */
-    padding: 10px 14px; /* Ajusta el padding */
+    left: 120%;
+    max-width: 250px;
+    font-size: 14px;
+    padding: 10px 14px;
   }
 
   .profile-image .tooltip::after {

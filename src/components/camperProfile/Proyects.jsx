@@ -236,6 +236,7 @@ const Proyects = ({ isEditable }) => {
                 key={project.id}
                 {...project}
                 onEdit={() => handleEditProject(project)}
+                isEditable={isEditable}
               />
             ))
           )}
@@ -263,6 +264,7 @@ const Proyects = ({ isEditable }) => {
               description={project.description}
               image={project.image}
               codeUrl={project.codeUrl}
+              isEditable={isEditable}
             />
           ))}
         </div>

@@ -27,7 +27,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row text-white gap-4 text-[14px] sm:text-[16px] font-[400] font-mono text-center md:text-left">
             <p>© Campus 2024 - Todos los derechos Reservados</p>
             <p className="hidden md:block">|</p>
-            <p><b>Camper Stories v0.6.2</b></p>
+            <p><b>Camper Stories v0.6.3 Beta</b></p>
             <p className="hidden md:block">|</p>
             {/* Enlace a Política de Privacidad */}
             <span
@@ -39,7 +39,7 @@ const Footer = () => {
             <p className="hidden md:block">|</p>
             {/* Enlace a Términos y Condiciones */}
             <span
-              onClick={() => navigate("/terms-Conditions")}
+              onClick={() => navigate("terminos-y-condiciones")}
               className="hover:underline text-white transition-colors duration-200 cursor-pointer"
             >
               Términos y Condiciones
