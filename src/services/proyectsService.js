@@ -4,18 +4,6 @@ import API_BASE_URL, { endpoints } from "./apiConfig";
 
 export const getProjects = async (camperId) => {
   try {
-    // const token = localStorage.getItem("token");
-
-    // if (!token) {
-    //   throw new Error("No se encontro un token, porfavor inicia sesion");
-    // }
-
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // };
-
     const url = `${endpoints.campers}/${camperId}/proyects`;
     const response = await axios.get(url);
 
@@ -98,6 +86,26 @@ export const updateProject = async (camper_id, project_id, data) => {
     throw error;
   }
 };
+
+export const deleteProject = async (camperId, projectId) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const url = `${endpoints.campers}/${camperId}/proyects/${projectId}`;
+    const response = await axios.delete(url, config);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting proyect:", error);
+    throw error;
+  }
+}
 
 // export const deleteDreams = async (camperId, data) => {
 //   try {

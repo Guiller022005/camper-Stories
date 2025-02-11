@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import campusLogo from "../../assets/campus.svg";
 import campusLogoCompleto from "../../assets/CampusLogo.png";
 import { toast } from "react-toastify";
+import { useCampus } from "../campersMainPage/context/CampusContext";
+import { ChevronDown, ChevronRight, ChevronUp } from "lucide-react";
 
 const Navbar = ({ viewType, links, onLinkClick }) => {
   const navigate = useNavigate();
@@ -11,6 +13,41 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const camperIdFromStorage = parseInt(localStorage.getItem("camper_id"));
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { currentCampusId, updateCampus } = useCampus();
+
+  window.CampusState = currentCampusId;
+
+  const campus = [
+    {
+      id: 1,
+      name: 'Bucaramanga'
+    },
+    {
+      id: 2,
+      name: 'Bogotá'
+    },
+    {
+      id: 3,
+      name: 'Tibú'
+    }
+  ];
+
+  const handleCampusClick = (campusId) => {
+    console.log("🔄 Cambiando campus a:", campusId);
+    updateCampus(campusId); // Usa el método del contexto en lugar de `setState`
+    if (currentCampusId === campusId) {
+      return;
+    }
+    const selectedCampus = campus.find((c) => c.id === campusId); // Busca el campus por ID metodo find
+    const campusName = selectedCampus ? selectedCampus.name : "Campus desconocido"; // Guarda el nombre del campus o deja un mensaje en default
+    toast.info(`Campus seleccionado: ${campusName}`)
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -80,16 +117,53 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
   };
 
   const NavLinks = ({ links }) =>
-    links.map((link) => (
-      <button
-        key={link.href || link.id}
-        onClick={() => handleLinkClick(link)}
-        className="text-white text-lg py-3 hover:text-blue-400 transition"
-      >
-        {link.label}
-      </button>
-    )
-  );
+    links.map((link) => {
+      if (link.label === "Sedes") {
+        return (
+          <div key={link.label} className="relative hidden lg:block">
+            <button
+              onClick={toggleDropdown}
+              className="text-white text-lg py-3 hover:text-blue-400 transition flex items-center"
+            >
+              {link.label}
+              {isDropdownOpen ? (
+                <ChevronDown className="mt-1 h-5 w-full"/>
+              ) : (
+                <ChevronUp className="mt-1 h-5 w-full"/>
+              )}
+            </button>
+            {isDropdownOpen && ( 
+              <div className="absolute top-10 left-0 bg-indigo-500 text-black shadow-md rounded-lg w-48">
+                {campus.map((campusItem) => (
+                  <button
+                    key={campusItem.id}
+                    onClick={() => {
+                      handleCampusClick(campusItem.id);
+                      setIsDropdownOpen(false); // Cerrar dropdown
+                    }}
+                    className={`block w-full text-left px-4 py-2 hover:bg-indigo-500 hover:text-white ${currentCampusId === campusItem.id
+                        ? "bg-indigo-500 text-white"
+                        : "bg-[#27247a] text-white"
+                      }`}
+                  >
+                    {campusItem.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      }
+      return (
+        <button
+          key={link.href || link.id}
+          onClick={() => handleLinkClick(link)}
+          className="text-white text-lg py-3 hover:text-blue-400 transition"
+        >
+          {link.label}
+        </button>
+      );
+    });
 
 
   return (
