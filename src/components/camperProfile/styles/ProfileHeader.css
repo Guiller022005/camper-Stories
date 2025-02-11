@@ -388,6 +388,10 @@
     width: 200px;
     height: 200px;
   }
+  
+  .profile-badges-box{
+    margin-top: 1rem;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1023px) {

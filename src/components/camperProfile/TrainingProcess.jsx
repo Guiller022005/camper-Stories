@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Virtual } from "swiper/modules";
 import TikTokEmbed from "./TiktokEmbed";
@@ -9,12 +10,35 @@ import styles from "./styles/TrainingProcess.module.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/virtual";
+import { deleteTikTok } from "@/services/tiktokService";
+import { toast } from "react-toastify";
 
 const TrainingProcess = ({ videos = [], isEditable }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [videoList, setVideoList] = useState(videos || []);
+  const [isLoading, setIsLoading] = useState(false);
   const swiperRef = useRef(null);
+  const { id } = useParams();
+
+  const handleDeleteTiktok = async (tiktokId) => {
+    try {
+      setIsLoading(true);
+      await deleteTikTok(id, tiktokId); // Llama al servicio de eliminación
+      
+      // Actualiza la lista de videos eliminando el TikTok correspondiente
+      setVideoList((prevVideos) =>
+        prevVideos.filter((video) => video.id !== tiktokId)
+      );
+      
+      // Muestra un toast de éxito
+      toast.success("TikTok eliminado con éxito");
+    } catch (error) {
+      console.error("Error eliminando el video de TikTok:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -82,7 +106,19 @@ const TrainingProcess = ({ videos = [], isEditable }) => {
           key={video.id || index}
           className={slidesPerView === 1 ? styles.swiperSlide : styles.videoItem}
         >
-          <TikTokEmbed videoUrl={video.video_url} title={video.title} />
+          <div className="relative">
+            <TikTokEmbed videoUrl={video.video_url} title={video.title} />
+
+            {isEditable && (
+              <button
+                onClick={() => handleDeleteTiktok(video.id)}
+                disabled={isLoading}
+                className="absolute z-[2] top-2 right-2 font-bold text-white bg-red-500 hover:bg-red-600 rounded-full w-6 h-6 flex items-center justify-center cursor-pointer transition-colors duration-300"
+              >
+                x
+              </button>   
+            )}
+          </div>
         </SwiperSlide>
       ))}
     </Swiper>

@@ -32,7 +32,8 @@ const CampersMainPage = () => {
           { href: "#inicio", label: "Inicio" },
           { href: "#campers-exitosos", label: "Historias" },
           { href: "#campers-formacion", label: "Campers" },
-          { href: "#donar", label: "Donar" }
+          { href: "#donar", label: "Donar" },
+          { href: "#", label: "Sedes"}
         ]}
         onLinkClick={navigateToSection}
       />

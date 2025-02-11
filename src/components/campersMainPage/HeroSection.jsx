@@ -29,7 +29,6 @@ const campus = [
     }
 ];
 
-
 export default function HeroSection() {
     const navigate = useNavigate();
     const { currentCampusId, updateCampus } = useCampus();
@@ -86,7 +85,7 @@ export default function HeroSection() {
             </div>
 
             {/* Main content */}
-            <div className="flex flex-col px-4 py-8 md:px-6 md:py-16 lg:py-24">
+            <div className="flex flex-col px-4 py-8 md:px-6 md:py-16 lg:py-20">
                 <div className="mx-auto max-w-[90vw] md:max-w-[85vw] lg:max-w-[70vw]">
                     {/* Hero content */}
                     <div className="flex flex-col lg:flex-row items-center lg:gap-[20px]">
@@ -99,14 +98,14 @@ export default function HeroSection() {
                                 className="relative lg:block"
                             >
                                 <div className="absolute -top-4 -left-4 bg-blue-500/10 w-16 h-16 rounded-full blur-xl" />
-                                <div className="relative">
-                                    <h3 className="text-xl font-medium tracking-tight text-white pb-4">Red Campus</h3>
+                                <div className="gap-2 mb-4 lg:hidden">
+                                    <h3 className="text-sm font-semibold tracking-tight text-white mb-4">Red Campus</h3>
                                     <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                                         {campus.map((campusItem) => (
                                             <button
                                                 key={campusItem.id}
                                                 onClick={() => handleCampusClick(campusItem.id)}
-                                                className={`rounded-full px-5 py-2 text-base font-semibold leading-6 transition-all duration-300 ${currentCampusId === campusItem.id
+                                                className={`rounded-full px-5 py-1 text-sm font-semibold leading-6 transition-all duration-300 ${currentCampusId === campusItem.id
                                                         ? 'bg-indigo-500 text-white shadow-lg'
                                                         : 'bg-indigo-500/10 text-indigo-400 ring-2 ring-inset ring-indigo-500/20 hover:bg-indigo-500/20'
                                                     }`}
@@ -115,7 +114,7 @@ export default function HeroSection() {
                                             </button>
                                         ))}
                                     </div>
-                                </div>
+                                </div> 
                             </motion.div>
 
                             <motion.div
@@ -123,7 +122,7 @@ export default function HeroSection() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.1 }}
                             >
-                                <h1 className="mt-10 text-2xl md:text-5xl lg:text-7xl font-bold tracking-tight text-white lg:mr-[7rem]">
+                                <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold tracking-tight text-white lg:mr-[7rem]">
                                     Descubre el Impacto de la{" "}
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
                                         Formación Tecnológica

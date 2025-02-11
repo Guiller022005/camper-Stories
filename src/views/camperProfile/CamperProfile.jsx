@@ -115,7 +115,7 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
     }
 
     const renderTrainingProcess = () => {
-        if (!camperTiktoksData || camperTiktoksData.length === 0) {
+        if (!camperTiktoksData || camperTiktoksData.length === 0 && !isEditable) {
             return <NoRecords title='Mi Proceso de Formacion' />;
         }
         return (
