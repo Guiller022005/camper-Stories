@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
-import { getProjects, addProjects, updateProject } from "../../services/proyectsService";
+import {
+  getProjects,
+  addProjects,
+  updateProject,
+  deleteProject,
+} from "../../services/proyectsService";
 import { getTechnology, getTechnologyForProject } from "../../services/technologiesService";
 import NoRecords from "../common/NoRecords";
 import { ProyectsModal } from "./modals/ProyectsModal";
@@ -9,67 +14,48 @@ import { ProyectsEditModal } from "./modals/ProyectsEditModal";
 import { toast } from "react-toastify";
 import styles from "./styles/Proyects.module.css";
 
-const Proyects = ({ isEditable }) => {
+const Proyects = ({ isEditable, onUpdate }) => {
   const { id } = useParams();
   const [projects, setProjects] = useState([]);
   const [availableTechnologies, setAvailableTechnologies] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setLoading(true);
-        const projectsData = await getProjects(id);
-
-        // Initialize projects with empty technologies array
-        const projectsWithEmptyTech = projectsData.map((project) => ({
-          ...project,
-          technologies: [],
-        }));
-
-        setProjects(projectsWithEmptyTech);
-
-        // After setting initial projects, fetch technologies for each project
-        projectsData.forEach((project) => {
-          getTechnologyForProject(project.id);
-        });
-      } catch (err) {
-        setError(err.message);
-        console.error("Error loading projects: ", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProjects();
-  }, []);
-
-  // Function to fetch technologies for a specific project
-  const fetchTechnologyForProject = async (projectId) => {
+  // Función auxiliar para cargar y formatear proyectos
+  const loadProjects = async () => {
     try {
-      const technologies = await getTechnologyForProject(projectId);
-
-      // Update the specific project with its technologies
-      setProjects((prevProjects) =>
-        prevProjects.map((project) =>
-          project.id === projectId ? { ...project, technologies } : project
-        )
-      );
-    } catch (err) {
-      console.error(
-        `Error loading technologies for project ${projectId}:`,
-        err
-      );
+      const projectsData = await getProjects(id);
+      const formattedProjects = projectsData.map((project) => ({
+        id: project.id,
+        title: project.title || "",
+        description: project.description || "",
+        image: project.image || "",
+        code_url: project.code_url || "",
+        // Se inicializa technologies (útil en modo editable)
+        technologies: project.technologies || [],
+      }));
+      return formattedProjects;
+    } catch (error) {
+      console.error("Error al cargar proyectos:", error);
+      setError("Error al cargar proyectos");
+      return [];
     }
   };
 
-  // Cargar tecnologías disponibles
+  // Efecto para cargar proyectos (se ejecuta al montar o cuando cambie "id")
   useEffect(() => {
     let isMounted = true;
+    loadProjects().then((formattedProjects) => {
+      if (isMounted) setProjects(formattedProjects);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
+  // Efecto para cargar las tecnologías disponibles
+  useEffect(() => {
+    let isMounted = true;
     const loadAvailableTechnologies = async () => {
       try {
         const response = await getTechnology();
@@ -84,122 +70,79 @@ const Proyects = ({ isEditable }) => {
         }
       }
     };
-
     loadAvailableTechnologies();
     return () => {
       isMounted = false;
     };
   }, []);
 
-  // Cargar proyectos
-  useEffect(() => {
-    let isMounted = true;
+  // Eliminar proyecto
+  const handleDeleteProject = async (projectId) => {
+    try {
+      await deleteProject(id, projectId);
+      setProjects((prevProjects) =>
+        prevProjects.filter((project) => project.id !== projectId)
+      );
+      toast.success("Proyecto eliminado con éxito");
+    } catch (error) {
+      console.error("Error eliminando el proyecto:", error);
+      toast.error("Error al eliminar el proyecto");
+    }
+  };
 
-    const loadProjects = async () => {
-      try {
-        setLoading(true);
-        const projectsData = await getProjects(id);
-
-        if (isMounted) {
-          const formattedProjects = projectsData.map((project) => ({
-            id: project.id,
-            title: project.title || "",
-            description: project.description || "",
-            image: project.image || "",
-            code_url: project.code_url || "",
-          }));
-          setProjects(formattedProjects);
-        }
-      } catch (error) {
-        console.error("Error al cargar proyectos:", error);
-        if (isMounted) {
-          setError("Error al cargar proyectos");
-          setProjects([]);
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    loadProjects();
-    return () => {
-      isMounted = false;
-    };
-  }, [id]);
-
+  // Editar proyecto: carga las tecnologías específicas y asigna el proyecto a editar
   const handleEditProject = async (project) => {
     try {
-      setLoading(true);
-      // Cargar las tecnologías específicas del proyecto
       const response = await getTechnologyForProject(project.id);
       const techIds = response.technologies?.map((tech) => tech.id) || [];
-
       setSelectedProject({
         ...project,
         technologyIds: techIds,
       });
-      setIsEditing(true);
     } catch (error) {
       console.error("Error al cargar tecnologías del proyecto:", error);
-      // Aún permitimos editar el proyecto, pero sin tecnologías
       setSelectedProject({
         ...project,
         technologyIds: [],
       });
-      setIsEditing(true);
-    } finally {
-      setLoading(false);
     }
   };
 
+  // Actualizar proyecto
   const handleUpdateProject = async (updatedProject) => {
     try {
-      setLoading(true);
-      const response = await updateProject(
-        id,
-        updatedProject.id,
-        updatedProject
-      );
-
+      const response = await updateProject(id, updatedProject.id, updatedProject);
       if (response) {
         setProjects((prevProjects) =>
           prevProjects.map((proj) =>
             proj.id === updatedProject.id ? updatedProject : proj
           )
         );
-        setIsEditing(false);
         setSelectedProject(null);
       }
     } catch (error) {
-      toast.error("error al actualizar el proyecto", error);
-    } finally {
-      setLoading(false);
+      toast.error("Error al actualizar el proyecto", error);
     }
   };
 
+  // Agregar proyecto y recargar la lista
   const handleAddProject = async (newProject) => {
     try {
-      setLoading(true);
       const response = await addProjects(newProject);
-
       if (response) {
-        // Recargar los proyectos después de añadir uno nuevo
-        const projectsData = await getProjects(id);
-        setProjects(projectsData);
+        const formattedProjects = await loadProjects();
+        setProjects(formattedProjects);
+        onUpdate();
       }
     } catch (error) {
       console.error("Error al añadir proyecto:", error);
       alert("Error al añadir el proyecto");
-    } finally {
-      setLoading(false);
     }
   };
 
-  if (loading) return <div className="text-center p-4">Cargando...</div>;
-
-  if (!projects || projects.length === 0 && !isEditable) return <NoRecords title="Mis Proyectos" />;
+  // Renderizado: si no hay proyectos y no es modo editable se muestra NoRecords
+  if (!projects || (projects.length === 0 && !isEditable))
+    return <NoRecords title="Mis Proyectos" />;
 
   return (
     <section className={styles.tecInfo}>
@@ -214,12 +157,11 @@ const Proyects = ({ isEditable }) => {
               <ProyectsModal
                 onAddProject={handleAddProject}
                 technologies={availableTechnologies}
-                closeModal={() => setIsEditing(false)}
               />
             </div>
           </div>
 
-          {/* Manejo de estados: error, carga y contenido */}
+          {/* Se muestra mensaje de error o las tarjetas de proyecto */}
           {error ? (
             <div className={styles.projectCard}>
               <div className={styles.projectCardAdd}>
@@ -228,29 +170,26 @@ const Proyects = ({ isEditable }) => {
                 </div>
               </div>
             </div>
-          ) : loading ? (
-            <div className="text-center p-4">Cargando...</div>
           ) : (
             projects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                {...project}
-                onEdit={() => handleEditProject(project)}
-                isEditable={isEditable}
-              />
+              <div key={project.id} className={styles.projectCard}>
+                <ProjectCard
+                  {...project}
+                  onEdit={() => handleEditProject(project)}
+                  isEditable={isEditable}
+                  onDelete={handleDeleteProject}
+                />
+              </div>
             ))
           )}
 
           {/* Modal de edición */}
-          {isEditing && selectedProject && (
+          {selectedProject && (
             <ProyectsEditModal
               project={selectedProject}
               technologies={availableTechnologies}
               onUpdateProject={handleUpdateProject}
-              onClose={() => {
-                setIsEditing(false);
-                setSelectedProject(null);
-              }}
+              onClose={() => setSelectedProject(null)}
             />
           )}
         </div>
@@ -263,7 +202,7 @@ const Proyects = ({ isEditable }) => {
               title={project.title}
               description={project.description}
               image={project.image}
-              codeUrl={project.codeUrl}
+              codeUrl={project.codeUrl || project.code_url}
               isEditable={isEditable}
             />
           ))}

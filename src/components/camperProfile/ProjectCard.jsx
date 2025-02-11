@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Tag } from "antd";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { Code } from "lucide-react";
+import { Code, Trash2 } from "lucide-react"; // Añadido Trash2 para el icono de eliminar
 import { getTechnologyForProject } from "../../services/technologiesService";
 import styles from "./styles/ProjectCard.module.css";
 
-function ProjectCard({ id, title, description, image, code_url, onEdit, isEditable }) {
+function ProjectCard({ id, title, description, image, code_url, onEdit, onDelete, isEditable }) {
   const [projectTechnologies, setProjectTechnologies] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +15,6 @@ function ProjectCard({ id, title, description, image, code_url, onEdit, isEditab
       try {
         setLoading(true);
         const response = await getTechnologyForProject(id);
-        // console.log(response);
         const techNames = response.technologies.map((tech) => tech.name);
         setProjectTechnologies(techNames);
       } catch (error) {
@@ -40,7 +39,13 @@ function ProjectCard({ id, title, description, image, code_url, onEdit, isEditab
     };
     onEdit(projectData);
   };
-  
+
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(id); // Llama a la función de eliminación con el ID del proyecto
+    }
+  };
+
   return (
     <Card
       className={styles.projectCard}
@@ -59,7 +64,7 @@ function ProjectCard({ id, title, description, image, code_url, onEdit, isEditab
         description={description}
         className={styles.projectCardMeta}
       />
-      {/* Only render technologies section if there are technologies */} 
+      {/* Renderiza las tecnologías si están disponibles */}
       {Array.isArray(projectTechnologies) && projectTechnologies.length > 0 && (
         <div className={styles.projectCardTechs}>
           {projectTechnologies.map((tech, index) => (
@@ -70,6 +75,7 @@ function ProjectCard({ id, title, description, image, code_url, onEdit, isEditab
         </div>
       )}
 
+      {/* Botón para ver código */}
       <Button
         icon={<Code />}
         href={code_url}
@@ -81,9 +87,23 @@ function ProjectCard({ id, title, description, image, code_url, onEdit, isEditab
         Ver Código
       </Button>
 
+      {/* Botón para editar */}
       {isEditable && (
         <Button onClick={handleEdit} className={styles.projectCardButton} block>
           Editar
+        </Button>
+      )}
+
+      {/* Botón para eliminar */}
+      {isEditable && (
+        <Button
+          onClick={handleDelete}
+          icon={<Trash2 />}
+          className={`${styles.projectCardButton} ${styles.deleteButton}`}
+          block
+          danger
+        >
+          Eliminar
         </Button>
       )}
     </Card>
