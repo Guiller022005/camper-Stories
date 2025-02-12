@@ -174,7 +174,7 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
 
                 <LazySection>
                     <div id="patrocinar">
-                        <SponsorCTA />
+                        {isEditable ? (null):(<SponsorCTA />)} 
                     </div>
                 </LazySection>
             </div>
