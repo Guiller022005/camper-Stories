@@ -29,7 +29,7 @@ export const addTikTok = async (tiktokData, camper_id) => {
         const token = localStorage.getItem('token');
 
         const response = await axios.post(
-            `${endpoints.campers}/${camper_id}/videos`, 
+            `${endpoints.campers}/${camper_id}/videos`,
             {
                 title: tiktokData.title,
                 video_url: tiktokData.video_url,
@@ -47,5 +47,25 @@ export const addTikTok = async (tiktokData, camper_id) => {
         console.error('Error adding TikTok:', error);
         throw error;
     }
-}
+};
+
+export const deleteTikTok = async (camperId, tiktokId) => {
+    try {
+        const token = localStorage.getItem("token");
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        const url = `${endpoints.campers}/${camperId}/videos/${tiktokId}`;
+        const response = await axios.delete(url, config);
+
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting dream:", error);
+        throw error;
+    }
+};
 

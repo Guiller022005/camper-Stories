@@ -37,8 +37,10 @@ module.exports = {
 			fontFamily: {
 				firma: ['firma', 'sans-serif'],
 				poppins: ['Poppins', 'sans-serif'],
-			},
+			}
 		},
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate")
+	],
 };

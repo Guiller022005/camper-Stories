@@ -3,7 +3,6 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import CampersMainPage from '../views/campersMainPage/CampersMainPage';
 import CamperProfile from '../views/camperProfile/CamperProfile';
-import CamperProfileEdit from '../views/camperProfileEdit/CamperProfileEdit';
 import Sponsors from '../views/sponsorDashboard/SponsorDashboard';
 import CamperLoginPage from '@/views/camperLoginPage/CamperLoginPage';
 import Unauthorized from '@/views/Unauthorized/Unauthorized';
@@ -54,8 +53,9 @@ const AppRouter = () => {
         <Route path="/register/sponsor" element={<SponsorRegister />} />
         <Route path="/forgetPassword" element={<ForgetPassword />} />
         <Route path="/campers/newPassword/:token" element={<NewPassword />} />
-        <Route path="/campers/profile/:id/" element={<CamperProfile />} />
+        <Route path="/campers/register" element={<RegisterPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/campers/profile/:id/" element={<CamperProfile isEditable={false} />} />
         <Route path='/politica-de-privacidad'element={<PrivacyPolicies/>}/>
         <Route path='/terminos-y-condiciones' element={<TermsAndConditions/>}/>
 
@@ -71,7 +71,7 @@ const AppRouter = () => {
           path="/campers/profile/:id/edit"
           element={
             <ProtectedRoute allowedRoles={['camper', 'admin', 'sponsor']}>
-              <CamperProfileEdit />
+              <CamperProfile isEditable={true}/>
             </ProtectedRoute> 
           }
         />
