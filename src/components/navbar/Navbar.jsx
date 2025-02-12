@@ -52,6 +52,10 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+    return () => {
+      // Limpieza: restablece el scroll al desmontar el componente
+      document.body.style.overflow = "";
+    };
   }, [location.pathname]);
 
   const handleToggleProfile = () => {
@@ -127,12 +131,12 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
             >
               {link.label}
               {isDropdownOpen ? (
-                <ChevronDown className="mt-1 h-5 w-full"/>
+                <ChevronDown className="mt-1 h-5 w-full" />
               ) : (
-                <ChevronUp className="mt-1 h-5 w-full"/>
+                <ChevronUp className="mt-1 h-5 w-full" />
               )}
             </button>
-            {isDropdownOpen && ( 
+            {isDropdownOpen && (
               <div className="absolute top-10 left-0 bg-indigo-500 text-black shadow-md rounded-lg w-48">
                 {campus.map((campusItem) => (
                   <button
@@ -142,8 +146,8 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
                       setIsDropdownOpen(false); // Cerrar dropdown
                     }}
                     className={`block w-full text-left px-4 py-2 hover:bg-indigo-500 hover:text-white ${currentCampusId === campusItem.id
-                        ? "bg-indigo-500 text-white"
-                        : "bg-[#27247a] text-white"
+                      ? "bg-indigo-500 text-white"
+                      : "bg-[#27247a] text-white"
                       }`}
                   >
                     {campusItem.name}
@@ -268,9 +272,23 @@ const Navbar = ({ viewType, links, onLinkClick }) => {
             </div>
           ) : (
             <div className="flex flex-col gap-4"> {/* Agrega un gap de 4 unidades (1rem) entre los botones */}
-              <Button size="lg" className="text-lg bg-transparent" onClick={handleToggleProfile}>
-                Ver Perfil
-              </Button>
+              {location.pathname.startsWith(`/campers/profile/${camperIdFromStorage}/edit`) ? (
+                <Button
+                  onClick={() => navigate(`/campers/profile/${camperIdFromStorage}`)}
+                  size="lg"
+                  className="text-lg bg-transparent hover:bg-[#4c47b4]"
+                >
+                  Ver Perfil
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate(`/campers/profile/${camperIdFromStorage}/edit`)}
+                  size="lg"
+                  className="text-lg bg-transparent hover:bg-[#4c47b4]"
+                >
+                  Editar Perfil
+                </Button>
+              )}
               <Button size="lg" className="text-lg bg-red-500" onClick={handleLogout}>
                 Cerrar Sesión
               </Button>
