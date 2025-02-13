@@ -88,11 +88,8 @@ const DonationForm = () => {
                             </button>
                         )}
                         <div className="text-center mt-4">
-                            <p className="text-gray-400">¿Deseas obtener un certificado de donación?</p>
+                        <legend className="text-gray-400">Al completar el pago, puede solicitar su certificado de donación</legend>
                             {/* <DownloadButton donacionData={donacionData} /> */}
-                            <button onClick={() => navigate("/certificado")} className="text-[#5b62f1] underline">
-                                Completa el registro
-                            </button>
                         </div>
                     </div>
                 </Card>
