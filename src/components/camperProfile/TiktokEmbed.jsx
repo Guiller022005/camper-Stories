@@ -2,12 +2,28 @@
 import { Fragment, useEffect } from "react";
 import "./styles/TiktokEmbed.css";
 
+const ErrorCard = ({ message }) => (
+  <div className="w-full p-4 bg-blue-950/50 border border-blue-500/30 rounded-xl shadow-lg">
+    <div className="flex flex-col items-center gap-3 text-center">
+      <div className="text-blue-500 text-4xl">
+        <box-icon
+          name="error-circle"
+          type="solid"
+          color="currentColor"
+        ></box-icon>
+      </div>
+      <h3 className="text-lg font-semibold text-blue-200">Error de TikTok</h3>
+      <p className="text-blue-300">{message}</p>
+    </div>
+  </div>
+);
+
 const TikTokEmbed = ({ videoUrl }) => {
 
   // Validar que videoUrl exista y sea string
   if (!videoUrl || typeof videoUrl !== 'string') {
     console.log('Error: URL no válida o no es string');
-    return <div className="video-error">URL de video no válida</div>;
+    return <ErrorCard message="Este TikTok no tiene una URL válida" />;
   }
 
   // Función para extraer el ID del video de la URL de TikTok
@@ -36,7 +52,7 @@ const TikTokEmbed = ({ videoUrl }) => {
 
   const videoId = getVideoId(videoUrl);
   if (!videoId) {
-    return <div className="video-error">Formato de URL de TikTok no válido</div>;
+    return <ErrorCard message="Formato de URL de TikTok no válido" />;
   }
 
   useEffect(() => {

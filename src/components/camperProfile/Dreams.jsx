@@ -1,15 +1,15 @@
 import React from 'react';
 import DreamsGrid from './DreamsGrid';
-import styles from './styles/Dreams.module.css';
 
-const Dreams = () => {
+const Dreams = ({ isEditable, onUpdate }) => {
+
   return (
-    <section className={styles.dreams}>
-      <h2 className={styles.profileSubtitle}>
-        <span className={styles.highlight}>&lt;/</span> Mis Sueños
+    <section className="mb-8">
+      <h2 className="font-poppins font-bold text-white text-[clamp(1.5rem,3vw,3rem)] mb-4 mt-4 relative z-10">
+        <span className="text-[#FACC15] font-bold">&lt;/</span> Mis Sueños
       </h2>
-      <div className={styles.dreamsGridContainer}>
-        <DreamsGrid />
+      <div className="w-full">
+        <DreamsGrid onUpdate={onUpdate} isEditable={isEditable} />
       </div>
     </section>
   );

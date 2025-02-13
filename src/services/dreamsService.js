@@ -52,29 +52,29 @@ export const addDreams = async (camperId, data) => {
   }
 };
 
-export const deleteDreams = async (camperId, data) => {
-  try {
-    const token = localStorage.getItem("token");
+// export const deleteDreams = async (camperId, data) => {
+//   try {
+//     const token = localStorage.getItem("token");
 
-    if (!token) {
-      throw new Error("No se enconteo un token, porfavor inicia sesion");
-    }
+//     if (!token) {
+//       throw new Error("No se enconteo un token, porfavor inicia sesion");
+//     }
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+//     const config = {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     };
 
-    const url = `${endpoints.campers}/${camperId}/dreams`;
-    const response = await axios.post(url, data, config);
+//     const url = `${endpoints.campers}/${camperId}/dreams`;
+//     const response = await axios.post(url, data, config);
 
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching the data", error);
-    throw error;
-  }
-};
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching the data", error);
+//     throw error;
+//   }
+// };
 
 
 export const deleteDream = async (camperId, dreamId) => {
