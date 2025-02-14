@@ -4,9 +4,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Rocket, Star, Sparkles, Heart, ArrowRight, DivideSquareIcon } from "lucide-react";
+import { Rocket, Star, Sparkles, Heart, ArrowRight, DivideSquareIcon, Check } from "lucide-react";
 import WompiWidget from "../../components/campersMainPage/WompiWidget";
 import DownloadButton from "@/pdfCertificate/CertificadoDonacion";
+import WompiSubscription from "../../components/campersMainPage/WompiSubscription";
 
 const plans = [
     {
@@ -142,58 +143,61 @@ const DonationForm = () => {
                     </div>
                 </Card>
             </div>
-            {/* Pricing Cards (OCULTO TEMPORALMENTE) */}
-            {/* 
-            <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-center text-[#FFFF] py-5 mb-12">Planes de Suscripción</h2>
-                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-12">
-                    {plans.map((plan, index) => (
+            <div className="mt-12">
+                <div className="text-center mb-8">
+                    <h2 className="text-2xl font-bold text-white mb-2">Planes de Patrocinio</h2>
+                    <p className="text-gray-400">Elige el plan que mejor se adapte a tu capacidad de apoyo</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {plans.map((plan) => (
                         <motion.div
                             key={plan.name}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                            transition={{ duration: 0.5 }}
                         >
-                            <Card
-                                className={`relative p-6 bg-[#6366F1]/10 border-[#6366F1]/20 backdrop-blur-xl hover:bg-[#6366F1]/20 transition-all duration-300 w-full ${plan.popular ? "ring-2 ring-[#5737e6]" : ""
-                                    }`}
-                                style={{ maxWidth: "350px", margin: "0 auto" }}
-                            >
+                            <Card className={`relative bg-[#1A1D2E] border-gray-700 ${plan.popular ? 'border-[#7C3AED]' : ''}`}>
                                 {plan.popular && (
-                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[--color4] text-[#f0f0ff] px-4 py-1 rounded-full font-bold flex items-center justify-center">
-                                        Más Popular
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                                        <span className="bg-[#7C3AED] text-white text-sm font-semibold px-3 py-1 rounded-full">
+                                            Más Popular
+                                        </span>
                                     </div>
                                 )}
-                                <div className="flex items-center justify-between mb-6">
-                                    <div>
-                                        <h3 className="text-2xl font-bold mb-2 text-[#FFFF]">{plan.name}</h3>
-                                        <div className="flex items-baseline gap-2">
-                                            <span className="text-3xl font-bold text-[#FFFF]">${plan.price.monthly}</span>
-                                            <span className="text-white/60 font-poppins">/mes</span>
-                                        </div>
-                                        <div className="text-sm text-white/60 font-poppins">o ${plan.price.yearly}/año</div>
+                                <div className="p-6">
+                                    <div className="flex items-center gap-2 mb-4">
+                                        {plan.icon}
+                                        <h3 className="text-xl font-semibold text-white">{plan.name}</h3>
                                     </div>
-                                    <div className={`bg-gradient-to-r ${plan.color} p-3 rounded-xl text-white`}>{plan.icon}</div>
+                                    <div className="mb-6">
+                                        <p className="text-3xl font-bold text-white">
+                                            ${plan.price.monthly}
+                                            <span className="text-sm font-normal text-gray-400">/mes</span>
+                                        </p>
+                                        <p className="text-sm text-gray-400">o ${plan.price.yearly}/año</p>
+                                    </div>
+                                    <div className="space-y-3 mb-6">
+                                        {plan.features.map((feature, index) => (
+                                            <div key={index} className="flex items-center gap-2">
+                                                <Check className="w-5 h-5 text-[#7C3AED]" />
+                                                <span className="text-gray-300">{feature}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <WompiSubscription 
+                                        plan={plan} 
+                                        customerData={{
+                                            name: localStorage.getItem('userName'),
+                                            email: localStorage.getItem('userEmail'),
+                                            phone: localStorage.getItem('userPhone')
+                                        }}
+                                    />
                                 </div>
-                                <div className="space-y-4 mb-6">
-                                    {plan.features.map((feature, i) => (
-                                        <div key={i} className="flex items-center gap-3">
-                                            <span className="text-[#66E7F3]">✓</span>
-                                            <span className="text-white/80 font-poppins">{feature}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                                <Button
-                                    className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity font-bold`}
-                                >
-                                    Suscríbete ahora
-                                </Button>
                             </Card>
                         </motion.div>
                     ))}
                 </div>
-            </div> 
-            */}
+            </div>
         </div>
     );
 };

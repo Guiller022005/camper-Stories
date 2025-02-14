@@ -16,6 +16,7 @@ import SponsorLoginPage from '@/views/sponsorLoginPage/SponsorLoginPage';
 import SponsorRegister from '@/views/sponsorRegisterPage/RegisterSponsor';
 import LoginRoleSelection from '@/views/roleSelection/LoginRoleSelection';
 import RegisterRoleSelection from '@/views/roleSelection/RegisterRoleSelection';
+import SubscriptionCallback from '../views/subscription/SubscriptionCallback';
 
 /**
  * Componente que resetea la vista y el scroll cuando cambia la ruta.
@@ -72,6 +73,7 @@ const AppRouter = () => {
             </ProtectedRoute> 
           }
         />
+        <Route path="/subscription/callback" element={<SubscriptionCallback />} />
       </Routes>
     </>
   );
