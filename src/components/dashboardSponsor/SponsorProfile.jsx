@@ -2,29 +2,43 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Share2, Mail, MapPin, Cake, Trophy } from "lucide-react";
 
-const ProfileHeader = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+const ProfileHeader = ({ data: externalData, initialMerits }) => {
+  const defaultData = {
+    first_name: "Usuario",
+    last_name: "De Ejemplo",
+    city: "Ciudad",
+    birth_date: "1990-01-01",
+    email: "usuario@ejemplo.com",
+    document_type: "DNI",
+    document_number: "00000000"
+  };
+
+  // Usar externalData si está disponible, si no, usar defaultData
+  const [data, setData] = useState(externalData || defaultData);
+  const [loading, setLoading] = useState(!externalData);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/sponsors/:id');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+    // Solo hacer el fetch si no hay datos externos
+    if (!externalData) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/sponsors/:id');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const jsonData = await response.json();
+          setData(jsonData);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
         }
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchData();
-  }, []);
+      fetchData();
+    }
+  }, [externalData]);
 
   const calculateAge = (birthDate) => {
     const birth = new Date(birthDate);
