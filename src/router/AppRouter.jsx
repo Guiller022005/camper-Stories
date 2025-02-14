@@ -60,11 +60,8 @@ const AppRouter = () => {
         <Route path='/terminos-y-condiciones' element={<TermsAndConditions/>}/>
 
         <Route 
-          path="/sponsor" 
-          element={
-            <ProtectedRoute allowedRoles={['admin', 'sponsor']}>
-              <Sponsors />
-            </ProtectedRoute> 
+          path="/sponsor/:id" 
+          element={<Sponsors /> 
           } 
         />
         <Route

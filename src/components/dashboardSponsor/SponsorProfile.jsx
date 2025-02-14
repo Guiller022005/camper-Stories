@@ -1,10 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import { Share2, Mail, MapPin, Cake, Trophy } from "lucide-react";
 
-const ProfileHeader = ({ data }) => {
+const ProfileHeader = ({ data: externalData, initialMerits }) => {
+  const defaultData = {
+    first_name: "Usuario",
+    last_name: "De Ejemplo",
+    city: "Ciudad",
+    birth_date: "1990-01-01",
+    email: "usuario@ejemplo.com",
+    document_type: "DNI",
+    document_number: "00000000"
+  };
+
+  // Usar externalData si está disponible, si no, usar defaultData
+  const [data, setData] = useState(externalData || defaultData);
+  const [loading, setLoading] = useState(!externalData);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Solo hacer el fetch si no hay datos externos
+    if (!externalData) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/sponsors/:id');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const jsonData = await response.json();
+          setData(jsonData);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+    }
+  }, [externalData]);
+
   const calculateAge = (birthDate) => {
     const birth = new Date(birthDate);
     const today = new Date();
@@ -16,13 +51,37 @@ const ProfileHeader = ({ data }) => {
     return age;
   };
 
-  const fullName = `${data.first_name} ${data.last_name}`;
-
   const medals = [
     { color: "gold", title: "Patrocinador Gold" },
     { color: "silver", title: "1 Año de Apoyo" },
     { color: "bronze", title: "5 Campers Apoyados" }
   ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px] bg-gradient-to-b from-[#07073b] to-[#1d1a4b] rounded-2xl">
+        <div className="text-white text-xl">Cargando...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px] bg-gradient-to-b from-[#07073b] to-[#1d1a4b] rounded-2xl">
+        <div className="text-white text-xl">Error: {error}</div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px] bg-gradient-to-b from-[#07073b] to-[#1d1a4b] rounded-2xl">
+        <div className="text-white text-xl">No se encontraron datos</div>
+      </div>
+    );
+  }
+
+  const fullName = `${data.first_name} ${data.last_name}`;
 
   return (
     <motion.div
@@ -38,12 +97,10 @@ const ProfileHeader = ({ data }) => {
           <div className="relative group">
             <div className="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden transition-shadow duration-300 hover:shadow-lg hover:shadow-blue-500/30 ring-2 ring-blue-500/20">
               <div className="w-full h-full rounded-full overflow-hidden">
-                <LazyLoadImage
-                  src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+                <img
+                  src="/api/placeholder/192/192"
                   alt={`Perfil de ${fullName}`}
-                  effect="blur"
                   className="w-full h-full object-cover"
-                  wrapperClassName="w-full h-full"
                 />
               </div>
             </div>
@@ -68,6 +125,11 @@ const ProfileHeader = ({ data }) => {
                 <Mail className="w-5 h-5" />
                 <p>{data.email}</p>
               </div>
+            </div>
+
+            {/* Document Info */}
+            <div className="mt-4 text-gray-200">
+              <p>{`${data.document_type}: ${data.document_number}`}</p>
             </div>
 
             {/* Buttons */}

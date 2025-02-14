@@ -30,7 +30,7 @@ const SponsorLoginPage = () => {
     if (token) {
       const camperId = localStorage.getItem('camper_id');
       console.log("Usuario ya autenticado. Redirigiendo a /");
-      navigate(`/campers/profile/${camperId}/edit`);
+      navigate(`/sponsor/profile/${userId}/`);
     }
   }, [token]);
 
