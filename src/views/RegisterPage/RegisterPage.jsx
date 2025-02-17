@@ -152,74 +152,80 @@ export default function RegisterForm() {
 
   async function onSubmit(event) {
     event.preventDefault();
-    if (!validatePasswords()) {
-      return;
-    }
+    disabledLogin();
+    
+    // if (!validatePasswords()) {
+    //   return;
+    // }
 
-    setIsLoading(true);
-    setError("");
-    setSuccess(false);
+    // setIsLoading(true);
+    // setError("");
+    // setSuccess(false);
 
-    const formDataObj = new FormData(event.target);
-    const email = formDataObj.get('email');
+    // const formDataObj = new FormData(event.target);
+    // const email = formDataObj.get('email');
 
-    // Validar email y contraseña antes de continuar
-    if (!validateEmail(email) || !validatePasswords()) {
-      setIsLoading(false);
-      return;
-    }
+    // // Validar email y contraseña antes de continuar
+    // if (!validateEmail(email) || !validatePasswords()) {
+    //   setIsLoading(false);
+    //   return;
+    // }
 
-    // Validar que se haya seleccionado una ciudad
-    if (!formData.ciudad) {
-      setError("Por favor selecciona una ciudad");
-      toast.error("Por favor selecciona una ciudad");
-      setIsLoading(false);
-      return;
-    }
+    // // Validar que se haya seleccionado una ciudad
+    // if (!formData.ciudad) {
+    //   setError("Por favor selecciona una ciudad");
+    //   toast.error("Por favor selecciona una ciudad");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
-    const data = {
-      first_name: formDataObj.get('first_name'),
-      last_name: formDataObj.get('last_name'),
-      email: formDataObj.get('email'),
-      password: formDataObj.get('password'),
-      document_type: formDataObj.get('document_type'),
-      document_number: formDataObj.get('documento'),
-      birth_date: formDataObj.get('edad'),
-      city: formData.ciudad,
-      campus_id: formData.campus
-    };
+    // const data = {
+    //   first_name: formDataObj.get('first_name'),
+    //   last_name: formDataObj.get('last_name'),
+    //   email: formDataObj.get('email'),
+    //   password: formDataObj.get('password'),
+    //   document_type: formDataObj.get('document_type'),
+    //   document_number: formDataObj.get('documento'),
+    //   birth_date: formDataObj.get('edad'),
+    //   city: formData.ciudad,
+    //   campus_id: formData.campus
+    // };
 
-    console.log("Datos a enviar:", data); // Para debugging
+    // console.log("Datos a enviar:", data); // Para debugging
 
-    try {
-      const response = await fetch(endpoints.register, {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+    // try {
+    //   const response = await fetch(endpoints.register, {
+    //     method: 'POST',
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   });
 
-      const responseData = await response.json();
+    //   const responseData = await response.json();
 
-      if (response.ok) {
-        setSuccess(true);
-        toast.success('¡Registro exitoso!');
-        navigate('/campers/login');
-      } else {
-        const errorMessage = responseData.error || responseData.message || "Error al registrarse. Intenta nuevamente.";
-        setError(errorMessage);
-        toast.error(errorMessage);
-      }
-    } catch (err) {
-      const errorMessage = "Error de red: No se pudo conectar con el servidor.";
-      setError(errorMessage);
-      toast.error(errorMessage);
-      console.error("Error:", err);
-    } finally {
-      setIsLoading(false);
-    }
+    //   if (response.ok) {
+    //     setSuccess(true);
+    //     toast.success('¡Registro exitoso!');
+    //     navigate('/campers/login');
+    //   } else {
+    //     const errorMessage = responseData.error || responseData.message || "Error al registrarse. Intenta nuevamente.";
+    //     setError(errorMessage);
+    //     toast.error(errorMessage);
+    //   }
+    // } catch (err) {
+    //   const errorMessage = "Error de red: No se pudo conectar con el servidor.";
+    //   setError(errorMessage);
+    //   toast.error(errorMessage);
+    //   console.error("Error:", err);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   }
+
+  const disabledLogin = () => {
+      toast.error("Camper Stories se encuentra desactivado por labores de mantenimiento. Intenta de nuevo mas tarde.");
+    };
 
   return (
     <div className="min-h-screen w-full bg-[#1a1a2e] flex items-center justify-center p-6">

@@ -60,6 +60,10 @@ const SponsorLoginPage = () => {
     }
   };
 
+  const disabledLogin = () => {
+    toast.error("Camper Stories se encuentra desactivado por labores de mantenimiento. Intenta de nuevo mas tarde.");
+  };
+
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#1a1b2b] to-[#1e203a] flex flex-col items-center justify-center p-4 md:p-6 lg:p-8 relative overflow-hidden">
       {/* Stars Animation */}
@@ -117,7 +121,8 @@ const SponsorLoginPage = () => {
                 e.preventDefault();
                 const email = e.target.email.value;
                 const password = e.target.password.value;
-                handleLogin(email, password);
+                // handleLogin(email, password);
+                disabledLogin();
               }}
             >
               {/* Email Input */}
