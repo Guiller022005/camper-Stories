@@ -1,15 +1,14 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { fetchCamperById } from "../../services/camperService";
-import { fetchSponsorrById } from "@/services/sponsorService";
 import LazySection from "../../components/common/LazySection";
 import Loader from "@/components/common/Loader";
 
 const NavbarProfile = lazy(() => import("../../components/navbar/Navbar"));
 const Footer = lazy(() => import("../../components/footer/Footer"));
 const SponsorProfileHeader = lazy(() => import("../../components/dashboardSponsor/SponsorProfile"));
-const Campers = lazy(() => import("../../components/campersMainPage/Campers"));
-const CarrouselVideo = lazy(() => import("../../components/dashboardSponsor/CarrouselVideo"));
 const MisDonaciones = lazy(() => import("../../components/sponsorMisDonaciones/MisDonaciones"));
+const DashboardView = lazy(() => import("../../components/dashboardView/dashboardView"));
 
 const SponsorDashboard = () => {
   const [camperData, setCamperData] = useState({
@@ -22,13 +21,7 @@ const SponsorDashboard = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [view, setView] = useState("default"); // Estado para cambiar entre "default" y "donaciones"
-
-  const videos = [
-    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 1" },
-    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 2" },
-    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 3" },
-  ];
+  const [view, setView] = useState("dashboard");
 
   useEffect(() => {
     const loadData = async () => {
@@ -76,42 +69,37 @@ const SponsorDashboard = () => {
           </div>
         </LazySection>
 
-        {/* Selector de vista */}
-        <div className="flex justify-center my-4">
-          <button
-            className={`px-6 py-2 mx-2 rounded ${view === "default" ? "bg-blue-600 text-white" : "bg-gray-300 text-black"}`}
-            onClick={() => setView("default")}
-          >
-            Ver Campers & Videos
-          </button>
-          <button
-            className={`px-6 py-2 mx-2 rounded ${view === "donaciones" ? "bg-blue-600 text-white" : "bg-gray-300 text-black"}`}
-            onClick={() => setView("donaciones")}
-          >
-            Ver Mis Donaciones
-          </button>
+        {/* Selector de pestañas */}
+        <div className="flex items-center justify-center my-6">
+          <div className="relative w-full max-w-2xl bg-gray-900 p-2 rounded-xl shadow-md">
+            <div className="relative flex">
+              <TabButton
+                isActive={view === "dashboard"}
+                onClick={() => setView("dashboard")}
+                gradient="from-purple-600 via-indigo-600 to-blue-500"
+              >
+                Mi Dashboard
+              </TabButton>
+              <TabButton
+                isActive={view === "donaciones"}
+                onClick={() => setView("donaciones")}
+                gradient="from-teal-400 via-cyan-500 to-blue-500"
+              >
+                Ver Mis Donaciones
+              </TabButton>
+            </div>
+          </div>
         </div>
 
-        {/* Renderizado condicional */}
-        {view === "default" ? (
-          <>
-            <LazySection>
-              <div id="campers-section">
-                <Campers title="Auspiciados!" subtitle="Gracias a ti ellos terminaron su formación" />
-              </div>
-            </LazySection>
-
-            <LazySection>
-              <div id="video-carousel">
-                <CarrouselVideo videos={videos} />
-              </div>
-            </LazySection>
-          </>
-        ) : (
-          <LazySection>
+        {/* Mantener ambos componentes montados y ocultar el que no se usa */}
+        <div className="relative">
+          <div className={view === "dashboard" ? "block" : "hidden"}>
+            <DashboardView />
+          </div>
+          <div className={view === "donaciones" ? "block" : "hidden"}>
             <MisDonaciones />
-          </LazySection>
-        )}
+          </div>
+        </div>
       </div>
 
       <LazySection>
@@ -120,5 +108,34 @@ const SponsorDashboard = () => {
     </div>
   );
 };
+
+// 🔹 Componente TabButton corregido
+function TabButton({ children, isActive, onClick, gradient, index }) {
+  return (
+    <motion.button
+      type="button"
+      className={`relative flex-1 py-3 text-lg font-bold transition-colors duration-300 ${
+        isActive ? "text-white" : "text-gray-400"
+      }`}
+      onClick={() => {
+        if (!isActive) {
+          onClick();
+        }
+      }}
+      whileHover={{ scale: 1.07 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      {isActive && (
+        <motion.div
+          className={`absolute inset-0 bg-gradient-to-r ${gradient} rounded-xl`}
+          animate={{ x: 0, opacity: 1, scale: 1 }}
+          initial={{ x: index === 0 ? -15 : 15, opacity: 0.8, scale: 0.98 }}
+          transition={{ type: "tween", duration: 0.6, ease: "anticipate" }}
+        />
+      )}
+      <span className="relative z-10">{children}</span>
+    </motion.button>
+  );
+}
 
 export default SponsorDashboard;
