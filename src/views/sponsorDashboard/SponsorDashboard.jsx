@@ -1,14 +1,14 @@
-import React, { lazy, Suspense, useState, useEffect } from "react"
-import { fetchCamperById } from "../../services/camperService"
-import { fetchSponsorrById } from "@/services/sponsorService"
-import LazySection from "../../components/common/LazySection"
-import Loader from "@/components/common/Loader"
+import React, { lazy, Suspense, useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { fetchCamperById } from "../../services/camperService";
+import LazySection from "../../components/common/LazySection";
+import Loader from "@/components/common/Loader";
 
-const NavbarProfile = lazy(() => import("../../components/navbar/Navbar"))
-const Footer = lazy(() => import("../../components/footer/Footer"))
-const SponsorProfileHeader = lazy(() => import("../../components/dashboardSponsor/SponsorProfile"))
-const Campers = lazy(() => import("../../components/campersMainPage/Campers"))
-const CarrouselVideo = lazy(() => import("../../components/dashboardSponsor/CarrouselVideo"))
+const NavbarProfile = lazy(() => import("../../components/navbar/Navbar"));
+const Footer = lazy(() => import("../../components/footer/Footer"));
+const SponsorProfileHeader = lazy(() => import("../../components/dashboardSponsor/SponsorProfile"));
+const MisDonaciones = lazy(() => import("../../components/sponsorMisDonaciones/MisDonaciones"));
+const DashboardView = lazy(() => import("../../components/dashboardView/dashboardView"));
 
 const SponsorDashboard = () => {
   const [camperData, setCamperData] = useState({
@@ -18,73 +18,50 @@ const SponsorDashboard = () => {
     full_name: "",
     city: "",
     age: 0,
-  })
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  const navigateToSection = (sectionId) => {
-    const basePath = isEditPage
-      ? `/campers/profile/${id}/edit`
-      : `/campers/profile/${id}`;
-
-    navigate(basePath);
-
-    setTimeout(() => {
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 300);
-  };
-
-  const videos = [
-    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 1" },
-    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 2" },
-    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 3" },
-    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 4" },
-    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 5" },
-    { url: "https://youtu.be/OKMsheDmK8Q?list=TLGGumSk0QQF7LcyOTAxMjAyNQ", title: "Video 6" },
-  ]
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [view, setView] = useState("dashboard");
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        setIsLoading(true)
-        const data = await fetchCamperById(60)
-        setCamperData(data)
+        setIsLoading(true);
+        const data = await fetchCamperById(60);
+        setCamperData(data);
       } catch (error) {
-        console.error("Error loading camper data:", error)
-        setError(error.message)
+        console.error("Error loading camper data:", error);
+        setError(error.message);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    loadData()
-  }, [])
+    loadData();
+  }, []);
 
   if (isLoading) {
-    return <Loader />
+    return <Loader />;
   }
 
   if (error) {
-    return <div>Error: {error}</div>
+    return <div>Error: {error}</div>;
   }
 
   return (
     <div className="flex flex-col relative min-h-screen bg-[#07072b]">
       <LazySection>
-      <NavbarProfile
-            viewType="profile"
-            links={[
-                { id: "sobre-mi", label: "Sobre mí" },
-                { id: "proceso-formacion", label: "Proceso" },
-                { id: "sueños-grid", label: "Sueños" },
-                { id: "projects", label: "Proyectos" }
-            ]}
-            onLinkClick={navigateToSection}
+        <NavbarProfile
+          viewType="profile"
+          links={[
+            { id: "sobre-mi", label: "Sobre mí" },
+            { id: "proceso-formacion", label: "Proceso" },
+            { id: "sueños-grid", label: "Sueños" },
+            { id: "projects", label: "Proyectos" },
+          ]}
         />
       </LazySection>
+
       <div className="flex flex-col">
         <LazySection>
           <div id="sponsor-profile-header">
@@ -92,26 +69,73 @@ const SponsorDashboard = () => {
           </div>
         </LazySection>
 
-        <LazySection>
-  <div id="campers-section">
-    <Campers 
-      title="Auspiciados!" 
-      subtitle="Gracias a ti ellos terminaron su formacion"
-    />
-  </div>
-</LazySection>
-
-        <LazySection>
-          <div id="video-carousel">
-            <CarrouselVideo videos={videos} />
+        {/* Selector de pestañas */}
+        <div className="flex items-center justify-center my-6">
+          <div className="relative w-full max-w-2xl bg-gray-900 p-2 rounded-xl shadow-md">
+            <div className="relative flex">
+              <TabButton
+                isActive={view === "dashboard"}
+                onClick={() => setView("dashboard")}
+                gradient="from-purple-600 via-indigo-600 to-blue-500"
+              >
+                Mi Dashboard
+              </TabButton>
+              <TabButton
+                isActive={view === "donaciones"}
+                onClick={() => setView("donaciones")}
+                gradient="from-teal-400 via-cyan-500 to-blue-500"
+              >
+                Ver Mis Donaciones
+              </TabButton>
+            </div>
           </div>
-        </LazySection>
+        </div>
+
+        {/* Mantener ambos componentes montados y ocultar el que no se usa */}
+        <div className="relative">
+          <div className={view === "dashboard" ? "block" : "hidden"}>
+            <DashboardView />
+          </div>
+          <div className={view === "donaciones" ? "block" : "hidden"}>
+            <MisDonaciones />
+          </div>
+        </div>
       </div>
+
       <LazySection>
         <Footer />
       </LazySection>
     </div>
-  )
+  );
+};
+
+// 🔹 Componente TabButton corregido
+function TabButton({ children, isActive, onClick, gradient, index }) {
+  return (
+    <motion.button
+      type="button"
+      className={`relative flex-1 py-3 text-lg font-bold transition-colors duration-300 ${
+        isActive ? "text-white" : "text-gray-400"
+      }`}
+      onClick={() => {
+        if (!isActive) {
+          onClick();
+        }
+      }}
+      whileHover={{ scale: 1.07 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      {isActive && (
+        <motion.div
+          className={`absolute inset-0 bg-gradient-to-r ${gradient} rounded-xl`}
+          animate={{ x: 0, opacity: 1, scale: 1 }}
+          initial={{ x: index === 0 ? -15 : 15, opacity: 0.8, scale: 0.98 }}
+          transition={{ type: "tween", duration: 0.6, ease: "anticipate" }}
+        />
+      )}
+      <span className="relative z-10">{children}</span>
+    </motion.button>
+  );
 }
 
-export default SponsorDashboard
+export default SponsorDashboard;

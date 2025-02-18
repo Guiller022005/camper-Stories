@@ -116,17 +116,9 @@ const SponsorProfile = ({ externalData }) => {
                 <p>{data.city_name || "Ubicación desconocida"}</p>
               </div>
               <div className="flex items-center gap-3 text-gray-200">
-                <Cake className="w-5 h-5" />
-                <p>{`${calculateAge(data.birth_date)} Años`}</p>
-              </div>
-              <div className="flex items-center gap-3 text-gray-200">
                 <Mail className="w-5 h-5" />
                 <p>{data.email || "Correo no disponible"}</p>
               </div>
-            </div>
-
-            <div className="mt-4 text-gray-200">
-              <p>{`${data.document_type || "Documento"}: ${data.document_number || "No disponible"}`}</p>
             </div>
           </div>
         </div>

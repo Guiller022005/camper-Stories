@@ -53,3 +53,23 @@ export const fetchSponsorrById = async (id) => {
       throw error;
     }
 };
+
+export const fetchSponsorShipsBySponsorId = async (id) => {
+    try {
+        const response = await axios.get(`${endpoints.sponsors}/${id}/donations`);
+
+        if (!response.data || response.data.length === 0) {
+            // console.warn(`El Sponsor con id ${id} no tiene SponsorShips.`);
+            return [];
+        }
+
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            // console.warn(`No se encontraron SponsorShips para el Sponsor con id ${id}.`);
+            return [];
+        }
+        // console.error(`Error al obtener SponsorShips del Sponsor con id ${id}:`, error);
+        return [];
+    }
+};
