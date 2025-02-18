@@ -19,7 +19,13 @@ export const endpoints = {
   meritsbyid: `${API_BASE_URL}merits/{id}`,
   sponsors: `${API_BASE_URL}sponsor{id}/`,
   sponsorsRegister: `${API_BASE_URL}sponsors/`,
-  payments: `${API_BASE_URL}payments`
+  payments: `${API_BASE_URL}wompi`,
+  subscriptions: {
+    init: `${API_BASE_URL}wompi/init-subscription`,
+    process: `${API_BASE_URL}wompi/process-subscription`,
+    cancel: `${API_BASE_URL}wompi/cancel-subscription`,
+    get: `${API_BASE_URL}wompi/subscription`
+  }
 };
 
 export default API_BASE_URL;

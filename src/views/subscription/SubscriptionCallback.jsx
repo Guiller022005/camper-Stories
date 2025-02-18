@@ -11,12 +11,21 @@ const SubscriptionCallback = () => {
     useEffect(() => {
         const processSubscription = async () => {
             try {
+                // Validar que todos los parámetros necesarios estén presentes
+                const requiredParams = ['id', 'payment_source_id', 'acceptance_token', 'status', 'reference', 'subscription_id'];
+                const missingParams = requiredParams.filter(param => !searchParams.get(param));
+                
+                if (missingParams.length > 0) {
+                    throw new Error(`Parámetros faltantes: ${missingParams.join(', ')}`);
+                }
+
                 const params = {
                     id: searchParams.get('id'),
                     payment_source_id: searchParams.get('payment_source_id'),
                     acceptance_token: searchParams.get('acceptance_token'),
                     status: searchParams.get('status'),
-                    reference: searchParams.get('reference')
+                    reference: searchParams.get('reference'),
+                    subscription_id: searchParams.get('subscription_id')
                 };
 
                 const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}wompi/process-subscription`, {
@@ -28,22 +37,26 @@ const SubscriptionCallback = () => {
                     body: JSON.stringify(params)
                 });
 
+                if (!response.ok) {
+                    throw new Error(`Error del servidor: ${response.status}`);
+                }
+
                 const data = await response.json();
 
                 if (data.success) {
                     setStatus('success');
-                    toast.success('¡Suscripción exitosa!');
+                    toast.success('¡Suscripción exitosa! Bienvenido a nuestro programa de patrocinio.');
                     setTimeout(() => {
                         navigate('/sponsor/dashboard');
-                    }, 2000);
+                    }, 3000);
                 } else {
-                    throw new Error(data.error);
+                    throw new Error(data.error || 'Error desconocido en la suscripción');
                 }
 
             } catch (error) {
                 console.error('Error procesando suscripción:', error);
                 setStatus('error');
-                toast.error('Error al procesar la suscripción');
+                toast.error(`Error al procesar la suscripción: ${error.message}`);
             }
         };
 
@@ -68,7 +81,13 @@ const SubscriptionCallback = () => {
                 {status === 'error' && (
                     <div className="text-red-500">
                         <h2 className="text-2xl font-bold mb-4">Error en la suscripción</h2>
-                        <p>Por favor, intenta nuevamente más tarde.</p>
+                        <p>Ha ocurrido un error al procesar tu suscripción.</p>
+                        <button 
+                            onClick={() => navigate('/sponsor/subscribe')}
+                            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+                        >
+                            Intentar nuevamente
+                        </button>
                     </div>
                 )}
             </div>
