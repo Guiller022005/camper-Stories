@@ -4,27 +4,30 @@ import { CampusProvider } from './components/campersMainPage/context/CampusConte
 import { ToastContainer, Bounce } from 'react-toastify';
 import './styles/variables.css';
 import './styles/base.css';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <CampusProvider>
-      <div className="App bg-gradient-to-b from-[#1a1b2b] to-[#1e203a]">
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Bounce}
-        />
-        <AppRouter />
-      </div>
-    </CampusProvider>
+    <AuthProvider>
+      <CampusProvider>
+        <div className="App bg-gradient-to-b from-[#1a1b2b] to-[#1e203a]">
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Bounce}
+          />
+          <AppRouter />
+        </div>
+      </CampusProvider>
+    </AuthProvider>
   );
 }
 

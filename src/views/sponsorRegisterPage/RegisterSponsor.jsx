@@ -74,36 +74,117 @@ export default function RegisterForm() {
    setIsLoading(true);
 
    const formDataObj = new FormData(event.target);
+   
+   // Validar fecha de nacimiento
+   const birthDate = formDataObj.get('edad');
+   const today = new Date();
+   const birthDateObj = new Date(birthDate);
+   const age = today.getFullYear() - birthDateObj.getFullYear();
+   
+   if (age < 18) {
+     toast.error("Debes ser mayor de edad para registrarte como sponsor");
+     setIsLoading(false);
+     return;
+   }
+
+   // Validar que la ciudad exista en la lista de ciudades
+   const ciudadSeleccionada = ciudadesColombia.find(
+     ciudad => ciudad.id === formData.ciudad
+   );
+
+   if (!ciudadSeleccionada) {
+     toast.error("Por favor selecciona una ciudad de la lista");
+     setIsLoading(false);
+     return;
+   }
+
    const data = {
-     first_name: formDataObj.get('first_name'),
-     last_name: formDataObj.get('last_name'),
-     email: formDataObj.get('email'),
+     first_name: formDataObj.get('first_name').trim(),
+     last_name: formDataObj.get('last_name').trim(),
+     email: formDataObj.get('email').trim().toLowerCase(),
      password: formDataObj.get('password'),
-     document_type_id: formDataObj.get('document_type'),
-     document_number: formDataObj.get('documento'),
-     city_id: formData.ciudad,
-     birth_date: formDataObj.get('edad')
+     document_type_id: parseInt(formDataObj.get('document_type')),
+     document_number: formDataObj.get('documento').trim(),
+     city_id: parseInt(formData.ciudad),
+     birth_date: formDataObj.get('edad'),
+     role_id: 2, // Role ID para sponsors
+     image_url: null // Valor inicial para la imagen
    };
 
    try {
      const response = await fetch(endpoints.sponsorsRegister, {
        method: 'POST',
-       headers: { "Content-Type": "application/json" },
+       headers: { 
+         "Content-Type": "application/json",
+         "Accept": "application/json"
+       },
        body: JSON.stringify(data)
      });
 
+     const result = await response.json();
+
      if (response.ok) {
-       toast.success('¡Registro exitoso!');
-       navigate('/login/sponsor');
+       toast.success('¡Registro exitoso! Por favor inicia sesión para continuar con tu suscripción.');
+       // Redirigir al login después de un breve delay
+       setTimeout(() => {
+         navigate('/login/sponsor');
+       }, 2000);
      } else {
-       const error = await response.json();
-       toast.error(error.message || "Error al registrarse");
+       throw new Error(result.message || "Error en el registro");
      }
-   } catch (err) {
-     toast.error("Error de conexión");
+   } catch (error) {
+     console.error('Error en el registro:', error);
+     toast.error(error.message || "Error al crear la cuenta. Por favor intenta nuevamente.");
    } finally {
      setIsLoading(false);
    }
+ };
+
+ // Agregar validación de contraseña mientras el usuario escribe
+ const validatePassword = (pass) => {
+   const minLength = 8;
+   const hasUpperCase = /[A-Z]/.test(pass);
+   const hasLowerCase = /[a-z]/.test(pass);
+   const hasNumbers = /\d/.test(pass);
+   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(pass);
+
+   if (pass.length < minLength) {
+     return "La contraseña debe tener al menos 8 caracteres";
+   }
+   if (!hasUpperCase || !hasLowerCase) {
+     return "La contraseña debe incluir mayúsculas y minúsculas";
+   }
+   if (!hasNumbers) {
+     return "La contraseña debe incluir al menos un número";
+   }
+   if (!hasSpecialChar) {
+     return "La contraseña debe incluir al menos un carácter especial";
+   }
+   return "";
+ };
+
+ const handlePasswordChange = (e) => {
+   const newPassword = e.target.value;
+   setPassword(newPassword);
+   const error = validatePassword(newPassword);
+   setPasswordError(error);
+ };
+
+ // Validaciones adicionales que podrías agregar al handleSubmit
+ const validateForm = (data) => {
+   if (data.document_number.length < 5) {
+     throw new Error("El número de documento no es válido");
+   }
+   
+   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+     throw new Error("El correo electrónico no es válido");
+   }
+
+   if (data.first_name.length < 2 || data.last_name.length < 2) {
+     throw new Error("El nombre y apellido deben tener al menos 2 caracteres");
+   }
+
+   return true;
  };
 
  return (
@@ -203,12 +284,11 @@ export default function RegisterForm() {
                    type="password"
                    required
                    placeholder="••••••••"
-                   className={`w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm focus:ring-2 focus:ring-[#7c3aed] ${passwordError ? 'ring-2 ring-red-500' : ''}`}
+                   className={`w-full h-11 pl-9 pr-3 bg-[#3a3a4e] rounded-lg text-white text-sm focus:ring-2 focus:ring-[#7c3aed] ${
+                     passwordError ? 'ring-2 ring-red-500' : ''
+                   }`}
                    value={password}
-                   onChange={(e) => {
-                     setPassword(e.target.value);
-                     setPasswordError('');
-                   }}
+                   onChange={handlePasswordChange}
                  />
                </div>
              </div>
@@ -262,7 +342,20 @@ export default function RegisterForm() {
                    placeholder="Busca tu ciudad"
                    value={searchCity}
                    onFocus={() => setShowDropdown(true)}
-                   onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+                   onBlur={() => {
+                     setTimeout(() => {
+                       setShowDropdown(false);
+                       // Validar si la ciudad escrita existe en la lista
+                       const ciudadExiste = ciudadesColombia.find(
+                         ciudad => normalizeString(ciudad.city) === normalizeString(searchCity)
+                       );
+                       if (!ciudadExiste && searchCity) {
+                         toast.warning("Por favor selecciona una ciudad válida de la lista");
+                         setSearchCity("");
+                         setFormData(prev => ({ ...prev, ciudad: "" }));
+                       }
+                     }, 200);
+                   }}
                    onChange={(e) => {
                      setSearchCity(e.target.value);
                      filterCities(e.target.value);
