@@ -3,7 +3,7 @@ import { endpoints } from './apiConfig';
 
 export const getSignature = async (reference, amountInCents, currency = "COP") => {
   try {
-    const response = await axios.post(`${endpoints.payments}/generate-signature`, {
+    const response = await axios.post(`${endpoints.wompi}/generate-signature`, {
       reference,
       amountInCents,
       currency,
@@ -30,6 +30,7 @@ export const saveInfo = async (transaction) => {
       currency: transaction.currency,
       paymentMethodType: transaction.paymentMethodType,
       status: transaction.status,
+      signature: transaction.signature,
       customerData: {
         id: null,
         fullName: transaction.customerData.fullName || "Desconocido",
@@ -39,7 +40,7 @@ export const saveInfo = async (transaction) => {
     console.log("Enviando transacción al backend:", payload);
 
     // Enviar la información al backend
-    const response = await axios.post(`${endpoints.payments}/save-info`, payload);
+    const response = await axios.post(`${endpoints.wompi}/save-info`, payload);
 
     // Retornar la respuesta del backend
     return response.data;
