@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { getSignature } from '../../services/wompiService';
+import { saveInfo } from '../../services/wompiService';
 import { toast } from 'react-toastify';
 
 const WompiWidget = ({ amountInCents, reference }) => {
@@ -44,7 +45,7 @@ const WompiWidget = ({ amountInCents, reference }) => {
         }
       });
 
-      checkout.open((result) => {
+      checkout.open(async (result) => {
         if (!result || !result.transaction) {
           console.error("Error: No se recibió una transacción válida", result);
           toast.error("Error al procesar el pago");
@@ -61,6 +62,16 @@ const WompiWidget = ({ amountInCents, reference }) => {
         } else {
           toast.warning("Pago pendiente.");
         }
+
+        // **ENVIAR LA TRANSACCIÓN AL BACKEND**
+        try {
+          const response = await saveInfo(transaction); // Utiliza el servicio `saveInfo`
+          console.log("Transacción almacenada en el backend:", response);
+        } catch (backendError) {
+          console.error("Error enviando la transacción al backend:", backendError);
+          toast.error("Hubo un problema registrando la transacción.");
+        }
+
       });
 
     } catch (error) {
