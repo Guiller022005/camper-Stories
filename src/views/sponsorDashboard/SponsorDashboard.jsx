@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useState, useEffect } from "react"
 import { fetchCamperById } from "../../services/camperService"
+import { fetchSponsorrById } from "@/services/sponsorService"
 import LazySection from "../../components/common/LazySection"
 import Loader from "@/components/common/Loader"
 

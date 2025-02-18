@@ -61,7 +61,7 @@ const AppRouter = () => {
         <Route path='/terminos-y-condiciones' element={<TermsAndConditions/>}/>
 
         <Route 
-          path="/sponsor/:id" 
+          path="/sponsors/:sponsorId" 
           element={<Sponsors /> 
           } 
         />
