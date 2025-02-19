@@ -71,6 +71,27 @@ const Campers = ({
     fetchData();
   }, [currentCampusId]);
 
+  useEffect(() => {
+    if (campersData.length > 0) {
+      const fetchMeritsForCampers = async () => {
+        try {
+          // Se itera sobre cada camper para obtener sus méritos
+          const meritsPromises = campersData.map(async (camper) => {
+            // Se asume que la respuesta es un arreglo de méritos
+            const response = await fetchMeritsCamperById(camper.camper_id);
+            return { camperId: camper.camper_id, merits: response };
+          });
+          const meritsResults = await Promise.all(meritsPromises);
+          setMeritsData(meritsResults);
+        } catch (error) {
+          console.error("Error al cargar los méritos:", error);
+        }
+      };
+
+      fetchMeritsForCampers();
+    }
+  }, [campersData]);
+
 
   if (isLoading) return <Loader />;
   if (error) return <div className={`${styles.error} text-red-500`}>{error}</div>;
@@ -144,9 +165,9 @@ const Campers = ({
                     {randomMerit ? (
                       <div className={styles.merit}>
                         <h4 className="font-medium text-[clamp(0.9rem,1.5vw,0.7rem)] text-[var(--color2)] mb-[clamp(0.5rem,1.5vw,0.8rem)] text-center md:text-[clamp(0.9rem,1.5vw,0.8rem)]">
-                          <span className="text-[var(--color2)]">{randomMerit.icon}</span>
+                          <span className="text-[var(--color2)]">{randomMerit.icon} </span>
                           {randomMerit.name}
-                          <span className="text-[var(--color2)]">{randomMerit.icon}</span>
+                          <span className="text-[var(--color2)]"> {randomMerit.icon}</span>
                         </h4>
                       </div>
                     ) : (
