@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -66,6 +66,12 @@ const donacionData = {
 const DonationForm = () => {
     const [customAmount, setCustomAmount] = useState("");
     const isValidAmount = customAmount && parseFloat(customAmount.replace(/\./g, "")) >= 5000;
+    const [documentNumber, setDocumentNumber] = useState("");
+    const [name, setName] = useState("");
+    const [errors, setErrors] = useState({ name: "", documentNumber: "" });
+    const [generateCertificate, setGenerateCertificate] = useState(null);
+    const [formData, setFormData] = useState(null);
+    const [triggerPayment, setTriggerPayment] = useState(false);
 
     const formatCurrency = (value) => {
         const numericValue = value.replace(/\D/g, "");
@@ -76,10 +82,52 @@ const DonationForm = () => {
         setCustomAmount(formatCurrency(value));
     };
 
-    const generateUniqueReference = () => {
+    const validateName = (value) => {
+        if (!/^[a-zA-Z\s]{3,}$/.test(value)) {
+            setErrors((prev) => ({ ...prev, name: "El nombre debe tener al menos 3 caracteres y solo letras." }));
+        } else {
+            setErrors((prev) => ({ ...prev, name: "" }));
+        }
+    };
+
+    const validateDocumentNumber = (value) => {
+        if (!/^[a-zA-Z0-9]{6,20}$/.test(value)) {
+            setErrors((prev) => ({ ...prev, documentNumber: "El número de documento debe tener entre 6 y 20 caracteres." }));
+        } else {
+            setErrors((prev) => ({ ...prev, documentNumber: "" }));
+        }
+    };
+
+    const generateUniqueReference = (isCertificate = false) => {
         const timestamp = Date.now().toString(36);
         const randomStr = Math.random().toString(36).substring(2, 8);
-        return `don_${timestamp}_${randomStr}`;
+        const prefix = isCertificate ? "don" : "anon_don";
+        return `${prefix}_${timestamp}_${randomStr}`;
+    };
+
+    const handleSubmit = () => {
+        const data = new FormData();
+        data.append("monto", customAmount.replace(/\./g, ""));
+
+        if (generateCertificate) {
+            data.append("nombre", name);
+            data.append("documento", documentNumber);
+        }
+
+        console.log("Datos enviados:", Object.fromEntries(data));
+        setFormData(data); // 🔹 Guardamos formData en el estado para que WompiWidget lo reciba solo al pagar
+    };
+
+    const handlePaymentClick = () => {
+        handleSubmit();
+        setTriggerPayment(false);  // Lo ponemos en false primero
+        setTimeout(() => {
+            setTriggerPayment(true); // Luego lo volvemos a activar
+        }, 100);
+    };
+
+    const handleWidgetClose = () => {
+        setTriggerPayment(false);
     };
 
     return (
@@ -112,6 +160,66 @@ const DonationForm = () => {
                                 <p className="text-[#5e14d6] text-sm">El monto mínimo es de $5.000 COP.</p>
                             )}
                         </div>
+                        {/* Certificado de donacion */}
+                        <div className="space-y-2">
+                            <label className="text-sm text-gray-400">¿Desea generar un certificado de donación?</label>
+                            <div className="flex justify-center gap-4 items-center">
+                                {["Sí", "No"].map((option, index) => (
+                                    <button
+                                        key={index}
+                                        type="button"
+                                        onClick={() => setGenerateCertificate(option === "Sí")}
+                                        className={`w-10 h-10 rounded-full border-2 transition-all duration-300 ${generateCertificate === (option === "Sí")
+                                            ? "border-[#5b62f1] bg-[#5b62f1] text-white"
+                                            : "border-gray-500 bg-transparent text-gray-300"
+                                            } flex items-center justify-center`}
+                                    >
+                                        {option}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Campos de Nombre y Documento */}
+                        {generateCertificate === true && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3 }}
+                                className="space-y-4"
+                            >
+                                <div className="space-y-2">
+                                    <label className="text-sm text-gray-400">Nombre</label>
+                                    <Input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => {
+                                            setName(e.target.value);
+                                            validateName(e.target.value);
+                                        }}
+                                        className="bg-[#1A1D2E] border border-gray-600 focus:border-[#7C3AED] h-12 rounded-md text-lg text-white"
+                                        placeholder="Nombre completo"
+                                    />
+                                    {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm text-gray-400">Número de documento</label>
+                                    <Input
+                                        type="text"
+                                        value={documentNumber}
+                                        onChange={(e) => {
+                                            setDocumentNumber(e.target.value);
+                                            validateDocumentNumber(e.target.value);
+                                        }}
+                                        className="bg-[#1A1D2E] border border-gray-600 focus:border-[#7C3AED] h-12 rounded-md text-lg text-white"
+                                        placeholder="Número de documento"
+                                    />
+                                    {errors.documentNumber && <p className="text-red-500 text-sm">{errors.documentNumber}</p>}
+                                </div>
+                            </motion.div>
+                        )}
                         <div className="space-y-2">
                             <label htmlFor="message" className="text-sm text-gray-400 font-poppins">
                                 Mensaje para los campers (opcional)
@@ -122,23 +230,34 @@ const DonationForm = () => {
                                 placeholder="¡Comparte un mensaje de apoyo!"
                             />
                         </div>
-                        {isValidAmount ? (
+                        <button
+                            className={`w-full p-3 rounded-md font-bold text-white text-lg ${isValidAmount &&
+                                generateCertificate !== null &&
+                                (
+                                    !generateCertificate ||
+                                    (generateCertificate && name && documentNumber && !errors.name && !errors.documentNumber)
+                                )
+                                ? "bg-[#5b62f1] hover:bg-[#382394]"
+                                : "bg-[#382394] cursor-not-allowed"
+                                }`}
+                            onClick={handlePaymentClick}
+                            disabled={
+                                !isValidAmount ||
+                                generateCertificate === null ||
+                                (generateCertificate && (!name || !documentNumber || errors.name || errors.documentNumber))
+                            }
+                        >
+                            Paga Ahora con Wompi <ArrowRight className="h-5 w-5 inline pb-[2px]" />
+                        </button>
+                        {triggerPayment && (
                             <WompiWidget
                                 amountInCents={parseFloat(customAmount.replace(/\./g, "")) * 100}
-                                reference={generateUniqueReference()}
+                                reference={generateUniqueReference(generateCertificate === true)}
+                                formData={formData}
+                                openWidget={triggerPayment} // Se mantiene el control desde el formulario
+                                onClose={handleWidgetClose}
                             />
-                        ) : (
-                            <button
-                                className="w-full p-3 rounded-md font-bold text-white text-lg bg-[#382394] cursor-not-allowed"
-                                disabled
-                            >
-                                Paga Ahora con Wompi <ArrowRight className="h-5 w-5 inline pb-[2px]" />
-                            </button>
                         )}
-                        <div className="text-center mt-4">
-                        <legend className="text-gray-400">Al completar el pago, puede solicitar su certificado de donación</legend>
-                            {/* <DownloadButton donacionData={donacionData} /> */}
-                        </div>
                     </div>
                 </Card>
             </div>

@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
-import { getSignature } from '../../services/wompiService';
-import { saveInfo } from '../../services/wompiService';
 import { toast } from 'react-toastify';
+import { getSignature, saveInfo } from '../../services/wompiService';
 
-const WompiWidget = ({ amountInCents, reference }) => {
+const WompiWidget = ({ amountInCents, reference, formData, openWidget, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isWidgetOpen, setIsWidgetOpen] = useState(false); // Estado interno para abrir/cerrar el widget
 
   const WOMPI_PUBLIC_KEY = import.meta.env.VITE_WOMPI_PUBLIC_KEY;
 
-  const handleClickOnDev = () => {
-    toast.info("Esta opcion aun se encuenta en desarrollo. Vuelve Pronto!")
-  };
+  useEffect(() => {
+    if (openWidget) {
+      setIsWidgetOpen(true); // Sincroniza con la prop solo cuando cambia a true
+    }
+  }, [openWidget]);
 
   const initializePayment = async () => {
+    if (!isWidgetOpen) return; // Evita ejecutar si el widget no debe abrirse
+
     try {
-
       setIsLoading(true);
-
 
       if (isNaN(amountInCents) || amountInCents <= 0) {
         console.error("Error: El monto no es válido", amountInCents);
+        setIsLoading(false);
         return;
       }
 
@@ -35,10 +37,10 @@ const WompiWidget = ({ amountInCents, reference }) => {
         'signature:integrity': signature,
         onClose: () => {
           console.log('Widget cerrado');
+          setIsWidgetOpen(false); // Permite abrirlo nuevamente
+          onClose(); // Notifica a `DonationForm` que se cerró
         },
-        onReady: () => {
-          console.log('Widget listo');
-        },
+        onReady: () => console.log('Widget listo'),
         onError: (error) => {
           console.error('Error en el widget:', error);
           toast.error('Error en el proceso de pago');
@@ -46,6 +48,8 @@ const WompiWidget = ({ amountInCents, reference }) => {
       });
 
       checkout.open(async (result) => {
+        setIsLoading(false); // Termina la carga cuando el widget abre
+
         if (!result || !result.transaction) {
           console.error("Error: No se recibió una transacción válida", result);
           toast.error("Error al procesar el pago");
@@ -57,58 +61,39 @@ const WompiWidget = ({ amountInCents, reference }) => {
 
         if (transaction.status === "APPROVED") {
           toast.success("¡Pago exitoso!");
+          try {
+            const transactionData = {
+              ...Object.fromEntries(formData),
+              transactionId: transaction.id,
+              status: transaction.status,
+            };
+            await saveInfo(transactionData);
+            console.log("Transacción almacenada en el backend.");
+          } catch (backendError) {
+            console.error("Error enviando la transacción al backend:", backendError);
+            toast.error("Hubo un problema registrando la transacción.");
+          }
         } else if (transaction.status === "DECLINED") {
           toast.error("Pago rechazado.");
         } else {
           toast.warning("Pago pendiente.");
         }
-
-        // **ENVIAR LA TRANSACCIÓN AL BACKEND**
-        try {
-          const response = await saveInfo(transaction); // Utiliza el servicio `saveInfo`
-          console.log("Transacción almacenada en el backend:", response);
-        } catch (backendError) {
-          console.error("Error enviando la transacción al backend:", backendError);
-          toast.error("Hubo un problema registrando la transacción.");
-        }
-
       });
 
     } catch (error) {
       console.error('Error al iniciar el pago:', error);
       toast.error('Error al iniciar el pago');
-    } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.wompi.co/widget.js';
-    script.async = true;
-    document.body.appendChild(script);
+    if (isWidgetOpen) {
+      initializePayment();
+    }
+  }, [isWidgetOpen]);
 
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
-
-  return (
-    <button
-      onClick={initializePayment}
-      // onClick={handleClickOnDev} onClick para DESACTIVAR PAGOS EN PRODUCCION
-      disabled={isLoading}
-      className="w-full p-3 rounded-md font-bold text-white text-lg bg-[#382394] hover:bg-[#2a1b6e] transition-colors"
-    >
-      {isLoading ? 'Cargando...' : (
-        <>
-          Paga Ahora con Wompi <ArrowRight className="h-5 w-5 inline pb-[2px]" />
-        </>
-      )}
-    </button>
-  );
+  return null; // No necesita renderizar nada
 };
 
 export default WompiWidget;
