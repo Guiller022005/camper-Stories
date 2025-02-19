@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Share2, Mail, MapPin, Cake, Trophy, ChevronDown } from "lucide-react";
+import { toast } from "react-toastify";
 import "./styles/ProfileHeader.css";
 import { ProfileImage } from "./ProfileImage"; // Importa el componente ProfileImage
 import ProfileHeaderModal from "./modals/ProfileHeaderModal";
@@ -9,12 +10,33 @@ import MeritsModal from "./modals/MeritsModal";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
-const ProfileHeader = ({ data, initialMerits, onUpdate, isEditable }) => {
+const ProfileHeader = ({ id, data, initialMerits, onUpdate, isEditable }) => {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const maxVisibleBadges = 6;
 
   const handleToggleBadges = () => {
     setShowAllBadges((prev) => !prev);
+  };
+
+  const handleCopy = (id) => {
+    const link = `https://camperstories.vercel.app/campers/profile/${id}`;
+    console.log("Copiando enlace al portapapeles:", data);
+
+    navigator.clipboard.writeText(link)
+      .then(() => {
+        toast.success("Enlace copiado al portapapeles!");
+      })
+      .catch((error) => {
+        console.error("Error al copiar el enlace: ", error);
+      });
+  };
+
+  const handleContactUs = (data) => {
+    const whatsappNumber = "573160522555";
+    const message = `Hola, vengo de Camper Stories. Me interesó el perfil de ${data.full_name}, quisiera más información sobre él.`;
+    const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappLink, "_blank");
+    toast.success("Redirigiendo a WhatsApp...");
   };
 
   return (
@@ -88,11 +110,11 @@ const ProfileHeader = ({ data, initialMerits, onUpdate, isEditable }) => {
               </div>
             </div>
             <div className="profile-buttons">
-              <button className="profile-button">
+              <button className="profile-button" onClick={() => handleContactUs(data)}>
                 <Mail className="profile-icon" />
                 Contactar
               </button>
-              <button className="profile-button">
+              <button className="profile-button" onClick={() => handleCopy(id)}>
                 <Share2 className="profile-icon" />
                 Compartir
               </button>

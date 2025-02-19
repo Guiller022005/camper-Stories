@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Rocket, Star, Sparkles, Heart, ArrowRight, DivideSquareIcon } from "lucide-react";
 import WompiWidget from "../../components/campersMainPage/WompiWidget";
+import DownloadButton from "@/pdfCertificate/CertificadoDonacion";
 
 const plans = [
     {
@@ -55,12 +56,19 @@ const plans = [
     },
 ];
 
+const donacionData = {
+    nombreDonante: "Juan Pérez",
+    fechaDonacion: "2023-10-01",
+    montoDescripcion: "$1,000",
+    numeroCertificado: "CERT-12345",
+};
+
 const DonationForm = () => {
     const [customAmount, setCustomAmount] = useState("");
     const isValidAmount = customAmount && parseFloat(customAmount.replace(/\./g, "")) >= 5000;
 
     const formatCurrency = (value) => {
-        const numericValue = value.replace(/\D/g, ""); // Remueve todo excepto números
+        const numericValue = value.replace(/\D/g, "");
         return new Intl.NumberFormat("es-CO").format(numericValue);
     };
 
@@ -76,7 +84,6 @@ const DonationForm = () => {
 
     return (
         <div className="donation-form-section space-y-12">
-            {/* Formulario */}
             <div className="flex items-center justify-center">
                 <Card className="w-full max-w-md bg-[#0d1033] border border-gray-600 rounded-xl text-white shadow-lg p-8">
                     <div className="space-y-6 text-center mb-6">
@@ -86,7 +93,6 @@ const DonationForm = () => {
                         <p className="text-gray-400 text-lg font-poppins">Tu apoyo hace la diferencia en la educación</p>
                     </div>
                     <div className="space-y-6">
-                        {/* Input para monto */}
                         <div className="space-y-2">
                             <label htmlFor="amount" className="text-sm text-gray-400 font-poppins">
                                 Ingresa el monto a aportar
@@ -106,7 +112,6 @@ const DonationForm = () => {
                                 <p className="text-[#5e14d6] text-sm">El monto mínimo es de $5.000 COP.</p>
                             )}
                         </div>
-                        {/* Mensaje */}
                         <div className="space-y-2">
                             <label htmlFor="message" className="text-sm text-gray-400 font-poppins">
                                 Mensaje para los campers (opcional)
@@ -117,7 +122,6 @@ const DonationForm = () => {
                                 placeholder="¡Comparte un mensaje de apoyo!"
                             />
                         </div>
-                        {/* Botón */}
                         {isValidAmount ? (
                             <WompiWidget
                                 amountInCents={parseFloat(customAmount.replace(/\./g, "")) * 100}
@@ -131,17 +135,13 @@ const DonationForm = () => {
                                 Paga Ahora con Wompi <ArrowRight className="h-5 w-5 inline pb-[2px]" />
                             </button>
                         )}
-                        {/* Enlace a certificado */}
                         <div className="text-center mt-4">
-                            <p className="text-gray-400">¿Deseas obtener un certificado de donación?</p>
-                            <button onClick={() => navigate("/certificado")} className="text-[#5b62f1] underline">
-                                Solicitar certificado
-                            </button>
+                        <legend className="text-gray-400">Al completar el pago, puede solicitar su certificado de donación</legend>
+                            {/* <DownloadButton donacionData={donacionData} /> */}
                         </div>
                     </div>
                 </Card>
             </div>
-
             {/* Pricing Cards (OCULTO TEMPORALMENTE) */}
             {/* 
             <div className="space-y-6">
