@@ -109,8 +109,8 @@ const ProfileHeader = ({ id, data, initialMerits, onUpdate, isEditable }) => {
                 <p>{`${data.age} Años`}</p>
               </div>
             </div>
-            <div className="profile-buttons" onClick={() => handleContactUs(data)}>
-              <button className="profile-button" >
+            <div className="profile-buttons">
+              <button className="profile-button" onClick={() => handleContactUs(data)}>
                 <Mail className="profile-icon" />
                 Contactar
               </button>
