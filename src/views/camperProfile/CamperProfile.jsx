@@ -140,7 +140,7 @@ const CamperProfile = ({ isEditable }) => { // Propiedad de Edicion
 
             <div className={`${styles.profileMainContent} flex flex-col gap-4`}>
                 <LazySection>
-                    <ProfileHeader data={camperData} initialMerits={camperMerits} onUpdate={refreshData} isEditable={isEditable} />
+                    <ProfileHeader id={id} data={camperData} initialMerits={camperMerits} onUpdate={refreshData} isEditable={isEditable} />
                 </LazySection>
 
                 <LazySection>
